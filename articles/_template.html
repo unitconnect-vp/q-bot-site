@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>{{SEO_TITLE}}</title>
+  <meta name="description" content="{{META_DESC}}">
+  <meta name="keywords" content="{{KEYWORDS}}">
+  <link rel="canonical" href="https://q-bot.kr/articles/{{SLUG}}/">
+
+  <!-- OG -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="{{OG_TITLE}}">
+  <meta property="og:description" content="{{META_DESC}}">
+  <meta property="og:image" content="https://q-bot.kr/articles/{{SLUG}}/thumb.webp">
+  <meta property="og:url" content="https://q-bot.kr/articles/{{SLUG}}/">
+  <meta property="og:site_name" content="Q렌즈">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@heyqbot">
+  <meta name="twitter:title" content="{{OG_TITLE}}">
+  <meta name="twitter:description" content="{{META_DESC}}">
+  <meta name="twitter:image" content="https://q-bot.kr/articles/{{SLUG}}/thumb.webp">
+
+  <!-- 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <!-- 스타일 -->
+  <link rel="stylesheet" href="/assets/style.css">
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1015415940515156" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">Q<span>-</span>Lens</a>
+    <nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">아티클</a>
+      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank">계산기</a>
+    </nav>
+  </header>
+
+  <main class="article-wrap">
+    {{ARTICLE_BODY}}
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Q렌즈 · <a href="/">q-bot.kr</a> · 보이는 것 너머를 묻습니다</p>
+  </footer>
+
+  <script src="/assets/site.js"></script>
+
+</body>
+</html>
