@@ -32,6 +32,25 @@
   <!-- 스타일 -->
   <link rel="stylesheet" href="/assets/style.css">
 
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "{{OG_TITLE}}",
+    "description": "{{META_DESC}}",
+    "author": { "@type": "Person", "name": "{{AUTHOR}}" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Q렌즈",
+      "url": "https://q-bot.kr"
+    },
+    "datePublished": "{{DATE}}",
+    "url": "https://q-bot.kr/articles/{{SLUG}}/",
+    "image": "https://q-bot.kr/articles/{{SLUG}}/thumb.webp"
+  }
+  </script>
+
   <!-- AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1015415940515156" crossorigin="anonymous"></script>
 </head>
