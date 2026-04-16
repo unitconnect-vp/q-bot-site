@@ -1,0 +1,32 @@
+name: Publish Scheduled Articles
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # 매시간 정각 실행 (UTC 기준)
+  workflow_dispatch:        # 수동 실행 가능
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run publish script
+        run: python3 .github/scripts/publish_drafts.py
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Q렌즈 Bot"
+          git config user.email "heyqbot@gmail.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: auto-publish scheduled articles"
+          git push
