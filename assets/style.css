@@ -247,3 +247,62 @@ img { max-width: 100%; display: block; }
 @media (max-width: 480px) {
   .feed-recent { grid-template-columns: 1fr; }
 }
+
+
+/* ── stat-row (v3.2, 2026-04-17) — 클래스 기반 ── */
+/* GitHub Pages 이전 후 테마 충돌이 없어진 환경에서 인라인 !important 대신 클래스로 관리.
+   모바일 반응형을 CSS에서 일관 처리하기 위함. */
+.ql-stat-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  background: #ede7d9;
+  border-radius: 4px;
+  margin: 2rem 0;
+}
+.ql-stat-cell {
+  flex: 1;
+  padding: 2rem 1.5rem;
+  min-width: 0;
+}
+.ql-stat-cell + .ql-stat-cell {
+  border-left: 1px solid #c9bfb0;
+}
+.ql-stat-num {
+  display: block;
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: #b5470f;
+  line-height: 1.1;
+  margin-bottom: 0.5rem;
+  word-break: keep-all;
+}
+.ql-stat-num.sm {
+  font-size: 2.2rem;
+}
+.ql-stat-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #6b6159;
+  line-height: 1.5;
+}
+
+/* 모바일: 세로 스택 전환 */
+@media (max-width: 640px) {
+  .ql-stat-row {
+    flex-direction: column;
+  }
+  .ql-stat-cell + .ql-stat-cell {
+    border-left: 0;
+    border-top: 1px solid #c9bfb0;
+  }
+  .ql-stat-cell {
+    padding: 1.4rem 1.25rem;
+  }
+  .ql-stat-num {
+    font-size: 2.1rem;
+  }
+  .ql-stat-num.sm {
+    font-size: 1.75rem;
+  }
+}
