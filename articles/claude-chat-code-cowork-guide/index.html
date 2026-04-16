@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO -->
+  <title>채팅·코드·코워크 완전 정리 | Q렌즈</title>
+  <meta name="description" content="클로드 채팅·코드·코워크, 세 도구의 차이를 모르면 절반만 쓰는 셈이다. 채팅은 대화와 브레인스토밍, 코드는 코딩 자동화, 코워크는 파일·문서 작업에 각각 최적화돼 있다. 장면별로 어떤 도구를 골라야 하는지 초보자 기준으로 정리했다.">
+  <meta name="keywords" content="클로드 코드, 클로드 코워크, 클로드 채팅, 클로드 차이, Claude Code, Claude Cowork, 클로드 코드 코워크 차이, AI 도구 비교, 클로드 사용법">
+  <link rel="canonical" href="https://q-bot.kr/articles/claude-chat-code-cowork-guide/">
+
+  <!-- OG -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="채팅·코드·코워크 — 클로드 세 가지를 언제 어떻게 쓰는가">
+  <meta property="og:description" content="클로드 채팅·코드·코워크, 세 도구의 차이를 모르면 절반만 쓰는 셈이다. 채팅은 대화와 브레인스토밍, 코드는 코딩 자동화, 코워크는 파일·문서 작업에 각각 최적화돼 있다. 장면별로 어떤 도구를 골라야 하는지 초보자 기준으로 정리했다.">
+  <meta property="og:image" content="https://q-bot.kr/articles/claude-chat-code-cowork-guide/thumb.webp">
+  <meta property="og:url" content="https://q-bot.kr/articles/claude-chat-code-cowork-guide/">
+  <meta property="og:site_name" content="Q렌즈">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@heyqbot">
+  <meta name="twitter:title" content="채팅·코드·코워크 — 클로드 세 가지를 언제 어떻게 쓰는가">
+  <meta name="twitter:description" content="클로드 채팅·코드·코워크, 세 도구의 차이를 모르면 절반만 쓰는 셈이다. 채팅은 대화와 브레인스토밍, 코드는 코딩 자동화, 코워크는 파일·문서 작업에 각각 최적화돼 있다. 장면별로 어떤 도구를 골라야 하는지 초보자 기준으로 정리했다.">
+  <meta name="twitter:image" content="https://q-bot.kr/articles/claude-chat-code-cowork-guide/thumb.webp">
+
+  <!-- 폰트 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+
+  <!-- 스타일 -->
+  <link rel="stylesheet" href="/assets/style.css">
+
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1015415940515156" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">Q<span>-</span>Lens</a>
+    <nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">아티클</a>
+      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank">계산기</a>
+    </nav>
+  </header>
+
+  <main class="article-wrap">
+    <div class="ql-progress-bar"></div>
+<div class="ql-wrap" style="background:#ffffff!important;">
+
+  <div class="ql-hero">
+    <div style="display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:0.4rem 0.6rem!important;font-size:0.85rem!important;color:#6b6159!important;margin-bottom:1.2rem!important;">
+      <span style="font-weight:700!important;color:#b5470f!important;">학습·성장</span>
+      <span style="color:#c9bfb0!important;">·</span>
+      <span style="color:#1a1612!important;">Thread</span>
+      <span style="color:#c9bfb0!important;">·</span>
+      <span>2026.04.16</span>
+      <span style="color:#c9bfb0!important;">·</span>
+      <span>약 7분</span>
+    </div>
+    <h2 class="ql-title">채팅·코드·코워크 — 클로드 세 가지를 언제 어떻게 쓰는가</h2>
+    <p class="ql-subtitle">claude.ai를 처음 열면 탭이 세 개다.<br>뭐가 다른지 몰라 그냥 채팅만 쓰고 있다면,<br>이 글이 그 질문에 답한다.</p>
+  </div>
+
+  <div style="display:flex!important;flex-direction:row!important;width:100%!important;background:#ede7d9!important;border-radius:4px!important;margin:2rem 0!important;">
+    <div style="flex:1!important;padding:2rem 1.5rem!important;">
+      <span style="display:block!important;font-size:2.6rem!important;font-weight:900!important;color:#b5470f!important;line-height:1.1!important;margin-bottom:0.5rem!important;">3가지</span>
+      <span style="display:block!important;font-size:0.85rem!important;color:#6b6159!important;line-height:1.5!important;">클로드가 제공하는<br>도구 유형</span>
+    </div>
+    <div style="flex:1!important;padding:2rem 1.5rem!important;border-left:1px solid #c9bfb0!important;">
+      <span style="display:block!important;font-size:2.6rem!important;font-weight:900!important;color:#b5470f!important;line-height:1.1!important;margin-bottom:0.5rem!important;">터미널</span>
+      <span style="display:block!important;font-size:0.85rem!important;color:#6b6159!important;line-height:1.5!important;">클로드 코드의<br>실행 환경</span>
+    </div>
+    <div style="flex:1!important;padding:2rem 1.5rem!important;border-left:1px solid #c9bfb0!important;">
+      <span style="display:block!important;font-size:2.6rem!important;font-weight:900!important;color:#b5470f!important;line-height:1.1!important;margin-bottom:0.5rem!important;">설치 불필요</span>
+      <span style="display:block!important;font-size:0.85rem!important;color:#6b6159!important;line-height:1.5!important;">채팅·코워크<br>시작 조건</span>
+    </div>
+  </div>
+
+  <div class="ql-body">
+
+    <h2>1. 같은 클로드인데 왜 세 가지인가</h2>
+    <p>claude.ai에 처음 접속하면 화면 상단에 탭이 세 개 있다. Chat, Cowork, Code. 이름만 보면 뭐가 다른지 직관적으로 오지 않는다. 셋 다 Claude라고 부르고, 셋 다 같은 AI 모델을 쓴다. 그런데 실제로 해결하는 문제가 완전히 다르다.</p>
+    <p>핵심 차이는 하나다. 클로드가 <strong>답변을 주는가</strong>, 아니면 <strong>일을 직접 실행하는가</strong>. 채팅은 전자다. 코드와 코워크는 후자다. 그리고 코드와 코워크 사이에는 또 하나의 차이가 있다. 누구를 위해 만들었는가.</p>
+    <p>이 세 가지를 혼동하면 채팅창에 50줄짜리 코드를 붙여넣고 "버그 찾아줘"를 반복하거나, 코드를 설치하려다 터미널에서 막혀서 포기하는 일이 생긴다. 각각이 빛나는 장면이 다르다. 그 장면을 정리한다.</p>
+
+    <h2>2. 채팅(Chat) — 생각을 같이 하는 공간</h2>
+    <p>채팅은 가장 익숙한 형태다. 메시지를 입력하면 클로드가 응답한다. 설치할 것도 없고, 권한을 줄 것도 없다. 브라우저에서 바로 시작된다.</p>
+    <p>채팅이 잘 맞는 장면은 이렇다. 보고서 초안을 잡고 싶을 때, 복잡한 개념을 쉽게 풀어달라고 할 때, 아이디어를 검토받고 싶을 때, 이메일 문구가 어색한지 물어볼 때. 이런 작업들의 공통점은 클로드가 내 컴퓨터 파일에 접근할 필요가 없다는 것이다. 내가 텍스트를 붙여넣거나 파일을 업로드하면 클로드가 그것을 보고 응답한다.</p>
+    <p>한 가지 중요한 특징이 있다. 채팅은 <strong>내가 매 단계를 이끈다</strong>. 클로드가 데이터를 분석하고, 그다음 차트를 만들고, 그다음 요약을 써달라고 하면 세 번 따로 요청해야 한다. 클로드는 묻는 것에만 답한다. 자율적으로 다음 단계를 결정하지 않는다. 이 점이 코드·코워크와 가장 크게 다른 부분이다.</p>
+
+    <div style="margin:2.5rem 0!important;padding:1.5rem!important;background:#faf7f2!important;border-radius:6px!important;border:1px solid #e8e0d4!important;">
+      <p style="font-size:0.8rem!important;font-weight:700!important;color:#6b6159!important;margin:0 0 1.2rem 0!important;letter-spacing:0.05em!important;">채팅이 가장 효과적인 작업 유형</p>
+      <div style="display:flex!important;flex-direction:column!important;gap:0.85rem!important;">
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">글쓰기·편집</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:92%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;"></div>
+          </div>
+          <span style="width:50px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">매우 적합</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">개념 설명·분석</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:85%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.7!important;"></div>
+          </div>
+          <span style="width:50px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">적합</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">브레인스토밍</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:78%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.5!important;"></div>
+          </div>
+          <span style="width:50px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">적합</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">파일 직접 편집</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:12%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.35!important;"></div>
+          </div>
+          <span style="width:50px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">불가</span>
+        </div>
+      </div>
+      <p style="font-size:0.75rem!important;color:#9e9085!important;margin:1rem 0 0 0!important;">※ 예시용 구성 — 실제 벤치마크 수치 아님</p>
+    </div>
+
+    <h2>3. 코워크(Cowork) — 파일을 직접 처리하는 조수</h2>
+    <p>코워크는 채팅과 겉모습이 비슷하다. 채팅창에 말을 거는 방식으로 쓴다. 그런데 결정적으로 다른 점이 하나 있다. 내 컴퓨터 폴더에 접근 권한을 주면, 클로드가 그 폴더 안의 파일을 직접 읽고, 만들고, 수정한다.</p>
+    <p>구체적인 장면을 들면 이렇다. 바탕화면에 지난 한 달치 스크린샷이 200개 쌓여 있다. 채팅에서는 한 장씩 업로드해야 한다. 코워크에서는 폴더를 통째로 넘기고 "날짜별로 정리해줘"라고 하면 클로드가 직접 처리한다. 결과물은 채팅창에 답변으로 오는 게 아니라, 실제 파일로 남는다.</p>
+    <p>코워크가 잘 맞는 사람은 개발자가 아닌 쪽이다. 운영팀, 기획자, 콘텐츠 담당자처럼 문서·스프레드시트·PDF를 많이 다루는 사람. 코드를 쓸 줄 몰라도 된다. 터미널을 열 필요도 없다. 클로드 데스크톱 앱을 설치하면 바로 쓸 수 있다.</p>
+
+    <div class="ql-pullquote">코워크는 클로드에게 일을 시키는 방식이다. 채팅이 질문에 답을 받는 것이라면, 코워크는 할 일 목록을 넘기는 것에 가깝다.</div>
+
+    <h2>4. 클로드 코드(Claude Code) — 개발자를 위한 자율 에이전트</h2>
+    <p>클로드 코드는 터미널(terminal, 명령어를 입력하는 검은 화면)에서 실행한다. 설치가 필요하고, 명령어를 입력할 줄 알아야 한다. 처음 보면 진입장벽이 있다. 그런데 코드를 다루는 사람이라면, 이 도구가 왜 만들어졌는지 한 번 써보면 바로 이해한다.</p>
+    <p>클로드 코드는 프로젝트 폴더 전체를 본다. 파일 하나가 아니라 코드베이스 전체의 구조를 이해한 상태에서 작동한다. "로그인 폼에 이메일 인증 추가해줘"라고 하면 관련된 파일을 찾고, 코드를 수정하고, 테스트를 실행하고, 오류가 나면 스스로 고친다. 매 단계마다 사람이 지시하지 않아도 된다.</p>
+    <p>이것이 채팅과 근본적으로 다른 지점이다. 채팅에서 코드 도움을 받으면 클로드가 코드를 보여준다. 직접 파일에 적용하는 건 사람이다. 클로드 코드는 그 적용까지 직접 한다. 코워크와 비교하면, 코워크가 문서·파일 중심이라면 클로드 코드는 코드·개발 환경 중심이다.</p>
+
+    <div style="margin:2.5rem 0!important;padding:1.5rem!important;background:#faf7f2!important;border-radius:6px!important;border:1px solid #e8e0d4!important;">
+      <p style="font-size:0.8rem!important;font-weight:700!important;color:#6b6159!important;margin:0 0 1.2rem 0!important;letter-spacing:0.05em!important;">세 도구의 자율성 수준 비교</p>
+      <div style="display:flex!important;flex-direction:column!important;gap:0.85rem!important;">
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">클로드 코드</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:95%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;"></div>
+          </div>
+          <span style="width:55px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">완전 자율</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">코워크</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:65%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.7!important;"></div>
+          </div>
+          <span style="width:55px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">반자율</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:140px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">채팅</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:20%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.5!important;"></div>
+          </div>
+          <span style="width:55px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">수동</span>
+        </div>
+      </div>
+      <p style="font-size:0.75rem!important;color:#9e9085!important;margin:1rem 0 0 0!important;">※ 예시용 구성 — 실제 벤치마크 수치 아님</p>
+    </div>
+
+    <h2>5. 세 가지를 나란히 놓으면</h2>
+    <p>같은 작업을 세 도구로 접근하면 차이가 명확해진다. 예를 들어 "PDF 20개에서 숫자 데이터를 뽑아 정리해줘"라는 요청이 있다고 하자.</p>
+
+    <div style="display:grid!important;grid-template-columns:1fr 1fr 1fr!important;width:100%!important;border:1px solid #ddd!important;border-radius:4px!important;margin:1.5rem 0!important;overflow:hidden!important;">
+      <div style="padding:0.75rem 1rem!important;background:#f5f0e8!important;font-weight:700!important;font-size:0.85rem!important;color:#1a1612!important;border-right:1px solid #ddd!important;">도구</div>
+      <div style="padding:0.75rem 1rem!important;background:#f5f0e8!important;font-weight:700!important;font-size:0.85rem!important;color:#1a1612!important;border-right:1px solid #ddd!important;">처리 방식</div>
+      <div style="padding:0.75rem 1rem!important;background:#f5f0e8!important;font-weight:700!important;font-size:0.85rem!important;color:#1a1612!important;">결과물 형태</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">채팅</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">한 번에 1개씩 업로드</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;">채팅창 텍스트</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">코워크</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">폴더째 넘기고 지시</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;">실제 파일(.xlsx 등)</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">클로드 코드</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;border-right:1px solid #ddd!important;">터미널에서 자동 처리</div>
+      <div style="padding:0.75rem 1rem!important;font-size:0.85rem!important;color:#1a1612!important;border-top:1px solid #ddd!important;">스크립트+파일</div>
+    </div>
+
+    <p>같은 목표인데 도구마다 요구하는 것이 다르다. 채팅은 내가 직접 파일을 하나씩 넘겨야 한다. 코워크는 폴더 접근 권한을 주면 알아서 돌아간다. 클로드 코드는 그것도 자동화하는 스크립트까지 만들어준다. 더 자율적일수록 더 많은 초기 설정을 요구한다는 트레이드오프가 있다.</p>
+
+    <div class="ql-pullquote">더 자율적인 도구일수록 초기 설정 비용이 있다. 어디서 시작할지 모르겠다면, 채팅에서 시작해서 한계를 느끼는 순간 코워크로 가면 된다.</div>
+
+    <h2>6. 어디서 시작해야 하는가</h2>
+    <p>처음 클로드를 쓰는 사람에게 권하는 순서는 하나다. 채팅 → 코워크 → 코드. 이 순서가 맞는 이유는 진입 비용 때문이다.</p>
+    <p>채팅은 지금 당장 시작할 수 있다. 브라우저를 열면 된다. 코워크는 데스크톱 앱을 설치하고 폴더 권한을 설정해야 한다. 클로드 코드는 터미널에서 npm으로 설치하고 Node.js 환경도 필요하다. 복잡할수록 기능도 더 많지만, 처음부터 전부 설정하려다 지치는 경우가 많다.</p>
+    <p>코드는 개발자가 아니어도 쓸 수 있다는 말이 있다. 맞는 말이지만, 터미널에 익숙하지 않다면 코워크부터 시작하는 게 현실적으로 더 낫다. 코워크로 자율 실행의 감각을 익힌 다음, 코드로 넘어가도 늦지 않는다.</p>
+    <p>개발자라면 순서가 바뀐다. 채팅에서 코드 도움을 받다가 "이거 직접 적용까지 해주면 좋겠는데"라는 생각이 드는 순간이 온다. 그때가 클로드 코드로 넘어갈 타이밍이다. AI가 코드를 보여주는 것과 직접 실행하는 것 사이의 차이는, 한 번 경험하면 돌아가기 힘들다.</p>
+
+    <div style="margin:2.5rem 0!important;padding:1.5rem!important;background:#faf7f2!important;border-radius:6px!important;border:1px solid #e8e0d4!important;">
+      <p style="font-size:0.8rem!important;font-weight:700!important;color:#6b6159!important;margin:0 0 1.2rem 0!important;letter-spacing:0.05em!important;">사용자 유형별 권장 진입점</p>
+      <div style="display:flex!important;flex-direction:column!important;gap:0.85rem!important;">
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:160px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">AI 처음 쓰는 사람</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:95%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;"></div>
+          </div>
+          <span style="width:45px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">채팅</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:160px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">문서·파일 작업자</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:72%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.7!important;"></div>
+          </div>
+          <span style="width:45px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">코워크</span>
+        </div>
+        <div style="display:flex!important;align-items:center!important;gap:1rem!important;">
+          <span style="width:160px!important;font-size:0.8rem!important;color:#1a1612!important;flex-shrink:0!important;">개발자</span>
+          <div style="flex:1!important;background:#e8e0d4!important;border-radius:2px!important;height:22px!important;overflow:hidden!important;">
+            <div style="width:52%!important;height:100%!important;background:#b5470f!important;border-radius:2px!important;opacity:0.5!important;"></div>
+          </div>
+          <span style="width:45px!important;font-size:0.85rem!important;font-weight:700!important;color:#b5470f!important;text-align:right!important;">코드</span>
+        </div>
+      </div>
+      <p style="font-size:0.75rem!important;color:#9e9085!important;margin:1rem 0 0 0!important;">※ 예시용 구성 — 진입점 권장안, 상황에 따라 다를 수 있음</p>
+    </div>
+
+    <div class="ql-conclusion">
+      <h2>Q렌즈의 시각</h2>
+      <p>세 도구가 생긴 이유는 하나다. AI가 답변을 주는 것을 넘어 일을 직접 실행하는 방향으로 바뀌고 있기 때문이다. 채팅이 "클로드와 같이 생각하는" 방식이라면, 코워크와 코드는 "클로드에게 일을 위임하는" 방식이다. 인터페이스가 세 개인 게 아니라, AI를 쓰는 방식이 세 단계로 나뉘어 있는 것에 가깝다.</p>
+      <p>흥미로운 건 코워크의 위치다. 코드 없이 에이전트 수준의 자동화를 쓸 수 있게 해주는 도구는 지금까지 거의 없었다. 코워크는 그 간극을 채운다. 개발자가 아닌 사람도 "AI가 직접 실행한다"는 감각을 처음 경험하는 통로가 될 가능성이 있다.</p>
+      <p>지금 채팅만 쓰고 있다면 물어볼 만한 질문이 있다. 반복적으로 하는 작업 중 파일이 관련된 것이 있는가. 있다면 코워크를 한 번 열어볼 이유가 충분하다. 도구를 바꾸는 게 아니라, 같은 도구를 더 깊이 쓰는 일이다. <a href="https://q-bot.kr/articles/harness-engineer-ai-job/" style="color:#b5470f!important;">AI 도구를 다루는 새 직군의 등장</a>도 이 맥락과 이어진다.</p>
+    </div>
+
+    <div class="ql-inline-note"><strong>출처:</strong> Forte Labs, "The Difference Between Claude Code and Cowork" (2026.02.21) · Medium/@yunusemresalcan, "Claude vs Claude Code vs Cowork" (2026.02.24) · Daily Dose of DS, "Claude vs. Claude Code vs. Cowork" (2026.04) · nocode.mba, "Claude Desktop: Chat vs Cowork vs Code" (2026.03)</div>
+
+  </div>
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Q렌즈 · <a href="/">q-bot.kr</a> · 보이는 것 너머를 묻습니다</p>
+  </footer>
+
+  <script src="/assets/site.js"></script>
+
+</body>
+</html>
