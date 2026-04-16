@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>아티클 — Q렌즈</title>
+  <meta name="description" content="Q렌즈의 모든 아티클. 전략·분석, 데이터·인사이트, 금융·투자, 사회·이슈, 방법론, 조직·리더십, 학습·성장을 다룹니다.">
+  <link rel="canonical" href="https://q-bot.kr/articles/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="아티클 — Q렌즈">
+  <meta property="og:description" content="Q렌즈의 모든 아티클. 전략·분석, 데이터·인사이트, 금융·투자, 사회·이슈를 다룹니다.">
+  <meta property="og:url" content="https://q-bot.kr/articles/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1015415940515156" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="site-logo">Q<span>-</span>Lens</a>
+    <nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">아티클</a>
+      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank">계산기</a>
+    </nav>
+  </header>
+
+  <main class="feed-wrap">
+    <p class="feed-section-title">전체 아티클</p>
+    <div id="feed-all" class="feed-recent"></div>
+    <p id="feed-empty" style="display:none;color:#6b7280;font-size:0.9rem;">아티클을 불러오는 중입니다.</p>
+  </main>
+
+  <footer class="site-footer">
+    <p>© 2026 Q렌즈 · <a href="/">q-bot.kr</a> · 보이는 것 너머를 묻습니다</p>
+    <p style="margin-top:0.5rem!important;font-size:0.8rem!important;">
+      <a href="/about/">소개</a> · <a href="/contact/">문의</a> · <a href="/privacy/">개인정보처리방침</a> · <a href="/terms/">이용약관</a>
+    </p>
+  </footer>
+
+  <script>
+    fetch('/articles/articles.json')
+      .then(r => r.json())
+      .then(articles => {
+        const sorted = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const el = document.getElementById('feed-all');
+        if (sorted.length === 0) {
+          document.getElementById('feed-empty').style.display = 'block';
+          return;
+        }
+        sorted.forEach(a => {
+          el.innerHTML += `
+            <a href="/articles/${a.slug}/" class="card">
+              <img class="card-thumb" src="/articles/${a.slug}/thumb.webp" alt="${a.title}" loading="lazy">
+              <div class="card-body">
+                <p class="card-cat">${a.category}</p>
+                <p class="card-title">${a.title}</p>
+                <p class="card-meta">${a.author} · ${a.date} · ${a.read_time}</p>
+              </div>
+            </a>`;
+        });
+      })
+      .catch(() => {
+        document.getElementById('feed-empty').style.display = 'block';
+      });
+  </script>
+
+</body>
+</html>
