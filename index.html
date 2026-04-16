@@ -4,14 +4,49 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Q렌즈 — 보이는 것 너머를 묻습니다</title>
-  <meta name="description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트. 보이는 것 너머를 묻는 롱폼 아티클.">
+  <meta name="description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다. 숫자가 말하는 것, 사건의 이면, 일하는 방식의 본질. 매주 화~금 발행.">
   <link rel="canonical" href="https://q-bot.kr/">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Q렌즈 — 보이는 것 너머를 묻습니다">
-  <meta property="og:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트.">
+  <meta property="og:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다. 숫자가 말하는 것, 사건의 이면, 일하는 방식의 본질. 매주 화~금 발행.">
   <meta property="og:image" content="https://q-bot.kr/assets/og-default.webp">
   <meta property="og:url" content="https://q-bot.kr/">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@heyqbot">
+  <meta name="twitter:title" content="Q렌즈 — 보이는 것 너머를 묻습니다">
+  <meta name="twitter:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다. 숫자가 말하는 것, 사건의 이면, 일하는 방식의 본질. 매주 화~금 발행.">
+  <meta name="twitter:image" content="https://q-bot.kr/assets/og-default.webp">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": "Q렌즈",
+        "url": "https://q-bot.kr",
+        "description": "보이는 것 너머를 묻는 한국어 롱폼 아티클 플랫폼",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://q-bot.kr/articles/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "name": "Q렌즈",
+        "url": "https://q-bot.kr",
+        "logo": "https://q-bot.kr/assets/og-default.webp",
+        "sameAs": ["https://twitter.com/heyqbot"]
+      }
+    ]
+  }
+  </script>
+
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
@@ -22,7 +57,7 @@
 <body>
 
   <header class="site-header">
-    <a href="/" class="site-logo">Q<span>-</span>Lens</a>
+    <a href="/" class="site-logo"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
     <nav class="site-nav">
       <a href="/">홈</a>
       <a href="/articles/">아티클</a>
@@ -31,6 +66,7 @@
   </header>
 
   <main class="feed-wrap">
+    <p style="font-size:0.9rem;color:#6b7280;margin:0 0 2rem 0;">전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트. 매주 화~금, 보이는 것 너머를 묻는 롱폼 아티클을 발행합니다.</p>
     <div id="feed-featured" class="feed-featured"></div>
 
     <p class="feed-section-title">최근 아티클</p>
