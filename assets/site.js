@@ -215,7 +215,7 @@
     target.innerHTML = `
       <div class="series-grid">
         ${seriesList.map(s => `
-          <a href="/series/${s.id}/" class="series-card" style="--series-accent:${s.accent || '#b5470f'}">
+          <a href="/series/${s.id}/" class="series-card" style="--series-accent:${s.accent || '#1e3a8a'}">
             <div class="series-emoji">${s.cover_emoji || '📚'}</div>
             <p class="series-title">${esc(s.title)}</p>
             <p class="series-desc">${esc(s.description || '')}</p>
@@ -338,7 +338,7 @@
       ${seriesArr.length === 0 ? '<p style="color:#6b7280;">진행 중인 시리즈가 없습니다.</p>' : `
         <div class="series-grid">
           ${seriesArr.map(s => `
-            <a href="/series/${s.id}/" class="series-card" style="--series-accent:${s.accent || '#b5470f'}">
+            <a href="/series/${s.id}/" class="series-card" style="--series-accent:${s.accent || '#1e3a8a'}">
               <div class="series-emoji">${s.cover_emoji || '📚'}</div>
               <p class="series-title">${esc(s.title)}</p>
               <p class="series-desc">${esc(s.description || '')}</p>
@@ -369,7 +369,7 @@
     document.title = `${series.title} | Q렌즈 시리즈`;
 
     target.innerHTML = `
-      <header class="series-hero" style="--series-accent:${series.accent || '#b5470f'}">
+      <header class="series-hero" style="--series-accent:${series.accent || '#1e3a8a'}">
         <div class="series-hero__emoji">${series.cover_emoji || '📚'}</div>
         <span class="series-hero__label">오리지널 시리즈</span>
         <h1 class="series-hero__title">${esc(series.title)}</h1>
