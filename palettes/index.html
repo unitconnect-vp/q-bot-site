@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Q-Lens Palette 비교 | 발행인 결정용</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; background: #fafafa; color: #0a0a0a; font-size: 16px; line-height: 1.6; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.3rem; }
+  .lead { color: #4b4b4b; font-size: 1.15rem; font-weight: 500; margin-bottom: 3rem; max-width: 42rem; }
+  
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  
+  .card { background: #ffffff; border: 1px solid #e5e5e5; padding: 2rem; display: flex; flex-direction: column; }
+  .card__label { font-size: 0.8rem; font-weight: 800; color: #6b6b6b; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+  .card__title { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 0.5rem; line-height: 1.15; }
+  .card__subtitle { font-size: 0.95rem; color: #4b4b4b; margin: 0 0 1.5rem; }
+  .card__swatches { display: flex; gap: 0.25rem; height: 36px; margin-bottom: 1.5rem; }
+  .card__swatches span { flex: 1; }
+  .card__desc { font-size: 0.9rem; color: #4b4b4b; line-height: 1.6; margin-bottom: 2rem; flex: 1; word-break: keep-all; }
+  .card__links { display: flex; gap: 0.5rem; }
+  .card__links a { flex: 1; text-align: center; padding: 0.75rem; text-decoration: none; font-size: 0.88rem; font-weight: 700; border: 1.5px solid #0a0a0a; color: #0a0a0a; }
+  .card__links a:hover { background: #0a0a0a; color: #ffffff; }
+  .card__links a.primary { background: #0a0a0a; color: #ffffff; }
+  .card__links a.primary:hover { background: #2a2a2a; }
+  
+  .tldr { margin-top: 4rem; padding: 2rem; background: #0a0a0a; color: #ffffff; }
+  .tldr h2 { color: #ffffff; font-size: 1.4rem; margin: 0 0 0.8rem; }
+  .tldr p { color: #d4d4d4; margin: 0; font-size: 0.95rem; line-height: 1.7; }
+  .tldr strong { color: #ffffff; }
+  
+  .meta { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e5e5e5; font-size: 0.85rem; color: #6b6b6b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Q-Lens Palette 비교</h1>
+  <p class="lead">
+    3가지 방향으로 기획한 색상 팔레트 시안입니다. 각 팔레트의 스펙 페이지에서 전체 색 시스템을,
+    "홈 적용" 링크에서 실제 사이트에 어떻게 반영되는지 확인하실 수 있습니다.
+  </p>
+  
+  <div class="grid">
+    <!-- P1 -->
+    <div class="card">
+      <div class="card__label">P1</div>
+      <h2 class="card__title">Editorial Monochrome</h2>
+      <p class="card__subtitle">The Economist · Financial Times 톤</p>
+      <div class="card__swatches">
+        <span style="background:#000000"></span>
+        <span style="background:#0a0a0a"></span>
+        <span style="background:#4b4b4b"></span>
+        <span style="background:#9a9a9a"></span>
+        <span style="background:#ffffff;border:1px solid #e5e5e5"></span>
+        <span style="background:#1d4ed8"></span>
+      </div>
+      <p class="card__desc">
+        필자 색 시스템을 완전히 폐기. 모노그램 11개 전부 검정 원 + 흰 글자로 통일.
+        유일한 액센트는 외부 링크용 잉크 블루 하나.
+        <strong>매체 무게감이 최대화</strong>되지만 필자별 시각 구분은 약해집니다.
+      </p>
+      <div class="card__links">
+        <a href="/palettes/p1/">팔레트 스펙</a>
+        <a href="/palettes/p1/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+    
+    <!-- P2 -->
+    <div class="card">
+      <div class="card__label">P2</div>
+      <h2 class="card__title">Refined Earth</h2>
+      <p class="card__subtitle">Monocle · MIT Tech Review 톤</p>
+      <div class="card__swatches">
+        <span style="background:#1e3a8a"></span>
+        <span style="background:#b5470f"></span>
+        <span style="background:#166534"></span>
+        <span style="background:#4c1d95"></span>
+        <span style="background:#0e7490"></span>
+        <span style="background:#991b1b"></span>
+      </div>
+      <p class="card__desc">
+        필자 11색을 유지하되 채도·명도를 통일해 인쇄물 잉크 같은 깊은 톤으로 재정비.
+        색상환 등간격 재배치로 서로 안 뭉침.
+        <strong>일관된 매체 + 구분되는 필자</strong>를 동시에.
+      </p>
+      <div class="card__links">
+        <a href="/palettes/p2/">팔레트 스펙</a>
+        <a href="/palettes/p2/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+    
+    <!-- P3 -->
+    <div class="card">
+      <div class="card__label">P3</div>
+      <h2 class="card__title">Signal Primary</h2>
+      <p class="card__subtitle">Bloomberg · Stratechery 톤</p>
+      <div class="card__swatches">
+        <span style="background:#be1e2d"></span>
+        <span style="background:#1d4ed8"></span>
+        <span style="background:#15803d"></span>
+        <span style="background:#0a0a0a"></span>
+        <span style="background:#ffffff;border:1px solid #e5e5e5"></span>
+        <span style="background:#fafafa"></span>
+      </div>
+      <p class="card__desc">
+        필자 11명을 3대 주제군으로 묶음 — 빨강(금융) · 파랑(사회) · 초록(일·기술).
+        색이 장식이 아니라 의미를 가짐. 독자는 한눈에 주제군을 인식.
+        <strong>강한 브랜드 시그널.</strong>
+      </p>
+      <div class="card__links">
+        <a href="/palettes/p3/">팔레트 스펙</a>
+        <a href="/palettes/p3/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tldr">
+    <h2>PO 사용 가이드</h2>
+    <p>
+      각 카드의 <strong>"팔레트 스펙"</strong>에서 토큰 전체를, <strong>"홈 적용"</strong>에서 실제 페이지를 확인하세요.
+      결정하실 때 이렇게 답해주시면 됩니다:<br><br>
+      <strong>"P1" / "P2" / "P3"</strong> — 팔레트 전체 채택<br>
+      <strong>"P2 기반 + Ellis 색 바꿔"</strong> — 팔레트는 정하되 개별 조정<br>
+      <strong>"셋 다 별로"</strong> — 방향 재검토
+    </p>
+  </div>
+  
+  <p class="meta">Q-Lens · 2026-04-17 · PO 시안</p>
+</div>
+</body>
+</html>
