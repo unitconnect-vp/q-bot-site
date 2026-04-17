@@ -9,18 +9,16 @@
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Q렌즈 — 보이는 것 너머를 묻습니다">
-  <meta property="og:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다. 숫자가 말하는 것, 사건의 이면, 일하는 방식의 본질. 매주 화~금 발행.">
+  <meta property="og:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다.">
   <meta property="og:image" content="https://q-bot.kr/assets/og-default.webp">
   <meta property="og:url" content="https://q-bot.kr/">
 
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@heyqbot">
   <meta name="twitter:title" content="Q렌즈 — 보이는 것 너머를 묻습니다">
-  <meta name="twitter:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다. 숫자가 말하는 것, 사건의 이면, 일하는 방식의 본질. 매주 화~금 발행.">
+  <meta name="twitter:description" content="전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트까지. Q렌즈는 빠르게 소비되는 정보 너머의 구조를 읽는 한국어 롱폼 아티클 플랫폼입니다.">
   <meta name="twitter:image" content="https://q-bot.kr/assets/og-default.webp">
 
-  <!-- JSON-LD Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -29,12 +27,7 @@
         "@type": "WebSite",
         "name": "Q렌즈",
         "url": "https://q-bot.kr",
-        "description": "보이는 것 너머를 묻는 한국어 롱폼 아티클 플랫폼",
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://q-bot.kr/articles/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
+        "description": "보이는 것 너머를 묻는 한국어 롱폼 아티클 플랫폼"
       },
       {
         "@type": "Organization",
@@ -46,7 +39,6 @@
     ]
   }
   </script>
-
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
@@ -61,75 +53,79 @@
     <nav class="site-nav">
       <a href="/">홈</a>
       <a href="/articles/">아티클</a>
-      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank">계산기</a>
+      <a href="/series/">시리즈</a>
+      <a href="/authors/">필진</a>
+      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank" rel="noopener">계산기</a>
     </nav>
   </header>
 
-  <main class="feed-wrap">
-    <p style="font-size:0.9rem;color:#6b7280;margin:0 0 2rem 0;">전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트. 매주 화~금, 보이는 것 너머를 묻는 롱폼 아티클을 발행합니다.</p>
-    <div id="feed-featured" class="feed-featured"></div>
+  <main id="qlens-home" class="feed-wrap">
 
-    <p class="feed-section-title">최근 아티클</p>
-    <div id="feed-recent" class="feed-recent"></div>
+    <p class="home-tagline">전략·분석, 금융·투자, 사회·이슈, 데이터·인사이트. 매주 화~금, 보이는 것 너머를 묻는 롱폼 아티클을 발행합니다.</p>
 
-    <p class="feed-section-title">계산기</p>
-    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:4px;padding:1.5rem;margin-bottom:3rem;">
-      <p style="font-size:0.9rem;color:#6b7280;margin-bottom:1rem;">연봉·세금·투자 계산기 모음</p>
-      <a href="https://heyqbot.github.io/qlens-tools/" target="_blank"
-         style="display:inline-block;background:#16a34a;color:#fff;padding:0.6rem 1.2rem;border-radius:3px;font-size:0.85rem;font-family:Inter,sans-serif;font-weight:700;">
-        계산기 허브 열기 →
-      </a>
-    </div>
+    <!-- 섹션 1: 이 주의 콘텐츠 -->
+    <section id="home-hero" class="home-hero-wrap" aria-label="이 주의 콘텐츠"></section>
+
+    <!-- 섹션 2: 지금 많이 보는 콘텐츠 -->
+    <section class="home-section">
+      <div class="section-head">
+        <h2 class="section-title">지금 많이 보는 콘텐츠</h2>
+        <p class="section-desc">주목받는 금융·분석 이야기</p>
+      </div>
+      <div id="home-rank"></div>
+    </section>
+
+    <!-- 섹션 3: 필진 큐레이션 -->
+    <section class="home-section">
+      <div class="section-head">
+        <h2 class="section-title">필진</h2>
+        <p class="section-desc">세 목소리가 전하는 오늘의 인사이트</p>
+      </div>
+      <div id="home-authors"></div>
+    </section>
+
+    <!-- 섹션 4: 오리지널 시리즈 -->
+    <section class="home-section">
+      <div class="section-head">
+        <h2 class="section-title">오리지널 시리즈</h2>
+        <p class="section-desc">주제를 따라 길게 읽기</p>
+      </div>
+      <div id="home-series"></div>
+    </section>
+
+    <!-- 섹션 5: 계산기 -->
+    <section class="home-section">
+      <div class="section-head">
+        <h2 class="section-title">계산기</h2>
+        <p class="section-desc">숫자로 직접 확인하기</p>
+      </div>
+      <div class="calc-hub">
+        <p class="calc-hub__desc">연봉·세금·투자·포트폴리오 편중도 계산기 9종</p>
+        <a href="https://heyqbot.github.io/qlens-tools/" target="_blank" rel="noopener" class="calc-hub__btn">
+          계산기 허브 열기 →
+        </a>
+      </div>
+    </section>
+
+    <!-- 섹션 6: 최신 아티클 -->
+    <section class="home-section">
+      <div class="section-head">
+        <h2 class="section-title">최신 아티클</h2>
+        <p class="section-desc">방금 올라온 콘텐츠</p>
+      </div>
+      <div id="home-recent"></div>
+    </section>
+
   </main>
 
   <footer class="site-footer">
     <p>© 2026 Q렌즈 · <a href="/">q-bot.kr</a> · 보이는 것 너머를 묻습니다</p>
-    <p style="margin-top:0.5rem!important;font-size:0.8rem!important;">
+    <p style="margin-top:0.5rem;font-size:0.8rem;">
       <a href="/about/">소개</a> · <a href="/contact/">문의</a> · <a href="/privacy/">개인정보처리방침</a> · <a href="/terms/">이용약관</a>
     </p>
   </footer>
 
-  <script>
-    fetch('/articles/articles.json')
-      .then(r => r.json())
-      .then(articles => {
-        const sorted = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const featured = sorted.slice(0, 3);
-        const recent   = sorted.slice(3, 7);
-
-        // 피처드
-        const featuredEl = document.getElementById('feed-featured');
-        featured.forEach((a, i) => {
-          featuredEl.innerHTML += `
-            <a href="/articles/${a.slug}/" class="card ${i === 0 ? 'card--featured' : ''}">
-              <img class="card-thumb" src="/articles/${a.slug}/thumb.webp" alt="${a.title}" loading="lazy">
-              <div class="card-body">
-                <p class="card-cat">${a.category}</p>
-                <p class="card-title">${a.title}</p>
-                <p class="card-meta">${a.author} · ${a.date} · ${a.read_time}</p>
-              </div>
-            </a>`;
-        });
-
-        // 최근
-        const recentEl = document.getElementById('feed-recent');
-        recent.forEach(a => {
-          recentEl.innerHTML += `
-            <a href="/articles/${a.slug}/" class="card">
-              <img class="card-thumb" src="/articles/${a.slug}/thumb.webp" alt="${a.title}" loading="lazy">
-              <div class="card-body">
-                <p class="card-cat">${a.category}</p>
-                <p class="card-title">${a.title}</p>
-                <p class="card-meta">${a.author} · ${a.date}</p>
-              </div>
-            </a>`;
-        });
-      })
-      .catch(() => {
-        document.getElementById('feed-featured').innerHTML =
-          '<p style="color:#6b7280;font-size:0.9rem;">아티클을 불러오는 중입니다.</p>';
-      });
-  </script>
+  <script src="/assets/site.js"></script>
 
 </body>
 </html>
