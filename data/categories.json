@@ -1,15 +1,132 @@
 [
-  { "id": "industry", "name": "산업·전략", "slug": "industry", "author_ids": ["ellis"], "description": "기업·섹터 구조, 경쟁 구도, 산업의 지각 변동" },
-  { "id": "corporate", "name": "기업·경영", "slug": "corporate", "author_ids": ["ellis"], "description": "경영 의사결정, M&A, 조직 전략" },
-  { "id": "stocks", "name": "주식·투자", "slug": "stocks", "author_ids": ["mills"], "description": "주식시장, 개별 종목, ETF, 자산배분" },
-  { "id": "bonds", "name": "채권·금리", "slug": "bonds", "author_ids": ["mills"], "description": "채권시장, 기준금리, 수익률곡선" },
-  { "id": "economy", "name": "경제·정책", "slug": "economy", "author_ids": ["harper"], "description": "거시경제, 정부 정책, 세제, 연기금" },
-  { "id": "realestate", "name": "부동산", "slug": "realestate", "author_ids": ["reed"], "description": "부동산 시장, 도시계획, 주거 정책" },
-  { "id": "society", "name": "사회·이슈", "slug": "society", "author_ids": ["wren"], "description": "사회현상, 트렌드, 공공 이슈" },
-  { "id": "data", "name": "데이터·리서치", "slug": "data", "author_ids": ["nova"], "description": "통계, 설문, 리포트 해석" },
-  { "id": "leadership", "name": "조직·리더십", "slug": "leadership", "author_ids": ["quinn"], "description": "팀 매니지먼트, 기업문화" },
-  { "id": "method", "name": "일의 방법론", "slug": "method", "author_ids": ["cole"], "description": "생산성, 업무 프레임, 실무 도구" },
-  { "id": "career", "name": "커리어·성장", "slug": "career", "author_ids": ["ray"], "description": "이직, 자기계발, 배움" },
-  { "id": "ai", "name": "AI·테크", "slug": "ai", "author_ids": ["kai"], "description": "AI, 기술 트렌드, 도구 활용" },
-  { "id": "sports", "name": "스포츠·머니볼", "slug": "sports", "author_ids": ["dash"], "description": "스포츠 경제학, 선수·리그 구조" }
+  {
+    "id": "industry",
+    "name": "산업·전략",
+    "slug": "industry",
+    "author_ids": [
+      "ellis"
+    ],
+    "description": "기업·섹터 구조, 경쟁 구도, 산업의 지각 변동",
+    "group": "deep"
+  },
+  {
+    "id": "corporate",
+    "name": "기업·경영",
+    "slug": "corporate",
+    "author_ids": [
+      "ellis"
+    ],
+    "description": "경영 의사결정, M&A, 조직 전략",
+    "group": "deep"
+  },
+  {
+    "id": "stocks",
+    "name": "주식·투자",
+    "slug": "stocks",
+    "author_ids": [
+      "mills"
+    ],
+    "description": "주식시장, 개별 종목, ETF, 자산배분",
+    "group": "deep"
+  },
+  {
+    "id": "bonds",
+    "name": "채권·금리",
+    "slug": "bonds",
+    "author_ids": [
+      "mills"
+    ],
+    "description": "채권시장, 기준금리, 수익률곡선",
+    "group": "deep"
+  },
+  {
+    "id": "economy",
+    "name": "경제·정책",
+    "slug": "economy",
+    "author_ids": [
+      "harper"
+    ],
+    "description": "거시경제, 정부 정책, 세제, 연기금",
+    "group": "deep"
+  },
+  {
+    "id": "realestate",
+    "name": "부동산",
+    "slug": "realestate",
+    "author_ids": [
+      "reed"
+    ],
+    "description": "부동산 시장, 도시계획, 주거 정책",
+    "group": "deep"
+  },
+  {
+    "id": "society",
+    "name": "사회·이슈",
+    "slug": "society",
+    "author_ids": [
+      "wren"
+    ],
+    "description": "사회현상, 트렌드, 공공 이슈",
+    "group": "coast"
+  },
+  {
+    "id": "data",
+    "name": "데이터·리서치",
+    "slug": "data",
+    "author_ids": [
+      "nova"
+    ],
+    "description": "통계, 설문, 리포트 해석",
+    "group": "coast"
+  },
+  {
+    "id": "leadership",
+    "name": "조직·리더십",
+    "slug": "leadership",
+    "author_ids": [
+      "quinn"
+    ],
+    "description": "팀 매니지먼트, 기업문화",
+    "group": "marine"
+  },
+  {
+    "id": "method",
+    "name": "일의 방법론",
+    "slug": "method",
+    "author_ids": [
+      "cole"
+    ],
+    "description": "생산성, 업무 프레임, 실무 도구",
+    "group": "marine"
+  },
+  {
+    "id": "career",
+    "name": "커리어·성장",
+    "slug": "career",
+    "author_ids": [
+      "ray"
+    ],
+    "description": "이직, 자기계발, 배움",
+    "group": "marine"
+  },
+  {
+    "id": "ai",
+    "name": "AI·테크",
+    "slug": "ai",
+    "author_ids": [
+      "kai"
+    ],
+    "description": "AI, 기술 트렌드, 도구 활용",
+    "group": "marine"
+  },
+  {
+    "id": "sports",
+    "name": "스포츠·머니볼",
+    "slug": "sports",
+    "author_ids": [
+      "dash"
+    ],
+    "description": "스포츠 경제학, 선수·리그 구조",
+    "group": "deep"
+  }
 ]
