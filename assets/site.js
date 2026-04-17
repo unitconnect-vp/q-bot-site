@@ -147,27 +147,59 @@
     const counts = {};
     articles.forEach(a => { counts[a.author] = (counts[a.author] || 0) + 1; });
 
-    // 글 있는 필자 먼저, 없는 필자는 뒤로. 홈엔 최대 8명만 노출.
+    // 글 있는 필자 먼저, 없는 필자는 뒤로
     const sorted = [...authors].sort((a, b) => (counts[b.name] || 0) - (counts[a.name] || 0));
-    const shown = sorted.slice(0, 8);
+
+    // 데스크톱 기본 4명, 나머지는 collapse
+    // 모바일에서는 CSS로 3명만 보이고 나머지 접힘 처리
+    const cardHtml = (author) => `
+      <a href="/authors/${author.id}/" class="author-card" style="--author-accent:${author.accent}">
+        <div class="author-logo">
+          <img src="${author.logo_svg}" alt="${esc(author.name)} logo" loading="lazy">
+        </div>
+        <p class="author-name">${esc(author.name)}</p>
+        <p class="author-tagline">${esc(author.tagline)}</p>
+        <p class="author-count">아티클 ${counts[author.name] || 0}편</p>
+      </a>
+    `;
+
+    const initialCount = 4;  // 데스크톱 기본 노출
+    const firstBatch = sorted.slice(0, initialCount);
+    const restBatch = sorted.slice(initialCount);
 
     target.innerHTML = `
-      <div class="author-grid">
-        ${shown.map(author => `
-          <a href="/authors/${author.id}/" class="author-card" style="--author-accent:${author.accent}">
-            <div class="author-logo">
-              <img src="${author.logo_svg}" alt="${esc(author.name)} logo" loading="lazy">
-            </div>
-            <p class="author-name">${esc(author.name)}</p>
-            <p class="author-tagline">${esc(author.tagline)}</p>
-            <p class="author-count">아티클 ${counts[author.name] || 0}편</p>
-          </a>
-        `).join('')}
+      <div class="author-grid" data-author-grid>
+        ${firstBatch.map(cardHtml).join('')}
+        <div class="author-rest" data-author-rest aria-hidden="true">
+          ${restBatch.map(cardHtml).join('')}
+        </div>
       </div>
       <div class="section-more">
-        <a href="/authors/" class="section-more__link">전체 필진 ${authors.length}명 보기 →</a>
+        <button type="button" class="author-toggle" data-author-toggle aria-expanded="false">
+          <span class="author-toggle__label">전체 필진 ${authors.length}명 보기</span>
+          <span class="author-toggle__icon" aria-hidden="true">↓</span>
+        </button>
       </div>
     `;
+
+    // 토글 동작
+    const toggleBtn = target.querySelector('[data-author-toggle]');
+    const restWrap = target.querySelector('[data-author-rest]');
+    const labelEl = target.querySelector('.author-toggle__label');
+    const iconEl = target.querySelector('.author-toggle__icon');
+    
+    toggleBtn.addEventListener('click', () => {
+      const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', !expanded);
+      restWrap.setAttribute('aria-hidden', expanded);
+      if (expanded) {
+        labelEl.textContent = `전체 필진 ${authors.length}명 보기`;
+        iconEl.textContent = '↓';
+      } else {
+        labelEl.textContent = '접기';
+        iconEl.textContent = '↑';
+      }
+    });
   }
 
   function renderHomeSeries(seriesList, articles) {
