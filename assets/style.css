@@ -1,38 +1,60 @@
 /* ============================================================
- * Q-Lens v3.4 (2026-04-17)
- * 디자인 시스템: Pretendard 단일 + 무채색 + 필자 3색
+ * Q-Lens v4.0 (2026-04-17) — Coastal Blue Palette
+ * 청량한 매체다움 · The Atlantic · Stripe Press 톤
  * ============================================================ */
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
 
 :root {
-  --black: #0a0a0a;
-  --ink: #0a0a0a;
-  --ink-strong: #000000;
-  --ink-sub: #4b4b4b;
-  --ink-muted: #6b6b6b;
-  --ink-faint: #9a9a9a;
-  --line: #1a1a1a;
-  --line-sub: #e5e5e5;
-  --line-faint: #f0f0f0;
-  --paper: #ffffff;
-  --paper-warm: #fafaf9;
-
-  --lens-accent: #b5470f;
-  --grain-accent: #1a5f7a;
-  --thread-accent: #5b7553;
-
-  --accent: #0a0a0a;
-  --accent-hover: #000000;
-  --accent-bg: #f5f5f5;
-  --art-accent: #b5470f;
-  --art-paper: #f5f0e8;
-  --art-ink: #1a1612;
-  --art-muted: #6b6159;
-  --art-rule: #c9bfb0;
-
-  --header-bg: #ffffff;
-  --footer-bg: #0a0a0a;
+  /* ── Paper (배경) ── */
+  --paper: #ffffff;           /* 카드·기본 */
+  --paper-cool: #f4f8fb;      /* 쿨톤 틴트 — body 배경 */
+  --paper-blue: #eff6ff;      /* 파란 틴트 — warm 섹션 대체 */
+  --paper-warm: #eff6ff;      /* 하위 호환 (구 이름) */
+  --paper-900: #0f172a;       /* 반전·푸터 */
+  
+  /* ── Ink (텍스트) — 쿨톤 블랙 ── */
+  --ink: #0f172a;
+  --ink-strong: #0f172a;
+  --ink-sub: #475569;
+  --ink-muted: #64748b;
+  --ink-faint: #94a3b8;
+  --black: #0f172a;           /* 하위 호환 */
+  
+  /* ── Line (테두리) ── */
+  --line: #0f172a;
+  --line-sub: #e2e8f0;
+  --line-faint: #f1f5f9;
+  
+  /* ── Signal Blues (3그룹) ── */
+  --blue-deep: #1e3a8a;       /* 경제 전반 */
+  --blue-coast: #0e7490;      /* 사회·데이터 */
+  --blue-marine: #134e4a;     /* 일·기술 */
+  
+  /* ── Brand Accent ── */
+  --accent: #1d4ed8;          /* 링크·CTA */
+  --accent-hover: #1e40af;
+  --accent-bg: #eff6ff;
+  
+  /* ── Legacy (점진적 제거용) ── */
+  --lens-accent: var(--blue-deep);
+  --grain-accent: var(--blue-coast);
+  --thread-accent: var(--blue-marine);
+  --art-accent: var(--blue-deep);
+  --art-paper: var(--paper-blue);
+  --art-ink: var(--ink);
+  --art-muted: var(--ink-sub);
+  --art-rule: var(--line-sub);
+  
+  /* ── Header / Footer ── */
+  --header-bg: var(--paper-cool);
+  --footer-bg: #0f172a;
+  
+  /* ── Radius (둥근 모서리 — 산뜻함) ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-pill: 999px;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -49,7 +71,7 @@ body {
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-weight: 400;
   color: var(--ink);
-  background: var(--paper);
+  background: var(--paper-cool);
   line-height: 1.65;
 }
 
@@ -335,6 +357,7 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   align-items: center;
   text-align: center;
+  border-radius: var(--radius-md);
   padding: 2.25rem 1.5rem;
   border: 1px solid var(--line-sub);
   background: var(--paper);
@@ -400,6 +423,7 @@ img { display: block; max-width: 100%; }
 .series-card {
   display: flex;
   flex-direction: column;
+  border-radius: var(--radius-md);
   padding: 2rem;
   border: 1px solid var(--line-sub);
   border-left: 4px solid var(--series-accent, var(--ink-strong));
@@ -453,6 +477,7 @@ img { display: block; max-width: 100%; }
 .calc-hub {
   background: var(--ink-strong);
   color: #ffffff;
+  border-radius: var(--radius-md);
   padding: 2.25rem 2rem;
   display: flex;
   justify-content: space-between;
@@ -471,6 +496,7 @@ img { display: block; max-width: 100%; }
   display: inline-block;
   background: #ffffff;
   color: var(--ink-strong);
+  border-radius: var(--radius-sm);
   padding: 0.85rem 1.5rem;
   font-size: 0.9rem;
   font-weight: 700;
@@ -514,6 +540,8 @@ img { display: block; max-width: 100%; }
 .recent-body { padding: 1.15rem 1.15rem 1.4rem; }
 
 .recent-cat {
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.7rem;
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -1065,8 +1093,8 @@ img { display: block; max-width: 100%; }
 .section-more__link {
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--ink-strong);
-  border-bottom: 2px solid var(--ink-strong);
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent);
   padding-bottom: 2px;
   letter-spacing: -0.01em;
   transition: opacity 0.15s;
@@ -1089,6 +1117,7 @@ img { display: block; max-width: 100%; }
 .category-card {
   display: flex;
   flex-direction: column;
+  border-radius: var(--radius-md);
   padding: 1.75rem;
   border: 1px solid var(--line-sub);
   border-top: 4px solid var(--cat-accent, var(--ink-strong));
@@ -1389,8 +1418,9 @@ img { display: block; max-width: 100%; }
   align-items: center;
   gap: 0.5rem;
   background: transparent;
-  border: 2px solid var(--ink-strong);
-  color: var(--ink-strong);
+  border: 2px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
   padding: 0.75rem 1.5rem;
   font-family: inherit;
   font-size: 1rem;
@@ -1400,7 +1430,7 @@ img { display: block; max-width: 100%; }
   transition: background 0.15s, color 0.15s;
 }
 .author-toggle:hover {
-  background: var(--ink-strong);
+  background: var(--accent);
   color: #ffffff;
 }
 .author-toggle__icon {
