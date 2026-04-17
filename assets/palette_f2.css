@@ -1,0 +1,57 @@
+/* ============================================================
+ * P2-Fresh — Coastal Blue 홈 오버라이드
+ * ============================================================ */
+
+body { background: #f4f8fb !important; color: #0f172a !important; }
+.site-header { background: #f4f8fb !important; }
+
+/* 히어로 */
+.hero-weekly { background: #eff6ff !important; border-top-color: #1e3a8a !important; border-bottom-color: #1e3a8a !important; }
+.hero-weekly__cat { color: #1e3a8a !important; border-color: #1e3a8a !important; }
+.hero-weekly__badge { background: #1e3a8a !important; }
+
+/* warm 섹션 blue-tint */
+.home-section--warm { background: #eff6ff !important; }
+
+.feed-wrap { border-top-color: #1e3a8a !important; background: #f4f8fb !important; }
+
+/* 카드 — 흰색 유지, 틴트 배경 위에서 살아남 */
+.recent-card, .rank-item, .author-card, .series-card, .category-card {
+  background: #ffffff !important;
+  border-radius: 12px !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* 카테고리 배지 — 딥블루 계열 */
+.rank-cat, .recent-cat, .series-card__cat {
+  background: #1e3a8a !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  padding: 0.3rem 0.7rem !important;
+}
+.recent-card { border-top: 4px solid #1e3a8a !important; }
+
+/* 필자 모노그램 */
+.author-card { --author-accent: #1e3a8a !important; }
+.author-name { color: #1e3a8a !important; }
+
+/* 링크 액센트 */
+.author-toggle { border-color: #1d4ed8 !important; color: #1d4ed8 !important; border-radius: 6px !important; }
+.author-toggle:hover { background: #1d4ed8 !important; color: #ffffff !important; }
+.section-more__link { color: #1d4ed8 !important; border-color: #1d4ed8 !important; }
+
+/* 섹션 제목 */
+.section-head { border-bottom-color: #1e3a8a !important; }
+
+/* 계산기 */
+.calc-hub { background: #ffffff !important; border: 1px solid #1e3a8a !important; border-radius: 12px !important; }
+.calc-hub__btn { background: #1d4ed8 !important; border-radius: 6px !important; }
+.calc-hub__btn:hover { background: #1e40af !important; }
+
+/* 시리즈 */
+.series-card { border-left-color: #1e3a8a !important; }
+.series-card__line { background: #1e3a8a !important; }
+
+/* 푸터 — 쿨톤 네이비 */
+.site-footer { background: #0f172a !important; }
+.footer-social__link:hover { background: #1d4ed8 !important; color: #ffffff !important; border-color: #1d4ed8 !important; }
