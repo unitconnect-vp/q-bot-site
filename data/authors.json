@@ -1,29 +1,112 @@
 [
   {
-    "id": "lens",
-    "name": "Lens",
-    "tagline": "시장과 구조를 관찰합니다",
-    "bio": "전략·분석과 금융·투자 영역을 담당합니다. 건조한 문장으로 숫자 뒤의 구조를 드러내는 것이 일입니다. 전망하지 않고, 관찰합니다.",
-    "categories": ["전략·분석", "금융·투자"],
+    "id": "ellis",
+    "name": "Ellis",
+    "name_kr": "엘리스",
+    "tagline": "기업과 산업의 구조를 읽습니다",
+    "bio": "산업·전략과 기업·경영을 담당합니다. 개별 기업의 의사결정 뒤에 있는 구조적 패턴을 관찰합니다. 전망은 다른 필자의 몫입니다.",
+    "categories": ["산업·전략", "기업·경영"],
+    "accent": "#1e3a5f",
+    "logo_svg": "/assets/authors/ellis.svg"
+  },
+  {
+    "id": "mills",
+    "name": "Mills",
+    "name_kr": "밀스",
+    "tagline": "시장을 움직이는 숫자를 따라갑니다",
+    "bio": "주식·투자와 채권·금리 영역을 담당합니다. 종목 하나, 금리 한 포인트의 움직임이 만드는 연쇄를 따라갑니다. 매수 추천은 하지 않습니다.",
+    "categories": ["주식·투자", "채권·금리"],
     "accent": "#b5470f",
-    "logo_svg": "/assets/authors/lens.svg"
+    "logo_svg": "/assets/authors/mills.svg"
   },
   {
-    "id": "grain",
-    "name": "Grain",
-    "tagline": "숫자 뒤의 결을 읽습니다",
-    "bio": "사회·이슈와 데이터·인사이트를 다룹니다. 통계의 낱알(grain)을 들여다보고, 집계된 평균이 가린 차이를 찾습니다.",
-    "categories": ["사회·이슈", "데이터·인사이트"],
+    "id": "harper",
+    "name": "Harper",
+    "name_kr": "하퍼",
+    "tagline": "정책이 시장을 바꿀 때를 봅니다",
+    "bio": "경제·정책 영역을 담당합니다. 금리, 세제, 연기금, 규제 — 제도가 시장과 만나는 지점에서 무엇이 달라지는지 기록합니다.",
+    "categories": ["경제·정책"],
+    "accent": "#5b4e3f",
+    "logo_svg": "/assets/authors/harper.svg"
+  },
+  {
+    "id": "reed",
+    "name": "Reed",
+    "name_kr": "리드",
+    "tagline": "도시와 집에 대한 질문을 붙듭니다",
+    "bio": "부동산을 담당합니다. 시장·정책·인구·세대 변화가 교차하는 영역. 부동산은 자산이기 전에 일상의 조건이라고 생각합니다.",
+    "categories": ["부동산"],
+    "accent": "#6b7560",
+    "logo_svg": "/assets/authors/reed.svg"
+  },
+  {
+    "id": "wren",
+    "name": "Wren",
+    "name_kr": "렌",
+    "tagline": "사회를 움직이는 작은 결을 봅니다",
+    "bio": "사회·이슈를 담당합니다. 평균값에 묻힌 차이, 제도와 현실 사이의 틈. 큰 담론보다 구체적인 장면에서 출발합니다.",
+    "categories": ["사회·이슈"],
     "accent": "#1a5f7a",
-    "logo_svg": "/assets/authors/grain.svg"
+    "logo_svg": "/assets/authors/wren.svg"
   },
   {
-    "id": "thread",
-    "name": "Thread",
-    "tagline": "일과 배움의 맥락을 잇습니다",
-    "bio": "방법론과 조직·리더십, 학습·성장을 연결합니다. 실제 일터에서 쓸 수 있는 프레임을, 구체적인 장면에서 출발해 제시합니다.",
-    "categories": ["방법론", "조직·리더십", "학습·성장"],
+    "id": "nova",
+    "name": "Nova",
+    "name_kr": "노바",
+    "tagline": "데이터가 말하는 것과 가린 것",
+    "bio": "데이터·리서치를 담당합니다. 통계, 설문, 리포트를 읽고 다시 씁니다. 숫자는 해석 없이 스스로 말하지 않는다는 전제에서 시작합니다.",
+    "categories": ["데이터·리서치"],
+    "accent": "#4a4a6a",
+    "logo_svg": "/assets/authors/nova.svg"
+  },
+  {
+    "id": "quinn",
+    "name": "Quinn",
+    "name_kr": "퀸",
+    "tagline": "조직은 사람 이전에 구조입니다",
+    "bio": "조직·리더십을 담당합니다. 팀이 어떻게 움직이고, 어떻게 멈추고, 어떻게 다시 움직이는가. 리더십은 개인기가 아니라 설계의 문제라고 봅니다.",
+    "categories": ["조직·리더십"],
     "accent": "#5b7553",
-    "logo_svg": "/assets/authors/thread.svg"
+    "logo_svg": "/assets/authors/quinn.svg"
+  },
+  {
+    "id": "cole",
+    "name": "Cole",
+    "name_kr": "콜",
+    "tagline": "일하는 방식을 설계하는 법",
+    "bio": "일의 방법론을 담당합니다. 도구, 루틴, 프레임. 생산성보다 '지속 가능한 속도'에 관심이 많습니다.",
+    "categories": ["일의 방법론"],
+    "accent": "#3a4a5c",
+    "logo_svg": "/assets/authors/cole.svg"
+  },
+  {
+    "id": "ray",
+    "name": "Ray",
+    "name_kr": "레이",
+    "tagline": "배움의 궤적을 기록합니다",
+    "bio": "커리어·성장을 담당합니다. 이직·학습·방향 전환. 커리어는 성공담이 아니라 다음 질문이 생기는 과정이라고 봅니다.",
+    "categories": ["커리어·성장"],
+    "accent": "#8a5a2a",
+    "logo_svg": "/assets/authors/ray.svg"
+  },
+  {
+    "id": "kai",
+    "name": "Kai",
+    "name_kr": "카이",
+    "tagline": "기술이 일과 만나는 자리",
+    "bio": "AI·테크를 담당합니다. 새 도구가 등장할 때 무엇이 진짜 바뀌고 무엇은 그대로인지 구분합니다. 과장과 허무 사이에서 냉정을 유지합니다.",
+    "categories": ["AI·테크"],
+    "accent": "#2a5f4a",
+    "logo_svg": "/assets/authors/kai.svg"
+  },
+  {
+    "id": "dash",
+    "name": "Dash",
+    "name_kr": "대쉬",
+    "tagline": "경기장 밖의 숫자를 읽습니다",
+    "bio": "스포츠·머니볼을 담당합니다. 경기 결과보다 계약, 리그 구조, 구단 경제학. 스포츠는 거대한 산업이자 완벽한 데이터 실험실이라고 봅니다.",
+    "categories": ["스포츠·머니볼"],
+    "accent": "#a03030",
+    "logo_svg": "/assets/authors/dash.svg"
   }
 ]
