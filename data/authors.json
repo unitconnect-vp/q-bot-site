@@ -1,0 +1,29 @@
+[
+  {
+    "id": "lens",
+    "name": "Lens",
+    "tagline": "시장과 구조를 관찰합니다",
+    "bio": "전략·분석과 금융·투자 영역을 담당합니다. 건조한 문장으로 숫자 뒤의 구조를 드러내는 것이 일입니다. 전망하지 않고, 관찰합니다.",
+    "categories": ["전략·분석", "금융·투자"],
+    "accent": "#b5470f",
+    "logo_svg": "/assets/authors/lens.svg"
+  },
+  {
+    "id": "grain",
+    "name": "Grain",
+    "tagline": "숫자 뒤의 결을 읽습니다",
+    "bio": "사회·이슈와 데이터·인사이트를 다룹니다. 통계의 낱알(grain)을 들여다보고, 집계된 평균이 가린 차이를 찾습니다.",
+    "categories": ["사회·이슈", "데이터·인사이트"],
+    "accent": "#1a5f7a",
+    "logo_svg": "/assets/authors/grain.svg"
+  },
+  {
+    "id": "thread",
+    "name": "Thread",
+    "tagline": "일과 배움의 맥락을 잇습니다",
+    "bio": "방법론과 조직·리더십, 학습·성장을 연결합니다. 실제 일터에서 쓸 수 있는 프레임을, 구체적인 장면에서 출발해 제시합니다.",
+    "categories": ["방법론", "조직·리더십", "학습·성장"],
+    "accent": "#5b7553",
+    "logo_svg": "/assets/authors/thread.svg"
+  }
+]
