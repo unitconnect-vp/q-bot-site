@@ -26,7 +26,8 @@
     return Promise.all([
       fetch('/articles/articles.json').then(r => r.json()),
       fetch('/data/series.json').then(r => r.ok ? r.json() : []).catch(() => []),
-      fetch('/data/authors.json').then(r => r.ok ? r.json() : []).catch(() => [])
+      fetch('/data/authors.json').then(r => r.ok ? r.json() : []).catch(() => []),
+      fetch('/data/categories.json').then(r => r.ok ? r.json() : []).catch(() => [])
     ]);
   }
 
@@ -38,9 +39,11 @@
   const authorDetail = document.getElementById('qlens-author-detail');
   const seriesList = document.getElementById('qlens-series-list');
   const seriesDetail = document.getElementById('qlens-series-detail');
+  const categoryList = document.getElementById('qlens-category-list');
+  const categoryDetail = document.getElementById('qlens-category-detail');
 
   if (homeFeed) {
-    loadData().then(([articles, seriesArr, authorsArr]) => {
+    loadData().then(([articles, seriesArr, authorsArr, categoriesArr]) => {
       const sorted = sortByDate(articles);
       renderHomeFeatured(sorted);
       renderHomeRank(sorted);
@@ -65,6 +68,15 @@
     const seriesId = seriesDetail.dataset.seriesId;
     loadData().then(([articles, seriesArr]) => {
       renderSeriesDetail(seriesId, seriesArr, articles);
+    }).catch(handleError);
+  } else if (categoryList) {
+    loadData().then(([articles, _, authorsArr, categoriesArr]) => {
+      renderCategoryList(categoriesArr, authorsArr, articles);
+    }).catch(handleError);
+  } else if (categoryDetail) {
+    const categoryId = categoryDetail.dataset.categoryId;
+    loadData().then(([articles, _, authorsArr, categoriesArr]) => {
+      renderCategoryDetail(categoryId, categoriesArr, authorsArr, articles);
     }).catch(handleError);
   }
 
@@ -135,9 +147,13 @@
     const counts = {};
     articles.forEach(a => { counts[a.author] = (counts[a.author] || 0) + 1; });
 
+    // 글 있는 필자 먼저, 없는 필자는 뒤로. 홈엔 최대 8명만 노출.
+    const sorted = [...authors].sort((a, b) => (counts[b.name] || 0) - (counts[a.name] || 0));
+    const shown = sorted.slice(0, 8);
+
     target.innerHTML = `
       <div class="author-grid">
-        ${authors.map(author => `
+        ${shown.map(author => `
           <a href="/authors/${author.id}/" class="author-card" style="--author-accent:${author.accent}">
             <div class="author-logo">
               <img src="${author.logo_svg}" alt="${esc(author.name)} logo" loading="lazy">
@@ -147,6 +163,9 @@
             <p class="author-count">아티클 ${counts[author.name] || 0}편</p>
           </a>
         `).join('')}
+      </div>
+      <div class="section-more">
+        <a href="/authors/" class="section-more__link">전체 필진 ${authors.length}명 보기 →</a>
       </div>
     `;
   }
@@ -344,6 +363,82 @@
           </div>
         `}
       </section>
+    `;
+  }
+
+  // ============================================
+  // 7. 카테고리 페이지 렌더러
+  // ============================================
+  function renderCategoryList(categories, authors, articles) {
+    const target = document.getElementById('qlens-category-list');
+    if (!target) return;
+    if (!categories.length) {
+      target.innerHTML = '<p class="empty-state">카테고리가 준비 중입니다.</p>';
+      return;
+    }
+    const counts = {};
+    articles.forEach(a => { counts[a.category] = (counts[a.category] || 0) + 1; });
+    const authorById = {};
+    authors.forEach(a => { authorById[a.id] = a; });
+
+    target.innerHTML = `
+      <div class="category-grid">
+        ${categories.map(c => {
+          const author = c.author_ids && c.author_ids[0] ? authorById[c.author_ids[0]] : null;
+          const count = counts[c.name] || 0;
+          return `
+            <a href="/categories/${c.slug}/" class="category-card" ${author ? `style="--cat-accent:${author.accent}"` : ''}>
+              <p class="category-card__count">${count}편</p>
+              <h3 class="category-card__name">${esc(c.name)}</h3>
+              <p class="category-card__desc">${esc(c.description || '')}</p>
+              ${author ? `<p class="category-card__author">${esc(author.name)}</p>` : ''}
+            </a>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }
+
+  function renderCategoryDetail(categoryId, categories, authors, articles) {
+    const target = document.getElementById('qlens-category-detail');
+    if (!target) return;
+    const cat = categories.find(c => c.id === categoryId || c.slug === categoryId);
+    if (!cat) {
+      target.innerHTML = '<p class="empty-state">카테고리를 찾을 수 없습니다.</p>';
+      return;
+    }
+    const author = authors.find(a => cat.author_ids && cat.author_ids.includes(a.id));
+    const myArticles = sortByDate(articles.filter(a => a.category === cat.name));
+
+    document.title = `${cat.name} | Q렌즈`;
+
+    target.innerHTML = `
+      <header class="category-hero" ${author ? `style="--cat-accent:${author.accent}"` : ''}>
+        <span class="category-hero__label">카테고리</span>
+        <h1 class="category-hero__title">${esc(cat.name)}</h1>
+        <p class="category-hero__desc">${esc(cat.description || '')}</p>
+        ${author ? `
+          <a href="/authors/${author.id}/" class="category-hero__author">
+            <img src="${author.logo_svg}" alt="${esc(author.name)}">
+            <span>담당 필진 <strong>${esc(author.name)}</strong></span>
+          </a>
+        ` : ''}
+      </header>
+      ${myArticles.length === 0
+        ? '<p class="empty-state">아직 이 카테고리의 아티클이 없습니다.</p>'
+        : `<div class="recent-grid">
+            ${myArticles.map(a => `
+              <a href="/articles/${a.slug}/" class="recent-card">
+                <img class="recent-thumb" src="/articles/${a.slug}/thumb.webp" alt="${esc(a.title)}" loading="lazy">
+                <div class="recent-body">
+                  <p class="recent-cat">${esc(a.category)}</p>
+                  <p class="recent-title">${esc(a.title)}</p>
+                  <p class="recent-meta">${esc(a.author)} · ${esc(a.date)}</p>
+                </div>
+              </a>
+            `).join('')}
+          </div>`
+      }
     `;
   }
 
