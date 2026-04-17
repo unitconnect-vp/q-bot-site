@@ -101,27 +101,69 @@ if published_slugs:
         json.dump(articles, f, ensure_ascii=False, indent=2)
     print(f"articles.json 저장 완료")
 
-    # sitemap.xml 재생성
-    url_entries = ""
+    # sitemap.xml 재생성 — 전체 URL 포함 (필자·카테고리·시리즈·법적 페이지)
+    today_str = now.strftime("%Y-%m-%d")
+    
+    # 데이터 로드
+    DATA_DIR = REPO_ROOT / "data"
+    try:
+        with open(DATA_DIR / "authors.json", encoding="utf-8") as f:
+            authors_data = json.load(f)
+    except FileNotFoundError:
+        authors_data = []
+    try:
+        with open(DATA_DIR / "categories.json", encoding="utf-8") as f:
+            categories_data = json.load(f)
+    except FileNotFoundError:
+        categories_data = []
+    try:
+        with open(DATA_DIR / "series.json", encoding="utf-8") as f:
+            series_data = json.load(f)
+    except FileNotFoundError:
+        series_data = []
+    
+    urls = []
+    # 정적
+    urls.append((f"{SITE_URL}/", today_str, "daily", "1.0"))
+    urls.append((f"{SITE_URL}/authors/", today_str, "weekly", "0.8"))
+    urls.append((f"{SITE_URL}/categories/", today_str, "weekly", "0.8"))
+    urls.append((f"{SITE_URL}/series/", today_str, "weekly", "0.8"))
+    # 아티클
     for a in articles:
-        url_entries += f"""  <url>
-    <loc>{SITE_URL}/articles/{a['slug']}/</loc>
-    <lastmod>{a.get('date', now.strftime('%Y-%m-%d'))}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-"""
-    sitemap = f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>{SITE_URL}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-{url_entries}</urlset>"""
+        urls.append((f"{SITE_URL}/articles/{a['slug']}/", a.get("date", today_str), "monthly", "0.9"))
+    # 필자
+    for a in authors_data:
+        urls.append((f"{SITE_URL}/authors/{a['id']}/", today_str, "weekly", "0.7"))
+    # 카테고리
+    for c in categories_data:
+        slug_c = c.get("slug") or c.get("id")
+        if slug_c:
+            urls.append((f"{SITE_URL}/categories/{slug_c}/", today_str, "weekly", "0.7"))
+    # 시리즈
+    for s in series_data:
+        urls.append((f"{SITE_URL}/series/{s['id']}/", today_str, "monthly", "0.7"))
+    # 법적·정보
+    urls.append((f"{SITE_URL}/about/", today_str, "yearly", "0.5"))
+    urls.append((f"{SITE_URL}/contact/", today_str, "yearly", "0.5"))
+    urls.append((f"{SITE_URL}/privacy/", today_str, "yearly", "0.3"))
+    urls.append((f"{SITE_URL}/terms/", today_str, "yearly", "0.3"))
+    
+    lines = ['<?xml version="1.0" encoding="UTF-8"?>',
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for loc, lastmod, changefreq, priority in urls:
+        lines.extend([
+            '  <url>',
+            f'    <loc>{loc}</loc>',
+            f'    <lastmod>{lastmod}</lastmod>',
+            f'    <changefreq>{changefreq}</changefreq>',
+            f'    <priority>{priority}</priority>',
+            '  </url>',
+        ])
+    lines.append('</urlset>')
+    sitemap = "\n".join(lines)
 
     with open(SITEMAP_XML, "w", encoding="utf-8") as f:
         f.write(sitemap)
-    print(f"sitemap.xml 재생성 완료")
+    print(f"sitemap.xml 재생성 완료 ({len(urls)} URLs)")
 
 print(f"완료: {len(published_slugs)}건 발행됨 {published_slugs}")
