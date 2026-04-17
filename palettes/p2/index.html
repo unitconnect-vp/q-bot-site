@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Palette 2 — Refined Earth | Q-Lens</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; background: #ffffff; color: #0a0a0a; font-size: 16px; line-height: 1.6; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.3rem; }
+  .subtitle { color: #6b6b6b; font-size: 1.1rem; font-weight: 500; margin-bottom: 3rem; }
+  h2 { font-size: 1.6rem; font-weight: 800; border-top: 3px solid #0a0a0a; padding-top: 1rem; margin: 4rem 0 1.5rem; }
+  h3 { font-size: 1rem; font-weight: 700; color: #6b6b6b; text-transform: uppercase; letter-spacing: 0.1em; margin: 2rem 0 0.8rem; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem; }
+  .swatch { border: 1px solid #e5e5e5; }
+  .swatch__color { height: 110px; }
+  .swatch__info { padding: 0.85rem; }
+  .swatch__var { font-family: 'SF Mono', Menlo, monospace; font-size: 0.78rem; color: #0a0a0a; font-weight: 700; margin-bottom: 0.2rem; }
+  .swatch__hex { font-family: 'SF Mono', Menlo, monospace; font-size: 0.75rem; color: #6b6b6b; }
+  .swatch__role { font-size: 0.8rem; color: #4b4b4b; margin-top: 0.35rem; line-height: 1.4; }
+  
+  .philosophy { background: #fafafa; padding: 1.75rem; margin-bottom: 2rem; font-size: 1rem; border-left: 4px solid #1e3a8a; }
+  .philosophy strong { font-weight: 800; }
+  
+  .nav { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .nav a { font-size: 0.88rem; padding: 0.5rem 1rem; border: 1.5px solid #0a0a0a; color: #0a0a0a; text-decoration: none; font-weight: 700; }
+  .nav a.current { background: #0a0a0a; color: #ffffff; }
+  .nav a:not(.current):hover { background: #fafafa; }
+  
+  .author-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; margin-top: 1rem; }
+  .author-card { text-align: center; padding: 1.25rem 0.5rem; border: 1px solid #e5e5e5; }
+  .author-card__mono { width: 52px; height: 52px; margin: 0 auto 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 800; font-size: 1.1rem; }
+  .author-card__name { font-weight: 700; font-size: 0.9rem; }
+  
+  .demo-article { padding: 1.75rem; border: 1px solid #e5e5e5; margin-top: 1rem; border-top: 4px solid #b5470f; }
+  .demo-badge { display: inline-block; background: #b5470f; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; letter-spacing: 0.05em; margin-bottom: 0.8rem; }
+  .demo-title { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+  .demo-excerpt { font-size: 0.95rem; color: #4b4b4b; margin: 0 0 0.8rem; }
+  .demo-link { color: #1d4ed8; text-decoration: underline; text-underline-offset: 3px; font-weight: 600; font-size: 0.9rem; }
+  
+  .summary { margin-top: 4rem; padding: 2rem; background: #0a0a0a; color: #ffffff; }
+  .summary h2 { color: #ffffff; border-top-color: #ffffff; }
+  .summary p { color: #a0a0a0; font-size: 0.95rem; }
+  .summary strong { color: #ffffff; }
+  
+  .cta { margin-top: 3rem; text-align: center; }
+  .cta a { display: inline-block; padding: 1rem 2rem; background: #0a0a0a; color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: -0.01em; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/palettes/">← 비교 인덱스</a>
+    <a href="/palettes/p1/">P1 · Editorial Monochrome</a>
+    <a href="/palettes/p2/" class="current">P2 · Refined Earth</a>
+    <a href="/palettes/p3/">P3 · Signal Primary</a>
+  </div>
+  
+  <h1>Palette 2 — Refined Earth</h1>
+  <p class="subtitle">Monocle / MIT Technology Review 톤 · 인쇄물 잉크 같은 톤</p>
+  
+  <div class="philosophy">
+    <strong>철학.</strong> 필자 11명의 색을 유지하되, 채도를 통일하고 색상환에서 등간격 재배치한다.
+    파스텔 금지. 각 색은 <strong>인쇄물 잉크처럼 깊고 차분하게</strong>. 무채색 배경 위에서만 살아난다.
+  </div>
+  
+  <h2>Foundation</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#ffffff;border:1px solid #e5e5e5"></div><div class="swatch__info"><div class="swatch__var">--paper-0</div><div class="swatch__hex">#ffffff</div><div class="swatch__role">기본 배경</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#fafafa"></div><div class="swatch__info"><div class="swatch__var">--paper-50</div><div class="swatch__hex">#fafafa</div><div class="swatch__role">카드 배경</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#0a0a0a"></div><div class="swatch__info"><div class="swatch__var">--paper-900</div><div class="swatch__hex">#0a0a0a</div><div class="swatch__role">반전 · 푸터</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#0a0a0a"></div><div class="swatch__info"><div class="swatch__var">--ink-800</div><div class="swatch__hex">#0a0a0a</div><div class="swatch__role">본문</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#4b4b4b"></div><div class="swatch__info"><div class="swatch__var">--ink-600</div><div class="swatch__hex">#4b4b4b</div><div class="swatch__role">본문 보조</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#6b6b6b"></div><div class="swatch__info"><div class="swatch__var">--ink-500</div><div class="swatch__hex">#6b6b6b</div><div class="swatch__role">메타</div></div></div>
+  </div>
+  
+  <h2>Author Palette — 재정비 11색</h2>
+  <p style="color:#4b4b4b;margin-bottom:0.5rem;">HSL 채도 45~55 범위 통일. 색상환 등간격 배치로 서로 안 뭉침.</p>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#1e3a8a"></div><div class="swatch__info"><div class="swatch__var">Ellis</div><div class="swatch__hex">#1e3a8a</div><div class="swatch__role">산업·전략 / 기업·경영</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#b5470f"></div><div class="swatch__info"><div class="swatch__var">Mills</div><div class="swatch__hex">#b5470f</div><div class="swatch__role">주식·투자 / 채권·금리</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#7c2d12"></div><div class="swatch__info"><div class="swatch__var">Harper</div><div class="swatch__hex">#7c2d12</div><div class="swatch__role">경제·정책</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#365314"></div><div class="swatch__info"><div class="swatch__var">Reed</div><div class="swatch__hex">#365314</div><div class="swatch__role">부동산</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#0e7490"></div><div class="swatch__info"><div class="swatch__var">Wren</div><div class="swatch__hex">#0e7490</div><div class="swatch__role">사회·이슈</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#4c1d95"></div><div class="swatch__info"><div class="swatch__var">Nova</div><div class="swatch__hex">#4c1d95</div><div class="swatch__role">데이터·리서치</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#166534"></div><div class="swatch__info"><div class="swatch__var">Quinn</div><div class="swatch__hex">#166534</div><div class="swatch__role">조직·리더십</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#1e293b"></div><div class="swatch__info"><div class="swatch__var">Cole</div><div class="swatch__hex">#1e293b</div><div class="swatch__role">일의 방법론</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#92400e"></div><div class="swatch__info"><div class="swatch__var">Ray</div><div class="swatch__hex">#92400e</div><div class="swatch__role">커리어·성장</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#134e4a"></div><div class="swatch__info"><div class="swatch__var">Kai</div><div class="swatch__hex">#134e4a</div><div class="swatch__role">AI·테크</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#991b1b"></div><div class="swatch__info"><div class="swatch__var">Dash</div><div class="swatch__hex">#991b1b</div><div class="swatch__role">스포츠·머니볼</div></div></div>
+  </div>
+  
+  <h2>Author Identity — 필자색 모노그램</h2>
+  <p style="color:#4b4b4b;margin-bottom:0.5rem;">각 필자 고유색으로 모노그램 배경. 흰 글자.</p>
+  <div class="author-preview">
+    <div class="author-card"><div class="author-card__mono" style="background:#1e3a8a">E</div><div class="author-card__name">Ellis</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#b5470f">M</div><div class="author-card__name">Mills</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#7c2d12">H</div><div class="author-card__name">Harper</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#365314">Rd</div><div class="author-card__name">Reed</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#0e7490">W</div><div class="author-card__name">Wren</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#4c1d95">N</div><div class="author-card__name">Nova</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#166534">Q</div><div class="author-card__name">Quinn</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#1e293b">C</div><div class="author-card__name">Cole</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#92400e">Ry</div><div class="author-card__name">Ray</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#134e4a">K</div><div class="author-card__name">Kai</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#991b1b">D</div><div class="author-card__name">Dash</div></div>
+  </div>
+  
+  <h2>샘플 적용 — 아티클 카드 (Mills)</h2>
+  <div class="demo-article">
+    <span class="demo-badge">주식 · 투자</span>
+    <div class="demo-title">코스피 6,000 — 신호인가, 편중인가</div>
+    <p class="demo-excerpt">지수 하나로 시장을 읽던 습관을 의심해야 할 신호를 본다.</p>
+    <div style="display:flex;gap:0.8rem;align-items:center;margin-top:0.5rem">
+      <div style="width:24px;height:24px;border-radius:50%;background:#b5470f;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.7rem;font-weight:800">M</div>
+      <span style="font-size:0.85rem;color:#b5470f;font-weight:700">Mills</span>
+      <span style="color:#9a9a9a">·</span>
+      <span style="font-size:0.85rem;color:#9a9a9a">2026-04-17</span>
+      <a href="#" class="demo-link" style="margin-left:auto">원문 보기 →</a>
+    </div>
+  </div>
+  
+  <div class="summary">
+    <h2>정리</h2>
+    <p><strong>Palette 2는 필자별 고유 색을 유지하되 톤을 통일해 "일관된 매체 + 구분되는 필자"를 동시 달성합니다.</strong>
+    Monocle처럼 색을 <strong>장식이 아닌 분류 기호</strong>로만 씁니다. 무채색 시스템 위에서만 필자색이 조용히 반짝입니다.</p>
+  </div>
+  
+  <div class="cta">
+    <a href="/palettes/p2/home/">P2 홈 적용 샘플 보기 →</a>
+  </div>
+</div>
+</body>
+</html>
