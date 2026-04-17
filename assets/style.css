@@ -1018,7 +1018,7 @@ img { display: block; max-width: 100%; }
   font-size: 1.05rem;
   font-style: italic;
   color: var(--art-accent);
-  background: #fdf6f0;
+  background: var(--paper-blue);
   font-weight: 500;
 }
 
@@ -1039,8 +1039,8 @@ img { display: block; max-width: 100%; }
 }
 
 .ql-conclusion {
-  background: #fdf6f0;
-  border: 1px solid #e8d5c4;
+  background: var(--paper-blue);
+  border: 1px solid var(--line-sub);
   border-radius: 4px;
   padding: 1.75rem 2rem;
   margin-top: 3.5rem;
