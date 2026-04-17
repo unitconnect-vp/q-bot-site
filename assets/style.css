@@ -1039,3 +1039,297 @@ img { display: block; max-width: 100%; }
   color: var(--art-ink);
 }
 .ql-conclusion p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+ * v3.5 추가 — 카테고리 페이지 + 새 푸터 + 섹션 컬러 리듬
+ * ============================================================ */
+
+/* 섹션 색 리듬 — 필진 섹션만 크림 배경으로 호흡 */
+.home-section--warm {
+  background: var(--paper-warm);
+  margin-left: calc(-1 * ((100vw - 100%) / 2));
+  margin-right: calc(-1 * ((100vw - 100%) / 2));
+  padding: 3rem 2rem 3.5rem;
+  margin-bottom: 5.5rem;
+}
+.home-section--warm .section-head {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+.home-section--warm > div[id] {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 섹션 더보기 링크 */
+.section-more {
+  margin-top: 1.75rem;
+  text-align: center;
+}
+.section-more__link {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  border-bottom: 2px solid var(--ink-strong);
+  padding-bottom: 2px;
+  letter-spacing: -0.01em;
+  transition: opacity 0.15s;
+}
+.section-more__link:hover { opacity: 0.65; }
+
+/* 홈 필진 카드 4열로 (10명 대응) */
+@media (min-width: 900px) {
+  .author-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ─── 카테고리 목록 페이지 ─── */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+.category-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1px solid var(--line-sub);
+  border-top: 4px solid var(--cat-accent, var(--ink-strong));
+  background: var(--paper);
+  transition: border-color 0.15s, transform 0.15s;
+  --cat-accent: var(--ink-strong);
+  min-height: 180px;
+}
+.category-card:hover {
+  border-color: var(--ink-strong);
+  border-top-color: var(--cat-accent);
+  transform: translateY(-2px);
+}
+.category-card__count {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin: 0 0 0.6rem 0;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.category-card__name {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--ink-strong);
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.02em;
+}
+.category-card__desc {
+  font-size: 0.85rem;
+  color: var(--ink-sub);
+  line-height: 1.6;
+  margin: 0 0 0.9rem 0;
+  font-weight: 500;
+  flex: 1;
+  word-break: keep-all;
+}
+.category-card__author {
+  font-size: 0.78rem;
+  color: var(--cat-accent);
+  margin: 0;
+  font-weight: 700;
+}
+
+/* ─── 카테고리 상세 페이지 hero ─── */
+.category-hero {
+  padding: 2.5rem 0;
+  margin-bottom: 3rem;
+  border-top: 4px solid var(--cat-accent, var(--ink-strong));
+  border-bottom: 2px solid var(--line-sub);
+  --cat-accent: var(--ink-strong);
+}
+.category-hero__label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--ink-strong);
+  padding: 0.35rem 0.75rem;
+  display: inline-block;
+  margin: 0 0 1rem 0;
+}
+.category-hero__title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--ink-strong);
+  margin: 0 0 0.85rem 0;
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+.category-hero__desc {
+  font-size: 1rem;
+  color: var(--ink-sub);
+  line-height: 1.7;
+  margin: 0 0 1.25rem 0;
+  font-weight: 500;
+  max-width: 42rem;
+  word-break: keep-all;
+}
+.category-hero__author {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.85rem 0.5rem 0.5rem;
+  background: var(--paper-warm);
+  border: 1px solid var(--line-sub);
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: var(--ink-sub);
+  transition: border-color 0.15s;
+}
+.category-hero__author:hover {
+  border-color: var(--cat-accent);
+}
+.category-hero__author img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+.category-hero__author strong {
+  color: var(--cat-accent);
+  font-weight: 700;
+  margin-left: 0.15rem;
+}
+
+@media (max-width: 768px) {
+  .category-hero { padding: 2rem 0; margin-bottom: 2rem; }
+  .category-hero__title { font-size: 1.75rem; }
+}
+
+/* ============================================================
+ * 새 푸터 (F1안 — 4열 + SNS)
+ * ============================================================ */
+.site-footer {
+  background: var(--footer-bg);
+  color: #a0a0a0;
+  padding: 3.5rem 2rem 2rem;
+  margin-top: 5rem;
+  font-family: 'Pretendard Variable', Pretendard, sans-serif;
+}
+.site-footer a { color: #a0a0a0; }
+.site-footer a:hover { color: #fff; }
+
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.footer-brand {}
+.footer-logo {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+}
+.footer-logo span {
+  color: #6b6b6b;
+  font-weight: 400;
+  margin: 0 0.05em;
+}
+.footer-tagline {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+  margin: 0 0 1.5rem 0;
+  font-weight: 500;
+}
+
+.footer-social {
+  display: flex;
+  gap: 0.75rem;
+}
+.footer-social__link {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #2a2a2a;
+  color: #a0a0a0;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.footer-social__link:hover {
+  background: #fff;
+  color: #0a0a0a;
+  border-color: #fff;
+}
+
+.footer-col {}
+.footer-col__title {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem 0;
+  text-transform: uppercase;
+}
+.footer-col__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.footer-col__list a {
+  font-size: 0.88rem;
+  color: #a0a0a0;
+  transition: color 0.15s;
+}
+.footer-col__more {
+  color: #6b6b6b !important;
+  font-size: 0.82rem !important;
+  margin-top: 0.4rem;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.footer-copy {
+  font-size: 0.82rem;
+  color: #6b6b6b;
+  margin: 0;
+}
+.footer-legal {
+  font-size: 0.82rem;
+  margin: 0;
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+}
+.footer-legal span { color: #4a4a4a; }
+
+@media (max-width: 768px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding-bottom: 2rem;
+  }
+  .footer-brand { grid-column: 1 / -1; }
+  .site-footer { padding: 2.5rem 1.25rem 1.5rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 480px) {
+  .footer-inner { grid-template-columns: 1fr; }
+}
