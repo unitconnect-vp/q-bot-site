@@ -238,19 +238,22 @@
     document.title = `${author.name} — ${author.tagline} | Q렌즈`;
 
     target.innerHTML = `
-      <header class="author-detail-head" style="--author-accent:${author.accent}">
-        <div class="author-detail-logo">
+      <header class="author-hero" style="--author-accent:${author.accent}">
+        <div class="author-hero__logo">
           <img src="${author.logo_svg}" alt="${esc(author.name)} logo">
         </div>
-        <h1 class="author-detail-name">${esc(author.name)}</h1>
-        <p class="author-detail-tagline">${esc(author.tagline)}</p>
-        <p class="author-detail-bio">${esc(author.bio)}</p>
-        <p class="author-detail-cats">${author.categories.map(c => `<span>${esc(c)}</span>`).join(' ')}</p>
+        <div class="author-hero__body">
+          <span class="author-hero__label">필진</span>
+          <h1 class="author-hero__name">${esc(author.name)}</h1>
+          <p class="author-hero__tagline">${esc(author.tagline)}</p>
+          <p class="author-hero__bio">${esc(author.bio)}</p>
+          <p class="author-hero__cats">${author.categories.map(esc).join(' · ')}</p>
+        </div>
       </header>
 
       <section class="author-articles">
-        <h2 class="section-title">${esc(author.name)}가 쓴 아티클 (${myArticles.length}편)</h2>
-        ${myArticles.length === 0 ? '<p style="color:#6b7280;">아직 발행된 아티클이 없습니다.</p>' : `
+        <h2 class="section-title">${esc(author.name)}가 쓴 아티클 ${myArticles.length}편</h2>
+        ${myArticles.length === 0 ? '<p class="empty-state">아직 발행된 아티클이 없습니다.</p>' : `
           <div class="recent-grid">
             ${myArticles.map(a => `
               <a href="/articles/${a.slug}/" class="recent-card">
@@ -315,31 +318,30 @@
     document.title = `${series.title} | Q렌즈 시리즈`;
 
     target.innerHTML = `
-      <header class="series-detail-head" style="--series-accent:${series.accent || '#b5470f'}">
-        <p class="series-detail-label">오리지널 시리즈</p>
-        <div class="series-detail-emoji">${series.cover_emoji || '📚'}</div>
-        <h1 class="series-detail-title">${esc(series.title)}</h1>
-        <p class="series-detail-desc">${esc(series.description || '')}</p>
-        <p class="series-detail-meta">아티클 ${myArticles.length}편 · ${series.status === 'ongoing' ? '연재 중' : '완결'} · 시작 ${esc(series.started_at || '')}</p>
+      <header class="series-hero" style="--series-accent:${series.accent || '#b5470f'}">
+        <div class="series-hero__emoji">${series.cover_emoji || '📚'}</div>
+        <span class="series-hero__label">오리지널 시리즈</span>
+        <h1 class="series-hero__title">${esc(series.title)}</h1>
+        <p class="series-hero__desc">${esc(series.description || '')}</p>
+        <p class="series-hero__meta">아티클 ${myArticles.length}편 · ${series.status === 'ongoing' ? '연재 중' : '완결'} · 시작 ${esc(series.started_at || '')}</p>
       </header>
 
       <section class="series-articles">
         <h2 class="section-title">연재 순서</h2>
-        ${myArticles.length === 0 ? '<p style="color:#6b7280;">아직 등록된 아티클이 없습니다.</p>' : `
-          <ol class="series-order-list">
+        ${myArticles.length === 0 ? '<p class="empty-state">아직 등록된 아티클이 없습니다.</p>' : `
+          <div class="series-list">
             ${myArticles.map((a, i) => `
-              <li class="series-order-item">
-                <a href="/articles/${a.slug}/" class="series-order-link">
-                  <span class="series-order-num">${a.series_order || (i + 1)}</span>
-                  <div class="series-order-body">
-                    <p class="series-order-title">${esc(a.title)}</p>
-                    <p class="series-order-excerpt">${esc(a.excerpt || '')}</p>
-                    <p class="series-order-meta">${esc(a.author)} · ${esc(a.date)} · ${esc(a.read_time)}</p>
-                  </div>
-                </a>
-              </li>
+              <a href="/articles/${a.slug}/" class="series-episode">
+                <span class="series-episode__num">${a.series_order || (i + 1)}</span>
+                <div class="series-episode__body">
+                  <p class="series-episode__cat">${esc(a.category)}</p>
+                  <p class="series-episode__title">${esc(a.title)}</p>
+                  <p class="series-episode__excerpt">${esc(a.excerpt || '')}</p>
+                  <p class="series-episode__meta">${esc(a.author)} · ${esc(a.date)} · ${esc(a.read_time)}</p>
+                </div>
+              </a>
             `).join('')}
-          </ol>
+          </div>
         `}
       </section>
     `;
