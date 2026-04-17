@@ -75,7 +75,7 @@ img { display: block; max-width: 100%; }
   align-items: center;
   padding: 1.5rem 2rem;
   background: var(--header-bg);
-  border-bottom: 2px solid var(--line);
+  /* border moved to feed-wrap */
   max-width: 1280px;
   margin: 0 auto;
 }
@@ -131,6 +131,7 @@ img { display: block; max-width: 100%; }
 
 /* ─── 메인 피드 래퍼 ─── */
 .feed-wrap {
+  border-top: 2px solid var(--line);
   max-width: 1280px;
   margin: 0 auto;
   padding: 3.5rem 2rem;
@@ -144,14 +145,7 @@ img { display: block; max-width: 100%; }
  * 홈 v3.4
  * ============================================================ */
 
-.home-tagline {
-  font-size: 1.05rem;
-  color: var(--ink-sub);
-  margin: 0 0 4rem 0;
-  line-height: 1.7;
-  max-width: 42rem;
-  font-weight: 500;
-}
+.home-tagline { display: none; }
 
 .home-section { margin-bottom: 5.5rem; }
 
@@ -192,7 +186,7 @@ img { display: block; max-width: 100%; }
   gap: 3rem;
   align-items: center;
   padding: 2rem 0;
-  border-top: 3px solid var(--line);
+  
   border-bottom: 3px solid var(--line);
   transition: opacity 0.15s;
 }
@@ -1418,7 +1412,7 @@ img { display: block; max-width: 100%; }
 
 /* 폰트 강화 검증 — 모바일 section-title 추가 보정 */
 @media (max-width: 600px) {
-  .home-tagline { font-size: 1rem; }
+  .home-tagline { display: none; }
   .rank-meta { font-size: 0.85rem; }
   .recent-meta { font-size: 0.85rem; }
 }
