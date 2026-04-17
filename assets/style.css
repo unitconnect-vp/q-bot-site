@@ -81,7 +81,7 @@ img { display: block; max-width: 100%; }
 }
 .site-logo {
   font-weight: 800;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   letter-spacing: -0.04em;
   color: var(--ink-strong);
   white-space: nowrap;
@@ -97,7 +97,7 @@ img { display: block; max-width: 100%; }
   gap: 2rem;
 }
 .site-nav a {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 600;
   color: var(--ink-sub);
   transition: color 0.15s;
@@ -145,7 +145,7 @@ img { display: block; max-width: 100%; }
  * ============================================================ */
 
 .home-tagline {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--ink-sub);
   margin: 0 0 4rem 0;
   line-height: 1.7;
@@ -162,7 +162,7 @@ img { display: block; max-width: 100%; }
 }
 
 .section-title {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0 0 0.35rem 0;
@@ -171,7 +171,7 @@ img { display: block; max-width: 100%; }
 }
 
 .section-desc {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--ink-muted);
   margin: 0;
   font-weight: 500;
@@ -179,7 +179,7 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 600px) {
   .home-section { margin-bottom: 4rem; }
-  .section-title { font-size: 1.4rem; }
+  .section-title { font-size: 1.75rem; }
   .section-desc { font-size: 0.85rem; }
 }
 
@@ -224,7 +224,7 @@ img { display: block; max-width: 100%; }
 }
 
 .hero-weekly__title {
-  font-size: 2.8rem;
+  font-size: 3rem;
   font-weight: 800;
   color: var(--ink-strong);
   line-height: 1.25;
@@ -234,7 +234,7 @@ img { display: block; max-width: 100%; }
 }
 
 .hero-weekly__excerpt {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   color: var(--ink-sub);
   line-height: 1.75;
   margin: 0 0 1.5rem 0;
@@ -260,8 +260,8 @@ img { display: block; max-width: 100%; }
     padding: 1.5rem 0;
   }
   .hero-weekly__img { aspect-ratio: 16 / 10; }
-  .hero-weekly__title { font-size: 1.7rem; }
-  .hero-weekly__excerpt { font-size: 0.95rem; }
+  .hero-weekly__title { font-size: 2rem; }
+  .hero-weekly__excerpt { font-size: 1.05rem; }
 }
 
 /* ─── 섹션 2: 번호 랭킹 ─── */
@@ -291,7 +291,7 @@ img { display: block; max-width: 100%; }
 .rank-num {
   flex: 0 0 auto;
   width: 2.5rem;
-  font-size: 2.3rem;
+  font-size: 2.6rem;
   font-weight: 800;
   color: var(--ink-strong);
   line-height: 1;
@@ -306,7 +306,7 @@ img { display: block; max-width: 100%; }
 }
 
 .rank-title {
-  font-size: 1.15rem;
+  font-size: 1.4rem;
   font-weight: 700;
   color: var(--ink-strong);
   line-height: 1.45;
@@ -319,7 +319,7 @@ img { display: block; max-width: 100%; }
 }
 
 .rank-meta {
-  font-size: 0.82rem;
+  font-size: 0.92rem;
   color: var(--ink-muted);
   margin: 0;
   font-weight: 500;
@@ -327,8 +327,8 @@ img { display: block; max-width: 100%; }
 
 @media (max-width: 600px) {
   .rank-link { gap: 1.2rem; padding: 1.1rem 0.25rem; }
-  .rank-num { font-size: 1.5rem; width: 2rem; }
-  .rank-title { font-size: 0.95rem; }
+  .rank-num { font-size: 1.8rem; width: 2rem; }
+  .rank-title { font-size: 1.1rem; }
 }
 
 /* ─── 섹션 3: 필진 ─── */
@@ -365,7 +365,7 @@ img { display: block; max-width: 100%; }
 }
 
 .author-name {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: var(--author-accent);
   margin: 0 0 0.4rem 0;
@@ -428,7 +428,7 @@ img { display: block; max-width: 100%; }
 }
 
 .series-title {
-  font-size: 1.25rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--ink-strong);
   line-height: 1.35;
@@ -531,7 +531,7 @@ img { display: block; max-width: 100%; }
 }
 
 .recent-title {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: var(--ink-strong);
   line-height: 1.45;
@@ -544,7 +544,7 @@ img { display: block; max-width: 100%; }
 }
 
 .recent-meta {
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   color: var(--ink-muted);
   margin: 0;
   font-weight: 500;
@@ -578,7 +578,7 @@ img { display: block; max-width: 100%; }
   margin: 0 0 1rem 0;
 }
 .page-head__title {
-  font-size: 3rem;
+  font-size: 3.25rem;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0 0 1.25rem 0;
@@ -632,7 +632,7 @@ img { display: block; max-width: 100%; }
 }
 .author-list-body { min-width: 0; }
 .author-list-body .author-name {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   text-align: left;
   margin-bottom: 0.4rem;
   color: var(--author-accent);
@@ -676,7 +676,7 @@ img { display: block; max-width: 100%; }
   .author-list-body .author-tagline,
   .author-cats,
   .author-list-body .author-count { text-align: center; }
-  .author-list-body .author-name { font-size: 1.3rem; }
+  .author-list-body .author-name { font-size: 1.45rem; }
 }
 
 /* 필진 상세 hero */
@@ -741,7 +741,7 @@ img { display: block; max-width: 100%; }
 }
 .author-articles { margin-top: 2rem; }
 .author-articles .section-title {
-  font-size: 1.4rem;
+  font-size: 1.75rem;
   margin-bottom: 1.5rem;
 }
 
@@ -784,7 +784,7 @@ img { display: block; max-width: 100%; }
   margin: 0 0 1.25rem 0;
 }
 .series-hero__title {
-  font-size: 2.75rem;
+  font-size: 3rem;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0 0 1.25rem 0;
@@ -849,7 +849,7 @@ img { display: block; max-width: 100%; }
   margin: 0 0 0.45rem 0;
 }
 .series-episode__title {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: var(--ink-strong);
   line-height: 1.35;
@@ -1118,7 +1118,7 @@ img { display: block; max-width: 100%; }
   letter-spacing: 0.02em;
 }
 .category-card__name {
-  font-size: 1.3rem;
+  font-size: 1.45rem;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0 0 0.5rem 0;
@@ -1160,7 +1160,7 @@ img { display: block; max-width: 100%; }
   margin: 0 0 1rem 0;
 }
 .category-hero__title {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
   color: var(--ink-strong);
   margin: 0 0 0.85rem 0;
@@ -1232,7 +1232,7 @@ img { display: block; max-width: 100%; }
 
 .footer-brand { min-width: 0; }
 .footer-logo {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   font-weight: 800;
   color: #fff;
   letter-spacing: -0.04em;
@@ -1244,7 +1244,7 @@ img { display: block; max-width: 100%; }
   margin: 0 0.05em;
 }
 .footer-tagline {
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: #a0a0a0;
   margin: 0 0 1.5rem 0;
   font-weight: 500;
@@ -1272,7 +1272,7 @@ img { display: block; max-width: 100%; }
 
 .footer-col { min-width: 0; }
 .footer-col__title {
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 800;
   color: #fff;
   letter-spacing: 0.05em;
@@ -1298,7 +1298,7 @@ img { display: block; max-width: 100%; }
   display: none !important;
 }
 .footer-col__list a {
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: #a0a0a0;
   transition: color 0.15s;
 }
@@ -1349,3 +1349,76 @@ img { display: block; max-width: 100%; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
 
+
+/* ============================================================
+ * v3.8 — 필진 접기/펴기 + 토글 버튼 + 모바일 최적화
+ * ============================================================ */
+
+/* 기본 .author-rest 숨김 (aria-hidden="true" 상태) */
+.author-rest[aria-hidden="true"] {
+  display: none;
+}
+.author-rest[aria-hidden="false"] {
+  display: contents;  /* grid 자식들이 부모 그리드에 참여 */
+}
+
+/* 데스크톱: 4명 x 1줄 = 총 4명 기본 */
+@media (min-width: 900px) {
+  .author-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* 모바일: 3명 x 1줄 */
+@media (max-width: 899px) {
+  .author-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .author-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  /* 모바일에선 기본 4명 노출 중 3번째까지만, 4번째는 숨김 */
+  .author-grid > .author-card:nth-child(n+4):not(.author-rest *) {
+    display: none;
+  }
+  .author-rest[aria-hidden="false"] > .author-card:nth-child(n+4) {
+    display: flex;  /* 펼쳤을 땐 다시 노출 */
+  }
+}
+
+/* 토글 버튼 */
+.author-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 2px solid var(--ink-strong);
+  color: var(--ink-strong);
+  padding: 0.75rem 1.5rem;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.author-toggle:hover {
+  background: var(--ink-strong);
+  color: #ffffff;
+}
+.author-toggle__icon {
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+}
+
+/* 폰트 강화 검증 — 모바일 section-title 추가 보정 */
+@media (max-width: 600px) {
+  .home-tagline { font-size: 1rem; }
+  .rank-meta { font-size: 0.85rem; }
+  .recent-meta { font-size: 0.85rem; }
+}
