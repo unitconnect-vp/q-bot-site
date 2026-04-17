@@ -206,8 +206,6 @@
     articles.forEach(a => { counts[a.author] = (counts[a.author] || 0) + 1; });
 
     target.innerHTML = `
-      <h1 class="page-title">필진</h1>
-      <p class="page-subtitle">세 목소리가 전하는 오늘의 인사이트</p>
       <div class="author-list-grid">
         ${authors.map(author => `
           <a href="/authors/${author.id}/" class="author-list-card" style="--author-accent:${author.accent}">
@@ -283,8 +281,6 @@
     });
 
     target.innerHTML = `
-      <h1 class="page-title">오리지널 시리즈</h1>
-      <p class="page-subtitle">주제를 따라 길게 읽기</p>
       ${seriesArr.length === 0 ? '<p style="color:#6b7280;">진행 중인 시리즈가 없습니다.</p>' : `
         <div class="series-grid">
           ${seriesArr.map(s => `
