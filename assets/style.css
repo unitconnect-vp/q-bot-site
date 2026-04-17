@@ -145,8 +145,6 @@ img { display: block; max-width: 100%; }
  * 홈 v3.4
  * ============================================================ */
 
-.home-tagline { display: none; }
-
 .home-section { margin-bottom: 5.5rem; }
 
 .section-head {
@@ -1412,7 +1410,6 @@ img { display: block; max-width: 100%; }
 
 /* 폰트 강화 검증 — 모바일 section-title 추가 보정 */
 @media (max-width: 600px) {
-  .home-tagline { display: none; }
   .rank-meta { font-size: 0.85rem; }
   .recent-meta { font-size: 0.85rem; }
 }
