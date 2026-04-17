@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Palette 1-Fresh — Paper White + Sage | Q-Lens</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; background: #ffffff; color: #1a1a1a; font-size: 16px; line-height: 1.65; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.3rem; color: #1a1a1a; }
+  .subtitle { color: #6b7280; font-size: 1.1rem; font-weight: 500; margin-bottom: 3rem; }
+  h2 { font-size: 1.6rem; font-weight: 800; border-top: 2px solid #6b9c7c; padding-top: 1rem; margin: 4rem 0 1.5rem; }
+  h3 { font-size: 1rem; font-weight: 700; color: #6b9c7c; text-transform: uppercase; letter-spacing: 0.1em; margin: 2rem 0 0.8rem; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem; }
+  .swatch { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+  .swatch__color { height: 110px; }
+  .swatch__info { padding: 0.85rem; }
+  .swatch__var { font-family: 'SF Mono', Menlo, monospace; font-size: 0.78rem; color: #1a1a1a; font-weight: 700; margin-bottom: 0.2rem; }
+  .swatch__hex { font-family: 'SF Mono', Menlo, monospace; font-size: 0.75rem; color: #6b7280; }
+  .swatch__role { font-size: 0.8rem; color: #4b5563; margin-top: 0.35rem; line-height: 1.4; }
+  
+  .philosophy { background: #f5faf6; padding: 1.75rem; margin-bottom: 2rem; font-size: 1rem; border-left: 4px solid #6b9c7c; border-radius: 0 8px 8px 0; }
+  .philosophy strong { font-weight: 800; color: #1a1a1a; }
+  
+  .nav { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .nav a { font-size: 0.88rem; padding: 0.5rem 1rem; border: 1.5px solid #1a1a1a; color: #1a1a1a; text-decoration: none; font-weight: 700; border-radius: 6px; }
+  .nav a.current { background: #6b9c7c; border-color: #6b9c7c; color: #ffffff; }
+  .nav a:not(.current):hover { background: #f5faf6; border-color: #6b9c7c; color: #6b9c7c; }
+  
+  .author-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; margin-top: 1rem; }
+  .author-card { text-align: center; padding: 1.25rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 10px; background: #ffffff; }
+  .author-card__mono { width: 52px; height: 52px; margin: 0 auto 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 800; font-size: 1.1rem; background: #6b9c7c; }
+  .author-card__name { font-weight: 700; font-size: 0.9rem; color: #1a1a1a; }
+  
+  .demo-article { padding: 1.75rem; border: 1px solid #e5e7eb; border-radius: 12px; margin-top: 1rem; background: #ffffff; }
+  .demo-badge { display: inline-block; background: #6b9c7c; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.7rem; letter-spacing: 0.03em; margin-bottom: 0.8rem; border-radius: 999px; }
+  .demo-title { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+  .demo-excerpt { font-size: 0.95rem; color: #4b5563; margin: 0 0 0.8rem; }
+  .demo-link { color: #6b9c7c; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1.5px solid #6b9c7c; padding-bottom: 2px; }
+  
+  .summary { margin-top: 4rem; padding: 2rem; background: #1a1a1a; color: #ffffff; border-radius: 12px; }
+  .summary h2 { color: #ffffff; border-top-color: #6b9c7c; }
+  .summary p { color: #d1d5db; font-size: 0.95rem; }
+  .summary strong { color: #ffffff; }
+  
+  .cta { margin-top: 3rem; text-align: center; }
+  .cta a { display: inline-block; padding: 1rem 2.25rem; background: #6b9c7c; color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: -0.01em; border-radius: 8px; transition: background 0.15s; }
+  .cta a:hover { background: #547d62; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/palettes-fresh/">← 비교 인덱스</a>
+    <a href="/palettes-fresh/p1/" class="current">P1 · Paper White + Sage</a>
+    <a href="/palettes-fresh/p2/">P2 · Coastal Blue</a>
+    <a href="/palettes-fresh/p3/">P3 · Mint Breeze</a>
+  </div>
+  
+  <h1>P1 — Paper White + Sage</h1>
+  <p class="subtitle">Substack · Notion 읽기 모드 톤 · 조용한 산뜻함</p>
+  
+  <div class="philosophy">
+    <strong>철학.</strong> 무거운 무채색 시스템을 유지하되, 유일한 컬러로
+    <strong>세이지 그린 한 가지</strong>만 허용한다. 장식이 아니라 독자가 눈을 쉴
+    호흡 공간을 제공하는 역할. 본문 사이사이 자연의 초록이 숨 쉰다.
+  </div>
+  
+  <h2>Foundation</h2>
+  
+  <h3>Ink — 텍스트</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#1a1a1a"></div><div class="swatch__info"><div class="swatch__var">--ink-900</div><div class="swatch__hex">#1a1a1a</div><div class="swatch__role">제목·본문</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#4b5563"></div><div class="swatch__info"><div class="swatch__var">--ink-600</div><div class="swatch__hex">#4b5563</div><div class="swatch__role">본문 보조</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#6b7280"></div><div class="swatch__info"><div class="swatch__var">--ink-500</div><div class="swatch__hex">#6b7280</div><div class="swatch__role">메타</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#9ca3af"></div><div class="swatch__info"><div class="swatch__var">--ink-400</div><div class="swatch__hex">#9ca3af</div><div class="swatch__role">타임스탬프</div></div></div>
+  </div>
+  
+  <h3>Paper — 배경</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#ffffff;border-bottom:1px solid #e5e7eb"></div><div class="swatch__info"><div class="swatch__var">--paper-0</div><div class="swatch__hex">#ffffff</div><div class="swatch__role">기본 배경</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#f5faf6"></div><div class="swatch__info"><div class="swatch__var">--paper-sage</div><div class="swatch__hex">#f5faf6</div><div class="swatch__role">세이지 틴트 섹션 (파스텔 아님)</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#1a1a1a"></div><div class="swatch__info"><div class="swatch__var">--paper-900</div><div class="swatch__hex">#1a1a1a</div><div class="swatch__role">반전 · 푸터</div></div></div>
+  </div>
+  
+  <h2>Accent — Sage (유일 브랜드 컬러)</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#6b9c7c"></div><div class="swatch__info"><div class="swatch__var">--sage-500</div><div class="swatch__hex">#6b9c7c</div><div class="swatch__role">브랜드 기본 · 링크 · 배지</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#547d62"></div><div class="swatch__info"><div class="swatch__var">--sage-700</div><div class="swatch__hex">#547d62</div><div class="swatch__role">hover · 버튼 활성</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#87b595"></div><div class="swatch__info"><div class="swatch__var">--sage-300</div><div class="swatch__hex">#87b595</div><div class="swatch__role">보조 강조</div></div></div>
+  </div>
+  
+  <h2>Author Identity</h2>
+  <p style="color:#4b5563;margin-bottom:0.5rem;">필자 개별 색 없음. 모노그램 전부 세이지 + 흰 글자로 통일.</p>
+  <div class="author-preview">
+    <div class="author-card"><div class="author-card__mono">E</div><div class="author-card__name">Ellis</div></div>
+    <div class="author-card"><div class="author-card__mono">M</div><div class="author-card__name">Mills</div></div>
+    <div class="author-card"><div class="author-card__mono">H</div><div class="author-card__name">Harper</div></div>
+    <div class="author-card"><div class="author-card__mono">Rd</div><div class="author-card__name">Reed</div></div>
+    <div class="author-card"><div class="author-card__mono">W</div><div class="author-card__name">Wren</div></div>
+    <div class="author-card"><div class="author-card__mono">N</div><div class="author-card__name">Nova</div></div>
+    <div class="author-card"><div class="author-card__mono">Q</div><div class="author-card__name">Quinn</div></div>
+    <div class="author-card"><div class="author-card__mono">C</div><div class="author-card__name">Cole</div></div>
+    <div class="author-card"><div class="author-card__mono">Ry</div><div class="author-card__name">Ray</div></div>
+    <div class="author-card"><div class="author-card__mono">K</div><div class="author-card__name">Kai</div></div>
+    <div class="author-card"><div class="author-card__mono">D</div><div class="author-card__name">Dash</div></div>
+  </div>
+  
+  <h2>샘플 아티클 카드</h2>
+  <div class="demo-article">
+    <span class="demo-badge">주식 · 투자</span>
+    <div class="demo-title">코스피 6,000 — 신호인가, 편중인가</div>
+    <p class="demo-excerpt">지수 하나로 시장을 읽던 습관을 의심해야 할 신호를 본다.</p>
+    <div style="display:flex;gap:0.8rem;align-items:center;margin-top:0.5rem">
+      <div style="width:24px;height:24px;border-radius:50%;background:#6b9c7c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.7rem;font-weight:800">M</div>
+      <span style="font-size:0.85rem;color:#4b5563;font-weight:600">Mills</span>
+      <span style="color:#9ca3af">·</span>
+      <span style="font-size:0.85rem;color:#9ca3af">2026-04-17</span>
+      <a href="#" class="demo-link" style="margin-left:auto">원문 보기</a>
+    </div>
+  </div>
+  
+  <div class="summary">
+    <h2>정리</h2>
+    <p><strong>P1-Fresh는 "조용한 산뜻함"을 추구합니다.</strong>
+    세이지 한 가지로 모든 컬러 포인트를 통일. 무채색 텍스트 위에 초록이
+    읽기 호흡을 만들어 줍니다. 가장 절제된 산뜻함, 가장 오래 지루하지 않을 선택.</p>
+  </div>
+  
+  <div class="cta">
+    <a href="/palettes-fresh/p1/home/">P1 홈 적용 샘플 보기 →</a>
+  </div>
+</div>
+</body>
+</html>
