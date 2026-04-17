@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Palette 3-Fresh — Mint Breeze | Q-Lens</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; background: #ffffff; color: #0f172a; font-size: 16px; line-height: 1.65; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.3rem; color: #0f172a; }
+  .subtitle { color: #64748b; font-size: 1.1rem; font-weight: 500; margin-bottom: 3rem; }
+  h2 { font-size: 1.6rem; font-weight: 800; border-top: 2px solid #14b8a6; padding-top: 1rem; margin: 4rem 0 1.5rem; }
+  h3 { font-size: 1rem; font-weight: 700; color: #0f766e; text-transform: uppercase; letter-spacing: 0.1em; margin: 2rem 0 0.8rem; }
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.75rem; }
+  .swatch { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; background: #ffffff; }
+  .swatch__color { height: 110px; }
+  .swatch__info { padding: 0.85rem; }
+  .swatch__var { font-family: 'SF Mono', Menlo, monospace; font-size: 0.78rem; color: #0f172a; font-weight: 700; margin-bottom: 0.2rem; }
+  .swatch__hex { font-family: 'SF Mono', Menlo, monospace; font-size: 0.75rem; color: #64748b; }
+  .swatch__role { font-size: 0.8rem; color: #475569; margin-top: 0.35rem; line-height: 1.4; }
+  
+  .philosophy { background: #f0fdfa; padding: 1.75rem; margin-bottom: 2rem; font-size: 1rem; border-left: 4px solid #14b8a6; border-radius: 0 8px 8px 0; }
+  .philosophy strong { font-weight: 800; color: #0f172a; }
+  
+  .nav { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+  .nav a { font-size: 0.88rem; padding: 0.5rem 1rem; border: 1.5px solid #0f172a; color: #0f172a; text-decoration: none; font-weight: 700; border-radius: 6px; }
+  .nav a.current { background: #14b8a6; border-color: #14b8a6; color: #ffffff; }
+  .nav a:not(.current):hover { background: #f0fdfa; border-color: #14b8a6; color: #0f766e; }
+  
+  .group { padding: 1.75rem; background: #ffffff; border-radius: 12px; border: 1px solid #e5e7eb; margin: 1rem 0; border-left: 6px solid; }
+  .group--mint { border-left-color: #14b8a6; }
+  .group--coral { border-left-color: #f97316; }
+  .group--indigo { border-left-color: #4f46e5; }
+  .group__head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+  .group__dot { width: 16px; height: 16px; border-radius: 50%; }
+  .group__name { font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; }
+  .group__members { color: #64748b; font-size: 0.9rem; }
+  
+  .author-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.5rem; margin-top: 1rem; }
+  .author-card { text-align: center; padding: 1.25rem 0.5rem; border: 1px solid #e5e7eb; border-radius: 10px; background: #ffffff; }
+  .author-card__mono { width: 52px; height: 52px; margin: 0 auto 0.7rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ffffff; font-weight: 800; font-size: 1.1rem; }
+  .author-card__name { font-weight: 700; font-size: 0.9rem; color: #0f172a; }
+  
+  .demo-article { padding: 1.75rem; border: 1px solid #e5e7eb; border-radius: 12px; margin-top: 1rem; background: #ffffff; border-top: 4px solid #f97316; }
+  .demo-badge { display: inline-block; background: #f97316; color: #ffffff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 0.7rem; letter-spacing: 0.03em; margin-bottom: 0.8rem; border-radius: 999px; }
+  .demo-title { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+  .demo-excerpt { font-size: 0.95rem; color: #475569; margin: 0 0 0.8rem; }
+  .demo-link { color: #14b8a6; text-decoration: none; font-weight: 600; font-size: 0.9rem; border-bottom: 1.5px solid #14b8a6; padding-bottom: 2px; }
+  
+  .summary { margin-top: 4rem; padding: 2rem; background: #0f172a; color: #ffffff; border-radius: 12px; }
+  .summary h2 { color: #ffffff; border-top-color: #14b8a6; }
+  .summary p { color: #cbd5e1; font-size: 0.95rem; }
+  .summary strong { color: #ffffff; }
+  
+  .cta { margin-top: 3rem; text-align: center; }
+  .cta a { display: inline-block; padding: 1rem 2.25rem; background: #14b8a6; color: #ffffff; text-decoration: none; font-weight: 700; letter-spacing: -0.01em; border-radius: 8px; transition: background 0.15s; }
+  .cta a:hover { background: #0f766e; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="nav">
+    <a href="/palettes-fresh/">← 비교 인덱스</a>
+    <a href="/palettes-fresh/p1/">P1 · Paper White + Sage</a>
+    <a href="/palettes-fresh/p2/">P2 · Coastal Blue</a>
+    <a href="/palettes-fresh/p3/" class="current">P3 · Mint Breeze</a>
+  </div>
+  
+  <h1>P3 — Mint Breeze</h1>
+  <p class="subtitle">Vercel Blog · Webflow Blog 톤 · 선명한 산뜻함</p>
+  
+  <div class="philosophy">
+    <strong>철학.</strong> 세 개의 선명한 액센트 컬러를 주제군에 배정 —
+    <strong>민트(일·기술), 코랄(금융), 인디고(사회)</strong>.
+    컬러 하나하나는 톡톡 튀지만 흰 배경 + 검정 텍스트의 중립 시스템 위에서
+    절제된 강조로만 기능한다. 젊고 현대적, 그러나 가볍지 않다.
+  </div>
+  
+  <h2>Foundation</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#ffffff;border-bottom:1px solid #e5e7eb"></div><div class="swatch__info"><div class="swatch__var">--paper-0</div><div class="swatch__hex">#ffffff</div><div class="swatch__role">기본 배경</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#f0fdfa"></div><div class="swatch__info"><div class="swatch__var">--paper-mint</div><div class="swatch__hex">#f0fdfa</div><div class="swatch__role">민트 틴트 섹션</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#0f172a"></div><div class="swatch__info"><div class="swatch__var">--ink-900</div><div class="swatch__hex">#0f172a</div><div class="swatch__role">본문</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#475569"></div><div class="swatch__info"><div class="swatch__var">--ink-600</div><div class="swatch__hex">#475569</div><div class="swatch__role">본문 보조</div></div></div>
+  </div>
+  
+  <h2>3대 시그널 컬러</h2>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch__color" style="background:#14b8a6"></div><div class="swatch__info"><div class="swatch__var">--signal-mint</div><div class="swatch__hex">#14b8a6</div><div class="swatch__role">일·기술·브랜드 기본</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#f97316"></div><div class="swatch__info"><div class="swatch__var">--signal-coral</div><div class="swatch__hex">#f97316</div><div class="swatch__role">금융·경제·부동산</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#4f46e5"></div><div class="swatch__info"><div class="swatch__var">--signal-indigo</div><div class="swatch__hex">#4f46e5</div><div class="swatch__role">사회·데이터</div></div></div>
+    <div class="swatch"><div class="swatch__color" style="background:#0f766e"></div><div class="swatch__info"><div class="swatch__var">--mint-deep</div><div class="swatch__hex">#0f766e</div><div class="swatch__role">민트 hover·활성</div></div></div>
+  </div>
+  
+  <h2>필자 3그룹 재편</h2>
+  
+  <div class="group group--coral">
+    <div class="group__head">
+      <div class="group__dot" style="background:#f97316"></div>
+      <div class="group__name">Coral — 금융·경제</div>
+    </div>
+    <div class="group__members">Ellis · Mills · Harper · Reed · Dash — 산업·전략, 주식·투자, 채권·금리, 경제·정책, 부동산, 스포츠·머니볼</div>
+  </div>
+  
+  <div class="group group--indigo">
+    <div class="group__head">
+      <div class="group__dot" style="background:#4f46e5"></div>
+      <div class="group__name">Indigo — 사회·데이터</div>
+    </div>
+    <div class="group__members">Wren · Nova — 사회·이슈, 데이터·리서치</div>
+  </div>
+  
+  <div class="group group--mint">
+    <div class="group__head">
+      <div class="group__dot" style="background:#14b8a6"></div>
+      <div class="group__name">Mint — 일·기술</div>
+    </div>
+    <div class="group__members">Quinn · Cole · Ray · Kai — 조직·리더십, 일의 방법론, 커리어·성장, AI·테크</div>
+  </div>
+  
+  <h2>Author Identity</h2>
+  <div class="author-preview">
+    <div class="author-card"><div class="author-card__mono" style="background:#f97316">E</div><div class="author-card__name">Ellis</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#ea580c">M</div><div class="author-card__name">Mills</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#c2410c">H</div><div class="author-card__name">Harper</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#9a3412">Rd</div><div class="author-card__name">Reed</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#4f46e5">W</div><div class="author-card__name">Wren</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#6366f1">N</div><div class="author-card__name">Nova</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#14b8a6">Q</div><div class="author-card__name">Quinn</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#0d9488">C</div><div class="author-card__name">Cole</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#0f766e">Ry</div><div class="author-card__name">Ray</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#115e59">K</div><div class="author-card__name">Kai</div></div>
+    <div class="author-card"><div class="author-card__mono" style="background:#f97316">D</div><div class="author-card__name">Dash</div></div>
+  </div>
+  
+  <h2>샘플 아티클 카드 (Coral = 금융)</h2>
+  <div class="demo-article">
+    <span class="demo-badge">주식 · 투자</span>
+    <div class="demo-title">코스피 6,000 — 신호인가, 편중인가</div>
+    <p class="demo-excerpt">지수 하나로 시장을 읽던 습관을 의심해야 할 신호를 본다.</p>
+    <div style="display:flex;gap:0.8rem;align-items:center;margin-top:0.5rem">
+      <div style="width:24px;height:24px;border-radius:50%;background:#ea580c;display:flex;align-items:center;justify-content:center;color:#fff;font-size:0.7rem;font-weight:800">M</div>
+      <span style="font-size:0.85rem;color:#ea580c;font-weight:700">Mills</span>
+      <span style="color:#9ca3af">·</span>
+      <span style="font-size:0.85rem;color:#64748b">2026-04-17</span>
+      <a href="#" class="demo-link" style="margin-left:auto">원문 보기</a>
+    </div>
+  </div>
+  
+  <div class="summary">
+    <h2>정리</h2>
+    <p><strong>P3-Fresh는 선명한 산뜻함을 추구합니다.</strong>
+    민트·코랄·인디고 3색으로 주제군을 시각화. 각 색이 명확한 의미를 가져
+    독자는 한눈에 카테고리를 인지합니다. 가장 젊고 가장 디지털적 — 다만
+    롱폼 매체의 진지함을 잃지 않도록 색 사용은 배지·선 포인트에만 제한.</p>
+  </div>
+  
+  <div class="cta">
+    <a href="/palettes-fresh/p3/home/">P3 홈 적용 샘플 보기 →</a>
+  </div>
+</div>
+</body>
+</html>
