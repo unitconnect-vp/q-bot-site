@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Q-Lens Fresh Palette 비교 | 발행인 결정용</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: 'Pretendard Variable', Pretendard, sans-serif; background: #f8fafc; color: #0f172a; font-size: 16px; line-height: 1.65; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  h1 { font-size: 2.8rem; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 0.3rem; }
+  .lead { color: #475569; font-size: 1.15rem; font-weight: 500; margin-bottom: 3rem; max-width: 42rem; }
+  
+  .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  
+  .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; display: flex; flex-direction: column; transition: transform 0.15s, box-shadow 0.15s; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(15,23,42,0.08); }
+  .card__label { font-size: 0.8rem; font-weight: 800; color: #64748b; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
+  .card__title { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.025em; margin: 0 0 0.5rem; line-height: 1.15; }
+  .card__subtitle { font-size: 0.95rem; color: #475569; margin: 0 0 1.5rem; }
+  .card__swatches { display: flex; gap: 0.25rem; height: 44px; margin-bottom: 1.5rem; border-radius: 6px; overflow: hidden; }
+  .card__swatches span { flex: 1; }
+  .card__desc { font-size: 0.92rem; color: #475569; line-height: 1.7; margin-bottom: 2rem; flex: 1; word-break: keep-all; }
+  .card__links { display: flex; gap: 0.5rem; }
+  .card__links a { flex: 1; text-align: center; padding: 0.75rem; text-decoration: none; font-size: 0.88rem; font-weight: 700; border: 1.5px solid; border-radius: 6px; }
+  
+  .card--p1 .card__links a.secondary { color: #6b9c7c; border-color: #6b9c7c; }
+  .card--p1 .card__links a.primary { background: #6b9c7c; border-color: #6b9c7c; color: #ffffff; }
+  .card--p1 .card__links a.primary:hover { background: #547d62; }
+  
+  .card--p2 .card__links a.secondary { color: #1d4ed8; border-color: #1d4ed8; }
+  .card--p2 .card__links a.primary { background: #1d4ed8; border-color: #1d4ed8; color: #ffffff; }
+  .card--p2 .card__links a.primary:hover { background: #1e40af; }
+  
+  .card--p3 .card__links a.secondary { color: #14b8a6; border-color: #14b8a6; }
+  .card--p3 .card__links a.primary { background: #14b8a6; border-color: #14b8a6; color: #ffffff; }
+  .card--p3 .card__links a.primary:hover { background: #0f766e; }
+  
+  .tldr { margin-top: 4rem; padding: 2rem; background: #0f172a; color: #ffffff; border-radius: 12px; }
+  .tldr h2 { color: #ffffff; font-size: 1.4rem; margin: 0 0 0.8rem; }
+  .tldr p { color: #cbd5e1; margin: 0; font-size: 0.95rem; line-height: 1.8; }
+  .tldr strong { color: #ffffff; }
+  .tldr em { color: #14b8a6; font-style: normal; font-weight: 700; }
+  
+  .meta { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #e2e8f0; font-size: 0.85rem; color: #64748b; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Q-Lens Fresh Palette 비교</h1>
+  <p class="lead">
+    "산뜻함"을 중심에 두고 기획한 3가지 팔레트 시안. 각 스펙 페이지에서 전체 색 시스템을,
+    "홈 적용" 링크에서 실제 사이트 반영 모습을 확인하실 수 있습니다.
+  </p>
+  
+  <div class="grid">
+    <!-- P1 -->
+    <div class="card card--p1">
+      <div class="card__label">P1 · FRESH</div>
+      <h2 class="card__title">Paper White + Sage</h2>
+      <p class="card__subtitle">Substack · Notion 읽기 모드 톤</p>
+      <div class="card__swatches">
+        <span style="background:#ffffff;border-bottom:1px solid #e5e7eb"></span>
+        <span style="background:#f5faf6"></span>
+        <span style="background:#87b595"></span>
+        <span style="background:#6b9c7c"></span>
+        <span style="background:#547d62"></span>
+        <span style="background:#1a1a1a"></span>
+      </div>
+      <p class="card__desc">
+        세이지 그린 한 가지로 모든 컬러 포인트를 통일.
+        필자 색 시스템은 폐기하고 모노그램 전부 세이지로 통일.
+        <strong>가장 조용한 산뜻함</strong> — 오래 봐도 지루하지 않은 선택.
+      </p>
+      <div class="card__links">
+        <a href="/palettes-fresh/p1/" class="secondary">팔레트 스펙</a>
+        <a href="/palettes-fresh/p1/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+    
+    <!-- P2 -->
+    <div class="card card--p2">
+      <div class="card__label">P2 · FRESH</div>
+      <h2 class="card__title">Coastal Blue</h2>
+      <p class="card__subtitle">The Atlantic · Stripe Press 톤</p>
+      <div class="card__swatches">
+        <span style="background:#f4f8fb"></span>
+        <span style="background:#eff6ff"></span>
+        <span style="background:#1e3a8a"></span>
+        <span style="background:#0e7490"></span>
+        <span style="background:#134e4a"></span>
+        <span style="background:#1d4ed8"></span>
+      </div>
+      <p class="card__desc">
+        배경의 거의 흰색에 가까운 쿨톤 틴트가 청량감을 부여.
+        파란 3톤 (딥블루·코스탈·마린)으로 필자를 그룹화.
+        <strong>청량한 매체다움</strong> — 신문지 잉크를 2026년 버전으로.
+      </p>
+      <div class="card__links">
+        <a href="/palettes-fresh/p2/" class="secondary">팔레트 스펙</a>
+        <a href="/palettes-fresh/p2/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+    
+    <!-- P3 -->
+    <div class="card card--p3">
+      <div class="card__label">P3 · FRESH</div>
+      <h2 class="card__title">Mint Breeze</h2>
+      <p class="card__subtitle">Vercel Blog · Webflow Blog 톤</p>
+      <div class="card__swatches">
+        <span style="background:#14b8a6"></span>
+        <span style="background:#f97316"></span>
+        <span style="background:#4f46e5"></span>
+        <span style="background:#ffffff;border-bottom:1px solid #e5e7eb"></span>
+        <span style="background:#f0fdfa"></span>
+        <span style="background:#0f172a"></span>
+      </div>
+      <p class="card__desc">
+        민트·코랄·인디고 3대 시그널 컬러로 주제군 시각화.
+        흰 배경 + 검정 텍스트 중립 시스템 위에서 색이 절제되어 강조로만 기능.
+        <strong>선명한 산뜻함</strong> — 가장 젊고 현대적.
+      </p>
+      <div class="card__links">
+        <a href="/palettes-fresh/p3/" class="secondary">팔레트 스펙</a>
+        <a href="/palettes-fresh/p3/home/" class="primary">홈 적용</a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="tldr">
+    <h2>PO 추천 순위</h2>
+    <p>
+      <em>🥇 P2 Coastal Blue</em> — Q렌즈의 지적·롱폼 정체성과 가장 잘 맞음. 청량하면서도 가볍지 않음.<br>
+      <em>🥈 P1 Paper White + Sage</em> — 가장 안전하고 오래 가는 선택. 단점은 "산뜻함의 강도"가 약함.<br>
+      <em>🥉 P3 Mint Breeze</em> — 가장 눈에 띄고 젊지만 한국 롱폼 매체로는 다소 튈 수 있음.
+    </p>
+    <p style="margin-top:1rem">
+      답변 예시 — <strong>"P2"</strong> / <strong>"P2, Mills 색만 조정"</strong> / <strong>"셋 다 별로"</strong>
+    </p>
+  </div>
+  
+  <p class="meta">Q-Lens · 2026-04-17 · PO Fresh 시안</p>
+</div>
+</body>
+</html>
