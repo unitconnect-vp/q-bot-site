@@ -306,3 +306,455 @@ img { max-width: 100%; display: block; }
     font-size: 1.75rem;
   }
 }
+
+/* ============================================================
+ * 홈 피드 v3.3 (토스피드 스타일 개편, 2026-04-17)
+ * ============================================================ */
+
+/* 공통 섹션 */
+.home-tagline {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 2.5rem 0;
+  line-height: 1.6;
+}
+
+.home-section {
+  margin-bottom: 4rem;
+}
+
+.section-head {
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  margin: 0 0 0.3rem 0;
+  letter-spacing: -0.01em;
+}
+
+.section-desc {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* --------- 섹션 1: 이 주의 콘텐츠 히어로 --------- */
+.home-hero-wrap {
+  margin-bottom: 4rem;
+}
+
+.hero-weekly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.hero-weekly:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.hero-weekly__img {
+  aspect-ratio: 1 / 1;
+  background: #f9fafb;
+  overflow: hidden;
+  border-radius: 6px;
+}
+.hero-weekly__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-weekly__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem 0;
+}
+
+.hero-weekly__label {
+  font-size: 0.75rem;
+  color: #16a34a;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+}
+
+.hero-weekly__title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  line-height: 1.3;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.02em;
+}
+
+.hero-weekly__excerpt {
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.65;
+  margin: 0 0 1.25rem 0;
+}
+
+.hero-weekly__meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+.hero-weekly__cat {
+  color: #16a34a;
+  font-weight: 700;
+}
+
+/* --------- 섹션 2: 번호 랭킹 --------- */
+.rank-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.rank-item {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rank-link {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.1rem 0;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.15s;
+}
+.rank-link:hover {
+  background: #f9fafb;
+}
+
+.rank-num {
+  flex: 0 0 auto;
+  width: 2.5rem;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #16a34a;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.rank-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.rank-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  line-height: 1.45;
+  margin: 0 0 0.25rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.rank-meta {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* --------- 섹션 3: 필진 --------- */
+.author-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.author-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+  --author-accent: #16a34a;
+}
+.author-card:hover {
+  border-color: var(--author-accent);
+  transform: translateY(-2px);
+}
+
+.author-logo {
+  width: 72px;
+  height: 72px;
+  margin-bottom: 1rem;
+}
+.author-logo img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.author-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--author-accent);
+  margin: 0 0 0.3rem 0;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.author-tagline {
+  font-size: 0.8rem;
+  color: #374151;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.author-count {
+  font-size: 0.72rem;
+  color: #9ca3af;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* --------- 섹션 4: 시리즈 --------- */
+.series-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.series-card {
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  border: 1px solid #e5e7eb;
+  border-left: 4px solid var(--series-accent, #b5470f);
+  border-radius: 6px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s, transform 0.2s;
+  --series-accent: #b5470f;
+  background: #fff;
+}
+.series-card:hover {
+  border-color: var(--series-accent);
+  border-left-color: var(--series-accent);
+  transform: translateY(-2px);
+}
+
+.series-emoji {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  line-height: 1;
+}
+
+.series-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #0a0a0a;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.series-desc {
+  font-size: 0.85rem;
+  color: #374151;
+  line-height: 1.6;
+  margin: 0 0 1rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.series-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: auto 0 0 0;
+  font-weight: 600;
+}
+
+/* --------- 섹션 5: 계산기 허브 --------- */
+.calc-hub {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 1.75rem;
+}
+.calc-hub__desc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin: 0 0 1rem 0;
+}
+.calc-hub__btn {
+  display: inline-block;
+  background: #16a34a;
+  color: #fff;
+  padding: 0.7rem 1.4rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.calc-hub__btn:hover {
+  background: #15803d;
+}
+
+/* --------- 섹션 6: 최신 아티클 --------- */
+.recent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+
+.recent-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+}
+.recent-card:hover {
+  border-color: #16a34a;
+  transform: translateY(-2px);
+}
+
+.recent-thumb {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  background: #f9fafb;
+}
+
+.recent-body {
+  padding: 1rem;
+}
+
+.recent-cat {
+  font-size: 0.72rem;
+  color: #16a34a;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin: 0 0 0.4rem 0;
+  text-transform: uppercase;
+}
+
+.recent-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #0a0a0a;
+  line-height: 1.45;
+  margin: 0 0 0.5rem 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recent-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin: 0;
+}
+
+/* --------- 반응형 (모바일) --------- */
+@media (max-width: 768px) {
+  .hero-weekly {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .hero-weekly__img {
+    aspect-ratio: 16 / 10;
+  }
+  .hero-weekly__title {
+    font-size: 1.45rem;
+  }
+  .author-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+  }
+  .author-card {
+    padding: 1.25rem 0.6rem;
+  }
+  .author-logo {
+    width: 52px;
+    height: 52px;
+    margin-bottom: 0.6rem;
+  }
+  .author-name {
+    font-size: 0.95rem;
+  }
+  .author-tagline {
+    font-size: 0.72rem;
+  }
+  .author-count {
+    font-size: 0.68rem;
+  }
+  .recent-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .rank-num {
+    width: 2rem;
+    font-size: 1.2rem;
+  }
+  .rank-title {
+    font-size: 0.92rem;
+  }
+  .section-title {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recent-grid {
+    grid-template-columns: 1fr;
+  }
+  .hero-weekly__title {
+    font-size: 1.3rem;
+  }
+}
+
+/* 로고 줄바꿈 방지 + 모바일 네비 간격 최적화 (v3.3) */
+.site-logo {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+@media (max-width: 560px) {
+  .site-header {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.75rem;
+  }
+  .site-nav a {
+    font-size: 0.78rem;
+    margin-left: 0;
+    margin-right: 0.85rem;
+  }
+  .site-nav a:last-child {
+    margin-right: 0;
+  }
+}
