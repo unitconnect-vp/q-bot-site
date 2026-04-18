@@ -82,6 +82,7 @@
       renderHomeFeatured(sorted, authorsArr);
       renderHomeRanking(sorted, authorsArr);
       renderHomeRecent(sorted, authorsArr);
+      renderHomeTools();
       renderHomeWriters(authorsArr, sorted);
       renderHomeSeries(seriesArr, sorted);
     }).catch(handleError);
@@ -174,7 +175,7 @@
   function renderHomeRecent(articles, authorsArr) {
     const host = document.getElementById('home-recent');
     if (!host) return;
-    const recent = articles.slice(0, 8);
+    const recent = articles.slice(0, 4);
     host.innerHTML = recent.map(a => {
       const group = authorGroup(a.author, authorsArr);
       return `
@@ -205,7 +206,7 @@
         latestByAuthor[key] = a;
       }
     });
-    const show = authors.slice(0, 10);
+    const show = authors.slice(0, 2);
     host.innerHTML = show.map(w => {
       const latest = latestByAuthor[w.name] || latestByAuthor[w.name_kr];
       return `
@@ -236,6 +237,29 @@
         <div class="series-card__name">${esc(s.name)}</div>
         <div class="series-card__desc">${esc(s.description || '')}</div>
         <div class="series-card__count">아티클 ${counts[s.id] || 0}편</div>
+      </a>
+    `).join('');
+  }
+
+  // ============================================
+  // 9.5. 홈 — 계산기 (외부 도구 4개)
+  // ============================================
+  function renderHomeTools() {
+    const host = document.getElementById('home-tools');
+    if (!host) return;
+    const TOOLS_BASE = 'https://heyqbot.github.io/qlens-tools';
+    const tools = [
+      { slug: 'salary-calculator',     name: '연봉 실수령액',  desc: '월급에서 떼이는 세금·4대보험을 뺀 실수령액을 계산합니다.' },
+      { slug: 'severance-calculator',  name: '퇴직금',         desc: '근속연수와 평균임금으로 세전·세후 퇴직금을 계산합니다.' },
+      { slug: 'unemployment-calculator', name: '실업급여',     desc: '고용보험 가입기간과 나이로 지급액·지급일수를 계산합니다.' },
+      { slug: 'compound-calculator',   name: '복리 투자',      desc: '매월 적립식 투자의 복리 수익을 시각화합니다.' }
+    ];
+    host.innerHTML = tools.map(t => `
+      <a href="${TOOLS_BASE}/${t.slug}.html" target="_blank" rel="noopener" class="card card--text">
+        <div class="card__cat">계산기</div>
+        <div class="card__title">${esc(t.name)}</div>
+        <div class="card__excerpt">${esc(t.desc)}</div>
+        <div class="card__meta">qlens-tools</div>
       </a>
     `).join('');
   }
@@ -371,10 +395,7 @@
         <h2 style="font-size:1.5rem; font-weight:800; letter-spacing:-0.035em; margin-bottom:20px;">${esc(groupLabels[g])}</h2>
         <div class="card-grid">
           ${groups[g].map(c => `
-            <a href="/categories/${esc(c.slug)}/" class="card">
-              <div class="card__thumb g-${g}" style="display:flex; align-items:center; justify-content:center; color:#fff; font-size:1.25rem; font-weight:800; letter-spacing:-0.03em;">
-                ${esc(c.name)}
-              </div>
+            <a href="/categories/${esc(c.slug)}/" class="card card--text">
               <div class="card__cat">카테고리</div>
               <div class="card__title">${esc(c.name)}</div>
               <div class="card__excerpt">${esc(c.description || '')}</div>
