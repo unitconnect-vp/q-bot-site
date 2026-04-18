@@ -442,3 +442,43 @@
   }
 
 })();
+
+
+/* ================================================================
+ * QLENS_COUNTER_BLOCK_V1 — 방문자 카운터 (2026-04-18 추가)
+ * 엔드포인트 counter.q-bot.kr 미배포 시엔 조용히 실패하고 카운터 영역 숨김.
+ * ================================================================ */
+(function () {
+  'use strict';
+  var COUNTER_ENDPOINT = "https://counter.q-bot.kr";
+  var targets = document.querySelectorAll(".ql-views, .ql-views-footer");
+  if (targets.length === 0) return;
+  var slug = targets[0].getAttribute("data-slug");
+  if (!slug) return;
+
+  var sessionKey = "ql-view:" + slug;
+  var endpoint = sessionStorage.getItem(sessionKey)
+    ? COUNTER_ENDPOINT + "/count/" + encodeURIComponent(slug)
+    : COUNTER_ENDPOINT + "/view/" + encodeURIComponent(slug);
+
+  function hideAll() {
+    targets.forEach(function (el) { el.style.display = "none"; });
+  }
+
+  fetch(endpoint, { method: "GET", mode: "cors", credentials: "omit" })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data || typeof data.views !== "number") { hideAll(); return; }
+      sessionStorage.setItem(sessionKey, "1");
+      var formatted = data.views.toLocaleString("ko-KR");
+      targets.forEach(function (el) {
+        if (el.classList.contains("ql-views")) {
+          el.textContent = "읽음 " + formatted;
+        } else if (el.classList.contains("ql-views-footer")) {
+          el.textContent = "이 글을 " + formatted + "명이 읽었습니다";
+        }
+        el.style.display = "";
+      });
+    })
+    .catch(hideAll);
+})();
