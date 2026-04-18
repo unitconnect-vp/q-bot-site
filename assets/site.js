@@ -390,9 +390,8 @@
       sunset: '조직·성장'
     };
     host.innerHTML = Object.keys(groups).filter(g => groups[g].length > 0).map(g => `
-      <div class="section g-${g}" style="border-top:4px solid #000; position:relative; padding:48px 0;">
-        <div style="position:absolute; top:-4px; left:0; width:48px; height:4px; background:var(--pv-accent);"></div>
-        <h2 style="font-size:1.5rem; font-weight:800; letter-spacing:-0.035em; margin-bottom:20px;">${esc(groupLabels[g])}</h2>
+      <div class="section" style="border-top:1px solid #e5e7eb; padding:40px 0 32px;">
+        <h2 style="font-size:1.25rem; font-weight:800; letter-spacing:-0.03em; color:#0a0a0a; margin-bottom:20px;">${esc(groupLabels[g])}</h2>
         <div class="card-grid">
           ${groups[g].map(c => `
             <a href="/categories/${esc(c.slug)}/" class="card card--text">
