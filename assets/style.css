@@ -125,6 +125,13 @@ button { font-family: inherit; cursor: pointer; }
 .section:first-of-type::before { display: none; }
 
 .section-head { margin-bottom: 40px; }
+.section-head--row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 .section-head h2 {
   font-size: 1.75rem;
   font-weight: 800;
@@ -137,6 +144,16 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--ink-muted);
   letter-spacing: -0.015em;
 }
+.section-more {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+  padding-bottom: 4px;
+  transition: color 0.15s;
+}
+.section-more:hover { color: var(--accent-hover); }
 
 /* ===== HERO FEATURED ===== */
 .hero-featured {
@@ -316,6 +333,36 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.8125rem;
   color: var(--ink-soft);
   margin-top: auto;
+}
+
+/* ===== CARD (TEXT-ONLY) — 썸네일 없는 카드 ===== */
+.card--text {
+  padding: 24px 22px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background: #ffffff;
+  transition: border-color 0.15s, transform 0.2s;
+}
+.card--text:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.card--text .card__cat {
+  margin-bottom: 10px;
+}
+.card--text .card__title {
+  font-size: 1.125rem;
+  margin-bottom: 8px;
+  -webkit-line-clamp: 2;
+}
+.card--text .card__excerpt {
+  -webkit-line-clamp: 3;
+  margin-bottom: 14px;
+}
+.card--text .card__meta {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  font-weight: 500;
 }
 
 /* ===== WRITERS ===== */
