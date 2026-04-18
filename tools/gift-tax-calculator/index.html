@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>증여세 계산기 | Q-Lens</title>
+<meta name="description" content="현금·부동산 증여 시 예상 증여세를 계산합니다. 증여재산공제·세율 자동 반영. 2025년 기준.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fff; color: #111; font-size: 17px; line-height: 1.6; padding: 2rem 1.25rem 4rem; max-width: 640px; margin: 0 auto; }
+.page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+.field { margin-bottom: 1.1rem; } .field:last-child { margin-bottom: 0; }
+.field label { display: block; font-size: 0.92rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+.field-hint { font-size: 0.82rem; color: #9ca3af; font-weight: 400; margin-left: 0.3rem; }
+.input-wrap { display: flex; align-items: center; gap: 0.5rem; }
+input[type="text"] { flex: 1; padding: 0.65rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem; font-family: inherit; color: #111; background: #fff; outline: none; transition: border-color 0.15s; }
+input:focus { border-color: #3182f6; }
+.input-unit { font-size: 0.88rem; color: #6b7280; white-space: nowrap; }
+.toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.toggle { padding: 0.45rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #6b7280; font-size: 0.88rem; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.toggle:hover { border-color: #3182f6; color: #3182f6; }
+.toggle.active { background: #3182f6; border-color: #3182f6; color: #fff; font-weight: 600; }
+.btn { width: 100%; padding: 0.9rem; background: #3182f6; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.15s; margin-bottom: 1.25rem; }
+.btn:hover { background: #1b64da; }
+.result { display: none; } .result.on { display: block; }
+.hero-result { background: #111; border-radius: 8px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; text-align: center; }
+.hero-label { font-size: 0.78rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.hero-amount { font-size: 2.2rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.4rem; }
+.hero-sub { font-size: 0.88rem; color: #93c5fd; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+.summary-cell { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; }
+.summary-cell-label { font-size: 0.82rem; color: #6b7280; margin-bottom: 0.3rem; }
+.summary-cell-val { font-size: 1.15rem; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.detail-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
+.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
+.detail-row:last-child { border-bottom: none; }
+.detail-name { color: #374151; } .detail-sub { font-size: 0.82rem; color: #9ca3af; margin-left: 0.3rem; }
+.detail-val { font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.detail-val.neg { color: #dc2626; } .detail-val.pos { color: #3182f6; }
+.detail-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #f9fafb; border-top: 2px solid #e5e7eb; font-size: 1rem; font-weight: 700; }
+.notice-box { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3182f6; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: #1e40af; line-height: 1.7; }
+.dl-btn { display: none; width: 100%; padding: 0.8rem; background: #fff; color: #3182f6; border: 1.5px solid #3182f6; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; margin-bottom: 1rem; }
+.dl-btn:hover { background: #eff6ff; } .dl-btn.visible { display: block; }
+.note { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
+.brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
+.brand a { color: #3182f6; text-decoration: none; }
+@media (max-width: 480px) { .summary-grid { grid-template-columns: 1fr; } .hero-amount { font-size: 1.8rem; } }
+@media print {
+  body { padding: 0; font-size: 13px; }
+  .hero-result { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero-amount { color: #fff !important; } .hero-sub { color: #93c5fd !important; }
+  .btn, .dl-btn, .card { display: none !important; } .brand { display: none; }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/gift-tax-calculator/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<p class="page-label">Q-Lens · 도구</p>
+<h1 class="page-title">증여세 계산기</h1>
+<p class="page-desc">현금·부동산 증여 시 예상 세금 · 증여재산공제 자동 반영 · 2025년 기준</p>
+
+<div class="card">
+  <p class="card-title">증여 정보</p>
+  <div class="field">
+    <label for="gift-amt">증여 금액</label>
+    <div class="input-wrap">
+      <input type="text" id="gift-amt" placeholder="100,000,000" inputmode="numeric">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="field">
+    <label>증여자 (주는 사람)</label>
+    <div class="toggle-group" id="donor">
+      <button class="toggle active" data-deduct="50000000">직계존속 (부모·조부모)</button>
+      <button class="toggle" data-deduct="10000000">직계비속 (자녀·손자)</button>
+      <button class="toggle" data-deduct="60000000">배우자</button>
+      <button class="toggle" data-deduct="5000000">기타 친족</button>
+    </div>
+  </div>
+  <div class="field">
+    <label>수증자 나이 <span class="field-hint">직계존속 증여 시만 해당</span></label>
+    <div class="toggle-group" id="age">
+      <button class="toggle active" data-value="adult">성인 (만 19세 이상)</button>
+      <button class="toggle" data-value="minor">미성년자</button>
+    </div>
+  </div>
+  <div class="field">
+    <label for="prev-gift">10년 내 기증여액 <span class="field-hint">없으면 0</span></label>
+    <div class="input-wrap">
+      <input type="text" id="prev-gift" placeholder="0" inputmode="numeric" value="0">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+</div>
+
+<button class="btn" onclick="calc()">증여세 계산하기</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">↓ 결과 PDF로 저장</button>
+
+<div class="result" id="result">
+  <div class="hero-result">
+    <p class="hero-label">예상 증여세</p>
+    <p class="hero-amount" id="h-tax">—</p>
+    <p class="hero-sub" id="h-rate">실효세율 —%</p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <p class="summary-cell-label">증여재산공제</p>
+      <p class="summary-cell-val" id="s-deduct">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">과세표준</p>
+      <p class="summary-cell-val" id="s-base">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">적용 세율</p>
+      <p class="summary-cell-val" id="s-rate">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">신고세액공제</p>
+      <p class="summary-cell-val" id="s-credit">—</p>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <p class="detail-head">계산 내역</p>
+    <div class="detail-row"><span class="detail-name">증여 금액</span><span class="detail-val" id="d-gift">—</span></div>
+    <div class="detail-row"><span class="detail-name">10년 내 기증여액</span><span class="detail-val" id="d-prev">—</span></div>
+    <div class="detail-row"><span class="detail-name">증여재산공제 <span class="detail-sub" id="d-deduct-label"></span></span><span class="detail-val neg" id="d-deduct">—</span></div>
+    <div class="detail-total"><span>과세표준</span><span id="d-base">—</span></div>
+    <div class="detail-row"><span class="detail-name">산출세액 <span class="detail-sub" id="d-bracket"></span></span><span class="detail-val" id="d-calc">—</span></div>
+    <div class="detail-row"><span class="detail-name">신고세액공제 <span class="detail-sub">(산출세액×3%)</span></span><span class="detail-val neg" id="d-credit">—</span></div>
+    <div class="detail-total"><span>납부할 증여세</span><span style="color:#dc2626" id="d-final">—</span></div>
+  </div>
+
+  <div id="notice-el"></div>
+
+  <p class="note">
+    <strong>2025년 기준:</strong> 증여재산공제: 배우자 6억원, 직계존속 5천만원(미성년자 2천만원), 직계비속 5천만원, 기타 친족 1천만원 (10년 합산). 세율 10%~50%. 신고기한(3개월) 내 자진신고 시 3% 공제.<br><br>
+    <strong>출처:</strong> 상속세 및 증여세법 (2025) · 국세청 (2025)
+  </p>
+</div>
+
+<p class="brand"><a href="https://q-bot.kr" target="_blank">Q-Lens</a></p>
+
+<script>
+document.querySelectorAll('.toggle-group').forEach(function(g) {
+  g.querySelectorAll('.toggle').forEach(function(b) {
+    b.addEventListener('click', function() {
+      g.querySelectorAll('.toggle').forEach(function(x) { x.classList.remove('active'); });
+      b.classList.add('active');
+    });
+  });
+});
+['gift-amt','prev-gift'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() {
+    var raw = this.value.replace(/[^0-9]/g, '');
+    this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+  });
+});
+function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g,'')) || 0; }
+function getToggle(gid, attr) { var el = document.querySelector('#'+gid+' .toggle.active'); return el ? el.dataset[attr] : null; }
+function fmt(n) { return Math.round(Math.abs(n)).toLocaleString('ko-KR')+'원'; }
+
+var BRACKETS = [
+  [100000000, 0.10, 0],
+  [500000000, 0.20, 10000000],
+  [1000000000,0.30, 60000000],
+  [3000000000,0.40, 160000000],
+  [Infinity,  0.50, 460000000],
+];
+var BRACKET_LABELS = ['10%','20%','30%','40%','50%'];
+
+function calcTax(base) {
+  if (base <= 0) return 0;
+  for (var i = 0; i < BRACKETS.length; i++) {
+    if (base <= BRACKETS[i][0]) return base * BRACKETS[i][1] - BRACKETS[i][2];
+  }
+}
+function getBracket(base) {
+  for (var i = 0; i < BRACKETS.length; i++) {
+    if (base <= BRACKETS[i][0]) return BRACKET_LABELS[i]+' 구간';
+  }
+  return '50% 구간';
+}
+
+function calc() {
+  var gift = getNum('gift-amt');
+  if (!gift) { document.getElementById('gift-amt').focus(); return; }
+
+  var donorDeduct = Number(getToggle('donor','deduct'));
+  var isMinor     = getToggle('age','value') === 'minor';
+  var prev        = getNum('prev-gift');
+
+  // 미성년자 직계존속 공제 2천만원
+  var donorEl = document.querySelector('#donor .toggle.active');
+  var isDirect = donorEl && donorEl.dataset.deduct === '50000000';
+  if (isDirect && isMinor) donorDeduct = 20000000;
+
+  var totalGift = gift + prev;
+  var deductUsed = Math.min(donorDeduct, totalGift);
+  var taxBase    = Math.max(0, totalGift - deductUsed);
+  var calcTaxAmt = calcTax(taxBase);
+  var credit     = Math.floor(calcTaxAmt * 0.03);
+  var finalTax   = Math.max(0, calcTaxAmt - credit);
+  var effRate    = gift > 0 ? (finalTax / gift * 100).toFixed(1) : '0';
+
+  document.getElementById('h-tax').textContent   = fmt(finalTax);
+  document.getElementById('h-rate').textContent  = '실효세율 ' + effRate + '%';
+  document.getElementById('s-deduct').textContent = fmt(deductUsed);
+  document.getElementById('s-base').textContent   = fmt(taxBase);
+  document.getElementById('s-rate').textContent   = getBracket(taxBase);
+  document.getElementById('s-credit').textContent = fmt(credit);
+
+  document.getElementById('d-gift').textContent         = fmt(gift);
+  document.getElementById('d-prev').textContent         = fmt(prev);
+  document.getElementById('d-deduct-label').textContent = '(' + fmt(donorDeduct) + ' 한도)';
+  document.getElementById('d-deduct').textContent       = '−' + fmt(deductUsed);
+  document.getElementById('d-base').textContent         = fmt(taxBase);
+  document.getElementById('d-bracket').textContent      = getBracket(taxBase);
+  document.getElementById('d-calc').textContent         = fmt(calcTaxAmt);
+  document.getElementById('d-credit').textContent       = '−' + fmt(credit);
+  document.getElementById('d-final').textContent        = fmt(finalTax);
+
+  var notice = taxBase === 0
+    ? '<div class="notice-box">공제 한도 내 증여입니다. 증여세가 없습니다.</div>'
+    : '';
+  document.getElementById('notice-el').innerHTML = notice;
+
+  var r = document.getElementById('result');
+  r.classList.add('on');
+  document.getElementById('dl-btn').classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function downloadPDF() { var t=document.title; document.title='증여세 계산기 결과 | Q-Lens'; window.print(); document.title=t; }
+</script>
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
