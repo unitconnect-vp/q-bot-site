@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대출 이자·상환 계산기 | Q-Lens</title>
+<meta name="description" content="원리금균등·원금균등 상환 방식 비교. 총 이자·월 납입금·상환 스케줄 계산.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fff; color: #111; font-size: 17px; line-height: 1.6; padding: 2rem 1.25rem 4rem; max-width: 640px; margin: 0 auto; }
+.page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+.field { margin-bottom: 1.1rem; } .field:last-child { margin-bottom: 0; }
+.field label { display: block; font-size: 0.92rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+.field-hint { font-size: 0.82rem; color: #9ca3af; font-weight: 400; margin-left: 0.3rem; }
+.input-wrap { display: flex; align-items: center; gap: 0.5rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+input[type="text"] { flex: 1; padding: 0.65rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem; font-family: inherit; color: #111; background: #fff; outline: none; transition: border-color 0.15s; }
+input:focus { border-color: #3182f6; }
+.input-unit { font-size: 0.88rem; color: #6b7280; white-space: nowrap; }
+.toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.toggle { padding: 0.45rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #6b7280; font-size: 0.88rem; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.toggle:hover { border-color: #3182f6; color: #3182f6; }
+.toggle.active { background: #3182f6; border-color: #3182f6; color: #fff; font-weight: 600; }
+.btn { width: 100%; padding: 0.9rem; background: #3182f6; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.15s; margin-bottom: 1.25rem; }
+.btn:hover { background: #1b64da; }
+.result { display: none; } .result.on { display: block; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #111; border-radius: 8px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; }
+.hero-cell { text-align: center; }
+.hero-label { font-size: 0.75rem; color: rgba(255,255,255,0.45); letter-spacing: 0.06em; margin-bottom: 0.4rem; }
+.hero-amount { font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: -0.02em; line-height: 1.1; }
+.hero-amount.green { color: #93c5fd; }
+.hero-amount.red   { color: #fca5a5; }
+.hero-sub { font-size: 0.78rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; }
+.compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+.compare-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.compare-head { padding: 0.75rem 1rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; color: #374151; text-align: center; }
+.compare-row { display: flex; justify-content: space-between; padding: 0.6rem 1rem; border-bottom: 1px solid #f3f4f6; font-size: 0.88rem; }
+.compare-row:last-child { border-bottom: none; }
+.compare-label { color: #6b7280; }
+.compare-val   { font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.compare-val.red { color: #dc2626; }
+.compare-val.green { color: #3182f6; }
+.detail-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
+.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+.year-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.year-table th { padding: 0.55rem 0.9rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.75rem; font-weight: 700; color: #6b7280; text-align: right; }
+.year-table th:first-child { text-align: left; }
+.year-table td { padding: 0.55rem 0.9rem; border-bottom: 1px solid #f3f4f6; text-align: right; font-variant-numeric: tabular-nums; font-size: 0.85rem; color: #374151; }
+.year-table td:first-child { text-align: left; font-weight: 600; color: #111; }
+.year-table tr:last-child td { border-bottom: none; font-weight: 700; background: #f9fafb; }
+.notice-box { background: #eff6ff; border: 1px solid #bfdbfe; border-left: 3px solid #3182f6; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: #1e40af; line-height: 1.7; }
+.dl-btn { display: none; width: 100%; padding: 0.8rem; background: #fff; color: #3182f6; border: 1.5px solid #3182f6; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; margin-bottom: 1rem; }
+.dl-btn:hover { background: #eff6ff; } .dl-btn.visible { display: block; }
+.note { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
+.brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
+.brand a { color: #3182f6; text-decoration: none; }
+@media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } .compare-grid { grid-template-columns: 1fr; } .hero-grid { grid-template-columns: 1fr; } }
+@media print {
+  body { padding: 0; font-size: 13px; }
+  .hero-grid { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero-amount { color: #fff !important; }
+  .btn, .dl-btn, .card { display: none !important; } .brand { display: none; }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/loan-calculator/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<p class="page-label">Q-Lens · 도구</p>
+<h1 class="page-title">대출 이자·상환 계산기</h1>
+<p class="page-desc">원리금균등·원금균등 방식 비교 · 총 이자 및 월 납입금 계산</p>
+
+<div class="card">
+  <p class="card-title">대출 조건</p>
+  <div class="field">
+    <label for="loan-amt">대출 금액</label>
+    <div class="input-wrap">
+      <input type="text" id="loan-amt" placeholder="200,000,000" inputmode="numeric">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="field">
+      <label for="loan-rate">연 금리</label>
+      <div class="input-wrap">
+        <input type="text" id="loan-rate" placeholder="4.5" inputmode="decimal">
+        <span class="input-unit">%</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="loan-years">대출 기간</label>
+      <div class="input-wrap">
+        <input type="text" id="loan-years" placeholder="30" inputmode="numeric">
+        <span class="input-unit">년</span>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>상환 방식</label>
+    <div class="toggle-group" id="repay-type">
+      <button class="toggle active" data-value="equal-payment">원리금균등 <span style="font-size:0.78rem;opacity:0.7">(매달 동일 금액)</span></button>
+      <button class="toggle" data-value="equal-principal">원금균등 <span style="font-size:0.78rem;opacity:0.7">(초기 부담 큼)</span></button>
+      <button class="toggle" data-value="both">둘 다 비교</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn" onclick="calc()">상환 계획 계산하기</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">↓ 결과 PDF로 저장</button>
+
+<div class="result" id="result">
+  <div class="hero-grid">
+    <div class="hero-cell">
+      <p class="hero-label">대출 원금</p>
+      <p class="hero-amount" id="h-principal">—</p>
+    </div>
+    <div class="hero-cell">
+      <p class="hero-label">총 이자 (원리금균등)</p>
+      <p class="hero-amount red" id="h-interest">—</p>
+      <p class="hero-sub" id="h-interest-sub">—</p>
+    </div>
+  </div>
+
+  <div class="compare-grid" id="compare-grid"></div>
+
+  <div class="detail-card">
+    <p class="detail-head" id="table-head">연도별 상환 현황</p>
+    <div style="overflow-x:auto;">
+      <table class="year-table">
+        <thead>
+          <tr>
+            <th>시점</th>
+            <th>월 납입금</th>
+            <th>이자 납부</th>
+            <th>잔여 원금</th>
+          </tr>
+        </thead>
+        <tbody id="repay-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="notice-el"></div>
+
+  <p class="note">
+    원리금균등: 매달 동일한 금액 납부. 초기에 이자 비중이 높고 후반에 원금 비중이 높아짐.<br>
+    원금균등: 매달 동일한 원금 + 잔여 원금에 대한 이자 납부. 초기 부담이 크지만 총 이자가 적음.
+  </p>
+</div>
+
+<p class="brand"><a href="https://q-bot.kr" target="_blank">Q-Lens</a></p>
+
+<script>
+document.querySelectorAll('.toggle-group').forEach(function(g) {
+  g.querySelectorAll('.toggle').forEach(function(b) {
+    b.addEventListener('click', function() {
+      g.querySelectorAll('.toggle').forEach(function(x) { x.classList.remove('active'); });
+      b.classList.add('active');
+    });
+  });
+});
+document.getElementById('loan-amt').addEventListener('input', function() {
+  var raw = this.value.replace(/[^0-9]/g,'');
+  this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+});
+function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g,'')) || 0; }
+function fmt(n) { return Math.round(n).toLocaleString('ko-KR')+'원'; }
+
+function calcEqualPayment(P, monthlyRate, months) {
+  if (monthlyRate === 0) return { monthly: P/months, totalInterest: 0 };
+  var m = monthlyRate;
+  var monthly = P * m * Math.pow(1+m, months) / (Math.pow(1+m, months) - 1);
+  return { monthly: monthly, totalInterest: monthly * months - P };
+}
+
+function calc() {
+  var P     = getNum('loan-amt');
+  var rate  = parseFloat(document.getElementById('loan-rate').value) || 0;
+  var years = parseInt(document.getElementById('loan-years').value) || 0;
+  var type  = document.querySelector('#repay-type .toggle.active').dataset.value;
+
+  if (!P || !rate || !years) { alert('대출 조건을 모두 입력해주세요.'); return; }
+
+  var monthlyRate = rate / 100 / 12;
+  var months      = years * 12;
+
+  var ep = calcEqualPayment(P, monthlyRate, months);
+  var epTotal = ep.totalInterest;
+
+  // 원금균등 총 이자
+  var eqTotal = 0;
+  var remain  = P;
+  var principalM = P / months;
+  for (var i = 0; i < months; i++) {
+    eqTotal += remain * monthlyRate;
+    remain  -= principalM;
+  }
+
+  document.getElementById('h-principal').textContent  = fmt(P);
+  document.getElementById('h-interest').textContent   = fmt(epTotal);
+  document.getElementById('h-interest-sub').textContent = '대출액의 ' + (epTotal/P*100).toFixed(1) + '%';
+
+  // 비교 카드
+  var compareHTML = '';
+  if (type === 'equal-payment' || type === 'both') {
+    compareHTML += '<div class="compare-card">' +
+      '<div class="compare-head">원리금균등</div>' +
+      '<div class="compare-row"><span class="compare-label">월 납입금</span><span class="compare-val">' + fmt(ep.monthly) + '</span></div>' +
+      '<div class="compare-row"><span class="compare-label">총 이자</span><span class="compare-val red">' + fmt(epTotal) + '</span></div>' +
+      '<div class="compare-row"><span class="compare-label">총 납부액</span><span class="compare-val">' + fmt(P + epTotal) + '</span></div>' +
+      '</div>';
+  }
+  if (type === 'equal-principal' || type === 'both') {
+    var eqFirst = principalM + P * monthlyRate;
+    compareHTML += '<div class="compare-card">' +
+      '<div class="compare-head">원금균등</div>' +
+      '<div class="compare-row"><span class="compare-label">첫 달 납입금</span><span class="compare-val">' + fmt(eqFirst) + '</span></div>' +
+      '<div class="compare-row"><span class="compare-label">총 이자</span><span class="compare-val red">' + fmt(eqTotal) + '</span></div>' +
+      '<div class="compare-row"><span class="compare-label">이자 절감</span><span class="compare-val green">' + fmt(epTotal - eqTotal) + '</span></div>' +
+      '</div>';
+  }
+  document.getElementById('compare-grid').innerHTML = compareHTML;
+
+  // 연도별 테이블 (원리금균등 기준)
+  var tbody = document.getElementById('repay-body');
+  tbody.innerHTML = '';
+  var milestones = [1,3,5,10,15,20,25,30].filter(function(y){ return y <= years; });
+  if (!milestones.includes(years)) milestones.push(years);
+
+  var balance = P;
+  var totalInterestPaid = 0;
+  var curMonth = 0;
+
+  milestones.forEach(function(y) {
+    var targetMonth = y * 12;
+    while (curMonth < targetMonth) {
+      var interest = balance * monthlyRate;
+      var principal2 = ep.monthly - interest;
+      totalInterestPaid += interest;
+      balance -= principal2;
+      curMonth++;
+    }
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + y + '년</td>' +
+      '<td>' + fmt(ep.monthly) + '</td>' +
+      '<td style="color:#dc2626">' + fmt(totalInterestPaid) + '</td>' +
+      '<td>' + fmt(Math.max(0, balance)) + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  var saving = epTotal - eqTotal;
+  var notice = type === 'both' && saving > 0
+    ? '<div class="notice-box">원금균등 방식을 선택하면 총 <strong>' + fmt(saving) + '</strong>의 이자를 절약할 수 있습니다. 단 초기 월 납입금이 ' + fmt(eqFirst - ep.monthly) + ' 더 많습니다.</div>'
+    : '';
+  document.getElementById('notice-el').innerHTML = notice;
+
+  var r = document.getElementById('result');
+  r.classList.add('on');
+  document.getElementById('dl-btn').classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function downloadPDF() { var t=document.title; document.title='대출 이자 계산기 결과 | Q-Lens'; window.print(); document.title=t; }
+</script>
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
