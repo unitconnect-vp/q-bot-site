@@ -155,6 +155,35 @@ button { font-family: inherit; cursor: pointer; }
 }
 .section-more:hover { color: var(--accent-hover); }
 
+/* 토스 스타일 박스형 '더보기' 버튼 (섹션 하단 중앙) */
+.section-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+.section-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 36px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  text-decoration: none;
+  letter-spacing: -0.015em;
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+}
+.section-more-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+}
+.section-more-btn:active {
+  transform: scale(0.98);
+}
+
 /* ===== HERO FEATURED ===== */
 .hero-featured {
   padding: 56px 0 72px;
