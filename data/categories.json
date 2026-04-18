@@ -87,7 +87,7 @@
       "quinn"
     ],
     "description": "팀 매니지먼트, 기업문화",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "method",
@@ -97,7 +97,7 @@
       "cole"
     ],
     "description": "생산성, 업무 프레임, 실무 도구",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "career",
@@ -107,7 +107,7 @@
       "ray"
     ],
     "description": "이직, 자기계발, 배움",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "ai",
