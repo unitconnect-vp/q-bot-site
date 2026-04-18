@@ -928,3 +928,127 @@ button { font-family: inherit; cursor: pointer; }
   .ql-rr-actions { flex-direction: column; gap: 0.5rem; }
   .ql-rr-btn { width: 100%; justify-content: center; }
 }
+
+
+/* ============================================================
+ * HUB LAYOUT (v3.5 patch, 2026-04-19)
+ * /articles/, /authors/, /categories/ 공통 컨테이너 + 페이지 헤더
+ * ============================================================ */
+
+.feed-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 96px;
+}
+
+.page-head {
+  border-top: 4px solid var(--ink-strong);
+  padding: 32px 0 36px;
+  margin-bottom: 32px;
+  position: relative;
+}
+.page-head::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--accent);
+}
+.page-head__label {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.page-head__title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--ink-strong);
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.page-head__desc {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--ink-muted);
+  max-width: 640px;
+  word-break: keep-all;
+}
+.page-head__desc a {
+  color: var(--accent);
+  font-weight: 700;
+}
+.page-head__desc a:hover { color: var(--accent-hover); }
+
+/* ===== ARTICLE HUB FEED ===== */
+.feed-recent {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px 28px;
+}
+
+/* 허브용 카드 (하이픈 네이밍) — 홈의 BEM 카드와 동일 스타일을 공유 */
+.feed-recent .card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.feed-recent .card:hover { transform: translateY(-2px); }
+.card-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--pv-bg, #0f172a);
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.card-cat {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.03em;
+  color: var(--ink-strong);
+  margin-bottom: 8px;
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.card-meta {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  margin-top: auto;
+}
+
+/* ===== HUB RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .feed-wrap { padding: 36px 20px 72px; }
+  .page-head__title { font-size: 1.625rem; }
+  .feed-recent { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
+}
+@media (max-width: 560px) {
+  .feed-wrap { padding: 28px 16px 56px; }
+  .page-head { padding: 24px 0 28px; margin-bottom: 24px; }
+  .page-head__title { font-size: 1.375rem; }
+  .feed-recent { grid-template-columns: 1fr; gap: 24px; }
+}
