@@ -139,7 +139,7 @@
 <header>
   <h1>아파트 양도소득세 계산기</h1>
   <div class="subtitle">1주택 비과세 · 장기보유특별공제 · 다주택 중과 · 상속/증여 · 입주권까지</div>
-  <span class="rev-note">2026년 4월 기준 · 소득세법 §89·§95·§104</span>
+  <span class="rev-note">2026년 4월 기준 · 소득세법 제89·95·104조</span>
 </header>
 
 <div class="steps" id="steps">
@@ -439,7 +439,7 @@
 // ============================================
 const BASIC_DEDUCTION = 2500000; // 양도소득 기본공제 (연 1회, 인별)
 
-// 2026년 기본 누진세율 (소득세법 §55)
+// 2026년 기본 누진세율 (소득세법 제55조)
 const TAX_BRACKETS = [
   { limit: 14000000,    rate: 0.06, deduct: 0 },
   { limit: 50000000,    rate: 0.15, deduct: 1260000 },
@@ -682,7 +682,7 @@ function calculate() {
   const taxBase = Math.max(0, mySharedBase - BASIC_DEDUCTION);
 
   // 8. 세율 적용 (단기양도 · 중과 · 기본세율 중 가장 큰 값)
-  // 주택은 1년 미만 70%, 1~2년 60% (소득세법 §104①2·3)
+  // 주택은 1년 미만 70%, 1~2년 60% (소득세법 제104조 1항 2·3호)
   // 1세대 1주택 비과세 요건 미충족이라도 보유기간 짧으면 단기양도
   let basicTax = calcTaxFromBase(taxBase);
   let appliedRate = '기본세율 (6~45% 누진)';
