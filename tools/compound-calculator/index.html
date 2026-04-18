@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>복리·적립식 투자 시뮬레이터 | Q-Lens</title>
+<meta name="description" content="ETF·적금·예금 장기 수익을 복리로 시뮬레이션합니다. 거치식·적립식 선택 가능.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fff; color: #111; font-size: 17px; line-height: 1.6; padding: 2rem 1.25rem 4rem; max-width: 640px; margin: 0 auto; }
+.page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+.field { margin-bottom: 1.1rem; } .field:last-child { margin-bottom: 0; }
+.field label { display: block; font-size: 0.92rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+.field-hint { font-size: 0.82rem; color: #9ca3af; font-weight: 400; margin-left: 0.3rem; }
+.input-wrap { display: flex; align-items: center; gap: 0.5rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+input[type="text"] { flex: 1; padding: 0.65rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; font-size: 1rem; font-family: inherit; color: #111; background: #fff; outline: none; transition: border-color 0.15s; }
+input:focus { border-color: #3182f6; }
+.input-unit { font-size: 0.88rem; color: #6b7280; white-space: nowrap; }
+.toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.toggle { padding: 0.45rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px; background: #fff; color: #6b7280; font-size: 0.88rem; font-family: inherit; cursor: pointer; transition: all 0.15s; }
+.toggle:hover { border-color: #3182f6; color: #3182f6; }
+.toggle.active { background: #3182f6; border-color: #3182f6; color: #fff; font-weight: 600; }
+.btn { width: 100%; padding: 0.9rem; background: #3182f6; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.15s; margin-bottom: 1.25rem; }
+.btn:hover { background: #1b64da; }
+.result { display: none; } .result.on { display: block; }
+.hero-result { background: #111; border-radius: 8px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; text-align: center; }
+.hero-label { font-size: 0.78rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.hero-amount { font-size: 2.2rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.4rem; }
+.hero-sub { font-size: 0.88rem; color: #93c5fd; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+.summary-cell { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; }
+.summary-cell-label { font-size: 0.82rem; color: #6b7280; margin-bottom: 0.3rem; }
+.summary-cell-val { font-size: 1.15rem; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.summary-cell-val.green { color: #3182f6; }
+.detail-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
+.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+.detail-row { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
+.detail-row:last-child { border-bottom: none; }
+.detail-name { color: #374151; } .detail-sub { font-size: 0.82rem; color: #9ca3af; margin-left: 0.3rem; }
+.detail-val { font-weight: 700; color: #111; }
+.detail-val.pos { color: #3182f6; }
+.detail-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #f9fafb; border-top: 2px solid #e5e7eb; font-size: 1rem; font-weight: 700; }
+/* 연도별 테이블 */
+.year-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.year-table th { padding: 0.6rem 1rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.78rem; font-weight: 700; color: #6b7280; text-align: right; }
+.year-table th:first-child { text-align: left; }
+.year-table td { padding: 0.6rem 1rem; border-bottom: 1px solid #f3f4f6; text-align: right; font-variant-numeric: tabular-nums; color: #374151; }
+.year-table td:first-child { text-align: left; font-weight: 600; color: #111; }
+.year-table tr:last-child td { border-bottom: none; font-weight: 700; color: #3182f6; background: #eff6ff; }
+.dl-btn { display: none; width: 100%; padding: 0.8rem; background: #fff; color: #3182f6; border: 1.5px solid #3182f6; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; margin-bottom: 1rem; }
+.dl-btn:hover { background: #eff6ff; } .dl-btn.visible { display: block; }
+.note { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
+.brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
+.brand a { color: #3182f6; text-decoration: none; }
+@media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } .summary-grid { grid-template-columns: 1fr; } .hero-amount { font-size: 1.8rem; } }
+@media print {
+  body { padding: 0; font-size: 13px; }
+  .hero-result { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero-amount { color: #fff !important; } .hero-sub { color: #93c5fd !important; }
+  .btn, .dl-btn, .card { display: none !important; } .brand { display: none; }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/compound-calculator/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<p class="page-label">Q-Lens · 도구</p>
+<h1 class="page-title">복리·적립식 투자 시뮬레이터</h1>
+<p class="page-desc">ETF·적금 장기 수익을 복리로 계산 · 거치식·적립식 선택 가능</p>
+
+<div class="card">
+  <p class="card-title">투자 유형</p>
+  <div class="field">
+    <label>투자 방식</label>
+    <div class="toggle-group" id="invest-type">
+      <button class="toggle active" data-value="lump">거치식 (목돈 한 번에)</button>
+      <button class="toggle" data-value="monthly">적립식 (매월 납입)</button>
+      <button class="toggle" data-value="both">거치식 + 적립식</button>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <p class="card-title">투자 조건</p>
+  <div class="field" id="lump-field">
+    <label for="lump-amt">초기 투자금 <span class="field-hint">거치식</span></label>
+    <div class="input-wrap">
+      <input type="text" id="lump-amt" placeholder="10,000,000" inputmode="numeric">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="field" id="monthly-field" style="display:none;">
+    <label for="monthly-amt">월 납입금 <span class="field-hint">적립식</span></label>
+    <div class="input-wrap">
+      <input type="text" id="monthly-amt" placeholder="300,000" inputmode="numeric">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="two-col">
+    <div class="field">
+      <label for="rate">연 수익률</label>
+      <div class="input-wrap">
+        <input type="text" id="rate" placeholder="7" inputmode="decimal">
+        <span class="input-unit">%</span>
+      </div>
+    </div>
+    <div class="field">
+      <label for="years">투자 기간</label>
+      <div class="input-wrap">
+        <input type="text" id="years" placeholder="20" inputmode="numeric">
+        <span class="input-unit">년</span>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>세금 처리 <span class="field-hint">이자·배당소득세 15.4%</span></label>
+    <div class="toggle-group" id="tax-type">
+      <button class="toggle active" data-value="after">세후 수익률로 입력</button>
+      <button class="toggle" data-value="before">세전 수익률로 입력 (15.4% 공제)</button>
+    </div>
+  </div>
+</div>
+
+<button class="btn" onclick="calc()">수익 시뮬레이션</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">↓ 결과 PDF로 저장</button>
+
+<div class="result" id="result">
+  <div class="hero-result">
+    <p class="hero-label">최종 자산</p>
+    <p class="hero-amount" id="h-total">—</p>
+    <p class="hero-sub" id="h-sub">—</p>
+  </div>
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <p class="summary-cell-label">원금 합계</p>
+      <p class="summary-cell-val" id="s-principal">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">복리 수익</p>
+      <p class="summary-cell-val green" id="s-profit">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">수익률</p>
+      <p class="summary-cell-val green" id="s-rate">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">적용 연 수익률</p>
+      <p class="summary-cell-val" id="s-applied-rate">—</p>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <p class="detail-head">연도별 자산 현황</p>
+    <div style="overflow-x:auto;">
+      <table class="year-table">
+        <thead>
+          <tr>
+            <th>시점</th>
+            <th>누적 원금</th>
+            <th>복리 수익</th>
+            <th>자산 총액</th>
+          </tr>
+        </thead>
+        <tbody id="year-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <p class="note">
+    이 계산기는 세전·세후 단순 복리 기준입니다. 실제 투자 수익은 시장 상황, 환율, 수수료 등에 따라 달라질 수 있습니다. 투자 결과를 보장하지 않습니다.
+  </p>
+</div>
+
+<p class="brand"><a href="https://q-bot.kr" target="_blank">Q-Lens</a></p>
+
+<script>
+document.querySelectorAll('.toggle-group').forEach(function(g) {
+  g.querySelectorAll('.toggle').forEach(function(b) {
+    b.addEventListener('click', function() {
+      g.querySelectorAll('.toggle').forEach(function(x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      if (g.id === 'invest-type') updateFields();
+    });
+  });
+});
+
+['lump-amt','monthly-amt','rate','years'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', function() {
+    var raw = this.value.replace(/[^0-9.]/g,'');
+    this.value = raw;
+  });
+});
+
+// 천단위는 금액 필드만
+['lump-amt','monthly-amt'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', function() {
+    var raw = this.value.replace(/[^0-9]/g,'');
+    this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+  });
+});
+
+function updateFields() {
+  var type = document.querySelector('#invest-type .toggle.active').dataset.value;
+  document.getElementById('lump-field').style.display   = (type === 'lump' || type === 'both') ? '' : 'none';
+  document.getElementById('monthly-field').style.display = (type === 'monthly' || type === 'both') ? '' : 'none';
+}
+
+function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g,'')) || 0; }
+function fmt(n) { return Math.round(n).toLocaleString('ko-KR')+'원'; }
+
+function calc() {
+  var type      = document.querySelector('#invest-type .toggle.active').dataset.value;
+  var lump      = (type === 'lump' || type === 'both') ? getNum('lump-amt') : 0;
+  var monthly   = (type === 'monthly' || type === 'both') ? getNum('monthly-amt') : 0;
+  var rateInput = parseFloat(document.getElementById('rate').value) || 0;
+  var years     = parseInt(document.getElementById('years').value) || 0;
+  var isBefore  = document.querySelector('#tax-type .toggle.active').dataset.value === 'before';
+
+  if (!rateInput || !years || (!lump && !monthly)) { alert('투자 조건을 모두 입력해주세요.'); return; }
+
+  var annualRate = isBefore ? rateInput * (1 - 0.154) / 100 : rateInput / 100;
+  var monthlyRate = annualRate / 12;
+
+  var tbody = document.getElementById('year-body');
+  tbody.innerHTML = '';
+
+  var milestones = [1,3,5,10,15,20,25,30].filter(function(y){ return y <= years; });
+  if (!milestones.includes(years)) milestones.push(years);
+
+  var totalPrincipal = 0, finalAsset = 0;
+  milestones.forEach(function(y) {
+    var months = y * 12;
+    var lumpFV    = lump * Math.pow(1 + annualRate, y);
+    var monthlyFV = monthly > 0 ? monthly * ((Math.pow(1+monthlyRate, months)-1) / monthlyRate) * (1+monthlyRate) : 0;
+    var total     = lumpFV + monthlyFV;
+    var principal = lump + monthly * months;
+    var profit    = total - principal;
+
+    if (y === years) { totalPrincipal = principal; finalAsset = total; }
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + y + '년</td>' +
+      '<td>' + Math.round(principal).toLocaleString() + '</td>' +
+      '<td style="color:#3182f6">+' + Math.round(profit).toLocaleString() + '</td>' +
+      '<td style="font-weight:700">' + Math.round(total).toLocaleString() + '</td>';
+    tbody.appendChild(tr);
+  });
+
+  var totalProfit = finalAsset - totalPrincipal;
+  var profitRate  = (totalProfit / totalPrincipal * 100).toFixed(1);
+
+  document.getElementById('h-total').textContent   = fmt(finalAsset);
+  document.getElementById('h-sub').textContent     = years+'년 후 · 수익률 '+profitRate+'%';
+  document.getElementById('s-principal').textContent = fmt(totalPrincipal);
+  document.getElementById('s-profit').textContent    = '+' + fmt(totalProfit);
+  document.getElementById('s-rate').textContent      = '+' + profitRate + '%';
+  document.getElementById('s-applied-rate').textContent = (annualRate*100).toFixed(2) + '%/년';
+
+  var r = document.getElementById('result');
+  r.classList.add('on');
+  document.getElementById('dl-btn').classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function downloadPDF() { var t=document.title; document.title='복리 투자 시뮬레이터 결과 | Q-Lens'; window.print(); document.title=t; }
+</script>
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
