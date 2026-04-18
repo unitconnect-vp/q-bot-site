@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>퇴직금 계산기 | Q-Lens</title>
+<meta name="description" content="퇴직금 계산기 2025년. 입사일·퇴사일·평균임금 기준 법정 퇴직금 계산.">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  background: #fff; color: #111; font-size: 17px; line-height: 1.6;
+  padding: 2rem 1.25rem 4rem; max-width: 640px; margin: 0 auto;
+}
+.page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; }
+.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+.field { margin-bottom: 1.1rem; }
+.field:last-child { margin-bottom: 0; }
+.field label { display: block; font-size: 0.92rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
+.field-hint { font-size: 0.82rem; color: #9ca3af; font-weight: 400; margin-left: 0.3rem; }
+.input-wrap { display: flex; align-items: center; gap: 0.5rem; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+input[type="text"], input[type="date"] {
+  flex: 1; padding: 0.65rem 0.9rem; border: 1px solid #d1d5db; border-radius: 6px;
+  font-size: 1rem; font-family: inherit; color: #111; background: #fff; outline: none; transition: border-color 0.15s;
+}
+input:focus { border-color: #3182f6; }
+.input-unit { font-size: 0.88rem; color: #6b7280; white-space: nowrap; }
+.btn { width: 100%; padding: 0.9rem; background: #3182f6; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.15s; margin-bottom: 1.25rem; }
+.btn:hover { background: #1b64da; }
+.result { display: none; }
+.result.on { display: block; }
+.hero-result { background: #111; border-radius: 8px; padding: 1.75rem 1.5rem; margin-bottom: 1.25rem; text-align: center; }
+.hero-label  { font-size: 0.78rem; color: rgba(255,255,255,0.45); letter-spacing: 0.08em; margin-bottom: 0.4rem; }
+.hero-amount { font-size: 2.2rem; font-weight: 700; color: #fff; letter-spacing: -0.03em; line-height: 1; margin-bottom: 0.4rem; }
+.hero-sub    { font-size: 0.88rem; color: #93c5fd; }
+.summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
+.summary-cell { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; }
+.summary-cell-label { font-size: 0.82rem; color: #6b7280; margin-bottom: 0.3rem; }
+.summary-cell-val   { font-size: 1.15rem; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.detail-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
+.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+.detail-row  { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
+.detail-row:last-child { border-bottom: none; }
+.detail-name { color: #374151; }
+.detail-sub  { font-size: 0.82rem; color: #9ca3af; margin-left: 0.3rem; }
+.detail-val  { font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
+.detail-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #f9fafb; border-top: 2px solid #e5e7eb; font-size: 1rem; font-weight: 700; }
+.detail-total .pos { color: #3182f6; }
+.warn-box { background: #fef2f2; border: 1px solid #fecaca; border-left: 3px solid #ef4444; border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin-bottom: 1.25rem; font-size: 0.88rem; color: #991b1b; line-height: 1.7; }
+.dl-btn { display: none; width: 100%; padding: 0.8rem; background: #fff; color: #3182f6; border: 1.5px solid #3182f6; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; margin-bottom: 1rem; }
+.dl-btn:hover { background: #eff6ff; }
+.dl-btn.visible { display: block; }
+.note  { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
+.brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
+.brand a { color: #3182f6; text-decoration: none; }
+@media (max-width: 480px) { .two-col { grid-template-columns: 1fr; } .summary-grid { grid-template-columns: 1fr; } .hero-amount { font-size: 1.8rem; } }
+@media print {
+  body { padding: 0; max-width: 100%; font-size: 13px; }
+  .hero-result { background: #111 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .hero-amount { color: #fff !important; }
+  .hero-sub { color: #93c5fd !important; }
+  .btn, .dl-btn { display: none !important; }
+  .brand { display: none; }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/severance-calculator/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<p class="page-label">Q-Lens · 도구</p>
+<h1 class="page-title">퇴직금 계산기</h1>
+<p class="page-desc">근로기준법 기준 법정 퇴직금 예상액 · 1년 이상 근무 시 지급 대상 · 2025년 기준</p>
+
+<div class="card">
+  <p class="card-title">근무 정보</p>
+  <div class="field">
+    <label>입사일 / 퇴사일</label>
+    <div class="two-col">
+      <div class="input-wrap"><input type="date" id="start"></div>
+      <div class="input-wrap"><input type="date" id="end"></div>
+    </div>
+  </div>
+  <div class="field">
+    <label for="monthly">퇴직 전 3개월 평균 월급 <span class="field-hint">세전, 상여 제외</span></label>
+    <div class="input-wrap">
+      <input type="text" id="monthly" placeholder="3,500,000" inputmode="numeric">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="field">
+    <label for="bonus">연간 상여금 합계 <span class="field-hint">없으면 0</span></label>
+    <div class="input-wrap">
+      <input type="text" id="bonus" placeholder="0" inputmode="numeric" value="0">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+  <div class="field">
+    <label for="leave">미사용 연차수당 <span class="field-hint">없으면 0</span></label>
+    <div class="input-wrap">
+      <input type="text" id="leave" placeholder="0" inputmode="numeric" value="0">
+      <span class="input-unit">원</span>
+    </div>
+  </div>
+</div>
+
+<button class="btn" onclick="calc()">퇴직금 계산하기</button>
+<button class="dl-btn" id="dl-btn" onclick="downloadPDF()">↓ 결과 PDF로 저장</button>
+
+<div class="result" id="result">
+  <div class="hero-result">
+    <p class="hero-label">예상 퇴직금</p>
+    <p class="hero-amount" id="h-total">—</p>
+    <p class="hero-sub" id="h-sub">—</p>
+  </div>
+
+  <div class="summary-grid">
+    <div class="summary-cell">
+      <p class="summary-cell-label">근속 기간</p>
+      <p class="summary-cell-val" id="s-period">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">1일 평균임금</p>
+      <p class="summary-cell-val" id="s-daily">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">평균임금 산정 총액</p>
+      <p class="summary-cell-val" id="s-base">—</p>
+    </div>
+    <div class="summary-cell">
+      <p class="summary-cell-label">근속 일수</p>
+      <p class="summary-cell-val" id="s-days">—</p>
+    </div>
+  </div>
+
+  <div class="detail-card">
+    <p class="detail-head">계산 내역</p>
+    <div class="detail-row">
+      <span class="detail-name">3개월 기본 임금</span>
+      <span class="detail-val" id="d-base-wage">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-name">상여금 가산 <span class="detail-sub">(연간×3/12)</span></span>
+      <span class="detail-val" id="d-bonus">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-name">연차수당 가산 <span class="detail-sub">(연간×3/12)</span></span>
+      <span class="detail-val" id="d-leave">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-name">평균임금 산정 총액 <span class="detail-sub">(÷91일)</span></span>
+      <span class="detail-val" id="d-total-wage">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-name">1일 평균임금</span>
+      <span class="detail-val" id="d-daily">—</span>
+    </div>
+    <div class="detail-row">
+      <span class="detail-name">산식</span>
+      <span class="detail-val" id="d-formula" style="font-size:0.82rem;">—</span>
+    </div>
+    <div class="detail-total">
+      <span>법정 퇴직금</span>
+      <span class="pos" id="d-result">—</span>
+    </div>
+  </div>
+
+  <div id="warn-el"></div>
+
+  <p class="note">
+    <strong>계산 기준:</strong> 퇴직금 = 1일 평균임금 × 30일 × (근속일수 ÷ 365). 평균임금 = 퇴직 전 3개월 임금 총액 ÷ 해당 기간 일수(91일). 상여금은 연간 합계의 3/12, 연차수당은 연간 합계의 3/12 가산. 1년 미만 근무 시 퇴직금 지급 의무 없음.<br><br>
+    <strong>출처:</strong> 근로기준법 제34조 (2025) · 고용노동부 (2025)
+  </p>
+</div>
+
+<p class="brand"><a href="https://q-bot.kr" target="_blank">Q-Lens</a></p>
+
+<script>
+['monthly','bonus','leave'].forEach(function(id) {
+  document.getElementById(id).addEventListener('input', function() {
+    var raw = this.value.replace(/[^0-9]/g, '');
+    this.value = raw ? Number(raw).toLocaleString('ko-KR') : '';
+  });
+});
+
+function getNum(id) { return Number(document.getElementById(id).value.replace(/,/g, '')) || 0; }
+function fmt(n) { return Math.round(Math.abs(n)).toLocaleString('ko-KR') + '원'; }
+
+function calc() {
+  var startVal = document.getElementById('start').value;
+  var endVal   = document.getElementById('end').value;
+  var monthly  = getNum('monthly');
+  if (!startVal || !endVal || !monthly) { alert('입사일, 퇴사일, 월급을 모두 입력해주세요.'); return; }
+
+  var startD   = new Date(startVal);
+  var endD     = new Date(endVal);
+  var totalDays = Math.floor((endD - startD) / 86400000);
+  if (totalDays < 0) { alert('퇴사일이 입사일보다 빠릅니다.'); return; }
+
+  var bonus    = getNum('bonus');
+  var leave    = getNum('leave');
+  var baseWage = monthly * 3;
+  var bonusPart = bonus * (3/12);
+  var leavePart = leave * (3/12);
+  var totalWage = baseWage + bonusPart + leavePart;
+  var dailyWage = totalWage / 91;
+  var severance = totalDays >= 365 ? dailyWage * 30 * (totalDays / 365) : 0;
+
+  var y = Math.floor(totalDays/365);
+  var m = Math.floor((totalDays%365)/30);
+
+  document.getElementById('h-total').textContent = totalDays >= 365 ? fmt(severance) : '지급 대상 아님';
+  document.getElementById('h-sub').textContent   = totalDays >= 365 ? y + '년 ' + m + '개월 근속' : '1년 미만 — 퇴직금 지급 의무 없음';
+  document.getElementById('h-total').style.color = totalDays >= 365 ? '#fff' : '#fca5a5';
+
+  document.getElementById('s-period').textContent = y + '년 ' + m + '개월';
+  document.getElementById('s-daily').textContent  = fmt(dailyWage) + '/일';
+  document.getElementById('s-base').textContent   = fmt(totalWage);
+  document.getElementById('s-days').textContent   = totalDays + '일';
+
+  document.getElementById('d-base-wage').textContent  = fmt(baseWage);
+  document.getElementById('d-bonus').textContent      = fmt(bonusPart);
+  document.getElementById('d-leave').textContent      = fmt(leavePart);
+  document.getElementById('d-total-wage').textContent = fmt(totalWage);
+  document.getElementById('d-daily').textContent      = fmt(dailyWage);
+  document.getElementById('d-formula').textContent    = fmt(dailyWage) + ' × 30 × ' + (totalDays/365).toFixed(2);
+  document.getElementById('d-result').textContent     = totalDays >= 365 ? fmt(severance) : '해당 없음';
+
+  var warn = totalDays < 365
+    ? '<div class="warn-box">⚠️ 근속 기간이 1년 미만입니다. 근로기준법상 퇴직금 지급 의무가 없습니다.</div>'
+    : '';
+  document.getElementById('warn-el').innerHTML = warn;
+
+  var r = document.getElementById('result');
+  r.classList.add('on');
+  document.getElementById('dl-btn').classList.add('visible');
+  r.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function downloadPDF() {
+  var t = document.title;
+  document.title = '퇴직금 계산기 결과 | Q-Lens';
+  window.print();
+  document.title = t;
+}
+</script>
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
