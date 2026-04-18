@@ -159,28 +159,28 @@ button { font-family: inherit; cursor: pointer; }
 .section-more-wrap {
   display: flex;
   justify-content: center;
-  margin-top: 48px;
+  margin-top: 36px;
 }
 .section-more-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  min-width: 240px;
-  padding: 18px 48px;
-  font-size: 1rem;
+  gap: 6px;
+  min-width: 120px;
+  padding: 10px 22px;
+  font-size: 0.8125rem;
   font-weight: 700;
   color: #1f2937;
   background: #f3f4f6;
   border: 1px solid #e5e7eb;
-  border-radius: 12px;
+  border-radius: 8px;
   text-decoration: none;
   letter-spacing: -0.02em;
   transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .section-more-btn::after {
   content: "→";
-  font-size: 1.05rem;
+  font-size: 0.875rem;
   font-weight: 700;
   transition: transform 0.15s;
 }
