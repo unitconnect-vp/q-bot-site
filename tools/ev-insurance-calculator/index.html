@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전기차 보험료 계산기 | Q-Lens</title>
+<meta name="description" content="2026년 전기차 vs 내연차 자동차 보험료 비교 계산기. 차량가액·주행거리·특약에 따른 연간 보험료 차이를 즉시 확인.">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ink: #0a0a0a;
+  --ink-strong: #000000;
+  --ink-muted: #6b7280;
+  --ink-soft: #9ca3af;
+  --rule: #e5e7eb;
+  --rule-soft: #f3f4f6;
+  --bg: #ffffff;
+  --bg-soft: #fafafa;
+  --accent: #3182f6;
+  --accent-hover: #1b64da;
+  --accent-soft: #eff6ff;
+  --warn: #dc2626;
+  --warn-bg: #fef2f2;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #fff;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 20px 80px;
+}
+
+/* 헤더 */
+.page-label {
+  font-size: 0.75rem;
+  color: var(--accent);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.25;
+  margin-bottom: 12px;
+  color: var(--ink-strong);
+}
+
+.page-desc {
+  font-size: 1rem;
+  color: var(--ink-muted);
+  margin-bottom: 28px;
+  padding-bottom: 24px;
+  border-bottom: 4px solid var(--ink-strong);
+  position: relative;
+}
+.page-desc::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 48px;
+  height: 4px;
+  background: var(--accent);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+/* 카드 */
+.card {
+  background: var(--bg-soft);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin-bottom: 20px;
+}
+
+.field { margin-bottom: 16px; }
+.field:last-child { margin-bottom: 0; }
+
+.field label {
+  display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+
+.field-hint {
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+/* 세그먼트 토글 */
+.segment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.segment button {
+  background: #fff;
+  border: 0;
+  padding: 12px 16px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: -0.02em;
+  transition: all 0.15s;
+  border-right: 1px solid var(--rule);
+}
+.segment button:last-child { border-right: 0; }
+.segment button.active {
+  background: var(--ink-strong);
+  color: #fff;
+}
+
+/* 셀렉트 */
+select, input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  font-family: inherit;
+  letter-spacing: -0.01em;
+  transition: border-color 0.15s;
+}
+select:focus, input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* 체크박스 */
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+}
+.check-item:hover { border-color: var(--accent); }
+.check-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+.check-item.ev-only {
+  background: var(--accent-soft);
+}
+.check-item.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.check-item .badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 3px;
+  margin-left: 6px;
+  letter-spacing: 0.04em;
+}
+
+/* 결과 영역 */
+.result-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 24px;
+  margin-bottom: 16px;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--rule);
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+.compare-cell {
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+}
+.compare-cell.active {
+  background: #0a0a0a;
+  color: #fff;
+}
+.compare-cell.active .num {
+  color: #fff;
+}
+.compare-cell.active .label { color: #d1d5db; }
+.compare-cell .label {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+.compare-cell .num {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--ink-strong);
+  line-height: 1.1;
+}
+.compare-cell .sub {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+.delta-box {
+  background: var(--accent-soft);
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.delta-label {
+  font-size: 0.8125rem;
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+.delta-num {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  color: var(--accent);
+  line-height: 1.1;
+}
+.delta-sub {
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+/* 상세 브레이크다운 */
+.breakdown {
+  margin-top: 16px;
+}
+.breakdown-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  font-size: 0.875rem;
+}
+.breakdown-row:last-child { border-bottom: 0; }
+.breakdown-row.total {
+  font-weight: 700;
+  border-top: 2px solid var(--ink-strong);
+  border-bottom: 0;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+.breakdown-row .label { color: var(--ink-muted); }
+.breakdown-row .value { color: var(--ink-strong); font-weight: 600; }
+.breakdown-row.discount .value { color: var(--accent); }
+
+/* 보상 비교 박스 */
+.coverage-box {
+  background: #fafafa;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 12px;
+}
+.coverage-title {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  margin-bottom: 10px;
+}
+.coverage-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+.coverage-row .label { color: var(--ink-muted); letter-spacing: -0.02em; }
+.coverage-row .value { color: var(--ink-strong); font-weight: 600; letter-spacing: -0.02em; }
+
+.warn-box {
+  background: var(--warn-bg);
+  border-left: 3px solid var(--warn);
+  padding: 12px 14px;
+  margin-top: 16px;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.8125rem;
+  color: #7f1d1d;
+  line-height: 1.55;
+}
+.warn-box strong { color: var(--warn); }
+
+/* Footer */
+.note {
+  margin-top: 32px;
+  padding: 20px;
+  background: #fafafa;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+.note strong { color: var(--ink); }
+
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--rule);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+}
+.footer a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .layout { grid-template-columns: 1fr; gap: 20px; }
+  .page-title { font-size: 1.5rem; }
+  .wrap { padding: 32px 16px 60px; }
+}
+
+@media print {
+  .no-print { display: none; }
+  body { padding: 0; }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/ev-insurance-calculator/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="wrap">
+
+  <div class="page-label">Q-Lens Calculator</div>
+  <h1 class="page-title">전기차 보험료 계산기</h1>
+  <p class="page-desc">2026년 기준 전기차 vs 내연차 보험료 차이와 화재 보장 한도를 한 번에 비교합니다.</p>
+
+  <div class="layout">
+
+    <!-- 입력 영역 -->
+    <div>
+      <div class="card">
+        <div class="card-title">차량 정보</div>
+
+        <div class="field">
+          <label>차량 유형</label>
+          <div class="segment" id="segVehicleType">
+            <button type="button" data-value="ice" class="active">내연차</button>
+            <button type="button" data-value="ev">전기차</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>차량가액 <span class="field-hint">(만원)</span></label>
+          <input type="text" id="vehiclePrice" value="4,000" inputmode="numeric">
+        </div>
+
+        <div class="field">
+          <label>연간 예상 주행거리</label>
+          <select id="mileage">
+            <option value="2000">2,000km 이하 (최대 할인)</option>
+            <option value="5000" selected>5,000km 이하</option>
+            <option value="10000">10,000km 이하</option>
+            <option value="15000">15,000km 이하</option>
+            <option value="99999">15,000km 초과</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">운전자 정보</div>
+
+        <div class="field">
+          <label>운전자 연령</label>
+          <select id="age">
+            <option value="20">만 20~29세</option>
+            <option value="30" selected>만 30~39세</option>
+            <option value="40">만 40~49세</option>
+            <option value="50">만 50~59세</option>
+            <option value="60">만 60세 이상</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>보험 가입 경력</label>
+          <select id="experience">
+            <option value="0">1년 미만</option>
+            <option value="1">1~3년</option>
+            <option value="3" selected>3~5년</option>
+            <option value="5">5년 이상 (무사고)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">특약 선택</div>
+        <div class="checklist">
+          <label class="check-item">
+            <input type="checkbox" id="optBlackbox" checked>
+            <span>블랙박스 할인 <span style="color:#6b7280; font-size:0.8125rem;">(약 −5%)</span></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="optDirect" checked>
+            <span>다이렉트 가입 <span style="color:#6b7280; font-size:0.8125rem;">(약 −17%)</span></span>
+          </label>
+          <label class="check-item">
+            <input type="checkbox" id="optOwn" checked>
+            <span>자기차량손해(자차) 가입</span>
+          </label>
+          <label class="check-item ev-only" id="optBatteryWrap">
+            <input type="checkbox" id="optBattery">
+            <span>배터리 신가보상 특약 <span class="badge">EV</span></span>
+          </label>
+          <label class="check-item ev-only" id="optChargeWrap">
+            <input type="checkbox" id="optCharge">
+            <span>충전 중 사고 보장 <span class="badge">EV</span></span>
+          </label>
+          <label class="check-item ev-only" id="optFireWrap">
+            <input type="checkbox" id="optFire">
+            <span>화재·폭발 대물 200% <span class="badge">EV</span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div>
+      <div class="result-card">
+        <div class="card-title">연간 보험료 비교</div>
+
+        <div class="compare-grid">
+          <div class="compare-cell" id="cellIce">
+            <div class="label">내연차</div>
+            <div class="num" id="priceIce">—</div>
+            <div class="sub" id="priceIceMonth">—</div>
+          </div>
+          <div class="compare-cell" id="cellEv">
+            <div class="label">전기차</div>
+            <div class="num" id="priceEv">—</div>
+            <div class="sub" id="priceEvMonth">—</div>
+          </div>
+        </div>
+
+        <div class="delta-box">
+          <div class="delta-label" id="deltaLabel">전기차 추가 비용</div>
+          <div class="delta-num" id="deltaNum">—</div>
+          <div class="delta-sub" id="deltaSub">—</div>
+        </div>
+
+        <div class="breakdown" id="breakdown"></div>
+      </div>
+
+      <div class="result-card">
+        <div class="card-title">화재·폭발 시 보상 한도</div>
+
+        <div class="coverage-box">
+          <div class="coverage-title">내 차량 피해 (자차)</div>
+          <div class="coverage-row">
+            <span class="label">차량가액 기준 보상</span>
+            <span class="value" id="coverOwn">—</span>
+          </div>
+          <div class="coverage-row">
+            <span class="label">배터리 별도 보상</span>
+            <span class="value" id="coverBattery">—</span>
+          </div>
+        </div>
+
+        <div class="coverage-box">
+          <div class="coverage-title">타 차량·건물 피해 (대물)</div>
+          <div class="coverage-row">
+            <span class="label">기본 대물배상</span>
+            <span class="value">최대 10억원</span>
+          </div>
+          <div class="coverage-row">
+            <span class="label">화재·폭발 확장</span>
+            <span class="value" id="coverFire">—</span>
+          </div>
+        </div>
+
+        <div class="warn-box" id="warnBox" style="display:none;">
+          <strong>청라 벤츠 EQE 화재 기준:</strong> 실제 재산피해 38억원(소방당국 추산). 대물 한도 5억원이면 33억원은 제조사 책임 소송 영역.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>참고 사항.</strong> 이 계산기는 2024~2026년 공개된 보험사 평균치(환경부·보험개발원·삼성화재·현대해상·DB손해보험 공시 자료)를 기반으로 한 <strong>추정치</strong>입니다. 실제 견적은 차종·차대번호·거주지·운전자 이력에 따라 달라집니다. 정확한 금액은 <a href="https://e-insmarket.or.kr/" target="_blank" rel="noopener" style="color:var(--accent); font-weight:700;">보험다모아</a>에서 확인하세요.
+    <br><br>
+    Q렌즈가 발행한 <a href="https://q-bot.kr/articles/ev-fire-statistics-reality-check/" style="color:var(--accent); font-weight:700;">전기차 화재 분석 아티클</a>과 함께 보시면 수치의 맥락이 잡힙니다.
+  </div>
+
+  <div class="footer">
+    <a href="https://q-bot.kr/">← Q-Lens 메인으로</a>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ======== 데이터 ========
+  // 2024~2026 보험개발원·환경부·주요 보험사 공시 기준 평균치
+  const RATES = {
+    basePremiumRate: 0.029, // 차량가액 대비 기본 보험료 (2.9%)
+    evSurcharge: 0.27,       // 전기차 +27% (환경부·보험개발원 2024)
+    age: {
+      20: 1.35, 30: 1.00, 40: 0.92, 50: 0.95, 60: 1.08
+    },
+    experience: {
+      0: 1.22, 1: 1.08, 3: 1.00, 5: 0.85
+    },
+    mileage: {
+      2000: 0.63,  // 삼성화재 기준 최대 37%
+      5000: 0.75,  // 현대해상 25%
+      10000: 0.88,
+      15000: 0.95,
+      99999: 1.00
+    },
+    blackboxDiscount: 0.05,
+    directDiscount: 0.17,
+    batteryPremiumFlat: 80000,  // 배터리 특약 평균 정액 (삼성/DB/KB 평균)
+    chargePremium: 15000,        // 충전 중 사고 특약
+    firePremium: 25000           // 화재·폭발 200% 특약
+  };
+
+  // ======== 상태 ========
+  let vehicleType = 'ice';
+
+  // ======== DOM ========
+  const segButtons = document.querySelectorAll('#segVehicleType button');
+  const vehiclePriceInput = document.getElementById('vehiclePrice');
+  const mileageSel = document.getElementById('mileage');
+  const ageSel = document.getElementById('age');
+  const expSel = document.getElementById('experience');
+  const optBlackbox = document.getElementById('optBlackbox');
+  const optDirect = document.getElementById('optDirect');
+  const optOwn = document.getElementById('optOwn');
+  const optBattery = document.getElementById('optBattery');
+  const optCharge = document.getElementById('optCharge');
+  const optFire = document.getElementById('optFire');
+  const optBatteryWrap = document.getElementById('optBatteryWrap');
+  const optChargeWrap = document.getElementById('optChargeWrap');
+  const optFireWrap = document.getElementById('optFireWrap');
+
+  // ======== 유틸 ========
+  function fmt(n) {
+    if (isNaN(n) || !isFinite(n)) return '—';
+    return Math.round(n).toLocaleString('ko-KR');
+  }
+
+  function parseNum(s) {
+    return parseInt(String(s).replace(/[^0-9]/g, ''), 10) || 0;
+  }
+
+  // 천단위 콤마 자동 입력
+  vehiclePriceInput.addEventListener('input', (e) => {
+    const raw = parseNum(e.target.value);
+    e.target.value = raw.toLocaleString('ko-KR');
+    compute();
+  });
+
+  // ======== 세그먼트 토글 ========
+  segButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      segButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      vehicleType = btn.dataset.value;
+      updateEvOptions();
+      compute();
+    });
+  });
+
+  function updateEvOptions() {
+    const isEv = vehicleType === 'ev';
+    [optBatteryWrap, optChargeWrap, optFireWrap].forEach(wrap => {
+      wrap.classList.toggle('disabled', !isEv);
+    });
+    if (!isEv) {
+      optBattery.checked = false;
+      optCharge.checked = false;
+      optFire.checked = false;
+    } else {
+      // 전기차 선택 시 기본 특약 체크
+      optBattery.checked = true;
+      optCharge.checked = true;
+    }
+  }
+
+  // ======== 계산 엔진 ========
+  function calculatePremium(isEv) {
+    const price = parseNum(vehiclePriceInput.value); // 만원 단위
+    const priceWon = price * 10000;
+    const mileage = parseInt(mileageSel.value, 10);
+    const age = parseInt(ageSel.value, 10);
+    const exp = parseInt(expSel.value, 10);
+
+    if (price === 0) return { total: 0, breakdown: [] };
+
+    const breakdown = [];
+
+    // 1. 기본 보험료 = 차량가액 × 요율 × 연령·경력 계수
+    let base = priceWon * RATES.basePremiumRate * RATES.age[age] * RATES.experience[exp];
+    breakdown.push({ label: '기본 보험료', value: base });
+
+    // 2. 전기차 가산
+    if (isEv) {
+      const surcharge = base * RATES.evSurcharge;
+      base += surcharge;
+      breakdown.push({ label: '전기차 가산 (+27%)', value: surcharge });
+    }
+
+    // 3. 주행거리 할인
+    const mileageFactor = RATES.mileage[mileage];
+    const mileageDiscount = base * (1 - mileageFactor);
+    if (mileageDiscount > 0) {
+      base -= mileageDiscount;
+      breakdown.push({ label: `주행거리 할인 (−${Math.round((1-mileageFactor)*100)}%)`, value: -mileageDiscount, isDiscount: true });
+    }
+
+    // 4. 블랙박스
+    if (optBlackbox.checked) {
+      const d = base * RATES.blackboxDiscount;
+      base -= d;
+      breakdown.push({ label: '블랙박스 할인 (−5%)', value: -d, isDiscount: true });
+    }
+
+    // 5. 다이렉트
+    if (optDirect.checked) {
+      const d = base * RATES.directDiscount;
+      base -= d;
+      breakdown.push({ label: '다이렉트 가입 (−17%)', value: -d, isDiscount: true });
+    }
+
+    // 6. 자차 (기본값에 이미 포함된 것으로 가정하되, 미가입 시 할인)
+    if (!optOwn.checked) {
+      const d = base * 0.25;
+      base -= d;
+      breakdown.push({ label: '자차 미가입 (−25%)', value: -d, isDiscount: true });
+    }
+
+    // 7. 전기차 추가 특약
+    if (isEv) {
+      if (optBattery.checked) {
+        base += RATES.batteryPremiumFlat;
+        breakdown.push({ label: '배터리 신가보상', value: RATES.batteryPremiumFlat });
+      }
+      if (optCharge.checked) {
+        base += RATES.chargePremium;
+        breakdown.push({ label: '충전 중 사고 보장', value: RATES.chargePremium });
+      }
+      if (optFire.checked) {
+        base += RATES.firePremium;
+        breakdown.push({ label: '화재·폭발 대물 200%', value: RATES.firePremium });
+      }
+    }
+
+    return { total: Math.max(0, base), breakdown };
+  }
+
+  // ======== 보상 한도 계산 ========
+  function calculateCoverage(isEv) {
+    const price = parseNum(vehiclePriceInput.value) * 10000;
+
+    // 자차 보상 = 차량가액
+    const own = optOwn.checked ? price : 0;
+
+    // 배터리 보상
+    let battery = '—';
+    if (isEv) {
+      const batteryValue = price * 0.5; // 배터리는 차량가액의 50%
+      battery = optBattery.checked
+        ? `신품가 ${fmt(batteryValue / 10000)}만원 (감가 적용)`
+        : '기본 자차에 포함 (감가)';
+    } else {
+      battery = '해당 없음';
+    }
+
+    // 대물 확장
+    let fire = '기본 10억';
+    if (isEv && optFire.checked) {
+      fire = '200% 확장 → 20억원';
+    }
+
+    return { own, battery, fire };
+  }
+
+  // ======== 렌더링 ========
+  function compute() {
+    const iceResult = calculatePremium(false);
+    const evResult = calculatePremium(true);
+
+    // 비교 숫자
+    document.getElementById('priceIce').textContent = fmt(iceResult.total) + '원';
+    document.getElementById('priceIceMonth').textContent = '월 ' + fmt(iceResult.total / 12) + '원';
+    document.getElementById('priceEv').textContent = fmt(evResult.total) + '원';
+    document.getElementById('priceEvMonth').textContent = '월 ' + fmt(evResult.total / 12) + '원';
+
+    // 활성 셀 강조
+    const cellIce = document.getElementById('cellIce');
+    const cellEv = document.getElementById('cellEv');
+    cellIce.classList.toggle('active', vehicleType === 'ice');
+    cellEv.classList.toggle('active', vehicleType === 'ev');
+
+    // Delta
+    const delta = evResult.total - iceResult.total;
+    const deltaPct = iceResult.total > 0 ? (delta / iceResult.total) * 100 : 0;
+    document.getElementById('deltaNum').textContent = '+' + fmt(delta) + '원';
+    document.getElementById('deltaSub').textContent =
+      `전기차가 연 ${fmt(delta)}원 비쌈 (${deltaPct.toFixed(1)}%)  ·  월 ${fmt(delta/12)}원 차이`;
+
+    // 현재 선택 기준 브레이크다운
+    const current = vehicleType === 'ev' ? evResult : iceResult;
+    const breakdownEl = document.getElementById('breakdown');
+    breakdownEl.innerHTML = '';
+    current.breakdown.forEach(row => {
+      const el = document.createElement('div');
+      el.className = 'breakdown-row' + (row.isDiscount ? ' discount' : '');
+      el.innerHTML = `
+        <span class="label">${row.label}</span>
+        <span class="value">${row.value >= 0 ? '+' : ''}${fmt(row.value)}원</span>
+      `;
+      breakdownEl.appendChild(el);
+    });
+    const totalEl = document.createElement('div');
+    totalEl.className = 'breakdown-row total';
+    totalEl.innerHTML = `
+      <span class="label">${vehicleType === 'ev' ? '전기차' : '내연차'} 연 보험료</span>
+      <span class="value">${fmt(current.total)}원</span>
+    `;
+    breakdownEl.appendChild(totalEl);
+
+    // 보상 한도
+    const coverage = calculateCoverage(vehicleType === 'ev');
+    document.getElementById('coverOwn').textContent =
+      coverage.own > 0 ? fmt(coverage.own / 10000) + '만원 한도' : '자차 미가입 (보상 0원)';
+    document.getElementById('coverBattery').textContent = coverage.battery;
+    document.getElementById('coverFire').textContent = coverage.fire;
+
+    // 경고박스 (전기차일 때만)
+    document.getElementById('warnBox').style.display = vehicleType === 'ev' ? 'block' : 'none';
+  }
+
+  // 변경 이벤트 바인딩
+  [mileageSel, ageSel, expSel, optBlackbox, optDirect, optOwn, optBattery, optCharge, optFire].forEach(el => {
+    el.addEventListener('change', compute);
+  });
+
+  // 초기 실행
+  updateEvOptions();
+  compute();
+})();
+</script>
+
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
