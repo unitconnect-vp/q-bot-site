@@ -300,7 +300,7 @@ input:focus { border-color: #3182f6; }
 
 .brand a { color: #3182f6; text-decoration: none; }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .two-col { grid-template-columns: 1fr; }
   .summary-grid { grid-template-columns: 1fr; }
   .hero-amount { font-size: 1.9rem; }
@@ -335,6 +335,61 @@ input:focus { border-color: #3182f6; }
   .btn, .dl-btn { display: none !important; }
   .brand { display: none; }
 }
+
+/* === Q-Lens 모바일 방어 (B안 보강 v2) === */
+@media (max-width: 640px) {
+  /* 일반적 결과 행들 — 숫자 줄바꿈 방지 */
+  .detail-row, .deduct-row, .row, .summary-row,
+  .result-row, .stat-row, .ql-stat-row {
+    gap: 10px !important;
+    align-items: baseline;
+  }
+  .detail-val, .deduct-val, .result-val, .stat-val,
+  .summary-cell-val, .ql-stat-num {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .detail-name, .deduct-label, .result-label, .stat-label,
+  .summary-cell-label, .ql-stat-label {
+    min-width: 0;
+    word-break: keep-all;
+    line-height: 1.35;
+  }
+  /* portfolio 입력 행 */
+  .holding-row {
+    grid-template-columns: 1fr 90px 28px !important;
+    gap: 6px !important;
+  }
+  /* portfolio 바 차트 — 라벨 폭 확대로 '내 포트폴리/오' 쪼개짐 방지 */
+  .bar-row {
+    grid-template-columns: 100px 1fr 55px !important;
+    gap: 8px !important;
+  }
+  .bar-row > :first-child {
+    font-size: 0.85rem !important;
+    word-break: keep-all;
+  }
+}
+/* 400px 이하(iPhone SE 1세대 등) 추가 방어 */
+@media (max-width: 400px) {
+  /* 긴 라벨 + 긴 숫자 조합은 폰트 축소로만 해결 가능 */
+  .detail-row, .deduct-row, .row, .summary-row,
+  .result-row, .stat-row {
+    font-size: 0.95rem !important;
+  }
+  .detail-name, .deduct-label, .result-label, .stat-label {
+    font-size: 0.88rem !important;
+  }
+  /* portfolio 바 라벨 더 작게 */
+  .bar-row {
+    grid-template-columns: 90px 1fr 50px !important;
+  }
+  .bar-row > :first-child {
+    font-size: 0.78rem !important;
+  }
+}
+/* === 모바일 방어 끝 === */
+
 </style>
 <link rel="canonical" href="https://q-bot.kr/tools/salary-calculator/">
 </head>
