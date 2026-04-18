@@ -88,9 +88,9 @@
     "categories": [
       "조직·리더십"
     ],
-    "accent": "#134e4a",
+    "accent": "#fb923c",
     "logo_svg": "/assets/authors/quinn.svg",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "cole",
@@ -101,9 +101,9 @@
     "categories": [
       "일의 방법론"
     ],
-    "accent": "#115e59",
+    "accent": "#f97316",
     "logo_svg": "/assets/authors/cole.svg",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "ray",
@@ -114,9 +114,9 @@
     "categories": [
       "커리어·성장"
     ],
-    "accent": "#0f766e",
+    "accent": "#fdba74",
     "logo_svg": "/assets/authors/ray.svg",
-    "group": "marine"
+    "group": "sunset"
   },
   {
     "id": "kai",
