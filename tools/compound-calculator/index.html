@@ -65,7 +65,22 @@ input:focus { border-color: #3182f6; }
   .btn, .dl-btn, .card { display: none !important; } .brand { display: none; }
 }
 
-/* === Q-Lens 모바일 방어 (B안 보강 v2) === */
+/* === Q-Lens 모바일 방어 (B안 보강 v3) === */
+/* 전역: flex 아이템 input이 부모를 넘치지 않도록 */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="email"],
+input[type="tel"],
+select {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+.input-wrap { min-width: 0; }
+.field { min-width: 0; }
+.card { min-width: 0; }
+
 @media (max-width: 640px) {
   /* 일반적 결과 행들 — 숫자 줄바꿈 방지 */
   .detail-row, .deduct-row, .row, .summary-row,
@@ -89,7 +104,7 @@ input:focus { border-color: #3182f6; }
     grid-template-columns: 1fr 90px 28px !important;
     gap: 6px !important;
   }
-  /* portfolio 바 차트 — 라벨 폭 확대로 '내 포트폴리/오' 쪼개짐 방지 */
+  /* portfolio 바 차트 */
   .bar-row {
     grid-template-columns: 100px 1fr 55px !important;
     gap: 8px !important;
@@ -99,9 +114,7 @@ input:focus { border-color: #3182f6; }
     word-break: keep-all;
   }
 }
-/* 400px 이하(iPhone SE 1세대 등) 추가 방어 */
 @media (max-width: 400px) {
-  /* 긴 라벨 + 긴 숫자 조합은 폰트 축소로만 해결 가능 */
   .detail-row, .deduct-row, .row, .summary-row,
   .result-row, .stat-row {
     font-size: 0.95rem !important;
@@ -109,7 +122,6 @@ input:focus { border-color: #3182f6; }
   .detail-name, .deduct-label, .result-label, .stat-label {
     font-size: 0.88rem !important;
   }
-  /* portfolio 바 라벨 더 작게 */
   .bar-row {
     grid-template-columns: 90px 1fr 50px !important;
   }
@@ -118,6 +130,7 @@ input:focus { border-color: #3182f6; }
   }
 }
 /* === 모바일 방어 끝 === */
+
 
 </style>
 <link rel="canonical" href="https://q-bot.kr/tools/compound-calculator/">
