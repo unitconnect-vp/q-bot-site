@@ -247,7 +247,7 @@
   function renderHomeTools() {
     const host = document.getElementById('home-tools');
     if (!host) return;
-    const TOOLS_BASE = 'https://heyqbot.github.io/qlens-tools';
+    const TOOLS_BASE = '/tools';
     const tools = [
       { slug: 'salary-calculator',     name: '연봉 실수령액',  desc: '월급에서 떼이는 세금·4대보험을 뺀 실수령액을 계산합니다.' },
       { slug: 'severance-calculator',  name: '퇴직금',         desc: '근속연수와 평균임금으로 세전·세후 퇴직금을 계산합니다.' },
@@ -255,7 +255,7 @@
       { slug: 'compound-calculator',   name: '복리 투자',      desc: '매월 적립식 투자의 복리 수익을 시각화합니다.' }
     ];
     host.innerHTML = tools.map(t => `
-      <a href="${TOOLS_BASE}/${t.slug}.html" target="_blank" rel="noopener" class="card card--text">
+      <a href="${TOOLS_BASE}/${t.slug}/" target="_blank" rel="noopener" class="card card--text">
         <div class="card__cat">계산기</div>
         <div class="card__title">${esc(t.name)}</div>
         <div class="card__excerpt">${esc(t.desc)}</div>
