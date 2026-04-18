@@ -442,3 +442,55 @@
   }
 
 })();
+
+/* ===== READER RESPONSE: 관련 아티클 자동 렌더 (v3.5, 2026-04-18) ===== */
+(function() {
+  var container = document.querySelector('[data-rr-related]');
+  if (!container) return;
+
+  var currentSlug = container.getAttribute('data-current-slug');
+  var currentCatsAttr = container.getAttribute('data-current-cats') || '';
+  // 병기 카테고리도 split해서 매칭 (예: "경제·정책 · 부동산" → ["경제·정책", "부동산"])
+  var currentCats = currentCatsAttr.split(' · ').map(function(s){ return s.trim(); }).filter(Boolean);
+
+  function escapeHtml(s) {
+    if (!s) return '';
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function formatDate(iso) {
+    return (iso || '').replace(/-/g, '.');
+  }
+
+  function hasOverlap(catStr) {
+    var cats = catStr.split(' · ').map(function(s){ return s.trim(); });
+    return cats.some(function(c){ return currentCats.indexOf(c) !== -1; });
+  }
+
+  fetch('/articles/articles.json', { cache: 'no-store' })
+    .then(function(r){ return r.json(); })
+    .then(function(arts){
+      // 현재 글 제외 + 카테고리 겹치는 것만 + 최신 3편
+      var related = arts
+        .filter(function(a){ return a.slug !== currentSlug && hasOverlap(a.category || ''); })
+        .slice(0, 3);
+
+      if (related.length === 0) {
+        container.innerHTML = '<div class="ql-rr-related__empty">곧 이어질 관련 아티클을 준비 중입니다.</div>';
+        return;
+      }
+
+      container.innerHTML = related.map(function(a){
+        return '<a href="/articles/' + escapeHtml(a.slug) + '/" class="ql-rr-related__item">' +
+               '<span class="ql-rr-related__cat">' + escapeHtml(a.category) + '</span>' +
+               '<span class="ql-rr-related__title">' + escapeHtml(a.title) + '</span>' +
+               '<span class="ql-rr-related__meta">' + escapeHtml(a.author) + ' · ' + formatDate(a.date) + ' · ' + escapeHtml(a.read_time || '') + '</span>' +
+               '</a>';
+      }).join('');
+    })
+    .catch(function(){
+      container.innerHTML = '<div class="ql-rr-related__empty">관련 아티클을 불러오지 못했습니다.</div>';
+    });
+})();
