@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>포트폴리오 코스피 의존도 계산기 | Q-Lens</title>
+<meta name="description" content="내 포트폴리오는 코스피 지수와 얼마나 닮았는가. 반도체 편중도와 삼성·SK하이닉스 의존도를 계산합니다.">
+<meta name="keywords" content="포트폴리오 계산기, 코스피 편중, 반도체 비중, 종목 분산, 삼성전자, SK하이닉스, 주식 분산투자">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  background: #fff;
+  color: #111;
+  font-size: 17px;
+  line-height: 1.6;
+  padding: 2rem 1.25rem 4rem;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* 헤더 */
+.page-label {
+  font-size: 0.85rem;
+  color: #3182f6;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.35rem;
+  line-height: 1.25;
+}
+
+.page-desc {
+  font-size: 0.95rem;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 2px solid #111;
+}
+
+/* 카드 */
+.card {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.card-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 1.25rem;
+}
+
+.help-text {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+/* 종목 행 */
+.holding-row {
+  display: grid;
+  grid-template-columns: 1fr 110px 32px;
+  gap: 0.5rem;
+  margin-bottom: 0.6rem;
+  align-items: center;
+}
+
+.holding-row input {
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #111;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.holding-row input:focus {
+  border-color: #3182f6;
+}
+
+.weight-input-wrap {
+  position: relative;
+}
+
+.weight-input-wrap::after {
+  content: "%";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  font-size: 0.9rem;
+  pointer-events: none;
+}
+
+.weight-input-wrap input {
+  padding-right: 1.8rem;
+  text-align: right;
+}
+
+.del-btn {
+  background: #fff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 1.1rem;
+  height: 100%;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.del-btn:hover {
+  color: #ef4444;
+  border-color: #ef4444;
+}
+
+.add-btn {
+  display: block;
+  width: 100%;
+  padding: 0.65rem;
+  background: #fff;
+  border: 1px dashed #3182f6;
+  border-radius: 6px;
+  color: #3182f6;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.4rem;
+  transition: background 0.15s;
+}
+
+.add-btn:hover {
+  background: #eff6ff;
+}
+
+/* 비중 총합 표시 */
+.total-weight {
+  margin-top: 0.9rem;
+  padding: 0.75rem 1rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.total-weight.warn {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+.total-weight.ok {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  color: #1b64da;
+}
+
+.total-weight span:last-child {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 계산 버튼 */
+.calc-btn {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  background: #3182f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  transition: background 0.15s;
+}
+
+.calc-btn:hover {
+  background: #1b64da;
+}
+
+.calc-btn:disabled {
+  background: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* 결과 영역 */
+.result {
+  display: none;
+}
+
+.result.show {
+  display: block;
+}
+
+.score-card {
+  background: #fff;
+  border: 2px solid #111;
+  border-radius: 8px;
+  padding: 1.75rem 1.5rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+}
+
+.score-label {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.score-value {
+  font-size: 3.2rem;
+  font-weight: 800;
+  color: #3182f6;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.score-suffix {
+  font-size: 1.5rem;
+  color: #3182f6;
+  font-weight: 700;
+}
+
+.score-desc {
+  font-size: 0.95rem;
+  color: #374151;
+  margin-top: 0.5rem;
+}
+
+/* 지표 행 */
+.metric {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 0.85rem;
+}
+
+.metric-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.6rem;
+}
+
+.metric-label {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #111;
+}
+
+.metric-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #3182f6;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 바 비교 */
+.bar-compare {
+  margin-top: 0.6rem;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 55px;
+  gap: 0.6rem;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  font-size: 0.85rem;
+}
+
+.bar-track {
+  background: #e5e7eb;
+  height: 18px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  background: #3182f6;
+  border-radius: 2px;
+  transition: width 0.4s ease-out;
+}
+
+.bar-fill.muted {
+  background: #9ca3af;
+}
+
+.bar-label {
+  color: #374151;
+}
+
+.bar-num {
+  text-align: right;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #111;
+}
+
+.bar-num.muted {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* 해석 */
+.interpretation {
+  background: #f9fafb;
+  border-left: 3px solid #3182f6;
+  padding: 1rem 1.25rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #374151;
+  line-height: 1.55;
+}
+
+.interpretation strong {
+  color: #111;
+}
+
+/* 액션 버튼 */
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.action-btn {
+  padding: 0.85rem;
+  border: 1px solid #111;
+  background: #fff;
+  color: #111;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.action-btn:hover {
+  background: #111;
+  color: #fff;
+}
+
+.action-btn.primary {
+  background: #111;
+  color: #fff;
+}
+
+.action-btn.primary:hover {
+  background: #374151;
+}
+
+/* 푸터 */
+.footer-note {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+  font-size: 0.8rem;
+  color: #9ca3af;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.footer-note a {
+  color: #3182f6;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer-note a:hover {
+  text-decoration: underline;
+}
+
+.brand-link {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #3182f6;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+/* 인쇄 */
+@media print {
+  body {
+    padding: 0;
+    max-width: 100%;
+  }
+  .actions, .add-btn, .calc-btn, .del-btn, .card:first-of-type {
+    display: none !important;
+  }
+  .result {
+    display: block !important;
+  }
+}
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/portfolio-concentration/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<div class="page-label">Q-Lens Calculator</div>
+<h1 class="page-title">포트폴리오 코스피 의존도</h1>
+<p class="page-desc">내 포트폴리오는 코스피 지수와 얼마나 닮았는가. 반도체 편중과 2강 의존도를 진단합니다.</p>
+
+<!-- 입력 -->
+<div class="card">
+  <div class="card-title">보유 종목 입력</div>
+  <div class="help-text">종목명과 비중(%)을 입력하세요. 총합이 100%가 되도록 맞추면 가장 정확합니다. (최대 10종목)</div>
+
+  <div id="holdings"></div>
+
+  <button class="add-btn" id="add-btn" type="button">+ 종목 추가</button>
+
+  <div class="total-weight" id="total-weight">
+    <span>총 비중</span>
+    <span><span id="total-pct">0</span>%</span>
+  </div>
+</div>
+
+<button class="calc-btn" id="calc-btn" type="button">편중도 계산하기</button>
+
+<!-- 결과 -->
+<div class="result" id="result">
+
+  <div class="score-card">
+    <div class="score-label">Concentration Score</div>
+    <div><span class="score-value" id="score">0</span><span class="score-suffix">/100</span></div>
+    <div class="score-desc" id="score-desc">—</div>
+  </div>
+
+  <!-- 반도체 비중 -->
+  <div class="metric">
+    <div class="metric-header">
+      <span class="metric-label">반도체 비중</span>
+      <span class="metric-value" id="semi-val">—</span>
+    </div>
+    <div class="bar-compare">
+      <div class="bar-row">
+        <span class="bar-label">내 포트폴리오</span>
+        <div class="bar-track"><div class="bar-fill" id="semi-mine-bar" style="width:0%"></div></div>
+        <span class="bar-num" id="semi-mine-num">0%</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">코스피 평균</span>
+        <div class="bar-track"><div class="bar-fill muted" style="width:40%"></div></div>
+        <span class="bar-num muted">약 40%</span>
+      </div>
+    </div>
+    <div class="interpretation" id="semi-interp">—</div>
+  </div>
+
+  <!-- 2강 의존도 -->
+  <div class="metric">
+    <div class="metric-header">
+      <span class="metric-label">2강 의존도 (삼성+SK하이닉스)</span>
+      <span class="metric-value" id="duo-val">—</span>
+    </div>
+    <div class="interpretation" id="duo-interp">—</div>
+  </div>
+
+  <!-- 종목 분산도 -->
+  <div class="metric">
+    <div class="metric-header">
+      <span class="metric-label">종목 분산도</span>
+      <span class="metric-value" id="div-val">—</span>
+    </div>
+    <div class="interpretation" id="div-interp">—</div>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn" onclick="window.print()">PDF로 저장</button>
+    <button class="action-btn primary" onclick="location.reload()">다시 계산하기</button>
+  </div>
+
+</div>
+
+<div class="footer-note">
+  이 계산은 간단한 추정입니다. 실제 투자 판단은 개별 재무상황과 전문가 의견을 참고하세요.<br>
+  업종 분류 및 코스피 평균 수치는 2026년 4월 기준.
+</div>
+
+<a href="https://q-bot.kr/articles/kospi-6000-concentration/" class="brand-link" target="_blank">
+  Q-Lens에서 편중의 구조를 읽다 →
+</a>
+
+<script>
+// ===== 종목 업종 매핑 (주요 종목) =====
+const STOCK_DB = {
+  // 반도체
+  '삼성전자': { sector: 'semi', isDuo: true },
+  '삼성': { sector: 'semi', isDuo: true },
+  'SK하이닉스': { sector: 'semi', isDuo: true },
+  'sk하이닉스': { sector: 'semi', isDuo: true },
+  '하이닉스': { sector: 'semi', isDuo: true },
+  'DB하이텍': { sector: 'semi', isDuo: false },
+  '리노공업': { sector: 'semi', isDuo: false },
+  '원익IPS': { sector: 'semi', isDuo: false },
+  '동진쎄미켐': { sector: 'semi', isDuo: false },
+  'HPSP': { sector: 'semi', isDuo: false },
+  '한미반도체': { sector: 'semi', isDuo: false },
+  '삼성전기': { sector: 'semi', isDuo: false },
+  '이오테크닉스': { sector: 'semi', isDuo: false },
+  // 금융
+  'KB금융': { sector: 'finance', isDuo: false },
+  '신한지주': { sector: 'finance', isDuo: false },
+  '하나금융지주': { sector: 'finance', isDuo: false },
+  '우리금융지주': { sector: 'finance', isDuo: false },
+  '삼성생명': { sector: 'finance', isDuo: false },
+  '메리츠금융지주': { sector: 'finance', isDuo: false },
+  '삼성화재': { sector: 'finance', isDuo: false },
+  // 자동차
+  '현대차': { sector: 'auto', isDuo: false },
+  '현대자동차': { sector: 'auto', isDuo: false },
+  '기아': { sector: 'auto', isDuo: false },
+  '현대모비스': { sector: 'auto', isDuo: false },
+  // 바이오
+  '삼성바이오로직스': { sector: 'bio', isDuo: false },
+  '셀트리온': { sector: 'bio', isDuo: false },
+  '유한양행': { sector: 'bio', isDuo: false },
+  'SK바이오팜': { sector: 'bio', isDuo: false },
+  // 인터넷/플랫폼
+  '네이버': { sector: 'platform', isDuo: false },
+  'NAVER': { sector: 'platform', isDuo: false },
+  '카카오': { sector: 'platform', isDuo: false },
+  'KT': { sector: 'platform', isDuo: false },
+  'SK텔레콤': { sector: 'platform', isDuo: false },
+  'LG유플러스': { sector: 'platform', isDuo: false },
+  // 에너지/화학
+  'LG화학': { sector: 'chem', isDuo: false },
+  'LG에너지솔루션': { sector: 'chem', isDuo: false },
+  '삼성SDI': { sector: 'chem', isDuo: false },
+  '포스코홀딩스': { sector: 'chem', isDuo: false },
+  'POSCO홀딩스': { sector: 'chem', isDuo: false },
+  'SK이노베이션': { sector: 'chem', isDuo: false },
+  '한화솔루션': { sector: 'chem', isDuo: false },
+  // 조선/방산
+  '한화에어로스페이스': { sector: 'defense', isDuo: false },
+  'HD현대중공업': { sector: 'defense', isDuo: false },
+  '두산에너빌리티': { sector: 'defense', isDuo: false },
+  '한국항공우주': { sector: 'defense', isDuo: false },
+  // 기타 대형주
+  '삼성물산': { sector: 'other', isDuo: false },
+  'LG전자': { sector: 'other', isDuo: false },
+  'LG': { sector: 'other', isDuo: false },
+  'CJ': { sector: 'other', isDuo: false },
+  '아모레퍼시픽': { sector: 'other', isDuo: false },
+  '엔씨소프트': { sector: 'platform', isDuo: false },
+  '크래프톤': { sector: 'platform', isDuo: false },
+  '삼성E&A': { sector: 'other', isDuo: false },
+};
+
+const SECTOR_LABELS = {
+  semi: '반도체',
+  finance: '금융',
+  auto: '자동차',
+  bio: '바이오·헬스케어',
+  platform: '인터넷·통신',
+  chem: '2차전지·화학·에너지',
+  defense: '조선·방산',
+  other: '기타',
+  unknown: '미분류',
+};
+
+// ===== 상태 =====
+let holdings = [
+  { name: '', weight: null },
+  { name: '', weight: null },
+];
+
+// ===== 렌더 =====
+function render() {
+  const wrap = document.getElementById('holdings');
+  wrap.innerHTML = '';
+  holdings.forEach((h, i) => {
+    const row = document.createElement('div');
+    row.className = 'holding-row';
+    row.innerHTML = `
+      <input type="text" placeholder="종목명 (예: 삼성전자)" value="${h.name || ''}" data-idx="${i}" data-field="name" />
+      <div class="weight-input-wrap">
+        <input type="number" step="0.1" min="0" max="100" placeholder="비중" value="${h.weight ?? ''}" data-idx="${i}" data-field="weight" />
+      </div>
+      <button class="del-btn" data-idx="${i}" type="button" title="삭제">×</button>
+    `;
+    wrap.appendChild(row);
+  });
+
+  // 입력 이벤트
+  wrap.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', (e) => {
+      const idx = +e.target.dataset.idx;
+      const field = e.target.dataset.field;
+      if (field === 'name') {
+        holdings[idx].name = e.target.value;
+      } else {
+        const v = parseFloat(e.target.value);
+        holdings[idx].weight = isNaN(v) ? null : v;
+      }
+      updateTotal();
+    });
+  });
+
+  // 삭제 이벤트
+  wrap.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = +e.target.dataset.idx;
+      holdings.splice(idx, 1);
+      if (holdings.length === 0) holdings.push({ name: '', weight: null });
+      render();
+    });
+  });
+
+  updateTotal();
+}
+
+function updateTotal() {
+  const total = holdings.reduce((s, h) => s + (h.weight || 0), 0);
+  document.getElementById('total-pct').textContent = total.toFixed(1);
+  const el = document.getElementById('total-weight');
+  el.classList.remove('warn', 'ok');
+  if (total > 100.5) el.classList.add('warn');
+  else if (Math.abs(total - 100) < 0.5) el.classList.add('ok');
+}
+
+document.getElementById('add-btn').addEventListener('click', () => {
+  if (holdings.length >= 10) {
+    alert('최대 10개 종목까지 입력할 수 있습니다.');
+    return;
+  }
+  holdings.push({ name: '', weight: null });
+  render();
+});
+
+// ===== 계산 =====
+function lookup(name) {
+  if (!name) return null;
+  const norm = name.trim();
+  // 완전 일치
+  if (STOCK_DB[norm]) return STOCK_DB[norm];
+  // 대소문자 무시
+  const lower = norm.toLowerCase();
+  for (const k of Object.keys(STOCK_DB)) {
+    if (k.toLowerCase() === lower) return STOCK_DB[k];
+  }
+  // 부분 일치 (포함)
+  for (const k of Object.keys(STOCK_DB)) {
+    if (norm.includes(k) || k.includes(norm)) return STOCK_DB[k];
+  }
+  return null;
+}
+
+document.getElementById('calc-btn').addEventListener('click', calculate);
+
+function calculate() {
+  const valid = holdings.filter(h => h.name.trim() && h.weight > 0);
+  if (valid.length === 0) {
+    alert('종목과 비중을 하나 이상 입력하세요.');
+    return;
+  }
+
+  const totalWeight = valid.reduce((s, h) => s + h.weight, 0);
+
+  // 비중을 정규화 (총합을 100으로)
+  const normalized = valid.map(h => ({
+    name: h.name.trim(),
+    weight: (h.weight / totalWeight) * 100,
+    info: lookup(h.name),
+  }));
+
+  // 반도체 비중
+  const semiWeight = normalized
+    .filter(h => h.info && h.info.sector === 'semi')
+    .reduce((s, h) => s + h.weight, 0);
+
+  // 2강 비중
+  const duoWeight = normalized
+    .filter(h => h.info && h.info.isDuo)
+    .reduce((s, h) => s + h.weight, 0);
+
+  // HHI (허핀달-허쉬만 지수) 0~10000
+  // 각 종목 비중의 제곱합
+  const hhi = normalized.reduce((s, h) => s + h.weight * h.weight, 0);
+  // 10종목 균등분산이면 HHI = 1000, 단일종목이면 10000
+  // 점수화: 0(완벽분산) ~ 100(완전집중)
+  // HHI 범위: 1000(10종목 균등) ~ 10000(1종목)
+  // 실제로는 2종목만 50:50이어도 5000. 1종목이면 10000.
+  const concentrationScore = Math.min(100, Math.max(0, (hhi - 1000) / 90));
+
+  showResult({
+    semiWeight,
+    duoWeight,
+    hhi,
+    concentrationScore,
+    holdings: normalized,
+    totalWeight,
+  });
+}
+
+function showResult(r) {
+  const el = document.getElementById('result');
+  el.classList.add('show');
+
+  // 점수
+  const score = Math.round(r.concentrationScore);
+  document.getElementById('score').textContent = score;
+  let scoreDesc = '';
+  if (score < 20) scoreDesc = '매우 분산된 포트폴리오';
+  else if (score < 40) scoreDesc = '적정 수준의 분산';
+  else if (score < 60) scoreDesc = '중간 수준의 편중';
+  else if (score < 80) scoreDesc = '편중도가 높은 포트폴리오';
+  else scoreDesc = '특정 종목에 매우 집중됨';
+  document.getElementById('score-desc').textContent = scoreDesc;
+
+  // 반도체
+  document.getElementById('semi-val').textContent = r.semiWeight.toFixed(1) + '%';
+  document.getElementById('semi-mine-bar').style.width = Math.min(100, r.semiWeight) + '%';
+  document.getElementById('semi-mine-num').textContent = r.semiWeight.toFixed(1) + '%';
+
+  let semiInterp = '';
+  const diff = r.semiWeight - 40;
+  if (r.semiWeight >= 50) {
+    semiInterp = `<strong>코스피 평균보다 ${diff.toFixed(0)}%p 높은 반도체 비중입니다.</strong> 메모리 업황 한 번의 사이클이 포트폴리오 전체에 미치는 영향이 코스피 지수보다 큽니다.`;
+  } else if (r.semiWeight >= 30) {
+    semiInterp = `코스피 평균(약 40%)과 유사한 반도체 비중입니다. 지수와 비슷한 움직임을 보일 가능성이 높습니다.`;
+  } else if (r.semiWeight >= 10) {
+    semiInterp = `코스피 평균보다 낮은 반도체 비중입니다. 최근 반도체 주도 랠리에서 지수만큼 오르지 않았을 수 있지만, 업황 하락 시에도 충격이 작습니다.`;
+  } else {
+    semiInterp = `반도체 비중이 매우 낮습니다. 2026년 지수 상승을 반도체가 끌어올린 구간에서 체감 수익률이 지수 대비 뚜렷이 낮았을 것입니다.`;
+  }
+  document.getElementById('semi-interp').innerHTML = semiInterp;
+
+  // 2강 의존도
+  document.getElementById('duo-val').textContent = r.duoWeight.toFixed(1) + '%';
+  let duoInterp = '';
+  if (r.duoWeight >= 50) {
+    duoInterp = `<strong>삼성전자와 SK하이닉스가 포트폴리오의 절반 이상을 차지합니다.</strong> 두 회사의 실적이 개인 수익률을 거의 결정하는 구조입니다.`;
+  } else if (r.duoWeight >= 25) {
+    duoInterp = `2강이 포트폴리오의 1/4 이상입니다. 두 회사의 주가 움직임이 전체 수익률에 큰 영향을 미칩니다.`;
+  } else if (r.duoWeight > 0) {
+    duoInterp = `2강 비중이 제한적입니다. 두 회사의 개별 이벤트에 대한 민감도가 낮습니다.`;
+  } else {
+    duoInterp = `2강을 보유하지 않습니다. 2026년 코스피 상승의 상당 부분이 이 두 회사에서 나왔기 때문에, 지수와 다른 움직임을 경험했을 가능성이 큽니다.`;
+  }
+  document.getElementById('duo-interp').innerHTML = duoInterp;
+
+  // 분산도
+  const hhiRounded = Math.round(r.hhi);
+  document.getElementById('div-val').textContent = hhiRounded + ' HHI';
+  let divInterp = '';
+  if (r.hhi < 2000) {
+    divInterp = `종목 분산이 잘 되어 있습니다. 개별 종목 이벤트 리스크가 낮은 구조입니다.`;
+  } else if (r.hhi < 4000) {
+    divInterp = `적정 수준의 분산입니다. 일부 종목의 비중이 높지만 과도한 집중은 아닙니다.`;
+  } else if (r.hhi < 6000) {
+    divInterp = `분산도가 낮습니다. 특정 종목의 비중이 커서 해당 종목 움직임에 포트폴리오 전체가 크게 좌우됩니다.`;
+  } else {
+    divInterp = `<strong>매우 집중된 포트폴리오입니다.</strong> 소수 종목이 수익률을 거의 결정합니다. 해당 종목의 리스크가 곧 포트폴리오 전체의 리스크입니다.`;
+  }
+  divInterp += `<br><br><span style="font-size:0.85rem;color:#6b7280;">* HHI는 허핀달-허쉬만 지수. 1,000에 가까울수록 분산, 10,000에 가까울수록 집중.</span>`;
+  document.getElementById('div-interp').innerHTML = divInterp;
+
+  // 스크롤
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// 초기 렌더
+render();
+</script>
+
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
