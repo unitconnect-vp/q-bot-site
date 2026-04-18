@@ -272,14 +272,14 @@
     if (!host || !authors) return;
     const counts = {};
     articles.forEach(a => { counts[a.author] = (counts[a.author] || 0) + 1; });
-    host.innerHTML = authors.map(w => `
+    host.innerHTML = '<div class="writers-grid">' + authors.map(w => `
       <a href="/authors/${esc(w.id)}/" class="writer g-${esc(w.group || 'deep')}">
         <div class="writer__name">${esc(w.name)}</div>
         <div class="writer__tagline">${esc(w.tagline || '')}</div>
         <div class="writer__bio">${esc(w.bio || '')}</div>
         <div class="writer__latest">아티클 ${counts[w.name] || counts[w.name_kr] || 0}편</div>
       </a>
-    `).join('');
+    `).join('') + '</div>';
   }
 
   // ============================================
@@ -494,3 +494,4 @@
       container.innerHTML = '<div class="ql-rr-related__empty">관련 아티클을 불러오지 못했습니다.</div>';
     });
 })();
+
