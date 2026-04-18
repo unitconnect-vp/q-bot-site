@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금융·노무 계산기 모음 | Q-Lens</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background: #fff; color: #111; font-size: 17px; line-height: 1.6; padding: 2rem 1.25rem 4rem; max-width: 680px; margin: 0 auto; }
+.page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
+.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.section-label { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.75rem; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+.calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2.5rem; }
+.calc-card { display: flex; flex-direction: column; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; text-decoration: none; color: inherit; transition: all 0.2s; }
+.calc-card:hover { border-color: #3182f6; box-shadow: 0 2px 12px rgba(22,163,74,0.1); transform: translateY(-2px); }
+.calc-card-icon { font-size: 1.5rem; margin-bottom: 0.75rem; display: block; line-height: 1; }
+.calc-card-title { font-size: 0.95rem; font-weight: 700; color: #111; margin-bottom: 0.35rem; line-height: 1.4; }
+.calc-card-desc { font-size: 0.78rem; color: #6b7280; line-height: 1.6; margin-bottom: 0.75rem; flex: 1; }
+.calc-card-tag { font-size: 0.72rem; font-weight: 700; color: #3182f6; }
+.brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
+.brand a { color: #3182f6; text-decoration: none; }
+@media (max-width: 480px) { .calc-grid { grid-template-columns: 1fr; } }
+</style>
+<link rel="canonical" href="https://q-bot.kr/tools/">
+</head>
+<body>
+<!-- Q-Lens 네비 -->
+<div style="max-width:720px;margin:0 auto;padding:14px 20px;border-bottom:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <a href="/" style="text-decoration:none;color:#0a0a0a;font-size:1.1rem;font-weight:800;letter-spacing:-0.02em;">Q-Lens</a>
+    <div style="display:flex;gap:18px;font-size:0.9rem;">
+      <a href="/articles/" style="text-decoration:none;color:#6b7280;">아티클</a>
+      <a href="/tools/" style="text-decoration:none;color:#3182f6;font-weight:700;">계산기</a>
+    </div>
+  </div>
+</div>
+
+
+<p class="page-label">Q-Lens · 도구 모음</p>
+<h1 class="page-title">금융·투자·노무 계산기</h1>
+<p class="page-desc">2026년 기준. 세금, 4대보험, 투자, 포트폴리오 — 숫자로 직접 확인한다.</p>
+
+<p class="section-label">계산기</p>
+
+<div class="calc-grid">
+  <a class="calc-card" href="/tools/salary-calculator/" target="_parent">
+    <span class="calc-card-icon">💰</span>
+    <p class="calc-card-title">연봉 실수령액 계산기</p>
+    <p class="calc-card-desc">4대보험·소득세 공제 후 실제 수령액. 부양가족 수 반영.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/freelancer-tax-calculator/" target="_parent">
+    <span class="calc-card-icon">🧾</span>
+    <p class="calc-card-title">프리랜서 세금 계산기</p>
+    <p class="calc-card-desc">3.3% 원천징수·종합소득세·지역건보료 한 번에.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/unemployment-calculator/" target="_parent">
+    <span class="calc-card-icon">📋</span>
+    <p class="calc-card-title">실업급여 계산기</p>
+    <p class="calc-card-desc">퇴사 후 받을 수 있는 구직급여 예상액. 가입기간·나이 반영.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/severance-calculator/" target="_parent">
+    <span class="calc-card-icon">📅</span>
+    <p class="calc-card-title">퇴직금 계산기</p>
+    <p class="calc-card-desc">근속기간·평균임금 기준 법정 퇴직금. 상여·연차 반영.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/resignation-simulator/" target="_parent">
+    <span class="calc-card-icon">🚪</span>
+    <p class="calc-card-title">퇴사 후 비용 시뮬레이터</p>
+    <p class="calc-card-desc">퇴직금·실업급여·지역건보·국민연금 통합. 월별 현금흐름 표시.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/gift-tax-calculator/" target="_parent">
+    <span class="calc-card-icon">🏠</span>
+    <p class="calc-card-title">증여세 계산기</p>
+    <p class="calc-card-desc">현금·부동산 증여 시 예상 세금. 증여재산공제·세율 자동 반영.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/compound-calculator/" target="_parent">
+    <span class="calc-card-icon">📈</span>
+    <p class="calc-card-title">복리·적립식 투자 시뮬레이터</p>
+    <p class="calc-card-desc">ETF·적금 장기 수익을 복리로 계산. 거치식·적립식 선택 가능.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/ev-vs-ice-calculator/" target="_parent">
+    <span class="calc-card-icon">⚡</span>
+    <p class="calc-card-title">전기차 vs 내연기관 유지비 비교</p>
+    <p class="calc-card-desc">연간 주행거리·유가 입력으로 연료비·정비비 절약액과 손익분기 시점을 계산.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+    <a class="calc-card" href="/tools/portfolio-concentration/" target="_parent">
+    <span class="calc-card-icon">📊</span>
+    <p class="calc-card-title">포트폴리오 코스피 의존도</p>
+    <p class="calc-card-desc">반도체 편중과 2강 의존도 진단. 내 포트폴리오가 코스피 지수와 얼마나 닮았는지 계산.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/loan-calculator/" target="_parent">
+    <span class="calc-card-icon">🏦</span>
+    <p class="calc-card-title">대출 이자·상환 계산기</p>
+    <p class="calc-card-desc">원리금균등·원금균등 비교. 총 이자·월 납입금·연도별 스케줄.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+  <a class="calc-card" href="/tools/ev-insurance-calculator/" target="_parent">
+    <span class="calc-card-icon">🔥</span>
+    <p class="calc-card-title">전기차 보험료 계산기</p>
+    <p class="calc-card-desc">전기차 vs 내연차 보험료 차이, 화재·폭발 보상 한도, 배터리 특약까지 한 번에 비교.</p>
+    <span class="calc-card-tag">→ 계산하기</span>
+  </a>
+</div>
+
+<p class="brand"><a href="https://q-bot.kr" target="_blank">Q-Lens</a> · 보이는 것 너머를 묻습니다</p>
+
+<!-- Q-Lens 푸터 -->
+<div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
+  <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
+  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#6b7280;">
+    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+    ·
+    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    ·
+    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    ·
+    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+  </div>
+  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+</div>
+
+</body>
+</html>
