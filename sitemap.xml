@@ -49,16 +49,10 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://q-bot.kr/privacy/</loc>
+    <loc>https://q-bot.kr/articles/male-youth-labor-force-drop-2026/</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/terms/</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://q-bot.kr/articles/temp-2house-3year-rule-trap/</loc>
@@ -289,18 +283,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://q-bot.kr/categories/ai/</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/categories/sports/</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://q-bot.kr/authors/ellis/</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -365,11 +347,5 @@
     <lastmod>2026-04-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/series/market-concentration-2026/</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>
