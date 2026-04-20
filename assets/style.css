@@ -540,6 +540,16 @@ button { font-family: inherit; cursor: pointer; }
   margin: 0 0 20px;
   word-break: keep-all;
 }
+/* v3.6 (2026-04-20): 아티클 제목 h1 — hero 내 유일한 h1 */
+.ql-title {
+  font-size: 2.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.035em !important;
+  line-height: 1.2 !important;
+  color: var(--ink-strong) !important;
+  margin: 0 0 20px !important;
+  word-break: keep-all !important;
+}
 .ql-subtitle {
   font-size: 1.0625rem;
   line-height: 1.7;
@@ -783,6 +793,7 @@ button { font-family: inherit; cursor: pointer; }
   .ql-body { font-size: 1rem; }
   .ql-body h2 { font-size: 1.375rem; }
   .ql-hero h2, .ql-hero h1 { font-size: 1.625rem; }
+  .ql-title { font-size: 1.75rem !important; }
   .ql-subtitle { font-size: 1rem; }
   .ql-pullquote { font-size: 1.1875rem; }
 }
