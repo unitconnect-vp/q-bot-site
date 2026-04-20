@@ -2,8 +2,8 @@ name: Publish Scheduled Articles
 
 on:
   schedule:
-    - cron: '0 * * * *'   # 매시간 정각 실행 (UTC 기준)
-  workflow_dispatch:        # 수동 실행 가능
+    - cron: '0 * * * *'   # 매시간 정각 (UTC)
+  workflow_dispatch:
 
 jobs:
   publish:
@@ -21,7 +21,7 @@ jobs:
           python-version: '3.11'
 
       - name: Run publish script
-        run: python3 .github/scripts/publish_drafts.py
+        run: python3 .github/scripts/publish_scheduled.py
 
       - name: Commit and push if changed
         run: |
