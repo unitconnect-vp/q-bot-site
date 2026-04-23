@@ -9,7 +9,7 @@
   },
   {
     "slug": "right-turn-red-light-crackdown-2026",
-    "title": "빨간불에 우회전, 왜 매번 헷갈릴까 — 그제부터 다시 단속이 시작됐다",
+    "title": "빨간불 우회전, 3년이 지났는데 왜 매번 헷갈릴까",
     "category": "사회·이슈",
     "author": "Wren",
     "date": "2026-04-22",
@@ -17,7 +17,7 @@
   },
   {
     "slug": "dividend-separate-taxation-eligible-stocks",
-    "title": "배당소득 분리과세, 실제 대상은 누구인가 — 321곳 명단을 펼쳐본다",
+    "title": "배당세 분리과세 대상 321곳, 증권사 5곳이 공통으로 꼽은 종목",
     "category": "주식·투자",
     "author": "Mills",
     "date": "2026-04-21",
@@ -25,7 +25,7 @@
   },
   {
     "slug": "dividend-separate-taxation-2026",
-    "title": "배당세 49.5%가 25%로 꺾였다 — 그런데 KB·신한·하나는 아직 요건 미달이다",
+    "title": "배당세 49.5% → 25%, 실제 혜택받는 주주는 얼마나 될까",
     "category": "주식·투자",
     "author": "Mills",
     "date": "2026-04-21",
@@ -41,7 +41,7 @@
   },
   {
     "slug": "temp-2house-3year-rule-trap",
-    "title": "일시적 2주택 3년 룰 — 비과세가 사라지는 6가지 장면",
+    "title": "일시적 2주택 3년 룰, 비과세를 날리는 6가지 함정",
     "category": "부동산",
     "author": "Reed",
     "date": "2026-04-19",
@@ -49,7 +49,7 @@
   },
   {
     "slug": "12eok-nontax-trap-high-value-home",
-    "title": "12억 비과세의 함정 — 고가주택 안분 공식이 수천만 원을 가른다",
+    "title": "12억 비과세 함정, 고가주택 안분 공식이 수천만 원을 가른다",
     "category": "부동산 · 금융·투자",
     "author": "Reed",
     "date": "2026-04-19",
@@ -57,7 +57,7 @@
   },
   {
     "slug": "nba-play-in-tournament-2026",
-    "title": "커리는 집에 갔다 — NBA 플레이인 토너먼트가 5년 동안 바꾼 것",
+    "title": "커리는 집에 갔다. NBA 플레이인 토너먼트가 5년간 바꾼 5가지",
     "category": "스포츠·머니볼",
     "author": "Dash",
     "date": "2026-04-18",
@@ -73,15 +73,15 @@
   },
   {
     "slug": "4-5-day-workweek-one-year-results-2026",
-    "title": "주 4.5일제 1년 — '쉬는 시간을 늘렸더니 실적이 올랐다'가 나온 자리",
+    "title": "주 4.5일제 1년, 생산성 +2.1% · 이직률 22.8→17.4%의 의미",
     "category": "조직·리더십",
-    "author": "Thread",
+    "author": "Quinn",
     "date": "2026-04-18",
     "read_time": "약 8분"
   },
   {
     "slug": "mortgage-rate-5-6-percent-housing-market-2026",
-    "title": "주담대가 다시 5~6%가 된 이유 — 금리는 그대로인데 대출만 오른다",
+    "title": "왜 금리는 그대로인데 주담대만 다시 5~6%로 올랐을까",
     "category": "부동산·경제",
     "author": "Harper",
     "date": "2026-04-18",
@@ -89,7 +89,7 @@
   },
   {
     "slug": "sk-hynix-q1-2026-40-trillion-hbm",
-    "title": "SK하이닉스 1분기 40조 — 제조업이 불가능하다던 영업이익률 70%",
+    "title": "SK하이닉스 영업이익 37.6조, 제조업 이익률 72%가 나온 자리",
     "category": "주식·투자",
     "author": "Mills",
     "date": "2026-04-18",
@@ -97,7 +97,7 @@
   },
   {
     "slug": "bok-supply-shock-rate-dilemma-2026-04",
-    "title": "한은 '공급충격' 경고 — 인상도 인하도 어려운 7연속 동결의 무게",
+    "title": "한은 '공급충격' 경고, 인상도 인하도 막힌 7연속 동결의 구조",
     "category": "경제·정책",
     "author": "Harper",
     "date": "2026-04-18",
@@ -105,7 +105,7 @@
   },
   {
     "slug": "ev-battery-contract-restructure-post-chungla",
-    "title": "파라시스 사건 이후 — 완성차-배터리 계약 구조가 바뀌고 있다",
+    "title": "파라시스 사건 이후, 완성차·배터리 계약 구조가 이렇게 바뀌었다",
     "category": "기업·경영",
     "author": "Ellis",
     "date": "2026-04-18",
@@ -121,7 +121,7 @@
   },
   {
     "slug": "ev-fire-statistics-reality-check",
-    "title": "전기차가 더 위험한가 — 10만대당 14건이 말하는 공포의 구조",
+    "title": "전기차가 더 위험한가, 10만대당 14건이 말하는 공포의 구조",
     "category": "사회·이슈",
     "author": "Wren",
     "date": "2026-04-18",
@@ -129,7 +129,7 @@
   },
   {
     "slug": "nps-rebalancing-suspension",
-    "title": "국민연금이 '안 팔기로' 결정한 날 — 리밸런싱을 유예한 연기금의 고백",
+    "title": "국민연금이 '안 팔기로' 결정한 날, 리밸런싱을 유예한 연기금의 선택",
     "category": "경제·정책",
     "author": "Harper",
     "date": "2026-04-17",
@@ -148,7 +148,7 @@
   },
   {
     "slug": "kospi-6000-concentration",
-    "title": "코스피 6,000 — 신호인가, 편중인가",
+    "title": "코스피 6,091 증가분의 54%가 두 회사에서 나왔다",
     "category": "주식·투자",
     "author": "Mills",
     "date": "2026-04-17",
@@ -167,7 +167,7 @@
   },
   {
     "slug": "claude-chat-code-cowork-guide",
-    "title": "채팅·코드·코워크 — 클로드 세 가지를 언제 어떻게 쓰는가",
+    "title": "클로드 채팅·코드·코워크, 언제 어떤 것을 써야 할까",
     "category": "AI·테크",
     "author": "Kai",
     "date": "2026-04-16",
