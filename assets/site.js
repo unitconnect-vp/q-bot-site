@@ -83,7 +83,6 @@
       renderHomeRanking(sorted, authorsArr);
       renderHomeRecent(sorted, authorsArr);
       renderHomeTools();
-      renderHomeWriters(authorsArr, sorted);
       renderHomeSeries(seriesArr, sorted);
     }).catch(handleError);
   } else if (authorList) {
