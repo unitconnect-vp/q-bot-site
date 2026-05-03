@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+  "fetched_at": "2026-05-03T04:13:15.112871+00:00",
   "sido_list": [
     {
       "code": "seoul",
@@ -22,7 +22,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11110",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 107,
@@ -48,26 +48,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "종로구",
-            "pm10": 14,
-            "pm25": 12
+            "pm10": 10,
+            "pm25": 7
           },
           "gangnam_station": {
             "station": "종로구",
-            "pm10": 14,
-            "pm25": 12
+            "pm10": 10,
+            "pm25": 7
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 211,
@@ -115,7 +115,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11140",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 156,
@@ -141,18 +141,18 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 324,
@@ -195,7 +195,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11170",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 112,
@@ -221,26 +221,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "용산구",
-            "pm10": 23,
-            "pm25": 13
+            "pm10": 19,
+            "pm25": 11
           },
           "gangnam_station": {
             "station": "용산구",
-            "pm10": 23,
-            "pm25": 13
+            "pm10": 19,
+            "pm25": 11
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 171,
@@ -282,7 +282,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11200",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 219,
@@ -308,26 +308,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "성동구",
-            "pm10": 19,
-            "pm25": 16
+            "pm10": 13,
+            "pm25": 5
           },
           "gangnam_station": {
             "station": "성동구",
-            "pm10": 19,
-            "pm25": 16
+            "pm10": 13,
+            "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 261,
@@ -370,7 +370,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11215",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 133,
@@ -396,26 +396,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "광진구",
             "pm10": 15,
-            "pm25": 9
+            "pm25": 6
           },
           "gangnam_station": {
             "station": "광진구",
             "pm10": 15,
-            "pm25": 9
+            "pm25": 6
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 324,
@@ -461,7 +461,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11230",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 444,
@@ -487,26 +487,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "동대문구",
-            "pm10": 15,
-            "pm25": 15
+            "pm10": 11,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "동대문구",
-            "pm10": 15,
-            "pm25": 15
+            "pm10": 11,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 321,
@@ -551,7 +551,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11260",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 496,
@@ -577,26 +577,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "중랑구",
-            "pm10": 16,
-            "pm25": 12
+            "pm10": 10,
+            "pm25": 6
           },
           "gangnam_station": {
             "station": "중랑구",
-            "pm10": 16,
-            "pm25": 12
+            "pm10": 10,
+            "pm25": 6
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 294,
@@ -638,7 +638,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11290",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 607,
@@ -664,26 +664,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "성북구",
-            "pm10": 18,
-            "pm25": 7
+            "pm10": 9,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "성북구",
-            "pm10": 18,
-            "pm25": 7
+            "pm10": 9,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 289,
@@ -726,7 +726,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11305",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 230,
@@ -752,26 +752,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "강북구",
-            "pm10": 13,
-            "pm25": 8
+            "pm10": 8,
+            "pm25": 4
           },
           "gangnam_station": {
             "station": "강북구",
-            "pm10": 13,
-            "pm25": 8
+            "pm10": 8,
+            "pm25": 4
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 257,
@@ -813,7 +813,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11320",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 484,
@@ -839,26 +839,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "도봉구",
-            "pm10": 17,
-            "pm25": 11
+            "pm10": 7,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "도봉구",
-            "pm10": 17,
-            "pm25": 11
+            "pm10": 7,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 189,
@@ -901,7 +901,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11350",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1366,
@@ -927,26 +927,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "노원구",
-            "pm10": 14,
-            "pm25": 9
+            "pm10": 13,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "노원구",
-            "pm10": 14,
-            "pm25": 9
+            "pm10": 13,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 414,
@@ -993,7 +993,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11380",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 533,
@@ -1019,26 +1019,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "은평구",
-            "pm10": 13,
-            "pm25": 9
+            "pm10": 10,
+            "pm25": 10
           },
           "gangnam_station": {
             "station": "은평구",
-            "pm10": 13,
-            "pm25": 9
+            "pm10": 10,
+            "pm25": 10
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 361,
@@ -1082,7 +1082,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11410",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 432,
@@ -1108,26 +1108,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "서대문구",
-            "pm10": 18,
-            "pm25": 12
+            "pm10": 6,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "서대문구",
-            "pm10": 18,
-            "pm25": 12
+            "pm10": 6,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 227,
@@ -1171,7 +1171,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11440",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 243,
@@ -1197,26 +1197,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "마포구",
-            "pm10": 12,
-            "pm25": 7
+            "pm10": 13,
+            "pm25": 6
           },
           "gangnam_station": {
             "station": "마포구",
-            "pm10": 12,
-            "pm25": 7
+            "pm10": 13,
+            "pm25": 6
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 449,
@@ -1262,7 +1262,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11470",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 390,
@@ -1289,26 +1289,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "양천구",
-            "pm10": 15,
-            "pm25": 9
+            "pm10": 9,
+            "pm25": 7
           },
           "gangnam_station": {
             "station": "양천구",
-            "pm10": 15,
-            "pm25": 9
+            "pm10": 9,
+            "pm25": 7
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 344,
@@ -1350,7 +1350,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11500",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 710,
@@ -1376,26 +1376,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "강서구",
-            "pm10": 12,
-            "pm25": 8
+            "pm10": 13,
+            "pm25": 6
           },
           "gangnam_station": {
             "station": "강서구",
-            "pm10": 12,
-            "pm25": 8
+            "pm10": 13,
+            "pm25": 6
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 521,
@@ -1440,7 +1440,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11530",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 645,
@@ -1466,18 +1466,18 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 325,
@@ -1524,7 +1524,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11545",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 213,
@@ -1550,26 +1550,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "금천구",
-            "pm10": null,
-            "pm25": 17
+            "pm10": 12,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "금천구",
-            "pm10": null,
-            "pm25": 17
+            "pm10": 12,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 186,
@@ -1613,7 +1613,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11560",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 442,
@@ -1639,26 +1639,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "영등포구",
-            "pm10": 13,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
           "gangnam_station": {
             "station": "영등포구",
-            "pm10": 13,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 463,
@@ -1703,7 +1703,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11590",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 310,
@@ -1729,26 +1729,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "동작구",
-            "pm10": 23,
-            "pm25": null
+            "pm10": 11,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "동작구",
-            "pm10": 23,
-            "pm25": null
+            "pm10": 11,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 307,
@@ -1795,7 +1795,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11620",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 397,
@@ -1821,26 +1821,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "관악구",
-            "pm10": 19,
-            "pm25": 13
+            "pm10": 14,
+            "pm25": 7
           },
           "gangnam_station": {
             "station": "관악구",
-            "pm10": 19,
-            "pm25": 13
+            "pm10": 14,
+            "pm25": 7
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 374,
@@ -1883,7 +1883,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11650",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 204,
@@ -1909,26 +1909,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "서초구",
-            "pm10": 19,
-            "pm25": 14
+            "pm10": 9,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "서초구",
-            "pm10": 19,
-            "pm25": 14
+            "pm10": 9,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 998,
@@ -1973,7 +1973,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11680",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 328,
@@ -1999,26 +1999,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "강남구",
-            "pm10": 17,
-            "pm25": 12
+            "pm10": 15,
+            "pm25": 7
           },
           "gangnam_station": {
             "station": "강남구",
-            "pm10": 17,
-            "pm25": 12
+            "pm10": 15,
+            "pm25": 7
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 2175,
@@ -2064,7 +2064,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11710",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 541,
@@ -2090,26 +2090,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "송파구",
-            "pm10": 12,
-            "pm25": 11
+            "pm10": 14,
+            "pm25": 10
           },
           "gangnam_station": {
             "station": "송파구",
-            "pm10": 12,
-            "pm25": 11
+            "pm10": 14,
+            "pm25": 10
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 709,
@@ -2157,7 +2157,7 @@
       "sido_name": "서울특별시",
       "level": "sigungu",
       "lawd_cd": "11740",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 418,
@@ -2183,26 +2183,26 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "seoul_avg": {
-            "pm10": 15,
-            "pm25": 10,
+            "pm10": 12,
+            "pm25": 7,
             "station_count": 40
           },
           "gu_station": {
             "station": "강동구",
-            "pm10": 16,
+            "pm10": 17,
             "pm25": 10
           },
           "gangnam_station": {
             "station": "강동구",
-            "pm10": 16,
+            "pm10": 17,
             "pm25": 10
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 506,
@@ -2244,7 +2244,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41111",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 431,
@@ -2270,22 +2270,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
           "gangnam_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 205,
@@ -2314,11 +2314,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 270705,
+          "gangnam_total": 270705,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 1.97,
           "share_of_seoul_pct": null
         }
       },
@@ -2332,7 +2332,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41113",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 914,
@@ -2358,22 +2358,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
           "gangnam_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 229,
@@ -2399,11 +2399,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 360383,
+          "gangnam_total": 360383,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.62,
           "share_of_seoul_pct": null
         }
       },
@@ -2417,7 +2417,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41115",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 462,
@@ -2443,22 +2443,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
           "gangnam_station": {
             "station": "경수대로(동수원)",
-            "pm10": 9,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 338,
@@ -2488,11 +2488,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 192974,
+          "gangnam_total": 192974,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 1.4,
           "share_of_seoul_pct": null
         }
       },
@@ -2506,7 +2506,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41117",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1178,
@@ -2533,22 +2533,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "영통동",
-            "pm10": 28,
+            "pm10": 1,
             "pm25": 7
           },
           "gangnam_station": {
             "station": "영통동",
-            "pm10": 28,
+            "pm10": 1,
             "pm25": 7
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 336,
@@ -2574,11 +2574,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 362105,
+          "gangnam_total": 362105,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.63,
           "share_of_seoul_pct": null
         }
       },
@@ -2592,7 +2592,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41131",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 209,
@@ -2618,22 +2618,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 308,
@@ -2662,11 +2662,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 234336,
+          "gangnam_total": 234336,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 1.7,
           "share_of_seoul_pct": null
         }
       },
@@ -2680,7 +2680,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41133",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 230,
@@ -2706,22 +2706,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 199,
@@ -2746,11 +2746,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 202142,
+          "gangnam_total": 202142,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 1.47,
           "share_of_seoul_pct": null
         }
       },
@@ -2764,7 +2764,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41135",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 477,
@@ -2790,22 +2790,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "성남대로(모란역)",
-            "pm10": 18,
-            "pm25": 6
+            "pm10": 11,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 678,
@@ -2835,11 +2835,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 469015,
+          "gangnam_total": 469015,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 3.41,
           "share_of_seoul_pct": null
         }
       },
@@ -2853,7 +2853,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41171",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 508,
@@ -2879,22 +2879,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "안양8동",
-            "pm10": 13,
-            "pm25": 12
+            "pm10": 9,
+            "pm25": 10
           },
           "gangnam_station": {
             "station": "안양8동",
-            "pm10": 13,
-            "pm25": 12
+            "pm10": 9,
+            "pm25": 10
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 185,
@@ -2921,11 +2921,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 233364,
+          "gangnam_total": 233364,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 1.7,
           "share_of_seoul_pct": null
         }
       },
@@ -2939,7 +2939,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41173",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 878,
@@ -2965,22 +2965,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "안양8동",
-            "pm10": 13,
-            "pm25": 12
+            "pm10": 9,
+            "pm25": 10
           },
           "gangnam_station": {
             "station": "안양8동",
-            "pm10": 13,
-            "pm25": 12
+            "pm10": 9,
+            "pm25": 10
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 361,
@@ -3005,11 +3005,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 329302,
+          "gangnam_total": 329302,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.4,
           "share_of_seoul_pct": null
         }
       },
@@ -3023,7 +3023,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41271",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 331,
@@ -3049,14 +3049,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 176,
@@ -3082,11 +3082,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 321616,
+          "gangnam_total": 321616,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.34,
           "share_of_seoul_pct": null
         }
       },
@@ -3100,7 +3100,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41273",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 505,
@@ -3126,14 +3126,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 323,
@@ -3160,11 +3160,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 289167,
+          "gangnam_total": 289167,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.1,
           "share_of_seoul_pct": null
         }
       },
@@ -3178,7 +3178,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41281",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 863,
@@ -3204,14 +3204,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 370,
@@ -3240,11 +3240,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 484128,
+          "gangnam_total": 484128,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 3.52,
           "share_of_seoul_pct": null
         }
       },
@@ -3258,7 +3258,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41285",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 366,
@@ -3284,14 +3284,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 244,
@@ -3320,11 +3320,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 297093,
+          "gangnam_total": 297093,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.16,
           "share_of_seoul_pct": null
         }
       },
@@ -3338,7 +3338,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41287",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 516,
@@ -3364,14 +3364,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 232,
@@ -3399,11 +3399,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 276829,
+          "gangnam_total": 276829,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.01,
           "share_of_seoul_pct": null
         }
       },
@@ -3417,7 +3417,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41461",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 448,
@@ -3443,14 +3443,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 157,
@@ -3477,11 +3477,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 284132,
+          "gangnam_total": 284132,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.07,
           "share_of_seoul_pct": null
         }
       },
@@ -3495,7 +3495,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41463",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1354,
@@ -3521,22 +3521,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "기흥",
-            "pm10": 12,
-            "pm25": 6
+            "pm10": 16,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "기흥",
-            "pm10": 12,
-            "pm25": 6
+            "pm10": 16,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 325,
@@ -3563,11 +3563,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 434263,
+          "gangnam_total": 434263,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 3.16,
           "share_of_seoul_pct": null
         }
       },
@@ -3581,7 +3581,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41465",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 964,
@@ -3608,22 +3608,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "수지",
-            "pm10": 12,
+            "pm10": 10,
             "pm25": 5
           },
           "gangnam_station": {
             "station": "수지",
-            "pm10": 12,
+            "pm10": 10,
             "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 289,
@@ -3648,11 +3648,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": null,
-          "gangnam_total": null,
+          "sgg_total": 372025,
+          "gangnam_total": 372025,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": null,
+          "share_of_sido_pct": 2.71,
           "share_of_seoul_pct": null
         }
       },
@@ -3666,7 +3666,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41150",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 940,
@@ -3692,22 +3692,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "의정부동",
-            "pm10": 13,
-            "pm25": 10
+            "pm10": 8,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "의정부동",
-            "pm10": 13,
-            "pm25": 10
+            "pm10": 8,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 400,
@@ -3754,7 +3754,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41190",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "status": "no_data",
@@ -3768,14 +3768,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 716,
@@ -3825,7 +3825,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41210",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 544,
@@ -3851,14 +3851,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 300,
@@ -3901,7 +3901,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41220",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1491,
@@ -3928,22 +3928,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "평택항",
-            "pm10": 18,
-            "pm25": 17
+            "pm10": 21,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "평택항",
-            "pm10": 18,
-            "pm25": 17
+            "pm10": 21,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 414,
@@ -3987,7 +3987,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41250",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 160,
@@ -4013,14 +4013,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 56,
@@ -4062,7 +4062,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41290",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 50,
@@ -4088,22 +4088,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "과천동",
             "pm10": 12,
-            "pm25": 11
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "과천동",
             "pm10": 12,
-            "pm25": 11
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 75,
@@ -4143,7 +4143,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41310",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 669,
@@ -4169,14 +4169,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 229,
@@ -4220,7 +4220,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41360",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1447,
@@ -4246,14 +4246,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 520,
@@ -4297,7 +4297,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41370",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 504,
@@ -4323,22 +4323,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "오산동",
-            "pm10": 11,
+            "pm10": 10,
             "pm25": 5
           },
           "gangnam_station": {
             "station": "오산동",
-            "pm10": 11,
+            "pm10": 10,
             "pm25": 5
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 155,
@@ -4383,7 +4383,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41390",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 1081,
@@ -4409,14 +4409,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 357,
@@ -4462,7 +4462,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41410",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 673,
@@ -4488,14 +4488,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 198,
@@ -4539,7 +4539,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41430",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 288,
@@ -4566,14 +4566,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 96,
@@ -4617,7 +4617,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41450",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 452,
@@ -4643,14 +4643,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 294,
@@ -4693,7 +4693,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41480",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 796,
@@ -4719,22 +4719,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "파주",
-            "pm10": 13,
-            "pm25": 11
+            "pm10": 9,
+            "pm25": 8
           },
           "gangnam_station": {
             "station": "파주",
-            "pm10": 13,
-            "pm25": 11
+            "pm10": 9,
+            "pm25": 8
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 330,
@@ -4779,7 +4779,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41500",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 320,
@@ -4805,14 +4805,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 151,
@@ -4858,7 +4858,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41550",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 403,
@@ -4884,14 +4884,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 119,
@@ -4938,7 +4938,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41570",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 851,
@@ -4964,14 +4964,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 323,
@@ -5015,7 +5015,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41590",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "status": "no_data",
@@ -5029,14 +5029,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 666,
@@ -5081,7 +5081,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41610",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 522,
@@ -5107,14 +5107,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 211,
@@ -5158,7 +5158,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41630",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 528,
@@ -5184,14 +5184,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 679,
@@ -5221,11 +5221,11 @@
           "table_id": "DT_1B040A3",
           "table_name": "행정구역(시군구)별/성별 인구수",
           "period": "202603",
-          "sgg_total": 728597,
-          "gangnam_total": 728597,
+          "sgg_total": 296830,
+          "gangnam_total": 296830,
           "sido_total": 13745673,
           "seoul_total": null,
-          "share_of_sido_pct": 5.3,
+          "share_of_sido_pct": 2.16,
           "share_of_seoul_pct": null
         }
       },
@@ -5239,7 +5239,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41650",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 138,
@@ -5265,14 +5265,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 81,
@@ -5315,7 +5315,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41670",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 151,
@@ -5341,14 +5341,14 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": null,
           "gangnam_station": null,
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 71,
@@ -5391,7 +5391,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41800",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 33,
@@ -5417,22 +5417,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "연천",
-            "pm10": 7,
-            "pm25": 10
+            "pm10": 9,
+            "pm25": 9
           },
           "gangnam_station": {
             "station": "연천",
-            "pm10": 7,
-            "pm25": 10
+            "pm10": 9,
+            "pm25": 9
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 22,
@@ -5473,7 +5473,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41820",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 26,
@@ -5499,22 +5499,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "가평",
-            "pm10": 11,
-            "pm25": 8
+            "pm10": 3,
+            "pm25": 4
           },
           "gangnam_station": {
             "station": "가평",
-            "pm10": 11,
-            "pm25": 8
+            "pm10": 3,
+            "pm25": 4
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 39,
@@ -5557,7 +5557,7 @@
       "sido_name": "경기도",
       "level": "sigungu",
       "lawd_cd": "41830",
-      "fetched_at": "2026-05-03T02:43:34.409583+00:00",
+      "fetched_at": "2026-05-03T04:13:15.112871+00:00",
       "sections": {
         "real_estate_trade": {
           "count": 113,
@@ -5583,22 +5583,22 @@
         },
         "environment": {
           "sido_avg": {
-            "pm10": 13,
-            "pm25": 8,
+            "pm10": 11,
+            "pm25": 7,
             "station_count": 126
           },
           "seoul_avg": null,
           "gu_station": {
             "station": "양평읍",
-            "pm10": 11,
-            "pm25": 9
+            "pm10": 10,
+            "pm25": 4
           },
           "gangnam_station": {
             "station": "양평읍",
-            "pm10": 11,
-            "pm25": 9
+            "pm10": 10,
+            "pm25": 4
           },
-          "measured_at": "2026-05-03 11:00"
+          "measured_at": "2026-05-03 13:00"
         },
         "medical": {
           "sgg_count": 63,
