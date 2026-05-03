@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동네 카드 — Q렌즈</title>
+<meta name="description" content="주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에. 보이는 것 너머를 묻습니다.">
+<link rel="canonical" href="https://q-bot.kr/town/">
+<meta property="og:title" content="Q렌즈 동네 카드">
+<meta property="og:description" content="당신의 동네는 어떻게 보일까요?">
+<meta property="og:url" content="https://q-bot.kr/town/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif;
+  background: #ffffff; color: #0f172a;
+  font-feature-settings: 'tnum';
+  -webkit-font-smoothing: antialiased; line-height: 1.6;
+}
+.wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+.topbar { border-bottom: 1px solid #e5e7eb; padding: 14px 0; margin-bottom: 56px; }
+.topbar-inner { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+.brand { font-weight: 700; color: #0f172a; text-decoration: none; }
+.brand-sub { color: #64748b; margin-left: 8px; font-weight: 500; }
+.search-pill { background: #f1f5f9; border: none; padding: 8px 16px; border-radius: 4px; font-family: inherit; font-size: 13px; color: #475569; cursor: pointer; }
+.hero { margin-bottom: 56px; }
+.hero-eyebrow { font-size: 13px; color: #64748b; margin-bottom: 8px; letter-spacing: 0.02em; }
+.hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; color: #0f172a; margin-bottom: 12px; }
+.hero-tagline { font-size: 17px; color: #475569; margin-bottom: 32px; max-width: 540px; }
+.hero-meta { font-size: 12px; color: #94a3b8; border-top: 4px solid #0f172a; border-bottom: 1px solid #e5e7eb; padding: 12px 0; }
+.hero-meta b { color: #3182f6; font-weight: 600; }
+
+.ql-stat-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid #e5e7eb; border-radius: 4px; margin: 32px 0 56px; background: #ffffff; }
+.ql-stat-cell { padding: 24px 20px; border-right: 1px solid #e5e7eb; }
+.ql-stat-cell:last-child { border-right: none; }
+.ql-stat-num { font-size: 32px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 6px; }
+.ql-stat-num .unit { font-size: 16px; color: #64748b; font-weight: 600; margin-left: 2px; }
+.ql-stat-label { font-size: 12px; color: #64748b; font-weight: 500; }
+
+@media (max-width: 640px) {
+  .ql-stat-row { grid-template-columns: 1fr; }
+  .ql-stat-cell { border-right: none; border-bottom: 1px solid #e5e7eb; }
+  .ql-stat-cell:last-child { border-bottom: none; }
+  .hero h1 { font-size: 40px; }
+}
+
+.section { margin-bottom: 64px; padding-top: 32px; border-top: 4px solid #0f172a; }
+.section.pending { border-top-color: #cbd5e1; }
+.section-num { font-size: 12px; color: #60a5fa; font-weight: 700; letter-spacing: 0.1em; }
+.section.pending .section-num { color: #94a3b8; }
+.section h2 { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; margin: 8px 0; }
+.section-sub { font-size: 14px; color: #64748b; margin-bottom: 24px; }
+
+.bar-block { margin: 24px 0; }
+.bar-row { display: grid !important; grid-template-columns: 90px 1fr 80px !important; align-items: center !important; gap: 12px !important; padding: 8px 0 !important; font-size: 13px !important; }
+.bar-label { color: #475569 !important; font-weight: 500 !important; }
+.bar-track { background: #f1f5f9 !important; height: 8px !important; border-radius: 4px !important; overflow: hidden !important; }
+.bar-fill { background: #0f172a !important; height: 100% !important; border-radius: 4px !important; }
+.bar-fill.accent { background: #60a5fa !important; }
+.bar-value { text-align: right !important; color: #0f172a !important; font-weight: 600 !important; font-variant-numeric: tabular-nums !important; }
+
+.compare-table { display: grid !important; grid-template-columns: 1fr 1fr 1fr !important; border: 1px solid #e5e7eb !important; border-radius: 4px !important; margin: 24px 0 !important; font-size: 13px !important; overflow: hidden !important; }
+.compare-cell { padding: 14px 16px !important; border-right: 1px solid #e5e7eb !important; border-bottom: 1px solid #e5e7eb !important; }
+.compare-cell:nth-child(3n) { border-right: none !important; }
+.compare-cell.head { background: #f8fafc !important; font-weight: 700 !important; color: #0f172a !important; font-size: 12px !important; }
+.compare-cell.label { color: #64748b !important; }
+.compare-cell.val { color: #0f172a !important; font-weight: 600 !important; font-variant-numeric: tabular-nums !important; }
+.compare-cell.val.highlight { color: #3182f6 !important; }
+
+.insight { background: #f8fafc; border-left: 4px solid #60a5fa; padding: 20px 24px; margin: 24px 0; border-radius: 0 4px 4px 0; }
+.section.pending .insight { border-left-color: #cbd5e1; }
+.insight-tag { font-size: 11px; font-weight: 700; color: #3182f6; letter-spacing: 0.1em; margin-bottom: 8px; }
+.section.pending .insight-tag { color: #94a3b8; }
+.insight p { font-size: 15px; color: #0f172a; line-height: 1.65; }
+.insight p b { color: #0f172a; font-weight: 700; }
+.source { font-size: 11px; color: #94a3b8; margin-top: 16px; padding-top: 12px; border-top: 1px solid #f1f5f9; }
+
+.cta { background: #0f172a; color: #ffffff; padding: 48px 32px; border-radius: 4px; text-align: center; margin: 80px 0; }
+.cta h3 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; }
+.cta p { font-size: 14px; color: #cbd5e1; margin-bottom: 24px; }
+
+footer { border-top: 1px solid #e5e7eb; padding: 32px 0 48px; font-size: 12px; color: #94a3b8; text-align: center; }
+footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
+
+
+.hub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0 64px; }
+@media (max-width: 640px) { .hub-grid { grid-template-columns: 1fr; } }
+.town-card { display: block; border: 1px solid #e5e7eb; border-radius: 4px; padding: 24px; text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; position: relative; }
+.town-card:hover { border-color: #0f172a; }
+.town-card-region { font-size: 12px; color: #64748b; margin-bottom: 6px; letter-spacing: 0.02em; }
+.town-card-name { font-size: 28px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; margin-bottom: 16px; }
+.town-card-stat { font-size: 13px; color: #475569; padding: 4px 0; }
+.town-card-stat b { color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums; }
+.town-card-arrow { position: absolute; top: 24px; right: 24px; font-size: 20px; color: #94a3b8; }
+.town-card:hover .town-card-arrow { color: #0f172a; }
+.town-card.placeholder { border-style: dashed; background: #f8fafc; color: #94a3b8; }
+.town-card.placeholder .town-card-name { color: #94a3b8; }
+
+.hub-note { font-size: 13px; color: #64748b; padding: 16px 20px; background: #f8fafc; border-left: 4px solid #60a5fa; border-radius: 0 4px 4px 0; margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-inner">
+      <div>
+        <a href="/town/" class="brand">Q렌즈 동네 카드</a>
+        <span class="brand-sub">보이는 것 너머를 묻습니다</span>
+      </div>
+      <a href="/" class="search-pill" style="text-decoration:none;">← Q렌즈 본 사이트</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-eyebrow">동네를 데이터로 읽습니다</div>
+    <h1>당신의 동네는<br>어떻게 보일까요?</h1>
+    <p class="hero-tagline">주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에 정리해드립니다. 정부 공공데이터를 그대로, 그러나 의미 있게.</p>
+    <div class="hero-meta">전국 자치구 단계적 공개 · 마지막 업데이트 <b>2026년 05월 03일</b></div>
+  </section>
+
+  <div class="hub-note">
+    현재 <b>강남구 1개</b> 공개 중. 서울 25개 자치구는 데이터 검수 후 단계적으로 추가됩니다.<br>
+    학원·사업장(LOCALDATA), 인구·소득(KOSIS) 데이터는 곧 보강됩니다.
+  </div>
+
+  <div class="hub-grid">
+    <a href="/town/seoul/gangnam/" class="town-card"><div class="town-card-arrow">→</div><div class="town-card-region">서울특별시</div><div class="town-card-name">강남구</div><div class="town-card-stat">평당가 <b>10,641만원</b></div><div class="town-card-stat">의료기관 <b>1,997곳</b></div><div class="town-card-stat">학교 <b>84개</b></div></a>
+<div class="town-card placeholder"><div class="town-card-region">서울특별시</div><div class="town-card-name">서초구</div><div class="town-card-stat">곧 공개</div></div><div class="town-card placeholder"><div class="town-card-region">서울특별시</div><div class="town-card-name">송파구</div><div class="town-card-stat">곧 공개</div></div><div class="town-card placeholder"><div class="town-card-region">서울특별시</div><div class="town-card-name">마포구</div><div class="town-card-stat">곧 공개</div></div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    Q렌즈 · q-bot.kr ·
+    <a href="/about/">소개</a>
+    <a href="/town/">동네 카드 홈</a>
+    <a href="/contact/">문의</a>
+  </div>
+</footer>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+
+</body>
+</html>
