@@ -4,7 +4,7 @@
   "name_full": "서울특별시 강남구",
   "level": "gu",
   "lawd_cd": "11680",
-  "fetched_at": "2026-05-03T01:21:42.124517+00:00",
+  "fetched_at": "2026-05-03T01:27:56.844274+00:00",
   "sections": {
     "real_estate_trade": {
       "count": 328,
@@ -53,9 +53,13 @@
       }
     },
     "population": {
-      "status": "pending",
-      "note": "1단계 placeholder — KOSIS 통계표 ID 확정 후 2단계에서 인구·연령·소득 수집",
-      "available_categories": 11
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "gangnam_total": 554165,
+      "seoul_total": 9304400,
+      "nation_total": 51101371,
+      "share_of_seoul_pct": 5.96
     },
     "education": {
       "total_seoul": 1415,
