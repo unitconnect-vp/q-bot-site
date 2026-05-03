@@ -1,8 +1,9 @@
 """
 build_persona_page.py
-- /town/data/all.json 로드 → 슬림 변환 → 두 페이지 빌드:
+- /town/data/all.json 로드 → 슬림 변환 → 3개 페이지 빌드:
   · /town/persona/index.html (단일 분석)
   · /town/persona/compare/index.html (A vs B 비교)
+  · /town/persona/checklist/index.html (이사 전 확인할 12가지)
 - fetch-town-data.yml 워크플로우에서 build_town_page.py 다음에 실행
 """
 import json
@@ -12,10 +13,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent.parent
 DATA_PATH = ROOT / "town" / "data" / "all.json"
 SCRIPT_DIR = Path(__file__).parent
-TEMPLATE_PERSONA = SCRIPT_DIR / "town_persona_template.html"
-TEMPLATE_COMPARE = SCRIPT_DIR / "town_persona_compare_template.html"
-OUTPUT_PERSONA = ROOT / "town" / "persona" / "index.html"
-OUTPUT_COMPARE = ROOT / "town" / "persona" / "compare" / "index.html"
+
+PAGES = [
+    ("town_persona_template.html",           "town/persona/index.html"),
+    ("town_persona_compare_template.html",   "town/persona/compare/index.html"),
+    ("town_persona_checklist_template.html", "town/persona/checklist/index.html"),
+]
 
 
 def slim_records(records):
@@ -37,25 +40,16 @@ def slim_records(records):
                     "median_jeonse_man": (s.get("real_estate_rent") or {}).get("median_jeonse_man"),
                 },
                 "environment": s.get("environment", {}) or {},
-                "medical": {"sgg_count": (s.get("medical") or {}).get("sgg_count", 0)},
+                "medical": {
+                    "sgg_count": (s.get("medical") or {}).get("sgg_count", 0),
+                    "by_type": (s.get("medical") or {}).get("by_type", {}),
+                },
                 "education": {"sgg_count": (s.get("education") or {}).get("sgg_count", 0)},
                 "population": {"sgg_total": (s.get("population") or {}).get("sgg_total", 0)},
                 "population_age": s.get("population_age", {}) or {},
             },
         })
     return out
-
-
-def build_page(template_path, output_path, data_json):
-    if not template_path.exists():
-        print(f"❌ 템플릿 없음: {template_path}", file=sys.stderr)
-        return False
-    template = template_path.read_text(encoding="utf-8")
-    html = template.replace("__DATA_JSON__", data_json)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(html, encoding="utf-8")
-    print(f"  ✓ {output_path} ({len(html):,} bytes)")
-    return True
 
 
 def main():
@@ -70,9 +64,21 @@ def main():
     slim = {"records": slim_records(records)}
     data_json = json.dumps(slim, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     
-    ok1 = build_page(TEMPLATE_PERSONA, OUTPUT_PERSONA, data_json)
-    ok2 = build_page(TEMPLATE_COMPARE, OUTPUT_COMPARE, data_json)
-    if not (ok1 and ok2):
+    failed = []
+    for tmpl_name, output_rel in PAGES:
+        tmpl_path = SCRIPT_DIR / tmpl_name
+        out_path = ROOT / output_rel
+        if not tmpl_path.exists():
+            print(f"  ❌ 템플릿 없음: {tmpl_path}", file=sys.stderr)
+            failed.append(output_rel)
+            continue
+        template = tmpl_path.read_text(encoding="utf-8")
+        html = template.replace("__DATA_JSON__", data_json)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(html, encoding="utf-8")
+        print(f"  ✓ {out_path} ({len(html):,} bytes)")
+    
+    if failed:
         sys.exit(1)
 
 
