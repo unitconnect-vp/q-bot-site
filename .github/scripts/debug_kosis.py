@@ -10,8 +10,28 @@ params = {
 r = requests.get(url, params=params, timeout=30)
 j = r.json()
 
-# 모든 unique C1_NM 출력 (시군구 + 시도)
-all_c1 = sorted(set(r.get("C1_NM", "") or "" for r in j))
-print(f"=== 모든 unique C1_NM ({len(all_c1)}개) ===")
-for c1 in all_c1:
-    print(f'  "{c1}"')
+# 첫 row의 모든 키 확인
+print("=== 첫 row의 모든 키 ===")
+print(json.dumps(j[0], ensure_ascii=False, indent=2))
+
+# 강남구 row 출력
+print("\n=== 강남구 row ===")
+for row in j:
+    if row.get("C1_NM") == "강남구":
+        print(json.dumps(row, ensure_ascii=False, indent=2))
+        break
+
+# 분당구 row 출력
+print("\n=== 분당구 row ===")
+for row in j:
+    if row.get("C1_NM") == "분당구":
+        print(json.dumps(row, ensure_ascii=False, indent=2))
+        break
+
+# "중구" 동음이의 확인
+print("\n=== 중구 row 전체 ===")
+for row in j:
+    if row.get("C1_NM") == "중구":
+        c1 = row.get("C1", "")
+        dt = row.get("DT", "")
+        print(f"  C1={c1} C1_NM=중구 DT={dt}")
