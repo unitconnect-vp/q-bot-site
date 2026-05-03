@@ -1,0 +1,28 @@
+name: API Keys Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run API key validation
+        env:
+          MOLIT_TRADE_KEY: ${{ secrets.MOLIT_TRADE_KEY }}
+          MOLIT_RENT_KEY: ${{ secrets.MOLIT_RENT_KEY }}
+          AIRKOREA_KEY: ${{ secrets.AIRKOREA_KEY }}
+          HIRA_KEY: ${{ secrets.HIRA_KEY }}
+          KOSIS_KEY: ${{ secrets.KOSIS_KEY }}
+        run: python .github/scripts/api_check.py
