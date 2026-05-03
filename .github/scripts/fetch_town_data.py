@@ -71,7 +71,17 @@ def to_int_or_none(s):
 
 
 def make_slug_from_eng(c1_eng, lawd_cd):
+    """
+    KOSIS c1_eng → 슬러그 변환.
+    - 일반: "Gangnam-gu" → "gangnam"
+    - 분구(부모 시 결합형): "Hwaseong-si Manse-gu" → "manse"
+      (KOSIS가 신규 분구를 부모-자식 결합 영문으로 반환하는 경우 대응)
+    """
     s = (c1_eng or "").lower().strip()
+    # 부모-자식 결합형: 공백으로 토큰 분리하면 마지막 토큰이 분구 자체 명칭
+    # ex) "hwaseong-si manse-gu" → ["hwaseong-si", "manse-gu"] → "manse-gu"
+    if " " in s:
+        s = s.split()[-1]
     for suffix in ["-gu", "-si", "-gun", "-do", "_si"]:
         if s.endswith(suffix):
             s = s[:-len(suffix)]
