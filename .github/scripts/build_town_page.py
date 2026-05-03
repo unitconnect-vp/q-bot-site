@@ -17,11 +17,11 @@ PAGE = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Q렌즈 동네 카드 — 서울·경기 시군구 데이터</title>
-<meta name="description" content="주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에. 서울 25개 자치구 + 경기 42개 시군구.">
+<title>Q렌즈 동네 카드 — 전국 시군구 데이터</title>
+<meta name="description" content="주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에. 전국 17개 시도 시군구.">
 <link rel="canonical" href="https://q-bot.kr/town/">
 <meta property="og:title" content="Q렌즈 동네 카드">
-<meta property="og:description" content="당신의 동네는 어떻게 보일까요? 서울·경기 67개 시군구.">
+<meta property="og:description" content="당신의 동네는 어떻게 보일까요? 전국 시군구 데이터.">
 <meta property="og:url" content="https://q-bot.kr/town/">
 <meta property="og:type" content="website">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -42,8 +42,12 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .hero-meta b { color: #3182f6; font-weight: 600; }
 .intro-note { background: #f8fafc; padding: 16px 20px; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.6; margin: 24px 0 32px; }
 .intro-note b { color: #0f172a; }
-.sido-section { margin: 32px 0 24px; }
-.sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; }
+.sido-section { margin: 24px 0 16px; }
+.sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; padding: 12px 0 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; user-select: none; }
+.sido-header:hover { color: #0f172a; }
+.sido-header .toggle { font-size: 14px; color: #94a3b8; font-weight: 500; transition: transform 0.15s; }
+.sido-section.collapsed .toggle { transform: rotate(-90deg); }
+.sido-section.collapsed .gu-grid { display: none; }
 .sido-count { font-size: 11px; color: #94a3b8; font-weight: 500; letter-spacing: 0; }
 .gu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 24px; }
 @media (max-width: 640px) {
@@ -111,7 +115,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 <div class="wrap">
 
   <section class="hero">
-    <div class="hero-eyebrow">서울·경기 67개 시군구</div>
+    <div class="hero-eyebrow">전국 __TOTAL_COUNT__개 시군구</div>
     <h1>당신의 동네는<br>어떻게 보일까요?</h1>
     <p class="hero-tagline">시군구를 선택하면 그 동네의 인구·부동산·교육·환경·의료 데이터를 카드 한 장에 보여드립니다. 정부 공공데이터를 그대로, 그러나 의미 있게.</p>
     <div class="hero-meta">데이터 갱신 <b>__UPDATED__</b> · 출처 국토교통부·환경공단·심평원·교육부·통계청</div>
@@ -157,8 +161,7 @@ __DATA_JSON__
   var DATA = JSON.parse(raw);
   var RECORDS = {};
   DATA.records.forEach(function(r) {
-    var key = r.slug.replace(/\\//g, '-');
-    RECORDS[key] = r;
+    RECORDS[r.slug] = r;
   });
 
   function fmtNum(n) {
@@ -390,6 +393,12 @@ __DATA_JSON__
     area.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
+  document.querySelectorAll('.sido-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      header.parentElement.classList.toggle('collapsed');
+    });
+  });
+
   document.querySelectorAll('.gu-chip').forEach(function(chip) {
     chip.addEventListener('click', function() {
       selectGu(chip.dataset.slugkey, true);
@@ -403,13 +412,18 @@ __DATA_JSON__
 
   var initialSlug = (new URLSearchParams(location.search)).get('gu');
   if (initialSlug) {
-    // backward compat: ?gu=gangnam → seoul-gangnam
-    if (RECORDS[initialSlug]) {
-      selectGu(initialSlug, false);
-    } else if (RECORDS['seoul-' + initialSlug]) {
-      selectGu('seoul-' + initialSlug, false);
-    } else if (RECORDS['gyeonggi-' + initialSlug]) {
-      selectGu('gyeonggi-' + initialSlug, false);
+    // backward compat
+    var legacyMap = {
+      'gangnam': '11680', 'seocho': '11650', 'songpa': '11710', 'gangdong': '11740',
+      'gangseo': '11500', 'mapo': '11440', 'yongsan': '11170', 'jongno': '11110',
+      'seoul-gangnam': '11680', 'seoul-seocho': '11650', 'seoul-songpa': '11710',
+      'seoul-gangdong': '11740', 'seoul-gangseo': '11500', 'seoul-mapo': '11440',
+      'gyeonggi-seongnam-bundang': '41135', 'gyeonggi-suwon-yeongtong': '41117',
+      'gyeonggi-bucheon': '41190', 'gyeonggi-goyang-deogyang': '41281'
+    };
+    var resolved = RECORDS[initialSlug] ? initialSlug : legacyMap[initialSlug];
+    if (resolved && RECORDS[resolved]) {
+      selectGu(resolved, false);
     }
   }
 })();
@@ -437,12 +451,13 @@ def main():
         sido_records = [r for r in records if r.get("sido_code") == sido["code"]]
         chips = []
         for rec in sido_records:
-            slug_key = rec["slug"].replace("/", "-")
-            chips.append(f'<a class="gu-chip" data-slugkey="{slug_key}">{rec["name"]}</a>')
+            chips.append(f'<a class="gu-chip" data-slugkey="{rec["slug"]}">{rec["name"]}</a>')
         chips_html = "\n      ".join(chips)
+        # 서울만 펼침, 나머지는 collapsed 시작
+        collapsed = "" if sido["code"] == "seoul" else " collapsed"
         sections_html.append(
-            f'  <div class="sido-section">\n'
-            f'    <div class="sido-header">{sido["name"]}<span class="sido-count">{len(sido_records)}개 시군구</span></div>\n'
+            f'  <div class="sido-section{collapsed}">\n'
+            f'    <div class="sido-header"><span>{sido["name"]}</span><span class="toggle">▼ {len(sido_records)}개 시군구</span></div>\n'
             f'    <div class="gu-grid">\n      {chips_html}\n    </div>\n'
             f'  </div>'
         )
@@ -459,6 +474,7 @@ def main():
     html = (PAGE
             .replace("__SIDO_SECTIONS__", sido_sections)
             .replace("__UPDATED__", updated)
+            .replace("__TOTAL_COUNT__", str(len(records)))
             .replace("__DATA_JSON__", data_json))
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
