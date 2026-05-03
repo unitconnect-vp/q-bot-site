@@ -288,26 +288,84 @@ def fetch_medical(key):
 # ─────────────────────────────────────────────────
 
 def fetch_population(key):
-    """KOSIS — 통계표 ID 미확정, 1단계는 카테고리 목록 호출만."""
-    url = "https://kosis.kr/openapi/statisticsList.do"
+    """KOSIS DT_1B040A3 — 행정구역(시군구)별 주민등록인구."""
+    url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
     params = {
         "method": "getList",
         "apiKey": key,
-        "vwCd": "MT_ZTITLE",
-        "parentListId": "A",
+        "itmId": "T20",        # 총인구수
+        "objL1": "ALL",        # 모든 시군구
         "format": "json",
         "jsonVD": "Y",
+        "prdSe": "M",          # 월별
+        "newEstPrdCnt": "1",   # 최근 1개월
+        "orgId": "101",
+        "tblId": "DT_1B040A3",
     }
     r = requests.get(url, params=params, timeout=TIMEOUT)
     try:
         j = r.json()
     except json.JSONDecodeError:
-        return {"status": "error", "note": "응답 파싱 실패"}
+        return {
+            "status": "error",
+            "note": "KOSIS 응답 파싱 실패",
+            "preview": r.text[:200],
+        }
+
+    # 정상: 리스트로 통계 행이 옴
+    # 에러: dict로 err 코드가 옴
+    if not isinstance(j, list):
+        return {
+            "status": "error",
+            "note": "예상 외 응답 형식",
+            "response_preview": str(j)[:300],
+        }
+
+    # 강남구 데이터 + 서울 + 전국 매칭
+    gangnam = None
+    seoul = None
+    nation = None
+    for row in j:
+        c1_nm = row.get("C1_NM", "") or ""
+        c2_nm = row.get("C2_NM", "") or ""
+        full = f"{c1_nm} {c2_nm}".strip()
+        if "강남구" in full:
+            gangnam = row
+        elif c1_nm == "서울특별시" and not c2_nm:
+            seoul = row
+        elif c1_nm == "전국":
+            nation = row
+
+    if not gangnam:
+        # 디버그용 샘플
+        return {
+            "status": "no_match",
+            "note": "강남구 데이터 미확인",
+            "rows_count": len(j),
+            "sample_rows": [
+                {"C1_NM": r.get("C1_NM"), "C2_NM": r.get("C2_NM"), "DT": r.get("DT")}
+                for r in j[:5]
+            ],
+        }
+
+    def _to_int(s):
+        try:
+            return int(float(str(s).replace(",", "")))
+        except (ValueError, TypeError):
+            return None
+
+    g_total = _to_int(gangnam.get("DT"))
+    s_total = _to_int(seoul.get("DT")) if seoul else None
+    n_total = _to_int(nation.get("DT")) if nation else None
 
     return {
-        "status": "pending",
-        "note": "1단계 placeholder — KOSIS 통계표 ID 확정 후 2단계에서 인구·연령·소득 수집",
-        "available_categories": len(j) if isinstance(j, list) else None,
+        "table_id": "DT_1B040A3",
+        "table_name": "행정구역(시군구)별/성별 인구수",
+        "period": gangnam.get("PRD_DE"),
+        "gangnam_total": g_total,
+        "seoul_total": s_total,
+        "nation_total": n_total,
+        "share_of_seoul_pct": round(g_total / s_total * 100, 2) if g_total and s_total else None,
     }
 
 
