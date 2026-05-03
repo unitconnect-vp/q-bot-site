@@ -51,7 +51,8 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; padding: 12px 0 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; user-select: none; }
 .sido-header:hover { color: #0f172a; }
 .sido-header .toggle { font-size: 14px; color: #94a3b8; font-weight: 500; transition: transform 0.15s; }
-.sido-section.collapsed .toggle { transform: rotate(-90deg); }
+.sido-header .toggle-arrow { display: inline-block; transition: transform 0.15s; }
+.sido-section.collapsed .toggle-arrow { transform: rotate(-90deg); }
 .sido-section.collapsed .gu-grid { display: none; }
 .sido-count { font-size: 11px; color: #94a3b8; font-weight: 500; letter-spacing: 0; }
 .gu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 24px; }
@@ -470,7 +471,7 @@ def main():
         collapsed = "" if sido["code"] == "seoul" else " collapsed"
         sections_html.append(
             f'  <div class="sido-section{collapsed}">\n'
-            f'    <div class="sido-header"><span>{sido["name"]}</span><span class="toggle">▼ {len(sido_records)}개 시군구</span></div>\n'
+            f'    <div class="sido-header"><span>{sido["name"]}</span><span class="toggle"><span class="toggle-arrow">▼</span> {len(sido_records)}개 시군구</span></div>\n'
             f'    <div class="gu-grid">\n      {chips_html}\n    </div>\n'
             f'  </div>'
         )
