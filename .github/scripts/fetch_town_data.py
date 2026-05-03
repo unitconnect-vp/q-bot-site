@@ -404,6 +404,13 @@ def fetch_population_all(key):
         return {"items": [], "period": None}
     if not isinstance(j, list):
         return {"items": [], "period": None}
+
+    # 디버그: 첫 5행 구조 출력
+    print("  [KOSIS 응답 구조 — 첫 5행]")
+    for row in j[:5]:
+        print(f"    C1_NM={row.get('C1_NM')!r}, C2_NM={row.get('C2_NM')!r}, DT={row.get('DT')}")
+    print(f"  총 {len(j)}행")
+
     return {"items": j, "period": j[0].get("PRD_DE") if j else None}
 
 
@@ -412,28 +419,31 @@ def match_population_for_sgg(pop_data, sgg_name, sido_name):
     period = pop_data.get("period")
     parts = sgg_name.split()
 
-    sgg_total = None
     for row in items:
-        c1_nm = row.get("C1_NM", "") or ""
-        c2_nm = row.get("C2_NM", "") or ""
-        full = f"{c1_nm} {c2_nm}".strip()
+        c1_nm = (row.get("C1_NM") or "").strip()
+        c2_nm = (row.get("C2_NM") or "").strip()
+        full = (c1_nm + " " + c2_nm).strip()
+
+        # 시도 합계 행 / 전국 행은 스킵
+        if not c2_nm and c1_nm in (sido_name, "전국", "서울특별시", "경기도"):
+            if c1_nm != sgg_name:
+                continue
 
         if len(parts) > 1:
-            # "수원시 영통구"처럼 시+구 매칭 필요
+            # "수원시 영통구": 시·구 모두 포함
             si, gu = parts[0], parts[1]
             if si in full and gu in full:
-                sgg_total = to_int_or_none(row.get("DT"))
-                break
+                return {"sgg_total": to_int_or_none(row.get("DT")), "period": period}
         else:
-            # 단일 자치구 또는 시
-            if sgg_name in full and sido_name[:2] in (c1_nm[:2] if c1_nm else ""):
-                sgg_total = to_int_or_none(row.get("DT"))
-                break
-            if c2_nm == sgg_name:
-                sgg_total = to_int_or_none(row.get("DT"))
-                break
+            # 단일 자치구: 정확 매칭 우선
+            if c2_nm == sgg_name or c1_nm == sgg_name:
+                return {"sgg_total": to_int_or_none(row.get("DT")), "period": period}
+            # substring 매칭 + 시도 검증
+            if sgg_name in full:
+                if sido_name in full or (c1_nm and c1_nm[:2] == sido_name[:2]):
+                    return {"sgg_total": to_int_or_none(row.get("DT")), "period": period}
 
-    return {"sgg_total": sgg_total, "period": period}
+    return {"sgg_total": None, "period": period}
 
 
 def get_sido_total(pop_data, sido_name):
