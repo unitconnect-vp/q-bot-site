@@ -1,0 +1,75 @@
+{
+  "slug": "seoul/gangnam",
+  "name": "강남구",
+  "name_full": "서울특별시 강남구",
+  "level": "gu",
+  "lawd_cd": "11680",
+  "fetched_at": "2026-05-03T01:07:58.310469+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 328,
+      "median_price_per_pyeong_man": 10641,
+      "mean_price_per_pyeong_man": 10356,
+      "median_deal_amount_man": 215000,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 164.0
+    },
+    "real_estate_rent": {
+      "total_count": 1973,
+      "jeonse_count": 916,
+      "monthly_count": 1057,
+      "median_jeonse_man": 83000,
+      "mean_jeonse_man": 95107,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 15,
+        "pm25": 11,
+        "station_count": 40
+      },
+      "measured_at": "2026-05-03 09:00",
+      "gangnam_station": {
+        "name": "강남구",
+        "pm10": 15,
+        "pm25": 10
+      }
+    },
+    "medical": {
+      "total_seoul": 10000,
+      "gangnam_count": 1997,
+      "by_type": {
+        "상급종합": 2,
+        "종합병원": 2,
+        "병원": 32,
+        "요양병원": 6,
+        "의원": 1955
+      }
+    },
+    "population": {
+      "status": "pending",
+      "note": "1단계 placeholder — KOSIS 통계표 ID 확정 후 2단계에서 인구·연령·소득 수집",
+      "available_categories": 11
+    },
+    "education": {
+      "total_seoul": 1415,
+      "gangnam_count": 84,
+      "by_type": {
+        "중학교": 24,
+        "고등학교": 21,
+        "방송통신고등학교": 1,
+        "각종학교(중)": 1,
+        "특수학교": 2,
+        "초등학교": 34,
+        "외국인학교": 1
+      }
+    }
+  },
+  "errors": []
+}
