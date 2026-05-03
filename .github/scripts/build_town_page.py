@@ -11,8 +11,8 @@ from pathlib import Path
 from datetime import datetime
 from string import Template
 
-DATA_PATH = Path("town/data/seoul/gangnam.json")
-OUTPUT_DIR = Path("town/seoul/gangnam")
+DATA_DIR = Path("town/data")
+OUTPUT_BASE = Path("town")
 
 
 # ─────────────────────────────────────────────────
@@ -490,28 +490,213 @@ def build_page(data):
     })
 
 
+# ─────────────────────────────────────────────────
+# 허브 페이지 (/town/index.html)
+# ─────────────────────────────────────────────────
+
+HUB_TEMPLATE = Template("""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동네 카드 — Q렌즈</title>
+<meta name="description" content="주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에. 보이는 것 너머를 묻습니다.">
+<link rel="canonical" href="https://q-bot.kr/town/">
+<meta property="og:title" content="Q렌즈 동네 카드">
+<meta property="og:description" content="당신의 동네는 어떻게 보일까요?">
+<meta property="og:url" content="https://q-bot.kr/town/">
+<meta property="og:type" content="website">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>$css
+
+.hub-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0 64px; }
+@media (max-width: 640px) { .hub-grid { grid-template-columns: 1fr; } }
+.town-card { display: block; border: 1px solid #e5e7eb; border-radius: 4px; padding: 24px; text-decoration: none; color: inherit; transition: border-color 0.15s, transform 0.15s; position: relative; }
+.town-card:hover { border-color: #0f172a; }
+.town-card-region { font-size: 12px; color: #64748b; margin-bottom: 6px; letter-spacing: 0.02em; }
+.town-card-name { font-size: 28px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em; margin-bottom: 16px; }
+.town-card-stat { font-size: 13px; color: #475569; padding: 4px 0; }
+.town-card-stat b { color: #0f172a; font-weight: 700; font-variant-numeric: tabular-nums; }
+.town-card-arrow { position: absolute; top: 24px; right: 24px; font-size: 20px; color: #94a3b8; }
+.town-card:hover .town-card-arrow { color: #0f172a; }
+.town-card.placeholder { border-style: dashed; background: #f8fafc; color: #94a3b8; }
+.town-card.placeholder .town-card-name { color: #94a3b8; }
+
+.hub-note { font-size: 13px; color: #64748b; padding: 16px 20px; background: #f8fafc; border-left: 4px solid #60a5fa; border-radius: 0 4px 4px 0; margin: 32px 0; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-inner">
+      <div>
+        <a href="/town/" class="brand">Q렌즈 동네 카드</a>
+        <span class="brand-sub">보이는 것 너머를 묻습니다</span>
+      </div>
+      <a href="/" class="search-pill" style="text-decoration:none;">← Q렌즈 본 사이트</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <div class="hero-eyebrow">동네를 데이터로 읽습니다</div>
+    <h1>당신의 동네는<br>어떻게 보일까요?</h1>
+    <p class="hero-tagline">주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에 정리해드립니다. 정부 공공데이터를 그대로, 그러나 의미 있게.</p>
+    <div class="hero-meta">전국 자치구 단계적 공개 · 마지막 업데이트 <b>$updated</b></div>
+  </section>
+
+  <div class="hub-note">
+    현재 <b>강남구 1개</b> 공개 중. 서울 25개 자치구는 데이터 검수 후 단계적으로 추가됩니다.<br>
+    학원·사업장(LOCALDATA), 인구·소득(KOSIS) 데이터는 곧 보강됩니다.
+  </div>
+
+  <div class="hub-grid">
+    $cards
+  </div>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    Q렌즈 · q-bot.kr ·
+    <a href="/about/">소개</a>
+    <a href="/town/">동네 카드 홈</a>
+    <a href="/contact/">문의</a>
+  </div>
+</footer>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+
+</body>
+</html>
+""")
+
+
+def render_hub_card(data):
+    """동네 데이터 1개 → 허브 카드 HTML."""
+    sections = data.get("sections", {})
+    trade = sections.get("real_estate_trade", {}) or {}
+    med = sections.get("medical", {}) or {}
+    edu = sections.get("education", {}) or {}
+
+    ppy = trade.get("median_price_per_pyeong_man")
+    med_count = med.get("gangnam_count") or med.get("sgg_count")
+    edu_count = edu.get("gangnam_count") or edu.get("sgg_count")
+
+    region = data.get("name_full", "").replace(data.get("name", ""), "").strip()
+
+    stats = []
+    if ppy:
+        stats.append(f'<div class="town-card-stat">평당가 <b>{fmt_num(ppy)}만원</b></div>')
+    if med_count:
+        stats.append(f'<div class="town-card-stat">의료기관 <b>{fmt_num(med_count)}곳</b></div>')
+    if edu_count:
+        stats.append(f'<div class="town-card-stat">학교 <b>{fmt_num(edu_count)}개</b></div>')
+
+    return (
+        f'<a href="/town/{data["slug"]}/" class="town-card">'
+        f'<div class="town-card-arrow">→</div>'
+        f'<div class="town-card-region">{region}</div>'
+        f'<div class="town-card-name">{data["name"]}</div>'
+        + "".join(stats)
+        + '</a>'
+    )
+
+
+def render_placeholder_cards(count=3):
+    """미공개 자치구 placeholder."""
+    items = ["서초구", "송파구", "마포구"][:count]
+    return "".join(
+        f'<div class="town-card placeholder">'
+        f'<div class="town-card-region">서울특별시</div>'
+        f'<div class="town-card-name">{name}</div>'
+        f'<div class="town-card-stat">곧 공개</div>'
+        f'</div>'
+        for name in items
+    )
+
+
+def build_hub(all_data):
+    """모든 동네 데이터 → 허브 페이지."""
+    cards = "\n".join(render_hub_card(d) for d in all_data) + "\n" + render_placeholder_cards(3)
+
+    # 가장 최근 페치 시각
+    try:
+        latest = max(d["fetched_at"] for d in all_data)
+        dt = datetime.fromisoformat(latest.replace("Z", "+00:00"))
+        updated = dt.strftime("%Y년 %m월 %d일")
+    except Exception:
+        updated = "—"
+
+    return HUB_TEMPLATE.safe_substitute({
+        "css": CSS,
+        "cards": cards,
+        "updated": updated,
+    })
+
+
+# ─────────────────────────────────────────────────
+# Main
+# ─────────────────────────────────────────────────
+
 def main():
-    if not DATA_PATH.exists():
-        print(f"❌ 데이터 파일 없음: {DATA_PATH}", file=sys.stderr)
+    if not DATA_DIR.exists():
+        print(f"❌ 데이터 디렉토리 없음: {DATA_DIR}", file=sys.stderr)
         sys.exit(1)
 
-    data = json.loads(DATA_PATH.read_text(encoding="utf-8"))
-    html = build_page(data)
+    data_files = sorted(DATA_DIR.rglob("*.json"))
+    if not data_files:
+        print(f"❌ 데이터 파일 없음: {DATA_DIR}/**/*.json", file=sys.stderr)
+        sys.exit(1)
 
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    out = OUTPUT_DIR / "index.html"
-    out.write_text(html, encoding="utf-8")
-    print(f"✓ 빌드 완료: {out}")
-    print(f"  HTML 크기: {len(html):,} bytes")
+    all_data = []
+    pages_built = []
+
+    # 1. 개별 동네 페이지 빌드
+    for f in data_files:
+        try:
+            data = json.loads(f.read_text(encoding="utf-8"))
+        except Exception as e:
+            print(f"  ✗ {f}: {e}", file=sys.stderr)
+            continue
+
+        html = build_page(data)
+        out_dir = OUTPUT_BASE / data["slug"]
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out = out_dir / "index.html"
+        out.write_text(html, encoding="utf-8")
+        all_data.append(data)
+        pages_built.append((str(out), len(html)))
+        print(f"  ✓ {out} ({len(html):,} bytes)")
+
+    # 2. 허브 페이지 빌드
+    hub_html = build_hub(all_data)
+    hub_out = OUTPUT_BASE / "index.html"
+    hub_out.write_text(hub_html, encoding="utf-8")
+    print(f"  ✓ {hub_out} ({len(hub_html):,} bytes) [허브]")
+
+    print(f"\n✓ 빌드 완료: {len(pages_built)}개 동네 + 허브 1개")
 
     summary_path = __import__("os").environ.get("GITHUB_STEP_SUMMARY")
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as f:
             f.write(f"# 빌드 결과\n\n")
-            f.write(f"- 페이지: `{out}`\n")
-            f.write(f"- 크기: {len(html):,} bytes\n")
-            f.write(f"- 데이터 페치: {data['fetched_at']}\n")
-            f.write(f"- URL: https://q-bot.kr/town/{data['slug']}/\n")
+            f.write(f"- 동네 페이지: **{len(pages_built)}개**\n")
+            f.write(f"- 허브 페이지: 1개\n")
+            f.write(f"- 허브 URL: https://q-bot.kr/town/\n\n")
+            f.write("## 빌드 목록\n\n")
+            for path, size in pages_built:
+                f.write(f"- `{path}` ({size:,} bytes)\n")
 
 
 if __name__ == "__main__":
