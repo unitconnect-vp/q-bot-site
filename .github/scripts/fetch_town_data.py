@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Q렌즈 동네 카드 — 페치 v4 (전국 17개 시도)
-KOSIS 응답에서 모든 시군구를 동적 발견 + LAWD_CD를 slug로 사용.
-"""
+"""Q렌즈 동네 카드 — 페치 v4 (전국 17개 시도 자동화)"""
 
 import os
 import sys
+import re
 import json
 import statistics
 import xml.etree.ElementTree as ET
@@ -14,27 +13,26 @@ from pathlib import Path
 
 import requests
 
-SIDO_BY_PREFIX = {
-    "11": {"code": "seoul",     "name": "서울특별시",     "airkorea": "서울", "hira_cds": ["110000"],            "neis": "B10"},
-    "26": {"code": "busan",     "name": "부산광역시",     "airkorea": "부산", "hira_cds": ["210000", "260000"],  "neis": "C10"},
-    "27": {"code": "daegu",     "name": "대구광역시",     "airkorea": "대구", "hira_cds": ["220000", "270000"],  "neis": "D10"},
-    "28": {"code": "incheon",   "name": "인천광역시",     "airkorea": "인천", "hira_cds": ["230000", "280000"],  "neis": "E10"},
-    "29": {"code": "gwangju",   "name": "광주광역시",     "airkorea": "광주", "hira_cds": ["240000", "290000"],  "neis": "F10"},
-    "30": {"code": "daejeon",   "name": "대전광역시",     "airkorea": "대전", "hira_cds": ["250000", "300000"],  "neis": "G10"},
-    "31": {"code": "ulsan",     "name": "울산광역시",     "airkorea": "울산", "hira_cds": ["260000", "310000"],  "neis": "H10"},
-    "36": {"code": "sejong",    "name": "세종특별자치시", "airkorea": "세종", "hira_cds": ["290000", "360000"],  "neis": "I10"},
-    "41": {"code": "gyeonggi",  "name": "경기도",         "airkorea": "경기", "hira_cds": ["310000", "410000"],  "neis": "J10"},
-    "43": {"code": "chungbuk",  "name": "충청북도",       "airkorea": "충북", "hira_cds": ["330000", "430000"],  "neis": "M10"},
-    "44": {"code": "chungnam",  "name": "충청남도",       "airkorea": "충남", "hira_cds": ["340000", "440000"],  "neis": "N10"},
-    "46": {"code": "jeonnam",   "name": "전라남도",       "airkorea": "전남", "hira_cds": ["360000", "460000"],  "neis": "Q10"},
-    "47": {"code": "gyeongbuk", "name": "경상북도",       "airkorea": "경북", "hira_cds": ["370000", "470000"],  "neis": "R10"},
-    "48": {"code": "gyeongnam", "name": "경상남도",       "airkorea": "경남", "hira_cds": ["380000", "480000"],  "neis": "S10"},
-    "50": {"code": "jeju",      "name": "제주특별자치도", "airkorea": "제주", "hira_cds": ["390000", "500000"],  "neis": "T10"},
-    "51": {"code": "gangwon",   "name": "강원특별자치도", "airkorea": "강원", "hira_cds": ["320000", "420000", "510000"], "neis": "K10"},
-    "52": {"code": "jeonbuk",   "name": "전북특별자치도", "airkorea": "전북", "hira_cds": ["350000", "450000", "520000"], "neis": "P10"},
+# 시도 메타: prefix(2자리) → (full_name, sido_slug, airkorea_sido, hira_sido_cds, neis_atpt)
+SIDO_META = {
+    "11": ("서울특별시", "seoul",     "서울", ["110000"], "B10"),
+    "26": ("부산광역시", "busan",     "부산", ["210000", "260000"], "C10"),
+    "27": ("대구광역시", "daegu",     "대구", ["220000", "270000"], "D10"),
+    "28": ("인천광역시", "incheon",   "인천", ["230000", "280000"], "E10"),
+    "29": ("광주광역시", "gwangju",   "광주", ["240000", "290000"], "F10"),
+    "30": ("대전광역시", "daejeon",   "대전", ["250000", "300000"], "G10"),
+    "31": ("울산광역시", "ulsan",     "울산", ["310000"], "H10"),
+    "36": ("세종특별자치시", "sejong","세종", ["360000", "410000"], "I10"),
+    "41": ("경기도", "gyeonggi",      "경기", ["310000", "410000"], "J10"),
+    "43": ("충청북도", "chungbuk",    "충북", ["330000", "430000"], "M10"),
+    "44": ("충청남도", "chungnam",    "충남", ["340000", "440000"], "N10"),
+    "46": ("전라남도", "jeonnam",     "전남", ["360000", "460000"], "Q10"),
+    "47": ("경상북도", "gyeongbuk",   "경북", ["370000", "470000"], "R10"),
+    "48": ("경상남도", "gyeongnam",   "경남", ["380000", "480000"], "S10"),
+    "50": ("제주특별자치도", "jeju",  "제주", ["390000", "500000"], "T10"),
+    "51": ("강원특별자치도", "gangwon","강원", ["420000", "510000"], "K10"),
+    "52": ("전북특별자치도", "jeonbuk","전북", ["350000", "450000"], "P10"),
 }
-
-SIDO_NAMES_SET = {v["name"] for v in SIDO_BY_PREFIX.values()} | {"강원도", "전라북도", "세종시"}
 
 OUTPUT_INTEGRATED = Path("town/data/seoul.json")
 TIMEOUT = 30
@@ -72,7 +70,27 @@ def to_int_or_none(s):
         return None
 
 
-def fetch_kosis_population(key):
+def make_slug_from_eng(c1_eng, lawd_cd):
+    s = (c1_eng or "").lower().strip()
+    for suffix in ["-gu", "-si", "-gun", "-do", "_si"]:
+        if s.endswith(suffix):
+            s = s[:-len(suffix)]
+            break
+    s = re.sub(r"[^a-z0-9\-]", "", s)
+    if not s:
+        s = lawd_cd
+    return s
+
+
+def make_display_label(c1_nm, parent_si_name=None):
+    if parent_si_name:
+        si_short = parent_si_name.rstrip("시")
+        gu_short = c1_nm.rstrip("구")
+        return f"{si_short} {gu_short}"
+    return c1_nm
+
+
+def fetch_kosis_and_build_sigun_list(key):
     url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
     params = {
         "method": "getList", "apiKey": key, "itmId": "T20", "objL1": "ALL",
@@ -81,37 +99,79 @@ def fetch_kosis_population(key):
     }
     r = requests.get(url, params=params, timeout=TIMEOUT)
     j = r.json()
-    if not isinstance(j, list):
-        return [], {}, {}, None
 
-    period = None
+    if not isinstance(j, list):
+        raise RuntimeError(f"KOSIS unexpected response: {str(j)[:200]}")
+
+    sido_endings = ("도", "특별시", "광역시", "특별자치도", "특별자치시")
     sido_totals = {}
-    discovered = []
-    pop_per_lawd = {}
+    period = None
+    raw_sigun_rows = []
 
     for row in j:
-        c1 = (row.get("C1", "") or "").strip()
-        c1_nm = (row.get("C1_NM", "") or "").strip()
+        c1 = (row.get("C1") or "").strip()
+        c1_nm = (row.get("C1_NM") or "").strip()
+        c1_eng = (row.get("C1_NM_ENG") or "").strip()
+        dt = to_int_or_none(row.get("DT"))
         if not period:
             period = row.get("PRD_DE")
 
-        if c1_nm in SIDO_NAMES_SET:
-            normalized = c1_nm.replace("강원도", "강원특별자치도").replace("전라북도", "전북특별자치도")
-            if normalized == "세종시":
-                normalized = "세종특별자치시"
-            sido_totals[normalized] = to_int_or_none(row.get("DT"))
+        if c1_nm.endswith(sido_endings) and len(c1) <= 2:
+            sido_totals[c1] = {"name": c1_nm, "total": dt}
+            continue
+        if c1_nm == "전국" or "출장소" in c1_nm:
+            continue
+        if len(c1) == 5:
+            raw_sigun_rows.append({
+                "lawd_cd": c1, "c1_nm": c1_nm, "c1_eng": c1_eng,
+                "total": dt, "period": row.get("PRD_DE"), "sido_prefix": c1[:2],
+            })
 
-        if len(c1) == 5 and c1.isdigit():
-            prefix = c1[:2]
-            if prefix in SIDO_BY_PREFIX:
-                discovered.append((c1, c1_nm, prefix))
-                pop_per_lawd[c1] = {
-                    "total": to_int_or_none(row.get("DT")),
-                    "name": c1_nm,
-                    "period": row.get("PRD_DE"),
-                }
+    # 분구 우선: 4자리 prefix 그룹화 → 통합시(끝0+"시") 제외
+    groups = {}
+    for r in raw_sigun_rows:
+        groups.setdefault(r["lawd_cd"][:4], []).append(r)
 
-    return discovered, pop_per_lawd, sido_totals, period
+    parent_si_for_group = {}
+    for g_key, rows in groups.items():
+        if len(rows) > 1:
+            si_row = next((x for x in rows if x["lawd_cd"][-1] == "0" and x["c1_nm"].endswith("시")), None)
+            if si_row:
+                parent_si_for_group[g_key] = si_row["c1_nm"]
+
+    filtered = []
+    for g_key, rows in groups.items():
+        if len(rows) > 1 and g_key in parent_si_for_group:
+            filtered.extend([r for r in rows if not (r["lawd_cd"][-1] == "0" and r["c1_nm"].endswith("시"))])
+        else:
+            filtered.extend(rows)
+
+    sigun_list = []
+    per_lawd = {}
+    for r in filtered:
+        prefix = r["sido_prefix"]
+        if prefix not in SIDO_META:
+            continue
+        meta = SIDO_META[prefix]
+        sido_name = meta[0]
+        sido_slug = meta[1]
+
+        g_key = r["lawd_cd"][:4]
+        parent_si = parent_si_for_group.get(g_key)
+        display = make_display_label(r["c1_nm"], parent_si)
+
+        if parent_si:
+            full_name = f"{sido_name} {parent_si} {r['c1_nm']}"
+        else:
+            full_name = f"{sido_name} {r['c1_nm']}"
+
+        slug_short = make_slug_from_eng(r["c1_eng"], r["lawd_cd"])
+        slug = f"{sido_slug}/{slug_short}"
+
+        sigun_list.append((r["lawd_cd"], full_name, display, slug, prefix))
+        per_lawd[r["lawd_cd"]] = {"total": r["total"], "period": r["period"], "sido_name": sido_name}
+
+    return sigun_list, {"_per_lawd": per_lawd, "_sido_totals": sido_totals, "_period": period}
 
 
 def fetch_real_estate_trade(key, lawd_cd):
@@ -202,18 +262,18 @@ def fetch_real_estate_rent(key, lawd_cd):
     }
 
 
-def fetch_environment(key, sido_airkorea, sigun_lawds):
+def fetch_environment(key, sido_name_for_air):
     url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
-    params = {"serviceKey": key, "returnType": "json", "numOfRows": "300", "pageNo": "1", "sidoName": sido_airkorea, "ver": "1.0"}
+    params = {"serviceKey": key, "returnType": "json", "numOfRows": "200", "pageNo": "1", "sidoName": sido_name_for_air, "ver": "1.0"}
     try:
         r = requests.get(url, params=params, timeout=TIMEOUT)
         j = r.json()
     except (requests.RequestException, json.JSONDecodeError):
-        return {"_avg": None, "_per_lawd": {}, "_measured_at": None}
+        return {"_avg": None, "_measured_at": None}
 
     items = j.get("response", {}).get("body", {}).get("items", [])
     if not items:
-        return {"_avg": None, "_per_lawd": {}, "_measured_at": None}
+        return {"_avg": None, "_measured_at": None}
 
     pm10s = [v for v in (to_int_or_none(it.get("pm10Value")) for it in items) if v is not None]
     pm25s = [v for v in (to_int_or_none(it.get("pm25Value")) for it in items) if v is not None]
@@ -222,34 +282,13 @@ def fetch_environment(key, sido_airkorea, sigun_lawds):
         "pm25": int(statistics.mean(pm25s)) if pm25s else None,
         "station_count": len(items),
     }
-
-    per_lawd = {}
-    for lawd_cd, c1_nm in sigun_lawds:
-        keyword = c1_nm.replace("구", "").replace("군", "").replace("시", "").strip()
-        if not keyword or len(keyword) < 2:
-            continue
-        for it in items:
-            station = it.get("stationName", "") or ""
-            if keyword in station:
-                per_lawd[lawd_cd] = {
-                    "station": station,
-                    "pm10": to_int_or_none(it.get("pm10Value")),
-                    "pm25": to_int_or_none(it.get("pm25Value")),
-                }
-                break
-
-    return {
-        "_avg": avg,
-        "_measured_at": items[0].get("dataTime") if items else None,
-        "_per_lawd": per_lawd,
-    }
+    return {"_avg": avg, "_measured_at": items[0].get("dataTime") if items else None}
 
 
-def fetch_medical(key, hira_cds, sigun_lawds):
+def fetch_medical(key, sido_cds, sigun_lawd_list, sigun_full_names):
     url = "http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList"
     final_hosp = []
-
-    for sido_cd in hira_cds:
+    for sido_cd in sido_cds:
         all_hosp = []
         for page in range(1, 16):
             params = {"ServiceKey": key, "_type": "json", "numOfRows": "1000", "pageNo": str(page), "sidoCd": sido_cd}
@@ -275,8 +314,10 @@ def fetch_medical(key, hira_cds, sigun_lawds):
             break
 
     per_lawd = {}
-    for lawd_cd, c1_nm in sigun_lawds:
-        gu_hosps = [h for h in final_hosp if c1_nm in (h.get("addr", "") or "")]
+    for lawd_cd in sigun_lawd_list:
+        full_name = sigun_full_names.get(lawd_cd, "")
+        last_token = full_name.split()[-1] if full_name else ""
+        gu_hosps = [h for h in final_hosp if last_token and last_token in (h.get("addr", "") or "")]
         type_counts = {}
         for h in gu_hosps:
             t = h.get("clCdNm", "기타")
@@ -286,10 +327,10 @@ def fetch_medical(key, hira_cds, sigun_lawds):
     return {"_total": len(final_hosp), "_per_lawd": per_lawd}
 
 
-def fetch_education(key, atpt_code, sigun_lawds):
+def fetch_education(key, atpt_code, sigun_lawd_list, sigun_full_names):
     url = "https://open.neis.go.kr/hub/schoolInfo"
     all_schools = []
-    for page in range(1, 10):
+    for page in range(1, 8):
         params = {"KEY": key, "Type": "json", "pIndex": str(page), "pSize": "1000", "ATPT_OFCDC_SC_CODE": atpt_code}
         try:
             r = requests.get(url, params=params, timeout=TIMEOUT)
@@ -309,8 +350,10 @@ def fetch_education(key, atpt_code, sigun_lawds):
             break
 
     per_lawd = {}
-    for lawd_cd, c1_nm in sigun_lawds:
-        gu_schools = [s for s in all_schools if c1_nm in (s.get("ORG_RDNMA", "") or "")]
+    for lawd_cd in sigun_lawd_list:
+        full_name = sigun_full_names.get(lawd_cd, "")
+        last_token = full_name.split()[-1] if full_name else ""
+        gu_schools = [s for s in all_schools if last_token and last_token in (s.get("ORG_RDNMA", "") or "")]
         type_counts = {}
         for s in gu_schools:
             t = s.get("SCHUL_KND_SC_NM", "기타")
@@ -347,63 +390,64 @@ def main():
 
     fetched_at = datetime.now(timezone.utc).isoformat()
 
-    print("[STEP 1] KOSIS 시군구 발견 + 인구")
-    discovered, pop_per_lawd, sido_totals, period = fetch_kosis_population(keys["KOSIS_KEY"])
-    print(f"  발견: {len(discovered)}개 시군구, {len(sido_totals)}개 시도")
+    print("[KOSIS] 전국 시군구 자동 추출")
+    sigun_list, pop_data = fetch_kosis_and_build_sigun_list(keys["KOSIS_KEY"])
+    print(f"  추출: {len(sigun_list)}개")
 
-    by_prefix = {}
-    for lawd_cd, c1_nm, prefix in discovered:
-        by_prefix.setdefault(prefix, []).append((lawd_cd, c1_nm))
-    print(f"  시도 prefix: {sorted(by_prefix.keys())}")
+    by_sido = {}
+    sigun_full_names = {}
+    for lawd_cd, full_name, display, slug, prefix in sigun_list:
+        by_sido.setdefault(prefix, []).append((lawd_cd, full_name, display, slug))
+        sigun_full_names[lawd_cd] = full_name
+
+    for prefix in sorted(by_sido.keys()):
+        meta = SIDO_META[prefix]
+        print(f"    {meta[0]}: {len(by_sido[prefix])}개")
 
     all_records = []
-    sido_meta_used = []
+    for prefix in sorted(by_sido.keys()):
+        meta = SIDO_META[prefix]
+        sido_full_name, sido_slug, airkorea_sido, hira_cds, neis_atpt = meta
+        sigun_in_sido = by_sido[prefix]
+        sigun_count = len(sigun_in_sido)
+        sido_total = pop_data["_sido_totals"].get(prefix, {}).get("total")
 
-    for prefix in sorted(by_prefix.keys()):
-        sido_meta = SIDO_BY_PREFIX[prefix]
-        sido_name = sido_meta["name"]
-        sigun_lawds = by_prefix[prefix]
-        sido_total_pop = sido_totals.get(sido_name)
-
-        print(f"\n=== {sido_name} ({prefix}, {len(sigun_lawds)}개) ===")
-        env, _ = safe("environment", fetch_environment, keys["AIRKOREA_KEY"], sido_meta["airkorea"], sigun_lawds,
-                      default={"_avg": None, "_per_lawd": {}, "_measured_at": None})
-        med, _ = safe("medical",     fetch_medical,     keys["HIRA_KEY"],     sido_meta["hira_cds"],   sigun_lawds,
+        print(f"\n=== {sido_full_name} ({sigun_count}개) ===")
+        env, _ = safe("environment", fetch_environment, keys["AIRKOREA_KEY"], airkorea_sido,
+                      default={"_avg": None, "_measured_at": None})
+        med, _ = safe("medical", fetch_medical, keys["HIRA_KEY"], hira_cds,
+                      [r[0] for r in sigun_in_sido], sigun_full_names,
                       default={"_total": 0, "_per_lawd": {}})
-        edu, _ = safe("education",   fetch_education,   keys["NEIS_KEY"],     sido_meta["neis"],       sigun_lawds,
+        edu, _ = safe("education", fetch_education, keys["NEIS_KEY"], neis_atpt,
+                      [r[0] for r in sigun_in_sido], sigun_full_names,
                       default={"_total": 0, "_per_lawd": {}})
 
-        sido_meta_used.append({
-            "code": sido_meta["code"],
-            "name": sido_name,
-            "prefix": prefix,
-            "count": len(sigun_lawds),
-        })
-
-        for i, (lawd_cd, c1_nm) in enumerate(sigun_lawds, 1):
-            print(f"  [{i:2d}/{len(sigun_lawds)}] {c1_nm} ({lawd_cd})", flush=True)
+        for i, (lawd_cd, full_name, display, slug) in enumerate(sigun_in_sido, 1):
+            print(f"  [{i:2d}/{sigun_count}] {full_name}", flush=True)
             trade, _ = safe("    trade", fetch_real_estate_trade, keys["MOLIT_TRADE_KEY"], lawd_cd, default={})
             rent,  _ = safe("    rent",  fetch_real_estate_rent,  keys["MOLIT_RENT_KEY"],  lawd_cd, default={})
 
-            sgg_pop = (pop_per_lawd.get(lawd_cd) or {}).get("total")
-            share = round(sgg_pop / sido_total_pop * 100, 2) if sgg_pop and sido_total_pop else None
+            pop_record = pop_data["_per_lawd"].get(lawd_cd, {})
+            sgg_pop = pop_record.get("total")
+            share = round(sgg_pop / sido_total * 100, 2) if sgg_pop and sido_total else None
 
             record = {
-                "slug": lawd_cd,
-                "lawd_cd": lawd_cd,
-                "name": c1_nm,
-                "name_full": f"{sido_name} {c1_nm}",
-                "sido_code": sido_meta["code"],
-                "sido_name": sido_name,
-                "sido_prefix": prefix,
+                "slug": slug,
+                "name": display,
+                "name_full": full_name,
+                "sido_code": sido_slug,
+                "sido_name": sido_full_name,
                 "level": "sigungu",
+                "lawd_cd": lawd_cd,
                 "fetched_at": fetched_at,
                 "sections": {
                     "real_estate_trade": trade,
                     "real_estate_rent": rent,
                     "environment": {
                         "sido_avg": env.get("_avg"),
-                        "gu_station": env.get("_per_lawd", {}).get(lawd_cd),
+                        "seoul_avg": env.get("_avg") if sido_slug == "seoul" else None,
+                        "gu_station": None,
+                        "gangnam_station": None,
                         "measured_at": env.get("_measured_at"),
                     },
                     "medical": med.get("_per_lawd", {}).get(lawd_cd, {"sgg_count": 0, "by_type": {}}),
@@ -411,10 +455,13 @@ def main():
                     "population": {
                         "table_id": "DT_1B040A3",
                         "table_name": "행정구역(시군구)별/성별 인구수",
-                        "period": (pop_per_lawd.get(lawd_cd) or {}).get("period") or period,
+                        "period": pop_record.get("period") or pop_data.get("_period"),
                         "sgg_total": sgg_pop,
-                        "sido_total": sido_total_pop,
+                        "gangnam_total": sgg_pop,
+                        "sido_total": sido_total,
+                        "seoul_total": sido_total if sido_slug == "seoul" else None,
                         "share_of_sido_pct": share,
+                        "share_of_seoul_pct": share if sido_slug == "seoul" else None,
                     },
                 },
                 "errors": [],
@@ -422,9 +469,14 @@ def main():
             all_records.append(record)
 
     OUTPUT_INTEGRATED.parent.mkdir(parents=True, exist_ok=True)
+    sido_summary = []
+    for prefix in sorted(by_sido.keys()):
+        meta = SIDO_META[prefix]
+        sido_summary.append({"code": meta[1], "name": meta[0], "count": len(by_sido[prefix])})
+
     payload = {
         "fetched_at": fetched_at,
-        "sido_list": sido_meta_used,
+        "sido_list": sido_summary,
         "total_count": len(all_records),
         "records": all_records,
     }
@@ -434,12 +486,9 @@ def main():
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as f:
-            f.write(f"# 페치 결과 (전국)\n\n- 총 시군구: {len(all_records)}\n- 시도: {len(sido_meta_used)}\n\n")
-            f.write("| 시도 | 시군구 | 인구 |\n|---|---|---|\n")
-            for sido in sido_meta_used:
-                total = sido_totals.get(sido["name"])
-                total_str = f"{total:,}명" if total else "—"
-                f.write(f"| {sido['name']} | {sido['count']} | {total_str} |\n")
+            f.write(f"# 페치 결과 (전국)\n\n- 총 시군구: {len(all_records)}\n\n")
+            for s in sido_summary:
+                f.write(f"- **{s['name']}**: {s['count']}개\n")
 
 
 if __name__ == "__main__":
