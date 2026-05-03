@@ -47,22 +47,38 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .persona-cta-arrow { font-size: 22px; font-weight: 700; flex-shrink: 0; }
 .intro-note { background: #f8fafc; padding: 16px 20px; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.6; margin: 24px 0 32px; }
 .intro-note b { color: #0f172a; }
-.sido-section { margin: 24px 0 16px; }
-.sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; padding: 12px 0 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; user-select: none; }
-.sido-header:hover { color: #0f172a; }
-.sido-header .toggle { font-size: 14px; color: #94a3b8; font-weight: 500; transition: transform 0.15s; }
-.sido-header .toggle-arrow { display: inline-block; transition: transform 0.15s; }
-.sido-section.collapsed .toggle-arrow { transform: rotate(-90deg); }
-.sido-section.collapsed .gu-grid { display: none; }
-.sido-count { font-size: 11px; color: #94a3b8; font-weight: 500; letter-spacing: 0; }
-.gu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 24px; }
+.filter-bar { position: sticky; top: 0; background: #ffffff; padding: 12px 0 8px; z-index: 10; margin-bottom: 16px; }
+.filter-input-wrap { position: relative; margin-bottom: 10px; }
+.filter-input { width: 100%; padding: 12px 40px 12px 16px; font-size: 15px; border: 1.5px solid #e5e7eb; border-radius: 4px; font-family: inherit; background: #fff; outline: none; transition: border-color 0.15s; }
+.filter-input:focus { border-color: #0f172a; }
+.filter-input-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: #f3f4f6; color: #6b7280; border-radius: 50%; cursor: pointer; font-size: 16px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0; line-height: 1; }
+.filter-input-clear:hover { background: #e5e7eb; color: #0f172a; }
+.filter-input-clear.show { display: flex; }
+.sido-chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.sido-chips::-webkit-scrollbar { display: none; }
+.sido-chip { flex-shrink: 0; padding: 7px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; white-space: nowrap; user-select: none; }
+.sido-chip:hover { border-color: #0f172a; color: #0f172a; }
+.sido-chip.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+.sido-chip .count { opacity: 0.6; font-weight: 500; margin-left: 4px; font-size: 11px; }
+.sido-chip.active .count { opacity: 0.7; }
+.sgg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 32px; }
+.sgg-card { display: block; padding: 12px 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.12s; }
+.sgg-card:hover { border-color: #0f172a; }
+.sgg-card.active { background: #0f172a; border-color: #0f172a; }
+.sgg-card.active .sgg-name, .sgg-card.active .sgg-sido { color: #fff; }
+.sgg-card.active .sgg-sido { opacity: 0.7; }
+.sgg-name { font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; }
+.sgg-sido { font-size: 11px; color: #94a3b8; font-weight: 500; margin-top: 2px; }
+.result-meta { font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 2px; }
+.empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 14px; }
+.empty-state b { color: #475569; }
 @media (max-width: 640px) {
-  .gu-grid { grid-template-columns: repeat(3, 1fr); }
-  .hero h1 { font-size: 36px; }
+  .sgg-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .sgg-card { padding: 10px 10px; }
+  .sgg-name { font-size: 13px; }
+  .filter-bar { padding: 10px 0 6px; }
+  .sido-chip { padding: 6px 12px; font-size: 12px; }
 }
-.gu-chip { display: block; padding: 12px 8px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: center; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; }
-.gu-chip:hover { border-color: #0f172a; color: #0f172a; }
-.gu-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
 .card-area { min-height: 400px; margin-top: 32px; }
 .card-empty { text-align: center; padding: 64px 24px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
 .card-name { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 8px 0 12px; }
@@ -397,7 +413,7 @@ __DATA_JSON__
       return;
     }
     area.innerHTML = buildCard(rec);
-    document.querySelectorAll('.gu-chip').forEach(function(el) {
+    document.querySelectorAll('.sgg-card').forEach(function(el) {
       el.classList.toggle('active', el.dataset.slugkey === slugKey);
     });
     if (pushState && history.pushState) {
@@ -407,13 +423,9 @@ __DATA_JSON__
     area.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
-  document.querySelectorAll('.sido-header').forEach(function(header) {
-    header.addEventListener('click', function() {
-      header.parentElement.classList.toggle('collapsed');
-    });
-  });
+  
 
-  document.querySelectorAll('.gu-chip').forEach(function(chip) {
+  document.querySelectorAll('.sgg-card').forEach(function(chip) {
     chip.addEventListener('click', function() {
       selectGu(chip.dataset.slugkey, true);
     });
@@ -441,6 +453,72 @@ __DATA_JSON__
     }
   }
 })();
+(function() {
+  var input = document.getElementById('sgg-search');
+  var clearBtn = document.getElementById('sgg-clear');
+  var chipsWrap = document.getElementById('sido-chips');
+  var grid = document.getElementById('sgg-grid');
+  var meta = document.getElementById('result-meta');
+  var empty = document.getElementById('empty-state');
+  var allCards = Array.prototype.slice.call(grid.querySelectorAll('.sgg-card'));
+  var totalCount = allCards.length;
+  var activeSido = '';
+
+  function applyFilter() {
+    var q = (input.value || '').trim().toLowerCase();
+    var visible = 0;
+    for (var i = 0; i < allCards.length; i++) {
+      var card = allCards[i];
+      var sido = card.dataset.sido;
+      var name = card.dataset.name.toLowerCase();
+      var sidoShort = card.querySelector('.sgg-sido').textContent.toLowerCase();
+      var matchSido = !activeSido || sido === activeSido;
+      var matchQ = !q || name.indexOf(q) !== -1 || sido.toLowerCase().indexOf(q) !== -1 || sidoShort.indexOf(q) !== -1;
+      if (matchSido && matchQ) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    }
+    if (visible === 0) {
+      empty.style.display = 'block';
+      meta.style.display = 'none';
+    } else {
+      empty.style.display = 'none';
+      meta.style.display = 'block';
+      if (visible === totalCount) {
+        meta.textContent = '전국 ' + totalCount + '개 시군구';
+      } else {
+        meta.textContent = visible + '개 시군구 표시 중';
+      }
+    }
+    clearBtn.classList.toggle('show', q.length > 0);
+  }
+
+  input.addEventListener('input', applyFilter);
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    applyFilter();
+    input.focus();
+  });
+  chipsWrap.addEventListener('click', function(e) {
+    var chip = e.target.closest('.sido-chip');
+    if (!chip) return;
+    var chips = chipsWrap.querySelectorAll('.sido-chip');
+    for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+    chip.classList.add('active');
+    activeSido = chip.dataset.sido;
+    applyFilter();
+    // 활성 칩이 보이게 스크롤
+    var rect = chip.getBoundingClientRect();
+    var wrapRect = chipsWrap.getBoundingClientRect();
+    if (rect.right > wrapRect.right || rect.left < wrapRect.left) {
+      chip.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+    }
+  });
+})();
+
 </script>
 
 </body>
@@ -460,22 +538,52 @@ def main():
     print(f"  로드: {len(records)}개 시군구 ({len(sido_list)}개 시도)")
 
     # 시도별 섹션 HTML 생성
-    sections_html = []
+    # 시도 짧은 이름
+    SIDO_SHORT = {
+        "서울특별시": "서울", "부산광역시": "부산", "대구광역시": "대구",
+        "인천광역시": "인천", "광주광역시": "광주", "대전광역시": "대전",
+        "울산광역시": "울산", "세종특별자치시": "세종", "경기도": "경기",
+        "충청북도": "충북", "충청남도": "충남", "전라남도": "전남",
+        "경상북도": "경북", "경상남도": "경남", "제주특별자치도": "제주",
+        "강원특별자치도": "강원", "전북특별자치도": "전북",
+    }
+    
+    # 시도 칩 + 평면 시군구 카드 빌드
+    chip_count_html = ""
+    cards_html = []
+    total_count = 0
+    
     for sido in sido_list:
-        sido_records = [r for r in records if r.get("sido_code") == sido["code"]]
-        chips = []
+        sido_records = [r for r in records if r["sido_code"] == sido["code"]]
+        if not sido_records: continue
+        sido_name = sido["name"]
+        sido_short = SIDO_SHORT.get(sido_name, sido_name)
+        chip_count_html += f'<button class="sido-chip" data-sido="{sido_name}">{sido_short}<span class="count">{len(sido_records)}</span></button>\n  '
         for rec in sido_records:
-            chips.append(f'<a class="gu-chip" data-slugkey="{rec["slug"]}">{rec["name"]}</a>')
-        chips_html = "\n      ".join(chips)
-        # 서울만 펼침, 나머지는 collapsed 시작
-        collapsed = "" if sido["code"] == "seoul" else " collapsed"
-        sections_html.append(
-            f'  <div class="sido-section{collapsed}">\n'
-            f'    <div class="sido-header"><span>{sido["name"]}</span><span class="toggle"><span class="toggle-arrow">▼</span> {len(sido_records)}개 시군구</span></div>\n'
-            f'    <div class="gu-grid">\n      {chips_html}\n    </div>\n'
-            f'  </div>'
-        )
-    sido_sections = "\n".join(sections_html)
+            cards_html.append(
+                f'  <a class="sgg-card" data-slugkey="{rec["slug"]}" data-sido="{sido_name}" data-name="{rec["name"]}">'
+                f'<div class="sgg-name">{rec["name"]}</div>'
+                f'<div class="sgg-sido">{sido_short}</div></a>'
+            )
+            total_count += 1
+    
+    sido_sections = f'''<div class="filter-bar">
+  <div class="filter-input-wrap">
+    <input type="search" id="sgg-search" class="filter-input" placeholder="동네 이름 검색 (예: 강남, 마포, 분당)" autocomplete="off">
+    <button class="filter-input-clear" id="sgg-clear" aria-label="검색어 지우기">×</button>
+  </div>
+  <div class="sido-chips" id="sido-chips">
+    <button class="sido-chip active" data-sido="">전체<span class="count">{total_count}</span></button>
+    {chip_count_html.rstrip()}
+  </div>
+</div>
+
+<div class="result-meta" id="result-meta">전국 {total_count}개 시군구</div>
+
+<div class="sgg-grid" id="sgg-grid">
+{chr(10).join(cards_html)}
+</div>
+<div class="empty-state" id="empty-state" style="display:none;"><b>일치하는 동네가 없습니다.</b><br>다른 검색어를 시도해 주세요.</div>'''
 
     try:
         dt = datetime.fromisoformat(data["fetched_at"].replace("Z", "+00:00"))
