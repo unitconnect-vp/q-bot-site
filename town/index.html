@@ -37,7 +37,8 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; padding: 12px 0 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; user-select: none; }
 .sido-header:hover { color: #0f172a; }
 .sido-header .toggle { font-size: 14px; color: #94a3b8; font-weight: 500; transition: transform 0.15s; }
-.sido-section.collapsed .toggle { transform: rotate(-90deg); }
+.sido-header .toggle-arrow { display: inline-block; transition: transform 0.15s; }
+.sido-section.collapsed .toggle-arrow { transform: rotate(-90deg); }
 .sido-section.collapsed .gu-grid { display: none; }
 .sido-count { font-size: 11px; color: #94a3b8; font-weight: 500; letter-spacing: 0; }
 .gu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 24px; }
@@ -126,7 +127,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   </div>
 
     <div class="sido-section">
-    <div class="sido-header"><span>서울특별시</span><span class="toggle">▼ 25개 시군구</span></div>
+    <div class="sido-header"><span>서울특별시</span><span class="toggle"><span class="toggle-arrow">▼</span> 25개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="seoul/jongno">종로구</a>
       <a class="gu-chip" data-slugkey="seoul/jung">중구</a>
@@ -156,7 +157,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>부산광역시</span><span class="toggle">▼ 16개 시군구</span></div>
+    <div class="sido-header"><span>부산광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 16개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="busan/jung">중구</a>
       <a class="gu-chip" data-slugkey="busan/seo">서구</a>
@@ -177,7 +178,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>대구광역시</span><span class="toggle">▼ 9개 시군구</span></div>
+    <div class="sido-header"><span>대구광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 9개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="daegu/jung">중구</a>
       <a class="gu-chip" data-slugkey="daegu/dong">동구</a>
@@ -191,7 +192,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>인천광역시</span><span class="toggle">▼ 10개 시군구</span></div>
+    <div class="sido-header"><span>인천광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 10개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="incheon/jung">중구</a>
       <a class="gu-chip" data-slugkey="incheon/dong">동구</a>
@@ -206,7 +207,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>광주광역시</span><span class="toggle">▼ 5개 시군구</span></div>
+    <div class="sido-header"><span>광주광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="gwangju/dong">동구</a>
       <a class="gu-chip" data-slugkey="gwangju/seo">서구</a>
@@ -216,7 +217,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>대전광역시</span><span class="toggle">▼ 5개 시군구</span></div>
+    <div class="sido-header"><span>대전광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="daejeon/dong">동구</a>
       <a class="gu-chip" data-slugkey="daejeon/jung">중구</a>
@@ -226,7 +227,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>울산광역시</span><span class="toggle">▼ 5개 시군구</span></div>
+    <div class="sido-header"><span>울산광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="ulsan/jung">중구</a>
       <a class="gu-chip" data-slugkey="ulsan/nam">남구</a>
@@ -236,13 +237,13 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>세종특별자치시</span><span class="toggle">▼ 1개 시군구</span></div>
+    <div class="sido-header"><span>세종특별자치시</span><span class="toggle"><span class="toggle-arrow">▼</span> 1개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="sejong/sejong">세종시</a>
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>경기도</span><span class="toggle">▼ 47개 시군구</span></div>
+    <div class="sido-header"><span>경기도</span><span class="toggle"><span class="toggle-arrow">▼</span> 47개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="gyeonggi/jangan">수원 장안</a>
       <a class="gu-chip" data-slugkey="gyeonggi/gwonseon">수원 권선</a>
@@ -294,7 +295,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>충청북도</span><span class="toggle">▼ 14개 시군구</span></div>
+    <div class="sido-header"><span>충청북도</span><span class="toggle"><span class="toggle-arrow">▼</span> 14개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="chungbuk/sangdang">청주 상당</a>
       <a class="gu-chip" data-slugkey="chungbuk/seowon">청주 서원</a>
@@ -313,7 +314,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>충청남도</span><span class="toggle">▼ 16개 시군구</span></div>
+    <div class="sido-header"><span>충청남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 16개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="chungnam/dongnam">천안 동남</a>
       <a class="gu-chip" data-slugkey="chungnam/seobuk">천안 서북</a>
@@ -334,7 +335,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>전라남도</span><span class="toggle">▼ 22개 시군구</span></div>
+    <div class="sido-header"><span>전라남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 22개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="jeonnam/mokpo">목포시</a>
       <a class="gu-chip" data-slugkey="jeonnam/yeosu">여수시</a>
@@ -361,7 +362,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>경상북도</span><span class="toggle">▼ 23개 시군구</span></div>
+    <div class="sido-header"><span>경상북도</span><span class="toggle"><span class="toggle-arrow">▼</span> 23개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="gyeongbuk/nam">포항 남</a>
       <a class="gu-chip" data-slugkey="gyeongbuk/buk">포항 북</a>
@@ -389,7 +390,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>경상남도</span><span class="toggle">▼ 22개 시군구</span></div>
+    <div class="sido-header"><span>경상남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 22개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="gyeongnam/uichang">창원 의창</a>
       <a class="gu-chip" data-slugkey="gyeongnam/seongsan">창원 성산</a>
@@ -416,14 +417,14 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>제주특별자치도</span><span class="toggle">▼ 2개 시군구</span></div>
+    <div class="sido-header"><span>제주특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 2개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="jeju/jeju">제주시</a>
       <a class="gu-chip" data-slugkey="jeju/seogwipo">서귀포시</a>
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>강원특별자치도</span><span class="toggle">▼ 18개 시군구</span></div>
+    <div class="sido-header"><span>강원특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 18개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="gangwon/chuncheon">춘천시</a>
       <a class="gu-chip" data-slugkey="gangwon/wonju">원주시</a>
@@ -446,7 +447,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     </div>
   </div>
   <div class="sido-section collapsed">
-    <div class="sido-header"><span>전북특별자치도</span><span class="toggle">▼ 15개 시군구</span></div>
+    <div class="sido-header"><span>전북특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 15개 시군구</span></div>
     <div class="gu-grid">
       <a class="gu-chip" data-slugkey="jeonbuk/wansan">전주 완산</a>
       <a class="gu-chip" data-slugkey="jeonbuk/deokjin">전주 덕진</a>
