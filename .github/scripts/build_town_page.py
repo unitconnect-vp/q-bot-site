@@ -130,9 +130,31 @@ def insight_education(edu):
 
 
 def insight_population(pop):
+    g = pop.get("gangnam_total")
+    s = pop.get("seoul_total")
+    share = pop.get("share_of_seoul_pct")
+    period = pop.get("period", "")
+
+    if not g:
+        return "인구 데이터 수집 중입니다."
+
+    period_str = ""
+    if period and len(period) == 6:
+        period_str = f"{period[:4]}년 {period[4:].lstrip('0')}월 "
+
+    avg_gu = round(s / 25) if s else None
+    ratio_text = ""
+    if avg_gu and g:
+        ratio = round(g / avg_gu, 2)
+        if ratio > 1:
+            ratio_text = f" 서울 25개 자치구 평균(<b>{fmt_num(avg_gu)}명</b>) 대비 <b>{ratio}배</b>."
+        elif ratio < 1:
+            ratio_text = f" 서울 25개 자치구 평균(<b>{fmt_num(avg_gu)}명</b>) 대비 <b>{ratio}배</b>."
+
     return (
-        "인구·연령·소득 데이터는 KOSIS 통계표 매칭 작업 후 다음 빌드에 추가됩니다. "
-        "이번 페치는 KOSIS 연결만 검증한 단계입니다."
+        f"{period_str}기준 강남구 인구는 <b>{fmt_num(g)}명</b>. "
+        f"서울 전체의 <b>{share}%</b>를 차지합니다.{ratio_text} "
+        "연령 분포·1인가구 비율·소득 구조는 다음 페치 회차에 추가됩니다."
     )
 
 
@@ -292,6 +314,22 @@ def render_education(edu):
     return '<div class="bar-block">' + "".join(bars) + '</div>'
 
 
+def render_population(pop):
+    """강남구 인구 vs 서울 25개 자치구 평균 비교 막대."""
+    g = pop.get("gangnam_total")
+    s = pop.get("seoul_total")
+    if not g:
+        return ""
+    avg_gu = round(s / 25) if s else None
+    max_v = max(g, avg_gu) if avg_gu else g
+    bars = [render_bar("강남구", g, max_v, "명", accent=True)]
+    if avg_gu:
+        bars.append(render_bar("서울 자치구 평균", avg_gu, max_v, "명"))
+    if s:
+        bars.append(render_bar("서울 전체", s, max(s, max_v), "명"))
+    return '<div class="bar-block">' + "".join(bars) + '</div>'
+
+
 # ─────────────────────────────────────────────────
 # 페이지 템플릿
 # ─────────────────────────────────────────────────
@@ -397,15 +435,16 @@ PAGE = Template("""<!DOCTYPE html>
     <div class="source">출처: 교육부 NEIS 교육정보 개방 포털</div>
   </section>
 
-  <section class="section pending">
-    <div class="section-num">05 — 인구·소득 (준비 중)</div>
+  <section class="section">
+    <div class="section-num">05 — 인구</div>
     <h2>누가 살고 있나</h2>
-    <p class="section-sub">KOSIS 통계표 매칭 작업 중.</p>
+    <p class="section-sub">행정안전부 주민등록인구 — 가장 단순하지만 동네의 골격을 가장 잘 보여주는 데이터.</p>
+    $sec_population
     <div class="insight">
-      <div class="insight-tag">곧 추가</div>
+      <div class="insight-tag">Q렌즈의 시각</div>
       <p>$insight_population</p>
     </div>
-    <div class="source">출처: 통계청 KOSIS</div>
+    <div class="source">출처: 통계청 KOSIS · 행정안전부 주민등록인구 (DT_1B040A3)</div>
   </section>
 
   <div class="cta">
@@ -456,7 +495,7 @@ def build_page(data):
 
     median_pyeong = trade.get("median_price_per_pyeong_man")
     median_jeonse = rent.get("median_jeonse_man")
-    gangnam_count = med.get("gangnam_count")
+    pop_total = pop.get("gangnam_total")
 
     return PAGE.safe_substitute({
         "name": data["name"],
@@ -473,14 +512,15 @@ def build_page(data):
         "stat2_unit": "억" if median_jeonse else "",
         "stat2_label": "전세 중앙값",
 
-        "stat3_num": fmt_num(gangnam_count) if gangnam_count else "—",
-        "stat3_unit": "곳" if gangnam_count else "",
-        "stat3_label": "의료기관 수",
+        "stat3_num": fmt_num(pop_total) if pop_total else "—",
+        "stat3_unit": "명" if pop_total else "",
+        "stat3_label": "인구 (주민등록 기준)",
 
         "sec_real_estate": render_real_estate(trade, rent),
         "sec_environment": render_environment(env),
         "sec_medical": render_medical(med),
         "sec_education": render_education(edu),
+        "sec_population": render_population(pop),
 
         "insight_real_estate": insight_real_estate(trade, rent),
         "insight_environment": insight_environment(env),
