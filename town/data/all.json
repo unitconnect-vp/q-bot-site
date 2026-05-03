@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+  "fetched_at": "2026-05-03T02:20:12.024588+00:00",
   "total_sido": 2,
   "total_sgg": 67,
   "sidos": [
@@ -17,7 +17,7 @@
           "name_full": "서울특별시 종로구",
           "level": "sgg",
           "lawd_cd": "11110",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 107,
@@ -43,8 +43,8 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
@@ -52,7 +52,7 @@
                 "pm10": 14,
                 "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 189,
@@ -82,9 +82,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 136817,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.47
             }
           },
           "errors": []
@@ -97,7 +97,7 @@
           "name_full": "서울특별시 중구",
           "level": "sgg",
           "lawd_cd": "11140",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 156,
@@ -123,16 +123,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "중구",
-                "pm10": 13,
-                "pm25": 11
+                "pm10": 14,
+                "pm25": 10
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 291,
@@ -157,9 +157,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 117762,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.27
             }
           },
           "errors": []
@@ -172,7 +172,7 @@
           "name_full": "서울특별시 용산구",
           "level": "sgg",
           "lawd_cd": "11170",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 112,
@@ -198,16 +198,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "용산구",
-                "pm10": 26,
-                "pm25": 15
+                "pm10": 23,
+                "pm25": 13
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 147,
@@ -231,9 +231,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 200962,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.16
             }
           },
           "errors": []
@@ -246,7 +246,7 @@
           "name_full": "서울특별시 성동구",
           "level": "sgg",
           "lawd_cd": "11200",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 219,
@@ -272,16 +272,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "성동구",
-                "pm10": 26,
-                "pm25": 19
+                "pm10": 19,
+                "pm25": 16
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 236,
@@ -306,9 +306,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 275093,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.96
             }
           },
           "errors": []
@@ -321,7 +321,7 @@
           "name_full": "서울특별시 광진구",
           "level": "sgg",
           "lawd_cd": "11215",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 133,
@@ -347,16 +347,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "광진구",
-                "pm10": 17,
-                "pm25": 12
+                "pm10": 15,
+                "pm25": 9
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 292,
@@ -384,9 +384,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 331123,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.56
             }
           },
           "errors": []
@@ -399,7 +399,7 @@
           "name_full": "서울특별시 동대문구",
           "level": "sgg",
           "lawd_cd": "11230",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 444,
@@ -425,16 +425,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "동대문구",
-                "pm10": 18,
-                "pm25": 16
+                "pm10": 15,
+                "pm25": 15
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 287,
@@ -461,9 +461,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 351542,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.78
             }
           },
           "errors": []
@@ -476,7 +476,7 @@
           "name_full": "서울특별시 중랑구",
           "level": "sgg",
           "lawd_cd": "11260",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 496,
@@ -502,16 +502,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "중랑구",
-                "pm10": 21,
+                "pm10": 16,
                 "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 272,
@@ -535,9 +535,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 376665,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.05
             }
           },
           "errors": []
@@ -550,7 +550,7 @@
           "name_full": "서울특별시 성북구",
           "level": "sgg",
           "lawd_cd": "11290",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 607,
@@ -576,16 +576,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "성북구",
-                "pm10": 16,
-                "pm25": 12
+                "pm10": 18,
+                "pm25": 7
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 266,
@@ -610,9 +610,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 422778,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.54
             }
           },
           "errors": []
@@ -625,7 +625,7 @@
           "name_full": "서울특별시 강북구",
           "level": "sgg",
           "lawd_cd": "11305",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 230,
@@ -651,16 +651,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "강북구",
                 "pm10": 13,
-                "pm25": 11
+                "pm25": 8
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 238,
@@ -684,9 +684,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 278786,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.0
             }
           },
           "errors": []
@@ -699,7 +699,7 @@
           "name_full": "서울특별시 도봉구",
           "level": "sgg",
           "lawd_cd": "11320",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 484,
@@ -725,16 +725,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "도봉구",
-                "pm10": 16,
-                "pm25": 13
+                "pm10": 17,
+                "pm25": 11
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 169,
@@ -759,9 +759,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 299065,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.21
             }
           },
           "errors": []
@@ -774,7 +774,7 @@
           "name_full": "서울특별시 노원구",
           "level": "sgg",
           "lawd_cd": "11350",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1366,
@@ -800,16 +800,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "노원구",
-                "pm10": 17,
-                "pm25": 15
+                "pm10": 14,
+                "pm25": 9
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 374,
@@ -838,9 +838,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 482487,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.19
             }
           },
           "errors": []
@@ -853,7 +853,7 @@
           "name_full": "서울특별시 은평구",
           "level": "sgg",
           "lawd_cd": "11380",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 533,
@@ -879,16 +879,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "은평구",
-                "pm10": 9,
-                "pm25": 8
+                "pm10": 13,
+                "pm25": 9
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 333,
@@ -914,9 +914,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 454109,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.88
             }
           },
           "errors": []
@@ -929,7 +929,7 @@
           "name_full": "서울특별시 서대문구",
           "level": "sgg",
           "lawd_cd": "11410",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 432,
@@ -955,16 +955,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "서대문구",
-                "pm10": 17,
-                "pm25": 9
+                "pm10": 18,
+                "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 202,
@@ -990,9 +990,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 300594,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.23
             }
           },
           "errors": []
@@ -1005,7 +1005,7 @@
           "name_full": "서울특별시 마포구",
           "level": "sgg",
           "lawd_cd": "11440",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 243,
@@ -1031,16 +1031,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "마포구",
                 "pm10": 12,
-                "pm25": 8
+                "pm25": 7
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 393,
@@ -1068,9 +1068,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 356966,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.84
             }
           },
           "errors": []
@@ -1083,7 +1083,7 @@
           "name_full": "서울특별시 양천구",
           "level": "sgg",
           "lawd_cd": "11470",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 390,
@@ -1110,16 +1110,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "양천구",
-                "pm10": 11,
-                "pm25": 6
+                "pm10": 15,
+                "pm25": 9
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 305,
@@ -1143,9 +1143,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 423666,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.55
             }
           },
           "errors": []
@@ -1158,7 +1158,7 @@
           "name_full": "서울특별시 강서구",
           "level": "sgg",
           "lawd_cd": "11500",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 710,
@@ -1184,16 +1184,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "강서구",
-                "pm10": 14,
+                "pm10": 12,
                 "pm25": 8
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 477,
@@ -1220,9 +1220,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 548985,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.9
             }
           },
           "errors": []
@@ -1235,7 +1235,7 @@
           "name_full": "서울특별시 구로구",
           "level": "sgg",
           "lawd_cd": "11530",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 645,
@@ -1261,16 +1261,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "한강대로",
-                "pm10": 12,
-                "pm25": 14
+                "pm10": 9,
+                "pm25": 11
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 297,
@@ -1299,9 +1299,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 382836,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.11
             }
           },
           "errors": []
@@ -1314,7 +1314,7 @@
           "name_full": "서울특별시 금천구",
           "level": "sgg",
           "lawd_cd": "11545",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 213,
@@ -1340,16 +1340,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "금천구",
                 "pm10": null,
-                "pm25": 25
+                "pm25": 17
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 174,
@@ -1375,9 +1375,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 222712,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.39
             }
           },
           "errors": []
@@ -1390,7 +1390,7 @@
           "name_full": "서울특별시 영등포구",
           "level": "sgg",
           "lawd_cd": "11560",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 442,
@@ -1416,16 +1416,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "영등포구",
-                "pm10": 14,
-                "pm25": 10
+                "pm10": 13,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 432,
@@ -1452,9 +1452,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 371177,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.99
             }
           },
           "errors": []
@@ -1467,7 +1467,7 @@
           "name_full": "서울특별시 동작구",
           "level": "sgg",
           "lawd_cd": "11590",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 310,
@@ -1493,16 +1493,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "동작구",
-                "pm10": 28,
+                "pm10": 23,
                 "pm25": null
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 278,
@@ -1531,9 +1531,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 372236,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.0
             }
           },
           "errors": []
@@ -1546,7 +1546,7 @@
           "name_full": "서울특별시 관악구",
           "level": "sgg",
           "lawd_cd": "11620",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 397,
@@ -1572,16 +1572,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "관악구",
-                "pm10": 23,
-                "pm25": 17
+                "pm10": 19,
+                "pm25": 13
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 345,
@@ -1606,9 +1606,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 478468,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.14
             }
           },
           "errors": []
@@ -1621,7 +1621,7 @@
           "name_full": "서울특별시 서초구",
           "level": "sgg",
           "lawd_cd": "11650",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 204,
@@ -1647,16 +1647,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "서초구",
-                "pm10": 30,
-                "pm25": null
+                "pm10": 19,
+                "pm25": 14
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 903,
@@ -1683,9 +1683,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 415540,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.47
             }
           },
           "errors": []
@@ -1698,7 +1698,7 @@
           "name_full": "서울특별시 강남구",
           "level": "sgg",
           "lawd_cd": "11680",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 328,
@@ -1724,16 +1724,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "강남구",
-                "pm10": 16,
-                "pm25": 13
+                "pm10": 17,
+                "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 1997,
@@ -1761,9 +1761,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 554165,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.96
             }
           },
           "errors": []
@@ -1776,7 +1776,7 @@
           "name_full": "서울특별시 송파구",
           "level": "sgg",
           "lawd_cd": "11710",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 541,
@@ -1802,8 +1802,8 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
@@ -1811,7 +1811,7 @@
                 "pm10": 12,
                 "pm25": 11
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 639,
@@ -1841,9 +1841,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 650071,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 6.99
             }
           },
           "errors": []
@@ -1856,7 +1856,7 @@
           "name_full": "서울특별시 강동구",
           "level": "sgg",
           "lawd_cd": "11740",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 418,
@@ -1882,16 +1882,16 @@
             },
             "environment": {
               "sido_avg": {
-                "pm10": 18,
-                "pm25": 12,
+                "pm10": 15,
+                "pm25": 10,
                 "station_count": 40
               },
               "gu_station": {
                 "station": "강동구",
-                "pm10": 19,
-                "pm25": 9
+                "pm10": 16,
+                "pm25": 10
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 464,
@@ -1915,9 +1915,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 499795,
               "sido_total": 9304400,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.37
             }
           },
           "errors": []
@@ -1938,7 +1938,7 @@
           "name_full": "경기도 수원시 장안구",
           "level": "sgg",
           "lawd_cd": "41111",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 431,
@@ -1970,10 +1970,10 @@
               },
               "gu_station": {
                 "station": "경수대로(동수원)",
-                "pm10": 12,
+                "pm10": 9,
                 "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 191,
@@ -2017,7 +2017,7 @@
           "name_full": "경기도 수원시 권선구",
           "level": "sgg",
           "lawd_cd": "41113",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 914,
@@ -2049,10 +2049,10 @@
               },
               "gu_station": {
                 "station": "경수대로(동수원)",
-                "pm10": 12,
+                "pm10": 9,
                 "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 200,
@@ -2093,7 +2093,7 @@
           "name_full": "경기도 수원시 팔달구",
           "level": "sgg",
           "lawd_cd": "41115",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 462,
@@ -2125,10 +2125,10 @@
               },
               "gu_station": {
                 "station": "경수대로(동수원)",
-                "pm10": 12,
+                "pm10": 9,
                 "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 311,
@@ -2173,7 +2173,7 @@
           "name_full": "경기도 수원시 영통구",
           "level": "sgg",
           "lawd_cd": "41117",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1178,
@@ -2206,10 +2206,10 @@
               },
               "gu_station": {
                 "station": "영통동",
-                "pm10": null,
-                "pm25": 11
+                "pm10": 28,
+                "pm25": 7
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 311,
@@ -2250,7 +2250,7 @@
           "name_full": "경기도 성남시 수정구",
           "level": "sgg",
           "lawd_cd": "41131",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 209,
@@ -2282,10 +2282,10 @@
               },
               "gu_station": {
                 "station": "성남대로(모란역)",
-                "pm10": 16,
-                "pm25": 8
+                "pm10": 18,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 282,
@@ -2329,7 +2329,7 @@
           "name_full": "경기도 성남시 중원구",
           "level": "sgg",
           "lawd_cd": "41133",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 230,
@@ -2361,10 +2361,10 @@
               },
               "gu_station": {
                 "station": "성남대로(모란역)",
-                "pm10": 16,
-                "pm25": 8
+                "pm10": 18,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 176,
@@ -2404,7 +2404,7 @@
           "name_full": "경기도 성남시 분당구",
           "level": "sgg",
           "lawd_cd": "41135",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 477,
@@ -2436,10 +2436,10 @@
               },
               "gu_station": {
                 "station": "성남대로(모란역)",
-                "pm10": 16,
-                "pm25": 8
+                "pm10": 18,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 615,
@@ -2484,7 +2484,7 @@
           "name_full": "경기도 안양시 만안구",
           "level": "sgg",
           "lawd_cd": "41171",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 508,
@@ -2517,9 +2517,9 @@
               "gu_station": {
                 "station": "안양8동",
                 "pm10": 13,
-                "pm25": 18
+                "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 163,
@@ -2561,7 +2561,7 @@
           "name_full": "경기도 안양시 동안구",
           "level": "sgg",
           "lawd_cd": "41173",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 878,
@@ -2594,9 +2594,9 @@
               "gu_station": {
                 "station": "안양8동",
                 "pm10": 13,
-                "pm25": 18
+                "pm25": 12
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 331,
@@ -2636,7 +2636,7 @@
           "name_full": "경기도 안산시 상록구",
           "level": "sgg",
           "lawd_cd": "41271",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 331,
@@ -2667,7 +2667,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 154,
@@ -2708,7 +2708,7 @@
           "name_full": "경기도 안산시 단원구",
           "level": "sgg",
           "lawd_cd": "41273",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 505,
@@ -2739,7 +2739,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 293,
@@ -2781,7 +2781,7 @@
           "name_full": "경기도 고양시 덕양구",
           "level": "sgg",
           "lawd_cd": "41281",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 863,
@@ -2812,7 +2812,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 348,
@@ -2856,7 +2856,7 @@
           "name_full": "경기도 고양시 일산동구",
           "level": "sgg",
           "lawd_cd": "41285",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 366,
@@ -2887,7 +2887,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 225,
@@ -2931,7 +2931,7 @@
           "name_full": "경기도 고양시 일산서구",
           "level": "sgg",
           "lawd_cd": "41287",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 516,
@@ -2962,7 +2962,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 215,
@@ -3005,7 +3005,7 @@
           "name_full": "경기도 용인시 처인구",
           "level": "sgg",
           "lawd_cd": "41461",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 448,
@@ -3036,7 +3036,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 144,
@@ -3078,7 +3078,7 @@
           "name_full": "경기도 용인시 기흥구",
           "level": "sgg",
           "lawd_cd": "41463",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1354,
@@ -3110,10 +3110,10 @@
               },
               "gu_station": {
                 "station": "기흥",
-                "pm10": 7,
-                "pm25": 5
+                "pm10": 12,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 280,
@@ -3155,7 +3155,7 @@
           "name_full": "경기도 용인시 수지구",
           "level": "sgg",
           "lawd_cd": "41465",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 964,
@@ -3188,10 +3188,10 @@
               },
               "gu_station": {
                 "station": "수지",
-                "pm10": 13,
-                "pm25": 4
+                "pm10": 12,
+                "pm25": 5
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 270,
@@ -3231,7 +3231,7 @@
           "name_full": "경기도 의정부시",
           "level": "sgg",
           "lawd_cd": "41150",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 940,
@@ -3263,10 +3263,10 @@
               },
               "gu_station": {
                 "station": "의정부동",
-                "pm10": 14,
+                "pm10": 13,
                 "pm25": 10
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 370,
@@ -3295,9 +3295,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 461460,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.36
             }
           },
           "errors": []
@@ -3310,7 +3310,7 @@
           "name_full": "경기도 부천시",
           "level": "sgg",
           "lawd_cd": "41190",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "status": "no_data",
@@ -3329,7 +3329,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 653,
@@ -3361,9 +3361,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 756701,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.51
             }
           },
           "errors": []
@@ -3376,7 +3376,7 @@
           "name_full": "경기도 광명시",
           "level": "sgg",
           "lawd_cd": "41210",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 544,
@@ -3407,7 +3407,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 280,
@@ -3432,9 +3432,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 302390,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.2
             }
           },
           "errors": []
@@ -3447,7 +3447,7 @@
           "name_full": "경기도 평택시",
           "level": "sgg",
           "lawd_cd": "41220",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1491,
@@ -3480,10 +3480,10 @@
               },
               "gu_station": {
                 "station": "평택항",
-                "pm10": 16,
-                "pm25": 8
+                "pm10": 18,
+                "pm25": 17
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 376,
@@ -3509,9 +3509,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 615107,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 4.47
             }
           },
           "errors": []
@@ -3524,7 +3524,7 @@
           "name_full": "경기도 동두천시",
           "level": "sgg",
           "lawd_cd": "41250",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 160,
@@ -3555,7 +3555,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 51,
@@ -3579,9 +3579,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 86326,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.63
             }
           },
           "errors": []
@@ -3594,7 +3594,7 @@
           "name_full": "경기도 과천시",
           "level": "sgg",
           "lawd_cd": "41290",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 50,
@@ -3626,10 +3626,10 @@
               },
               "gu_station": {
                 "station": "과천동",
-                "pm10": 10,
-                "pm25": 15
+                "pm10": 12,
+                "pm25": 11
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 70,
@@ -3651,9 +3651,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 80197,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.58
             }
           },
           "errors": []
@@ -3666,7 +3666,7 @@
           "name_full": "경기도 구리시",
           "level": "sgg",
           "lawd_cd": "41310",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 669,
@@ -3697,7 +3697,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 212,
@@ -3723,9 +3723,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 185982,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.35
             }
           },
           "errors": []
@@ -3738,7 +3738,7 @@
           "name_full": "경기도 남양주시",
           "level": "sgg",
           "lawd_cd": "41360",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1447,
@@ -3769,7 +3769,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 475,
@@ -3795,9 +3795,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 728597,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 5.3
             }
           },
           "errors": []
@@ -3810,7 +3810,7 @@
           "name_full": "경기도 오산시",
           "level": "sgg",
           "lawd_cd": "41370",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 504,
@@ -3842,10 +3842,10 @@
               },
               "gu_station": {
                 "station": "오산동",
-                "pm10": 12,
-                "pm25": 7
+                "pm10": 11,
+                "pm25": 5
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 141,
@@ -3872,9 +3872,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 250783,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.82
             }
           },
           "errors": []
@@ -3887,7 +3887,7 @@
           "name_full": "경기도 시흥시",
           "level": "sgg",
           "lawd_cd": "41390",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 1081,
@@ -3919,10 +3919,10 @@
               },
               "gu_station": {
                 "station": "기흥",
-                "pm10": 7,
-                "pm25": 5
+                "pm10": 12,
+                "pm25": 6
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 325,
@@ -3950,9 +3950,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 514501,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.74
             }
           },
           "errors": []
@@ -3965,7 +3965,7 @@
           "name_full": "경기도 군포시",
           "level": "sgg",
           "lawd_cd": "41410",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 673,
@@ -3997,10 +3997,10 @@
               },
               "gu_station": {
                 "station": "오포1동",
-                "pm10": 10,
-                "pm25": 6
+                "pm10": 9,
+                "pm25": 5
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 179,
@@ -4026,9 +4026,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 250300,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.82
             }
           },
           "errors": []
@@ -4041,7 +4041,7 @@
           "name_full": "경기도 의왕시",
           "level": "sgg",
           "lawd_cd": "41430",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 288,
@@ -4073,7 +4073,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 88,
@@ -4099,9 +4099,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 162209,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.18
             }
           },
           "errors": []
@@ -4114,7 +4114,7 @@
           "name_full": "경기도 하남시",
           "level": "sgg",
           "lawd_cd": "41450",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 452,
@@ -4145,7 +4145,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 268,
@@ -4170,9 +4170,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 327824,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.38
             }
           },
           "errors": []
@@ -4185,7 +4185,7 @@
           "name_full": "경기도 파주시",
           "level": "sgg",
           "lawd_cd": "41480",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 796,
@@ -4218,9 +4218,9 @@
               "gu_station": {
                 "station": "파주",
                 "pm10": 13,
-                "pm25": null
+                "pm25": 11
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 298,
@@ -4247,9 +4247,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 530201,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.86
             }
           },
           "errors": []
@@ -4262,7 +4262,7 @@
           "name_full": "경기도 이천시",
           "level": "sgg",
           "lawd_cd": "41500",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 320,
@@ -4293,7 +4293,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 139,
@@ -4321,9 +4321,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 223229,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.62
             }
           },
           "errors": []
@@ -4336,7 +4336,7 @@
           "name_full": "경기도 안성시",
           "level": "sgg",
           "lawd_cd": "41550",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 403,
@@ -4367,7 +4367,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 108,
@@ -4396,9 +4396,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 197266,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.44
             }
           },
           "errors": []
@@ -4411,7 +4411,7 @@
           "name_full": "경기도 김포시",
           "level": "sgg",
           "lawd_cd": "41570",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 851,
@@ -4442,7 +4442,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 295,
@@ -4468,9 +4468,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 484334,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 3.52
             }
           },
           "errors": []
@@ -4483,7 +4483,7 @@
           "name_full": "경기도 화성시",
           "level": "sgg",
           "lawd_cd": "41590",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "status": "no_data",
@@ -4502,7 +4502,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 562,
@@ -4529,9 +4529,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 995253,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 7.24
             }
           },
           "errors": []
@@ -4544,7 +4544,7 @@
           "name_full": "경기도 광주시",
           "level": "sgg",
           "lawd_cd": "41610",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 522,
@@ -4575,7 +4575,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 196,
@@ -4601,9 +4601,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 397166,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.89
             }
           },
           "errors": []
@@ -4616,7 +4616,7 @@
           "name_full": "경기도 양주시",
           "level": "sgg",
           "lawd_cd": "41630",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 528,
@@ -4647,7 +4647,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 623,
@@ -4677,9 +4677,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 296830,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 2.16
             }
           },
           "errors": []
@@ -4692,7 +4692,7 @@
           "name_full": "경기도 포천시",
           "level": "sgg",
           "lawd_cd": "41650",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 138,
@@ -4723,7 +4723,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 76,
@@ -4748,9 +4748,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 140428,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 1.02
             }
           },
           "errors": []
@@ -4763,7 +4763,7 @@
           "name_full": "경기도 여주시",
           "level": "sgg",
           "lawd_cd": "41670",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 151,
@@ -4794,7 +4794,7 @@
                 "station_count": 126
               },
               "gu_station": null,
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 67,
@@ -4819,9 +4819,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 113621,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.83
             }
           },
           "errors": []
@@ -4834,7 +4834,7 @@
           "name_full": "경기도 연천군",
           "level": "sgg",
           "lawd_cd": "41800",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 33,
@@ -4866,10 +4866,10 @@
               },
               "gu_station": {
                 "station": "연천",
-                "pm10": 8,
+                "pm10": 7,
                 "pm25": 10
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 20,
@@ -4892,9 +4892,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 42684,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.31
             }
           },
           "errors": []
@@ -4907,7 +4907,7 @@
           "name_full": "경기도 가평군",
           "level": "sgg",
           "lawd_cd": "41820",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 26,
@@ -4939,10 +4939,10 @@
               },
               "gu_station": {
                 "station": "가평",
-                "pm10": 14,
-                "pm25": 10
+                "pm10": 11,
+                "pm25": 8
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 37,
@@ -4967,9 +4967,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 61963,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.45
             }
           },
           "errors": []
@@ -4982,7 +4982,7 @@
           "name_full": "경기도 양평군",
           "level": "sgg",
           "lawd_cd": "41830",
-          "fetched_at": "2026-05-03T02:06:39.588931+00:00",
+          "fetched_at": "2026-05-03T02:20:12.024588+00:00",
           "sections": {
             "real_estate_trade": {
               "count": 113,
@@ -5014,10 +5014,10 @@
               },
               "gu_station": {
                 "station": "양평읍",
-                "pm10": 9,
+                "pm10": 11,
                 "pm25": 9
               },
-              "measured_at": "2026-05-03 10:00"
+              "measured_at": "2026-05-03 11:00"
             },
             "medical": {
               "sgg_count": 57,
@@ -5041,9 +5041,9 @@
               "table_id": "DT_1B040A3",
               "table_name": "행정구역(시군구)별/성별 인구수",
               "period": "202603",
-              "sgg_total": null,
+              "sgg_total": 126742,
               "sido_total": 13745673,
-              "share_of_sido_pct": null
+              "share_of_sido_pct": 0.92
             }
           },
           "errors": []
