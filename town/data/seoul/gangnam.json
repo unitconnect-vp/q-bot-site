@@ -4,7 +4,7 @@
   "name_full": "서울특별시 강남구",
   "level": "gu",
   "lawd_cd": "11680",
-  "fetched_at": "2026-05-03T01:07:58.310469+00:00",
+  "fetched_at": "2026-05-03T01:15:57.173739+00:00",
   "sections": {
     "real_estate_trade": {
       "count": 328,
@@ -30,15 +30,15 @@
     },
     "environment": {
       "seoul_avg": {
-        "pm10": 15,
-        "pm25": 11,
+        "pm10": 18,
+        "pm25": 12,
         "station_count": 40
       },
-      "measured_at": "2026-05-03 09:00",
+      "measured_at": "2026-05-03 10:00",
       "gangnam_station": {
         "name": "강남구",
-        "pm10": 15,
-        "pm25": 10
+        "pm10": 16,
+        "pm25": 13
       }
     },
     "medical": {
