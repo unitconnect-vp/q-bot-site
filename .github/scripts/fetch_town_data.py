@@ -353,7 +353,9 @@ def fetch_education(key, atpt_code, sigun_list):
     return {"_total": len(all_schools), "_per_sigun": per_sigun}
 
 
-def fetch_population_all(key, all_sigun_with_sido):
+def fetch_population_all(key, all_sigun_lawd):
+    """KOSIS DT_1B040A3 — C1(LAWD_CD) 정확 매칭.
+    all_sigun_lawd: [(sido_name, lawd_cd, slug), ...]"""
     url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
     params = {
         "method": "getList", "apiKey": key, "itmId": "T20", "objL1": "ALL",
@@ -369,27 +371,33 @@ def fetch_population_all(key, all_sigun_with_sido):
     if not isinstance(j, list):
         return {"_per_slug": {}, "_period": None, "_sido_totals": {}}
 
+    # LAWD_CD → (sido_name, slug) 인덱스
+    lawd_to_meta = {lawd: (sido, slug) for sido, lawd, slug in all_sigun_lawd}
+
     period = None
     sido_totals = {}
     per_slug = {}
+
     for row in j:
-        c1 = row.get("C1_NM", "") or ""
-        c2 = row.get("C2_NM", "") or ""
+        c1 = row.get("C1", "") or ""
+        c1_nm = row.get("C1_NM", "") or ""
         if not period:
             period = row.get("PRD_DE")
-        if not c2:
-            if c1 in ("서울특별시", "경기도"):
-                sido_totals[c1] = to_int_or_none(row.get("DT"))
-        combined = (c1 + " " + c2).strip()
-        for sido_name, full_name, slug in all_sigun_with_sido:
-            if slug in per_slug:
-                continue
-            if full_name in combined or full_name == c1 or full_name == c2:
-                per_slug[slug] = {
-                    "total": to_int_or_none(row.get("DT")),
-                    "period": row.get("PRD_DE"),
-                    "sido_name": sido_name,
-                }
+
+        # 시도 합계 (이름 단독 매칭 - 시도명은 동음이의 없음)
+        if c1_nm in ("서울특별시", "경기도"):
+            sido_totals[c1_nm] = to_int_or_none(row.get("DT"))
+
+        # 시군구 매칭 (LAWD_CD = C1)
+        if c1 in lawd_to_meta:
+            sido_name, slug = lawd_to_meta[c1]
+            per_slug[slug] = {
+                "total": to_int_or_none(row.get("DT")),
+                "period": row.get("PRD_DE"),
+                "sido_name": sido_name,
+                "lawd_cd": c1,
+                "c1_nm": c1_nm,
+            }
 
     return {"_per_slug": per_slug, "_period": period, "_sido_totals": sido_totals}
 
@@ -422,11 +430,11 @@ def main():
     fetched_at = datetime.now(timezone.utc).isoformat()
 
     print("[KOSIS] 전국 시군구 인구 호출")
-    all_sigun_for_pop = []
+    all_sigun_lawd = []
     for sido in SIDO_LIST:
         for code, full_name, short, slug in sido["sigun_list"]:
-            all_sigun_for_pop.append((sido["name"], full_name, slug))
-    pop_data, _ = safe("population_all", fetch_population_all, keys["KOSIS_KEY"], all_sigun_for_pop,
+            all_sigun_lawd.append((sido["name"], code, slug))
+    pop_data, _ = safe("population_all", fetch_population_all, keys["KOSIS_KEY"], all_sigun_lawd,
                        default={"_per_slug": {}, "_period": None, "_sido_totals": {}})
 
     total_sigun = sum(len(s['sigun_list']) for s in SIDO_LIST)
