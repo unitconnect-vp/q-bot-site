@@ -40,6 +40,11 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .hero-tagline { font-size: 17px; color: #475569; margin-bottom: 24px; max-width: 540px; }
 .hero-meta { font-size: 12px; color: #94a3b8; padding-top: 12px; border-top: 1px solid #e5e7eb; }
 .hero-meta b { color: #3182f6; font-weight: 600; }
+.persona-cta { display: flex; justify-content: space-between; align-items: center; background: #3182f6; color: #fff; padding: 18px 22px; border-radius: 4px; text-decoration: none; margin-bottom: 24px; transition: background 0.15s; gap: 16px; }
+.persona-cta:hover { background: #1c64da; }
+.persona-cta-text strong { display: block; font-size: 16px; font-weight: 800; line-height: 1.3; margin-bottom: 2px; }
+.persona-cta-text span { font-size: 13px; opacity: 0.9; }
+.persona-cta-arrow { font-size: 22px; font-weight: 700; flex-shrink: 0; }
 .intro-note { background: #f8fafc; padding: 16px 20px; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.6; margin: 24px 0 32px; }
 .intro-note b { color: #0f172a; }
 .sido-section { margin: 24px 0 16px; }
@@ -120,6 +125,14 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     <p class="hero-tagline">시군구를 선택하면 그 동네의 인구·부동산·교육·환경·의료 데이터를 카드 한 장에 보여드립니다. 정부 공공데이터를 그대로, 그러나 의미 있게.</p>
     <div class="hero-meta">데이터 갱신 <b>__UPDATED__</b> · 출처 국토교통부·환경공단·심평원·교육부·통계청</div>
   </section>
+
+  <a href="/town/persona/" class="persona-cta">
+    <div class="persona-cta-text">
+      <strong>거주지 의사결정 도구</strong>
+      <span>페르소나(신혼·자녀가족·은퇴·1인가구) + 도시·전원 슬라이더로 전국 시군구 비교</span>
+    </div>
+    <div class="persona-cta-arrow">→</div>
+  </a>
 
   <div class="intro-note">
     아래에서 시군구를 선택하세요. 데이터는 매주 자동 갱신됩니다.
