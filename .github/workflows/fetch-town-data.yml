@@ -9,6 +9,7 @@ on:
 jobs:
   fetch_and_build:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     permissions:
       contents: write
     steps:
