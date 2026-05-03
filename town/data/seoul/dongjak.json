@@ -1,0 +1,83 @@
+{
+  "slug": "seoul/dongjak",
+  "name": "동작구",
+  "name_full": "서울특별시 동작구",
+  "level": "gu",
+  "lawd_cd": "11590",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 310,
+      "median_price_per_pyeong_man": 5778,
+      "mean_price_per_pyeong_man": 6017,
+      "median_deal_amount_man": 142500,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 155.0
+    },
+    "real_estate_rent": {
+      "total_count": 1256,
+      "jeonse_count": 689,
+      "monthly_count": 567,
+      "median_jeonse_man": 65000,
+      "mean_jeonse_man": 65713,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "동작구",
+        "pm10": 28,
+        "pm25": null
+      },
+      "gu_station": {
+        "station": "동작구",
+        "pm10": 28,
+        "pm25": null
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 278,
+      "by_type": {
+        "상급종합": 1,
+        "종합병원": 1,
+        "병원": 5,
+        "요양병원": 1,
+        "의원": 270
+      }
+    },
+    "education": {
+      "sgg_count": 52,
+      "by_type": {
+        "중학교": 16,
+        "고등학교": 8,
+        "특수학교": 2,
+        "초등학교": 21,
+        "방송통신고등학교": 2,
+        "평생학교(고)-2년6학기": 1,
+        "평생학교(고)-3년6학기": 1,
+        "평생학교(중)-2년6학기": 1
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 372236,
+      "gangnam_total": 372236,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 4.0
+    }
+  },
+  "errors": []
+}

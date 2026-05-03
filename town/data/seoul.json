@@ -1,0 +1,2021 @@
+{
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "city": "seoul",
+  "city_name": "서울특별시",
+  "count": 25,
+  "records": [
+    {
+      "slug": "seoul/jongno",
+      "name": "종로구",
+      "name_full": "서울특별시 종로구",
+      "level": "gu",
+      "lawd_cd": "11110",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 107,
+          "median_price_per_pyeong_man": 4090,
+          "mean_price_per_pyeong_man": 4824,
+          "median_deal_amount_man": 95500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 53.5
+        },
+        "real_estate_rent": {
+          "total_count": 226,
+          "jeonse_count": 86,
+          "monthly_count": 140,
+          "median_jeonse_man": 68000,
+          "mean_jeonse_man": 72753,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "종로구",
+            "pm10": 14,
+            "pm25": 12
+          },
+          "gu_station": {
+            "station": "종로구",
+            "pm10": 14,
+            "pm25": 12
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 189,
+          "by_type": {
+            "상급종합": 2,
+            "종합병원": 2,
+            "병원": 3,
+            "요양병원": 1,
+            "의원": 181
+          }
+        },
+        "education": {
+          "sgg_count": 47,
+          "by_type": {
+            "고등학교": 14,
+            "방송통신고등학교": 1,
+            "중학교": 9,
+            "초등학교": 13,
+            "특수학교": 4,
+            "각종학교(고)": 3,
+            "외국인학교": 1,
+            "평생학교(고)-2년6학기": 1,
+            "평생학교(중)-2년6학기": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 136817,
+          "gangnam_total": 136817,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 1.47
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/junggu",
+      "name": "중구",
+      "name_full": "서울특별시 중구",
+      "level": "gu",
+      "lawd_cd": "11140",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 156,
+          "median_price_per_pyeong_man": 5226,
+          "mean_price_per_pyeong_man": 5388,
+          "median_deal_amount_man": 116500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 78.0
+        },
+        "real_estate_rent": {
+          "total_count": 458,
+          "jeonse_count": 200,
+          "monthly_count": 258,
+          "median_jeonse_man": 63000,
+          "mean_jeonse_man": 64257,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "중구",
+            "pm10": 13,
+            "pm25": 11
+          },
+          "gu_station": {
+            "station": "중구",
+            "pm10": 13,
+            "pm25": 11
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 291,
+          "by_type": {
+            "종합병원": 1,
+            "병원": 3,
+            "의원": 287
+          }
+        },
+        "education": {
+          "sgg_count": 34,
+          "by_type": {
+            "중학교": 8,
+            "고등학교": 11,
+            "초등학교": 12,
+            "각종학교(고)": 1,
+            "각종학교(중)": 1,
+            "외국인학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 203386,
+          "gangnam_total": 203386,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 2.19
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/yongsan",
+      "name": "용산구",
+      "name_full": "서울특별시 용산구",
+      "level": "gu",
+      "lawd_cd": "11170",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 112,
+          "median_price_per_pyeong_man": 8165,
+          "mean_price_per_pyeong_man": 8278,
+          "median_deal_amount_man": 202000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 56.0
+        },
+        "real_estate_rent": {
+          "total_count": 994,
+          "jeonse_count": 383,
+          "monthly_count": 611,
+          "median_jeonse_man": 70000,
+          "mean_jeonse_man": 83593,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "용산구",
+            "pm10": 26,
+            "pm25": 15
+          },
+          "gu_station": {
+            "station": "용산구",
+            "pm10": 26,
+            "pm25": 15
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 147,
+          "by_type": {
+            "종합병원": 1,
+            "병원": 1,
+            "의원": 145
+          }
+        },
+        "education": {
+          "sgg_count": 38,
+          "by_type": {
+            "고등학교": 10,
+            "중학교": 9,
+            "초등학교": 15,
+            "외국인학교": 3,
+            "평생학교(고)-3년6학기": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 200962,
+          "gangnam_total": 200962,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 2.16
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/seongdong",
+      "name": "성동구",
+      "name_full": "서울특별시 성동구",
+      "level": "gu",
+      "lawd_cd": "11200",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 219,
+          "median_price_per_pyeong_man": 7178,
+          "mean_price_per_pyeong_man": 7373,
+          "median_deal_amount_man": 164500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 109.5
+        },
+        "real_estate_rent": {
+          "total_count": 1376,
+          "jeonse_count": 805,
+          "monthly_count": 571,
+          "median_jeonse_man": 71500,
+          "mean_jeonse_man": 75664,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "성동구",
+            "pm10": 26,
+            "pm25": 19
+          },
+          "gu_station": {
+            "station": "성동구",
+            "pm10": 26,
+            "pm25": 19
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 236,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 4,
+            "요양병원": 3,
+            "의원": 227
+          }
+        },
+        "education": {
+          "sgg_count": 40,
+          "by_type": {
+            "중학교": 11,
+            "고등학교": 7,
+            "초등학교": 21,
+            "각종학교(고)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 275093,
+          "gangnam_total": 275093,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 2.96
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gwangjin",
+      "name": "광진구",
+      "name_full": "서울특별시 광진구",
+      "level": "gu",
+      "lawd_cd": "11215",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 133,
+          "median_price_per_pyeong_man": 6260,
+          "mean_price_per_pyeong_man": 6009,
+          "median_deal_amount_man": 130000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 66.5
+        },
+        "real_estate_rent": {
+          "total_count": 674,
+          "jeonse_count": 314,
+          "monthly_count": 360,
+          "median_jeonse_man": 70000,
+          "mean_jeonse_man": 76964,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "광진구",
+            "pm10": 17,
+            "pm25": 12
+          },
+          "gu_station": {
+            "station": "광진구",
+            "pm10": 17,
+            "pm25": 12
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 292,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 4,
+            "요양병원": 2,
+            "정신병원": 1,
+            "의원": 283
+          }
+        },
+        "education": {
+          "sgg_count": 46,
+          "by_type": {
+            "고등학교": 9,
+            "중학교": 12,
+            "초등학교": 21,
+            "특수학교": 1,
+            "각종학교(중)": 1,
+            "외국인학교": 2
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 331123,
+          "gangnam_total": 331123,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.56
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/dongdaemun",
+      "name": "동대문구",
+      "name_full": "서울특별시 동대문구",
+      "level": "gu",
+      "lawd_cd": "11230",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 444,
+          "median_price_per_pyeong_man": 4098,
+          "mean_price_per_pyeong_man": 4323,
+          "median_deal_amount_man": 90900,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 222.0
+        },
+        "real_estate_rent": {
+          "total_count": 1085,
+          "jeonse_count": 516,
+          "monthly_count": 569,
+          "median_jeonse_man": 55000,
+          "mean_jeonse_man": 55077,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "동대문구",
+            "pm10": 18,
+            "pm25": 16
+          },
+          "gu_station": {
+            "station": "동대문구",
+            "pm10": 18,
+            "pm25": 16
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 287,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 3,
+            "병원": 12,
+            "요양병원": 5,
+            "정신병원": 3,
+            "의원": 263
+          }
+        },
+        "education": {
+          "sgg_count": 50,
+          "by_type": {
+            "고등학교": 11,
+            "중학교": 15,
+            "초등학교": 21,
+            "평생학교(고)-2년6학기": 2,
+            "평생학교(고)-3년6학기": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 351542,
+          "gangnam_total": 351542,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.78
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/jungnang",
+      "name": "중랑구",
+      "name_full": "서울특별시 중랑구",
+      "level": "gu",
+      "lawd_cd": "11260",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 496,
+          "median_price_per_pyeong_man": 3063,
+          "mean_price_per_pyeong_man": 3190,
+          "median_deal_amount_man": 65000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 248.0
+        },
+        "real_estate_rent": {
+          "total_count": 1272,
+          "jeonse_count": 492,
+          "monthly_count": 780,
+          "median_jeonse_man": 29827,
+          "mean_jeonse_man": 33350,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "중랑구",
+            "pm10": 21,
+            "pm25": 12
+          },
+          "gu_station": {
+            "station": "중랑구",
+            "pm10": 21,
+            "pm25": 12
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 272,
+          "by_type": {
+            "종합병원": 3,
+            "병원": 13,
+            "요양병원": 2,
+            "정신병원": 1,
+            "의원": 253
+          }
+        },
+        "education": {
+          "sgg_count": 48,
+          "by_type": {
+            "초등학교": 24,
+            "중학교": 14,
+            "고등학교": 10
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 376665,
+          "gangnam_total": 376665,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.05
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/seongbuk",
+      "name": "성북구",
+      "name_full": "서울특별시 성북구",
+      "level": "gu",
+      "lawd_cd": "11290",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 607,
+          "median_price_per_pyeong_man": 3792,
+          "mean_price_per_pyeong_man": 3964,
+          "median_deal_amount_man": 89000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 303.5
+        },
+        "real_estate_rent": {
+          "total_count": 1182,
+          "jeonse_count": 711,
+          "monthly_count": 471,
+          "median_jeonse_man": 50000,
+          "mean_jeonse_man": 51541,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "성북구",
+            "pm10": 16,
+            "pm25": 12
+          },
+          "gu_station": {
+            "station": "성북구",
+            "pm10": 16,
+            "pm25": 12
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 266,
+          "by_type": {
+            "상급종합": 1,
+            "병원": 6,
+            "요양병원": 8,
+            "의원": 251
+          }
+        },
+        "education": {
+          "sgg_count": 62,
+          "by_type": {
+            "중학교": 18,
+            "고등학교": 13,
+            "방송통신고등학교": 1,
+            "초등학교": 29,
+            "특수학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 422778,
+          "gangnam_total": 422778,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.54
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gangbuk",
+      "name": "강북구",
+      "name_full": "서울특별시 강북구",
+      "level": "gu",
+      "lawd_cd": "11305",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 230,
+          "median_price_per_pyeong_man": 2997,
+          "mean_price_per_pyeong_man": 3180,
+          "median_deal_amount_man": 72900,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 115.0
+        },
+        "real_estate_rent": {
+          "total_count": 417,
+          "jeonse_count": 218,
+          "monthly_count": 199,
+          "median_jeonse_man": 44950,
+          "mean_jeonse_man": 42992,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "강북구",
+            "pm10": 13,
+            "pm25": 11
+          },
+          "gu_station": {
+            "station": "강북구",
+            "pm10": 13,
+            "pm25": 11
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 238,
+          "by_type": {
+            "종합병원": 2,
+            "병원": 8,
+            "요양병원": 4,
+            "의원": 224
+          }
+        },
+        "education": {
+          "sgg_count": 38,
+          "by_type": {
+            "중학교": 13,
+            "고등학교": 7,
+            "초등학교": 14,
+            "특수학교": 4
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 278786,
+          "gangnam_total": 278786,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.0
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/dobong",
+      "name": "도봉구",
+      "name_full": "서울특별시 도봉구",
+      "level": "gu",
+      "lawd_cd": "11320",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 484,
+          "median_price_per_pyeong_man": 2731,
+          "mean_price_per_pyeong_man": 2857,
+          "median_deal_amount_man": 54000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 242.0
+        },
+        "real_estate_rent": {
+          "total_count": 817,
+          "jeonse_count": 495,
+          "monthly_count": 322,
+          "median_jeonse_man": 30970,
+          "mean_jeonse_man": 32647,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "도봉구",
+            "pm10": 16,
+            "pm25": 13
+          },
+          "gu_station": {
+            "station": "도봉구",
+            "pm10": 16,
+            "pm25": 13
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 169,
+          "by_type": {
+            "종합병원": 1,
+            "병원": 4,
+            "요양병원": 6,
+            "정신병원": 2,
+            "의원": 156
+          }
+        },
+        "education": {
+          "sgg_count": 46,
+          "by_type": {
+            "중학교": 13,
+            "고등학교": 9,
+            "초등학교": 23,
+            "특수학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 299065,
+          "gangnam_total": 299065,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.21
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/nowon",
+      "name": "노원구",
+      "name_full": "서울특별시 노원구",
+      "level": "gu",
+      "lawd_cd": "11350",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 1366,
+          "median_price_per_pyeong_man": 3358,
+          "mean_price_per_pyeong_man": 3436,
+          "median_deal_amount_man": 60000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 683.0
+        },
+        "real_estate_rent": {
+          "total_count": 1996,
+          "jeonse_count": 1089,
+          "monthly_count": 907,
+          "median_jeonse_man": 28000,
+          "mean_jeonse_man": 32448,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "노원구",
+            "pm10": 17,
+            "pm25": 15
+          },
+          "gu_station": {
+            "station": "노원구",
+            "pm10": 17,
+            "pm25": 15
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 374,
+          "by_type": {
+            "종합병원": 3,
+            "병원": 5,
+            "요양병원": 7,
+            "의원": 359
+          }
+        },
+        "education": {
+          "sgg_count": 100,
+          "by_type": {
+            "고등학교": 25,
+            "공동실습소": 1,
+            "중학교": 26,
+            "초등학교": 42,
+            "특수학교": 2,
+            "외국인학교": 1,
+            "평생학교(고)-2년6학기": 1,
+            "평생학교(중)-2년6학기": 1,
+            "각종학교(중)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 482487,
+          "gangnam_total": 482487,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 5.19
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/eunpyeong",
+      "name": "은평구",
+      "name_full": "서울특별시 은평구",
+      "level": "gu",
+      "lawd_cd": "11380",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 533,
+          "median_price_per_pyeong_man": 3524,
+          "mean_price_per_pyeong_man": 3748,
+          "median_deal_amount_man": 80000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 266.5
+        },
+        "real_estate_rent": {
+          "total_count": 1557,
+          "jeonse_count": 831,
+          "monthly_count": 726,
+          "median_jeonse_man": 48300,
+          "mean_jeonse_man": 47205,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "은평구",
+            "pm10": 9,
+            "pm25": 8
+          },
+          "gu_station": {
+            "station": "은평구",
+            "pm10": 9,
+            "pm25": 8
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 333,
+          "by_type": {
+            "종합병원": 2,
+            "병원": 11,
+            "요양병원": 5,
+            "정신병원": 1,
+            "의원": 314
+          }
+        },
+        "education": {
+          "sgg_count": 68,
+          "by_type": {
+            "중학교": 18,
+            "고등학교": 18,
+            "초등학교": 30,
+            "특수학교": 1,
+            "각종학교(고)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 454109,
+          "gangnam_total": 454109,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.88
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/seodaemun",
+      "name": "서대문구",
+      "name_full": "서울특별시 서대문구",
+      "level": "gu",
+      "lawd_cd": "11410",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 432,
+          "median_price_per_pyeong_man": 4106,
+          "mean_price_per_pyeong_man": 4413,
+          "median_deal_amount_man": 95000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 216.0
+        },
+        "real_estate_rent": {
+          "total_count": 995,
+          "jeonse_count": 525,
+          "monthly_count": 470,
+          "median_jeonse_man": 58000,
+          "mean_jeonse_man": 58000,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "서대문구",
+            "pm10": 17,
+            "pm25": 9
+          },
+          "gu_station": {
+            "station": "서대문구",
+            "pm10": 17,
+            "pm25": 9
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 202,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 2,
+            "요양병원": 5,
+            "의원": 193
+          }
+        },
+        "education": {
+          "sgg_count": 43,
+          "by_type": {
+            "고등학교": 7,
+            "중학교": 14,
+            "초등학교": 19,
+            "외국인학교": 2,
+            "특수학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 300594,
+          "gangnam_total": 300594,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.23
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/mapo",
+      "name": "마포구",
+      "name_full": "서울특별시 마포구",
+      "level": "gu",
+      "lawd_cd": "11440",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 243,
+          "median_price_per_pyeong_man": 5302,
+          "mean_price_per_pyeong_man": 6167,
+          "median_deal_amount_man": 129500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 121.5
+        },
+        "real_estate_rent": {
+          "total_count": 1644,
+          "jeonse_count": 707,
+          "monthly_count": 937,
+          "median_jeonse_man": 68000,
+          "mean_jeonse_man": 70624,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "마포구",
+            "pm10": 12,
+            "pm25": 8
+          },
+          "gu_station": {
+            "station": "마포구",
+            "pm10": 12,
+            "pm25": 8
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 393,
+          "by_type": {
+            "병원": 6,
+            "요양병원": 3,
+            "의원": 384
+          }
+        },
+        "education": {
+          "sgg_count": 52,
+          "by_type": {
+            "고등학교": 9,
+            "중학교": 14,
+            "초등학교": 22,
+            "외국인학교": 2,
+            "각종학교(고)": 1,
+            "방송통신중학교": 1,
+            "평생학교(고)-2년6학기": 1,
+            "평생학교(중)-2년6학기": 1,
+            "특수학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 356966,
+          "gangnam_total": 356966,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.84
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/yangcheon",
+      "name": "양천구",
+      "name_full": "서울특별시 양천구",
+      "level": "gu",
+      "lawd_cd": "11470",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 390,
+          "median_price_per_pyeong_man": 4050,
+          "mean_price_per_pyeong_man": 5137,
+          "median_deal_amount_man": 89250,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 195.0
+        },
+        "real_estate_rent": {
+          "total_count": 1528,
+          "jeonse_count": 894,
+          "monthly_count": 634,
+          "median_jeonse_man": 53000,
+          "mean_jeonse_man": 57775,
+          "period_months": [
+            "202605",
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "양천구",
+            "pm10": 11,
+            "pm25": 6
+          },
+          "gu_station": {
+            "station": "양천구",
+            "pm10": 11,
+            "pm25": 6
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 305,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 2,
+            "병원": 4,
+            "요양병원": 2,
+            "의원": 296
+          }
+        },
+        "education": {
+          "sgg_count": 64,
+          "by_type": {
+            "고등학교": 15,
+            "중학교": 19,
+            "초등학교": 30
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 423666,
+          "gangnam_total": 423666,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.55
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gangseo",
+      "name": "강서구",
+      "name_full": "서울특별시 강서구",
+      "level": "gu",
+      "lawd_cd": "11500",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 710,
+          "median_price_per_pyeong_man": 4322,
+          "mean_price_per_pyeong_man": 4471,
+          "median_deal_amount_man": 84250,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 355.0
+        },
+        "real_estate_rent": {
+          "total_count": 1805,
+          "jeonse_count": 987,
+          "monthly_count": 818,
+          "median_jeonse_man": 43410,
+          "mean_jeonse_man": 45088,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "강서구",
+            "pm10": 14,
+            "pm25": 8
+          },
+          "gu_station": {
+            "station": "강서구",
+            "pm10": 14,
+            "pm25": 8
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 477,
+          "by_type": {
+            "종합병원": 4,
+            "병원": 20,
+            "요양병원": 5,
+            "정신병원": 1,
+            "의원": 447
+          }
+        },
+        "education": {
+          "sgg_count": 84,
+          "by_type": {
+            "고등학교": 23,
+            "중학교": 22,
+            "특수학교": 2,
+            "초등학교": 35,
+            "각종학교(고)": 1,
+            "각종학교(중)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 152414,
+          "gangnam_total": 152414,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 1.64
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/guro",
+      "name": "구로구",
+      "name_full": "서울특별시 구로구",
+      "level": "gu",
+      "lawd_cd": "11530",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 645,
+          "median_price_per_pyeong_man": 3230,
+          "mean_price_per_pyeong_man": 3454,
+          "median_deal_amount_man": 68500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 322.5
+        },
+        "real_estate_rent": {
+          "total_count": 1609,
+          "jeonse_count": 719,
+          "monthly_count": 890,
+          "median_jeonse_man": 36911,
+          "mean_jeonse_man": 38415,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "한강대로",
+            "pm10": 12,
+            "pm25": 14
+          },
+          "gu_station": {
+            "station": "한강대로",
+            "pm10": 12,
+            "pm25": 14
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 297,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 9,
+            "요양병원": 7,
+            "정신병원": 1,
+            "의원": 278
+          }
+        },
+        "education": {
+          "sgg_count": 60,
+          "by_type": {
+            "중학교": 14,
+            "고등학교": 14,
+            "초등학교": 27,
+            "특수학교": 2,
+            "각종학교(초)": 1,
+            "각종학교(고)": 1,
+            "각종학교(중)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 382836,
+          "gangnam_total": 382836,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.11
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/geumcheon",
+      "name": "금천구",
+      "name_full": "서울특별시 금천구",
+      "level": "gu",
+      "lawd_cd": "11545",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 213,
+          "median_price_per_pyeong_man": 2797,
+          "mean_price_per_pyeong_man": 3051,
+          "median_deal_amount_man": 58300,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 106.5
+        },
+        "real_estate_rent": {
+          "total_count": 415,
+          "jeonse_count": 202,
+          "monthly_count": 213,
+          "median_jeonse_man": 38000,
+          "mean_jeonse_man": 37949,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "금천구",
+            "pm10": null,
+            "pm25": 25
+          },
+          "gu_station": {
+            "station": "금천구",
+            "pm10": null,
+            "pm25": 25
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 174,
+          "by_type": {
+            "종합병원": 1,
+            "병원": 5,
+            "요양병원": 3,
+            "정신병원": 1,
+            "의원": 164
+          }
+        },
+        "education": {
+          "sgg_count": 35,
+          "by_type": {
+            "중학교": 9,
+            "고등학교": 6,
+            "각종학교(중)": 1,
+            "각종학교(고)": 1,
+            "초등학교": 18
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 222712,
+          "gangnam_total": 222712,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 2.39
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/yeongdeungpo",
+      "name": "영등포구",
+      "name_full": "서울특별시 영등포구",
+      "level": "gu",
+      "lawd_cd": "11560",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 442,
+          "median_price_per_pyeong_man": 5248,
+          "mean_price_per_pyeong_man": 5506,
+          "median_deal_amount_man": 109000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 221.0
+        },
+        "real_estate_rent": {
+          "total_count": 1597,
+          "jeonse_count": 776,
+          "monthly_count": 821,
+          "median_jeonse_man": 60000,
+          "mean_jeonse_man": 61182,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "영등포구",
+            "pm10": 14,
+            "pm25": 10
+          },
+          "gu_station": {
+            "station": "영등포구",
+            "pm10": 14,
+            "pm25": 10
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 432,
+          "by_type": {
+            "종합병원": 7,
+            "병원": 9,
+            "요양병원": 9,
+            "정신병원": 1,
+            "의원": 406
+          }
+        },
+        "education": {
+          "sgg_count": 47,
+          "by_type": {
+            "고등학교": 9,
+            "중학교": 12,
+            "초등학교": 23,
+            "평생학교(초)-3년6학기": 1,
+            "외국인학교": 1,
+            "고등기술학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 371177,
+          "gangnam_total": 371177,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 3.99
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/dongjak",
+      "name": "동작구",
+      "name_full": "서울특별시 동작구",
+      "level": "gu",
+      "lawd_cd": "11590",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 310,
+          "median_price_per_pyeong_man": 5778,
+          "mean_price_per_pyeong_man": 6017,
+          "median_deal_amount_man": 142500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 155.0
+        },
+        "real_estate_rent": {
+          "total_count": 1256,
+          "jeonse_count": 689,
+          "monthly_count": 567,
+          "median_jeonse_man": 65000,
+          "mean_jeonse_man": 65713,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "동작구",
+            "pm10": 28,
+            "pm25": null
+          },
+          "gu_station": {
+            "station": "동작구",
+            "pm10": 28,
+            "pm25": null
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 278,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 5,
+            "요양병원": 1,
+            "의원": 270
+          }
+        },
+        "education": {
+          "sgg_count": 52,
+          "by_type": {
+            "중학교": 16,
+            "고등학교": 8,
+            "특수학교": 2,
+            "초등학교": 21,
+            "방송통신고등학교": 2,
+            "평생학교(고)-2년6학기": 1,
+            "평생학교(고)-3년6학기": 1,
+            "평생학교(중)-2년6학기": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 372236,
+          "gangnam_total": 372236,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.0
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gwanak",
+      "name": "관악구",
+      "name_full": "서울특별시 관악구",
+      "level": "gu",
+      "lawd_cd": "11620",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 397,
+          "median_price_per_pyeong_man": 3590,
+          "mean_price_per_pyeong_man": 3908,
+          "median_deal_amount_man": 85000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 198.5
+        },
+        "real_estate_rent": {
+          "total_count": 759,
+          "jeonse_count": 384,
+          "monthly_count": 375,
+          "median_jeonse_man": 48562,
+          "mean_jeonse_man": 48492,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "관악구",
+            "pm10": 23,
+            "pm25": 17
+          },
+          "gu_station": {
+            "station": "관악구",
+            "pm10": 23,
+            "pm25": 17
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 345,
+          "by_type": {
+            "종합병원": 1,
+            "병원": 11,
+            "요양병원": 2,
+            "의원": 331
+          }
+        },
+        "education": {
+          "sgg_count": 59,
+          "by_type": {
+            "중학교": 16,
+            "고등학교": 17,
+            "각종학교(고)": 2,
+            "초등학교": 22,
+            "특수학교": 2
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 478468,
+          "gangnam_total": 478468,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 5.14
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/seocho",
+      "name": "서초구",
+      "name_full": "서울특별시 서초구",
+      "level": "gu",
+      "lawd_cd": "11650",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 204,
+          "median_price_per_pyeong_man": 7590,
+          "mean_price_per_pyeong_man": 8679,
+          "median_deal_amount_man": 195500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 102.0
+        },
+        "real_estate_rent": {
+          "total_count": 1630,
+          "jeonse_count": 883,
+          "monthly_count": 747,
+          "median_jeonse_man": 87000,
+          "mean_jeonse_man": 102249,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "서초구",
+            "pm10": 30,
+            "pm25": null
+          },
+          "gu_station": {
+            "station": "서초구",
+            "pm10": 30,
+            "pm25": null
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 903,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 14,
+            "요양병원": 4,
+            "의원": 883
+          }
+        },
+        "education": {
+          "sgg_count": 58,
+          "by_type": {
+            "중학교": 16,
+            "초등학교": 24,
+            "특수학교": 2,
+            "외국인학교": 3,
+            "고등학교": 12,
+            "각종학교(고)": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 415540,
+          "gangnam_total": 415540,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 4.47
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gangnam",
+      "name": "강남구",
+      "name_full": "서울특별시 강남구",
+      "level": "gu",
+      "lawd_cd": "11680",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 328,
+          "median_price_per_pyeong_man": 10641,
+          "mean_price_per_pyeong_man": 10356,
+          "median_deal_amount_man": 215000,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 164.0
+        },
+        "real_estate_rent": {
+          "total_count": 1973,
+          "jeonse_count": 916,
+          "monthly_count": 1057,
+          "median_jeonse_man": 83000,
+          "mean_jeonse_man": 95107,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "강남구",
+            "pm10": 16,
+            "pm25": 13
+          },
+          "gu_station": {
+            "station": "강남구",
+            "pm10": 16,
+            "pm25": 13
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 1997,
+          "by_type": {
+            "상급종합": 2,
+            "종합병원": 2,
+            "병원": 32,
+            "요양병원": 6,
+            "의원": 1955
+          }
+        },
+        "education": {
+          "sgg_count": 84,
+          "by_type": {
+            "중학교": 24,
+            "고등학교": 21,
+            "방송통신고등학교": 1,
+            "각종학교(중)": 1,
+            "특수학교": 2,
+            "초등학교": 34,
+            "외국인학교": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 554165,
+          "gangnam_total": 554165,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 5.96
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/songpa",
+      "name": "송파구",
+      "name_full": "서울특별시 송파구",
+      "level": "gu",
+      "lawd_cd": "11710",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 541,
+          "median_price_per_pyeong_man": 8182,
+          "mean_price_per_pyeong_man": 8773,
+          "median_deal_amount_man": 170500,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 270.5
+        },
+        "real_estate_rent": {
+          "total_count": 2000,
+          "jeonse_count": 1023,
+          "monthly_count": 977,
+          "median_jeonse_man": 73000,
+          "mean_jeonse_man": 76935,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "송파구",
+            "pm10": 12,
+            "pm25": 11
+          },
+          "gu_station": {
+            "station": "송파구",
+            "pm10": 12,
+            "pm25": 11
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 639,
+          "by_type": {
+            "상급종합": 1,
+            "종합병원": 1,
+            "병원": 22,
+            "요양병원": 7,
+            "정신병원": 1,
+            "의원": 607
+          }
+        },
+        "education": {
+          "sgg_count": 96,
+          "by_type": {
+            "고등학교": 20,
+            "중학교": 29,
+            "특수학교": 2,
+            "초등학교": 41,
+            "평생학교(고)-2년6학기": 1,
+            "평생학교(고)-3년6학기": 1,
+            "평생학교(중)-2년6학기": 1,
+            "평생학교(초)-3년6학기": 1
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 650071,
+          "gangnam_total": 650071,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 6.99
+        }
+      },
+      "errors": []
+    },
+    {
+      "slug": "seoul/gangdong",
+      "name": "강동구",
+      "name_full": "서울특별시 강동구",
+      "level": "gu",
+      "lawd_cd": "11740",
+      "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+      "sections": {
+        "real_estate_trade": {
+          "count": 418,
+          "median_price_per_pyeong_man": 5720,
+          "mean_price_per_pyeong_man": 5869,
+          "median_deal_amount_man": 119750,
+          "period_months": [
+            "202604",
+            "202603"
+          ],
+          "monthly_count_avg": 209.0
+        },
+        "real_estate_rent": {
+          "total_count": 1870,
+          "jeonse_count": 929,
+          "monthly_count": 941,
+          "median_jeonse_man": 58000,
+          "mean_jeonse_man": 59424,
+          "period_months": [
+            "202604",
+            "202603"
+          ]
+        },
+        "environment": {
+          "seoul_avg": {
+            "pm10": 18,
+            "pm25": 12,
+            "station_count": 40
+          },
+          "gangnam_station": {
+            "station": "강동구",
+            "pm10": 19,
+            "pm25": 9
+          },
+          "gu_station": {
+            "station": "강동구",
+            "pm10": 19,
+            "pm25": 9
+          },
+          "measured_at": "2026-05-03 10:00"
+        },
+        "medical": {
+          "sgg_count": 464,
+          "by_type": {
+            "종합병원": 3,
+            "병원": 17,
+            "요양병원": 5,
+            "의원": 439
+          }
+        },
+        "education": {
+          "sgg_count": 64,
+          "by_type": {
+            "고등학교": 14,
+            "중학교": 19,
+            "초등학교": 29,
+            "특수학교": 2
+          }
+        },
+        "population": {
+          "table_id": "DT_1B040A3",
+          "table_name": "행정구역(시군구)별/성별 인구수",
+          "period": "202603",
+          "sgg_total": 499795,
+          "gangnam_total": 499795,
+          "seoul_total": 9304400,
+          "share_of_seoul_pct": 5.37
+        }
+      },
+      "errors": []
+    }
+  ]
+}

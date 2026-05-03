@@ -1,0 +1,84 @@
+{
+  "slug": "seoul/jongno",
+  "name": "종로구",
+  "name_full": "서울특별시 종로구",
+  "level": "gu",
+  "lawd_cd": "11110",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 107,
+      "median_price_per_pyeong_man": 4090,
+      "mean_price_per_pyeong_man": 4824,
+      "median_deal_amount_man": 95500,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 53.5
+    },
+    "real_estate_rent": {
+      "total_count": 226,
+      "jeonse_count": 86,
+      "monthly_count": 140,
+      "median_jeonse_man": 68000,
+      "mean_jeonse_man": 72753,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "종로구",
+        "pm10": 14,
+        "pm25": 12
+      },
+      "gu_station": {
+        "station": "종로구",
+        "pm10": 14,
+        "pm25": 12
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 189,
+      "by_type": {
+        "상급종합": 2,
+        "종합병원": 2,
+        "병원": 3,
+        "요양병원": 1,
+        "의원": 181
+      }
+    },
+    "education": {
+      "sgg_count": 47,
+      "by_type": {
+        "고등학교": 14,
+        "방송통신고등학교": 1,
+        "중학교": 9,
+        "초등학교": 13,
+        "특수학교": 4,
+        "각종학교(고)": 3,
+        "외국인학교": 1,
+        "평생학교(고)-2년6학기": 1,
+        "평생학교(중)-2년6학기": 1
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 136817,
+      "gangnam_total": 136817,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 1.47
+    }
+  },
+  "errors": []
+}

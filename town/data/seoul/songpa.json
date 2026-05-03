@@ -1,0 +1,84 @@
+{
+  "slug": "seoul/songpa",
+  "name": "송파구",
+  "name_full": "서울특별시 송파구",
+  "level": "gu",
+  "lawd_cd": "11710",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 541,
+      "median_price_per_pyeong_man": 8182,
+      "mean_price_per_pyeong_man": 8773,
+      "median_deal_amount_man": 170500,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 270.5
+    },
+    "real_estate_rent": {
+      "total_count": 2000,
+      "jeonse_count": 1023,
+      "monthly_count": 977,
+      "median_jeonse_man": 73000,
+      "mean_jeonse_man": 76935,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "송파구",
+        "pm10": 12,
+        "pm25": 11
+      },
+      "gu_station": {
+        "station": "송파구",
+        "pm10": 12,
+        "pm25": 11
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 639,
+      "by_type": {
+        "상급종합": 1,
+        "종합병원": 1,
+        "병원": 22,
+        "요양병원": 7,
+        "정신병원": 1,
+        "의원": 607
+      }
+    },
+    "education": {
+      "sgg_count": 96,
+      "by_type": {
+        "고등학교": 20,
+        "중학교": 29,
+        "특수학교": 2,
+        "초등학교": 41,
+        "평생학교(고)-2년6학기": 1,
+        "평생학교(고)-3년6학기": 1,
+        "평생학교(중)-2년6학기": 1,
+        "평생학교(초)-3년6학기": 1
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 650071,
+      "gangnam_total": 650071,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 6.99
+    }
+  },
+  "errors": []
+}

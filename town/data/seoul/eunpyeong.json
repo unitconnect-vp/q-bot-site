@@ -1,0 +1,80 @@
+{
+  "slug": "seoul/eunpyeong",
+  "name": "은평구",
+  "name_full": "서울특별시 은평구",
+  "level": "gu",
+  "lawd_cd": "11380",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 533,
+      "median_price_per_pyeong_man": 3524,
+      "mean_price_per_pyeong_man": 3748,
+      "median_deal_amount_man": 80000,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 266.5
+    },
+    "real_estate_rent": {
+      "total_count": 1557,
+      "jeonse_count": 831,
+      "monthly_count": 726,
+      "median_jeonse_man": 48300,
+      "mean_jeonse_man": 47205,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "은평구",
+        "pm10": 9,
+        "pm25": 8
+      },
+      "gu_station": {
+        "station": "은평구",
+        "pm10": 9,
+        "pm25": 8
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 333,
+      "by_type": {
+        "종합병원": 2,
+        "병원": 11,
+        "요양병원": 5,
+        "정신병원": 1,
+        "의원": 314
+      }
+    },
+    "education": {
+      "sgg_count": 68,
+      "by_type": {
+        "중학교": 18,
+        "고등학교": 18,
+        "초등학교": 30,
+        "특수학교": 1,
+        "각종학교(고)": 1
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 454109,
+      "gangnam_total": 454109,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 4.88
+    }
+  },
+  "errors": []
+}

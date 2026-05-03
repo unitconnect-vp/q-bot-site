@@ -1,0 +1,79 @@
+{
+  "slug": "seoul/seongbuk",
+  "name": "성북구",
+  "name_full": "서울특별시 성북구",
+  "level": "gu",
+  "lawd_cd": "11290",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 607,
+      "median_price_per_pyeong_man": 3792,
+      "mean_price_per_pyeong_man": 3964,
+      "median_deal_amount_man": 89000,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 303.5
+    },
+    "real_estate_rent": {
+      "total_count": 1182,
+      "jeonse_count": 711,
+      "monthly_count": 471,
+      "median_jeonse_man": 50000,
+      "mean_jeonse_man": 51541,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "성북구",
+        "pm10": 16,
+        "pm25": 12
+      },
+      "gu_station": {
+        "station": "성북구",
+        "pm10": 16,
+        "pm25": 12
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 266,
+      "by_type": {
+        "상급종합": 1,
+        "병원": 6,
+        "요양병원": 8,
+        "의원": 251
+      }
+    },
+    "education": {
+      "sgg_count": 62,
+      "by_type": {
+        "중학교": 18,
+        "고등학교": 13,
+        "방송통신고등학교": 1,
+        "초등학교": 29,
+        "특수학교": 1
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 422778,
+      "gangnam_total": 422778,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 4.54
+    }
+  },
+  "errors": []
+}

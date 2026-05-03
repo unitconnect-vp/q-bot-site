@@ -4,7 +4,7 @@
   "name_full": "서울특별시 강남구",
   "level": "gu",
   "lawd_cd": "11680",
-  "fetched_at": "2026-05-03T01:31:25.897523+00:00",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
   "sections": {
     "real_estate_trade": {
       "count": 328,
@@ -34,16 +34,20 @@
         "pm25": 12,
         "station_count": 40
       },
-      "measured_at": "2026-05-03 10:00",
       "gangnam_station": {
-        "name": "강남구",
+        "station": "강남구",
         "pm10": 16,
         "pm25": 13
-      }
+      },
+      "gu_station": {
+        "station": "강남구",
+        "pm10": 16,
+        "pm25": 13
+      },
+      "measured_at": "2026-05-03 10:00"
     },
     "medical": {
-      "total_seoul": 10000,
-      "gangnam_count": 1997,
+      "sgg_count": 1997,
       "by_type": {
         "상급종합": 2,
         "종합병원": 2,
@@ -52,18 +56,8 @@
         "의원": 1955
       }
     },
-    "population": {
-      "table_id": "DT_1B040A3",
-      "table_name": "행정구역(시군구)별/성별 인구수",
-      "period": "202603",
-      "gangnam_total": 554165,
-      "seoul_total": 9304400,
-      "nation_total": 51101371,
-      "share_of_seoul_pct": 5.96
-    },
     "education": {
-      "total_seoul": 1415,
-      "gangnam_count": 84,
+      "sgg_count": 84,
       "by_type": {
         "중학교": 24,
         "고등학교": 21,
@@ -73,6 +67,15 @@
         "초등학교": 34,
         "외국인학교": 1
       }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 554165,
+      "gangnam_total": 554165,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 5.96
     }
   },
   "errors": []

@@ -1,0 +1,78 @@
+{
+  "slug": "seoul/gangdong",
+  "name": "강동구",
+  "name_full": "서울특별시 강동구",
+  "level": "gu",
+  "lawd_cd": "11740",
+  "fetched_at": "2026-05-03T01:51:51.946929+00:00",
+  "sections": {
+    "real_estate_trade": {
+      "count": 418,
+      "median_price_per_pyeong_man": 5720,
+      "mean_price_per_pyeong_man": 5869,
+      "median_deal_amount_man": 119750,
+      "period_months": [
+        "202604",
+        "202603"
+      ],
+      "monthly_count_avg": 209.0
+    },
+    "real_estate_rent": {
+      "total_count": 1870,
+      "jeonse_count": 929,
+      "monthly_count": 941,
+      "median_jeonse_man": 58000,
+      "mean_jeonse_man": 59424,
+      "period_months": [
+        "202604",
+        "202603"
+      ]
+    },
+    "environment": {
+      "seoul_avg": {
+        "pm10": 18,
+        "pm25": 12,
+        "station_count": 40
+      },
+      "gangnam_station": {
+        "station": "강동구",
+        "pm10": 19,
+        "pm25": 9
+      },
+      "gu_station": {
+        "station": "강동구",
+        "pm10": 19,
+        "pm25": 9
+      },
+      "measured_at": "2026-05-03 10:00"
+    },
+    "medical": {
+      "sgg_count": 464,
+      "by_type": {
+        "종합병원": 3,
+        "병원": 17,
+        "요양병원": 5,
+        "의원": 439
+      }
+    },
+    "education": {
+      "sgg_count": 64,
+      "by_type": {
+        "고등학교": 14,
+        "중학교": 19,
+        "초등학교": 29,
+        "특수학교": 2
+      }
+    },
+    "population": {
+      "table_id": "DT_1B040A3",
+      "table_name": "행정구역(시군구)별/성별 인구수",
+      "period": "202603",
+      "sgg_total": 499795,
+      "gangnam_total": 499795,
+      "seoul_total": 9304400,
+      "share_of_seoul_pct": 5.37
+    }
+  },
+  "errors": []
+}
