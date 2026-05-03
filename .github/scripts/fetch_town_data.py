@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Q렌즈 동네 카드 — 페치 스크립트 v2 (서울 25개 자치구)
-모든 자치구 데이터를 한 번에 페치 → town/data/seoul.json (통합) + 개별 JSON 백업
+Q렌즈 동네 카드 — 페치 스크립트 v3 (서울 + 경기)
+시도 단위로 그룹화. 향후 부산·인천 등 추가 시 SIDO_LIST에 항목만 추가.
 """
 
 import os
@@ -16,40 +16,101 @@ from pathlib import Path
 import requests
 
 # ─────────────────────────────────────────────────
-# 서울 25개 자치구 매핑
+# 시도 메타데이터 + 시군구 매핑
 # ─────────────────────────────────────────────────
-SEOUL_GU = [
-    ("11110", "종로구",     "jongno"),
-    ("11140", "중구",       "junggu"),
-    ("11170", "용산구",     "yongsan"),
-    ("11200", "성동구",     "seongdong"),
-    ("11215", "광진구",     "gwangjin"),
-    ("11230", "동대문구",   "dongdaemun"),
-    ("11260", "중랑구",     "jungnang"),
-    ("11290", "성북구",     "seongbuk"),
-    ("11305", "강북구",     "gangbuk"),
-    ("11320", "도봉구",     "dobong"),
-    ("11350", "노원구",     "nowon"),
-    ("11380", "은평구",     "eunpyeong"),
-    ("11410", "서대문구",   "seodaemun"),
-    ("11440", "마포구",     "mapo"),
-    ("11470", "양천구",     "yangcheon"),
-    ("11500", "강서구",     "gangseo"),
-    ("11530", "구로구",     "guro"),
-    ("11545", "금천구",     "geumcheon"),
-    ("11560", "영등포구",   "yeongdeungpo"),
-    ("11590", "동작구",     "dongjak"),
-    ("11620", "관악구",     "gwanak"),
-    ("11650", "서초구",     "seocho"),
-    ("11680", "강남구",     "gangnam"),
-    ("11710", "송파구",     "songpa"),
-    ("11740", "강동구",     "gangdong"),
+SIDO_LIST = [
+    {
+        "sido_name": "서울특별시",
+        "sido_short": "서울",
+        "sido_slug": "seoul",
+        "airkorea_name": "서울",
+        "hira_sido_cds": ["110000"],   # fallback 가능하도록 리스트
+        "neis_atpt": "B10",
+        "sgg_list": [
+            ("11110", "종로구",     "jongno"),
+            ("11140", "중구",       "junggu"),
+            ("11170", "용산구",     "yongsan"),
+            ("11200", "성동구",     "seongdong"),
+            ("11215", "광진구",     "gwangjin"),
+            ("11230", "동대문구",   "dongdaemun"),
+            ("11260", "중랑구",     "jungnang"),
+            ("11290", "성북구",     "seongbuk"),
+            ("11305", "강북구",     "gangbuk"),
+            ("11320", "도봉구",     "dobong"),
+            ("11350", "노원구",     "nowon"),
+            ("11380", "은평구",     "eunpyeong"),
+            ("11410", "서대문구",   "seodaemun"),
+            ("11440", "마포구",     "mapo"),
+            ("11470", "양천구",     "yangcheon"),
+            ("11500", "강서구",     "gangseo"),
+            ("11530", "구로구",     "guro"),
+            ("11545", "금천구",     "geumcheon"),
+            ("11560", "영등포구",   "yeongdeungpo"),
+            ("11590", "동작구",     "dongjak"),
+            ("11620", "관악구",     "gwanak"),
+            ("11650", "서초구",     "seocho"),
+            ("11680", "강남구",     "gangnam"),
+            ("11710", "송파구",     "songpa"),
+            ("11740", "강동구",     "gangdong"),
+        ],
+    },
+    {
+        "sido_name": "경기도",
+        "sido_short": "경기",
+        "sido_slug": "gyeonggi",
+        "airkorea_name": "경기",
+        "hira_sido_cds": ["310000", "410000"],  # 둘 중 하나
+        "neis_atpt": "J10",
+        "sgg_list": [
+            # 자치구 있는 시: 시명 + 구명
+            ("41111", "수원시 장안구",   "suwon-jangan"),
+            ("41113", "수원시 권선구",   "suwon-gwonseon"),
+            ("41115", "수원시 팔달구",   "suwon-paldal"),
+            ("41117", "수원시 영통구",   "suwon-yeongtong"),
+            ("41131", "성남시 수정구",   "seongnam-sujeong"),
+            ("41133", "성남시 중원구",   "seongnam-jungwon"),
+            ("41135", "성남시 분당구",   "seongnam-bundang"),
+            ("41171", "안양시 만안구",   "anyang-manan"),
+            ("41173", "안양시 동안구",   "anyang-dongan"),
+            ("41271", "안산시 상록구",   "ansan-sangrok"),
+            ("41273", "안산시 단원구",   "ansan-danwon"),
+            ("41281", "고양시 덕양구",   "goyang-deogyang"),
+            ("41285", "고양시 일산동구", "goyang-ilsandong"),
+            ("41287", "고양시 일산서구", "goyang-ilsanseo"),
+            ("41461", "용인시 처인구",   "yongin-cheoin"),
+            ("41463", "용인시 기흥구",   "yongin-giheung"),
+            ("41465", "용인시 수지구",   "yongin-suji"),
+            # 일반시 + 군
+            ("41150", "의정부시",   "uijeongbu"),
+            ("41190", "부천시",     "bucheon"),
+            ("41210", "광명시",     "gwangmyeong"),
+            ("41220", "평택시",     "pyeongtaek"),
+            ("41250", "동두천시",   "dongducheon"),
+            ("41290", "과천시",     "gwacheon"),
+            ("41310", "구리시",     "guri"),
+            ("41360", "남양주시",   "namyangju"),
+            ("41370", "오산시",     "osan"),
+            ("41390", "시흥시",     "siheung"),
+            ("41410", "군포시",     "gunpo"),
+            ("41430", "의왕시",     "uiwang"),
+            ("41450", "하남시",     "hanam"),
+            ("41480", "파주시",     "paju"),
+            ("41500", "이천시",     "icheon"),
+            ("41550", "안성시",     "anseong"),
+            ("41570", "김포시",     "gimpo"),
+            ("41590", "화성시",     "hwaseong"),
+            ("41610", "광주시",     "gwangju-gg"),  # 경기 광주 (광주광역시와 구분)
+            ("41630", "양주시",     "yangju"),
+            ("41650", "포천시",     "pocheon"),
+            ("41670", "여주시",     "yeoju"),
+            ("41800", "연천군",     "yeoncheon"),
+            ("41820", "가평군",     "gapyeong"),
+            ("41830", "양평군",     "yangpyeong"),
+        ],
+    },
 ]
 
-SIDO_HIRA = "110000"
-ATPT_NEIS = "B10"
-OUTPUT_INTEGRATED = Path("town/data/seoul.json")
-OUTPUT_INDIVIDUAL_DIR = Path("town/data/seoul")
+OUTPUT_INTEGRATED = Path("town/data/all.json")
 TIMEOUT = 30
 
 
@@ -90,11 +151,10 @@ def to_int_or_none(s):
 
 
 # ─────────────────────────────────────────────────
-# 자치구별 페치
+# 자치구별 부동산 페치
 # ─────────────────────────────────────────────────
 
 def fetch_real_estate_trade(key, lawd_cd):
-    """매매 — 자치구 단위, 최근 3개월."""
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
     all_items = []
     months_used = []
@@ -140,7 +200,6 @@ def fetch_real_estate_trade(key, lawd_cd):
 
 
 def fetch_real_estate_rent(key, lawd_cd):
-    """전월세 — 자치구 단위, 최근 3개월."""
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent"
     all_items = []
     months_used = []
@@ -184,92 +243,117 @@ def fetch_real_estate_rent(key, lawd_cd):
 
 
 # ─────────────────────────────────────────────────
-# 공통 페치 (한 번 호출 → 자치구별 분리)
+# 시도 단위 공통 페치
 # ─────────────────────────────────────────────────
 
-def fetch_environment_all(key):
-    """에어코리아 서울 전체 측정소 → 자치구별 분리."""
+def fetch_environment(key, sido_short):
+    """시도별 실시간 측정 — 평균 + 시군구 측정소."""
     url = "http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty"
-    params = {"serviceKey": key, "returnType": "json", "numOfRows": "100", "pageNo": "1", "sidoName": "서울", "ver": "1.0"}
+    params = {
+        "serviceKey": key, "returnType": "json",
+        "numOfRows": "200", "pageNo": "1",
+        "sidoName": sido_short, "ver": "1.0",
+    }
     r = requests.get(url, params=params, timeout=TIMEOUT)
     j = r.json()
     items = j.get("response", {}).get("body", {}).get("items", [])
     if not items:
-        return {"_seoul_avg": None, "_per_gu": {}}
+        return {"sido_avg": None, "per_gu": {}, "measured_at": None}
 
     pm10s = [v for v in (to_int_or_none(it.get("pm10Value")) for it in items) if v is not None]
     pm25s = [v for v in (to_int_or_none(it.get("pm25Value")) for it in items) if v is not None]
-    seoul_avg = {
+    sido_avg = {
         "pm10": int(statistics.mean(pm10s)) if pm10s else None,
         "pm25": int(statistics.mean(pm25s)) if pm25s else None,
         "station_count": len(items),
     }
 
-    # 자치구별 측정소 매핑 (이름에 자치구명이 들어가는 측정소 찾기)
-    per_gu = {}
-    for _, name, _ in SEOUL_GU:
-        gu_short = name.replace("구", "")  # "강남구" → "강남"
-        for it in items:
-            station = it.get("stationName", "") or ""
-            if gu_short in station or name in station:
-                per_gu[name] = {
+    return {
+        "sido_avg": sido_avg,
+        "items": items,  # 후처리에서 자치구별 매칭
+        "measured_at": items[0].get("dataTime"),
+    }
+
+
+def match_environment_for_sgg(env_data, sgg_name):
+    """환경 데이터에서 자치구 매칭 (이름 기반)."""
+    items = env_data.get("items", [])
+    # 자치구명에서 핵심 지명 추출 (예: "수원시 영통구" → "영통", "강남구" → "강남")
+    candidates = []
+    parts = sgg_name.split()
+    for p in parts:
+        candidates.append(p.replace("구", "").replace("시", "").replace("군", ""))
+    candidates = [c for c in candidates if c]
+
+    for it in items:
+        station = it.get("stationName", "") or ""
+        for c in candidates:
+            if c and c in station:
+                return {
                     "station": station,
                     "pm10": to_int_or_none(it.get("pm10Value")),
                     "pm25": to_int_or_none(it.get("pm25Value")),
                 }
-                break
-
-    return {
-        "_seoul_avg": seoul_avg,
-        "_measured_at": items[0].get("dataTime") if items else None,
-        "_per_gu": per_gu,
-    }
+    return None
 
 
-def fetch_medical_all(key):
-    """심평원 서울 전체 → 주소 기준 자치구별 분리."""
+def fetch_medical(key, hira_sido_cds):
+    """HIRA 시도 단위 페치 — 여러 sido_cd fallback."""
     url = "http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList"
-    all_hosp = []
-    for page in range(1, 11):
-        params = {"ServiceKey": key, "_type": "json", "numOfRows": "1000", "pageNo": str(page), "sidoCd": SIDO_HIRA}
-        try:
-            r = requests.get(url, params=params, timeout=TIMEOUT)
-            j = r.json()
-        except (requests.RequestException, json.JSONDecodeError):
-            break
-        body = j.get("response", {}).get("body", {})
-        items_wrap = body.get("items", {}) or {}
-        items = items_wrap.get("item", []) if isinstance(items_wrap, dict) else []
-        if isinstance(items, dict):
-            items = [items]
-        if not items:
-            break
-        all_hosp.extend(items)
-        total = int(body.get("totalCount", 0) or 0)
-        if total and len(all_hosp) >= total:
-            break
-
-    per_gu = {}
-    for _, name, _ in SEOUL_GU:
-        gu_hosps = [h for h in all_hosp if name in (h.get("addr", "") or "")]
-        type_counts = {}
-        for h in gu_hosps:
-            t = h.get("clCdNm", "기타")
-            type_counts[t] = type_counts.get(t, 0) + 1
-        per_gu[name] = {
-            "sgg_count": len(gu_hosps),
-            "by_type": type_counts,
-        }
-
-    return {"_total_seoul": len(all_hosp), "_per_gu": per_gu}
+    for sido_cd in hira_sido_cds:
+        all_hosp = []
+        for page in range(1, 11):
+            params = {
+                "ServiceKey": key, "_type": "json",
+                "numOfRows": "1000", "pageNo": str(page),
+                "sidoCd": sido_cd,
+            }
+            try:
+                r = requests.get(url, params=params, timeout=TIMEOUT)
+                j = r.json()
+            except (requests.RequestException, json.JSONDecodeError):
+                break
+            body = j.get("response", {}).get("body", {})
+            items_wrap = body.get("items", {}) or {}
+            items = items_wrap.get("item", []) if isinstance(items_wrap, dict) else []
+            if isinstance(items, dict):
+                items = [items]
+            if not items:
+                break
+            all_hosp.extend(items)
+            total = int(body.get("totalCount", 0) or 0)
+            if total and len(all_hosp) >= total:
+                break
+        if all_hosp:
+            return {"items": all_hosp, "sido_cd_used": sido_cd, "total": len(all_hosp)}
+    return {"items": [], "sido_cd_used": None, "total": 0}
 
 
-def fetch_education_all(key):
-    """NEIS 서울 전체 → 주소 기준 자치구별 분리."""
+def match_medical_for_sgg(med_data, sgg_name):
+    items = med_data.get("items", [])
+    # "수원시 영통구" → "수원" + "영통구" 둘 다 포함되는 항목 매칭
+    parts = sgg_name.split()
+    if len(parts) > 1:
+        # 시·구 분리: 둘 다 포함
+        si, gu = parts[0], parts[1]
+        gu_hosps = [h for h in items if si in (h.get("addr", "") or "") and gu in (h.get("addr", "") or "")]
+    else:
+        gu_hosps = [h for h in items if sgg_name in (h.get("addr", "") or "")]
+
+    type_counts = {}
+    for h in gu_hosps:
+        t = h.get("clCdNm", "기타")
+        type_counts[t] = type_counts.get(t, 0) + 1
+
+    return {"sgg_count": len(gu_hosps), "by_type": type_counts}
+
+
+def fetch_education(key, atpt_code):
+    """NEIS 시도교육청 단위 페치."""
     url = "https://open.neis.go.kr/hub/schoolInfo"
     all_schools = []
-    for page in range(1, 6):
-        params = {"KEY": key, "Type": "json", "pIndex": str(page), "pSize": "1000", "ATPT_OFCDC_SC_CODE": ATPT_NEIS}
+    for page in range(1, 11):
+        params = {"KEY": key, "Type": "json", "pIndex": str(page), "pSize": "1000", "ATPT_OFCDC_SC_CODE": atpt_code}
         try:
             r = requests.get(url, params=params, timeout=TIMEOUT)
             j = r.json()
@@ -286,24 +370,27 @@ def fetch_education_all(key):
         all_schools.extend(rows)
         if len(rows) < 1000:
             break
+    return {"items": all_schools, "total": len(all_schools)}
 
-    per_gu = {}
-    for _, name, _ in SEOUL_GU:
-        gu_schools = [s for s in all_schools if name in (s.get("ORG_RDNMA", "") or "")]
-        type_counts = {}
-        for s in gu_schools:
-            t = s.get("SCHUL_KND_SC_NM", "기타")
-            type_counts[t] = type_counts.get(t, 0) + 1
-        per_gu[name] = {
-            "sgg_count": len(gu_schools),
-            "by_type": type_counts,
-        }
 
-    return {"_total_seoul": len(all_schools), "_per_gu": per_gu}
+def match_education_for_sgg(edu_data, sgg_name):
+    items = edu_data.get("items", [])
+    parts = sgg_name.split()
+    if len(parts) > 1:
+        si, gu = parts[0], parts[1]
+        gu_schools = [s for s in items if si in (s.get("ORG_RDNMA", "") or "") and gu in (s.get("ORG_RDNMA", "") or "")]
+    else:
+        gu_schools = [s for s in items if sgg_name in (s.get("ORG_RDNMA", "") or "")]
+
+    type_counts = {}
+    for s in gu_schools:
+        t = s.get("SCHUL_KND_SC_NM", "기타")
+        type_counts[t] = type_counts.get(t, 0) + 1
+    return {"sgg_count": len(gu_schools), "by_type": type_counts}
 
 
 def fetch_population_all(key):
-    """KOSIS DT_1B040A3 — 한 번 호출로 모든 시군구 인구."""
+    """KOSIS — 한 번 호출로 전국 시군구."""
     url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
     params = {
         "method": "getList", "apiKey": key, "itmId": "T20", "objL1": "ALL",
@@ -314,35 +401,49 @@ def fetch_population_all(key):
     try:
         j = r.json()
     except json.JSONDecodeError:
-        return {"_per_gu": {}, "_seoul_total": None, "_period": None}
-
+        return {"items": [], "period": None}
     if not isinstance(j, list):
-        return {"_per_gu": {}, "_seoul_total": None, "_period": None}
+        return {"items": [], "period": None}
+    return {"items": j, "period": j[0].get("PRD_DE") if j else None}
 
-    seoul_total = None
-    period = None
-    per_gu = {}
-    for row in j:
+
+def match_population_for_sgg(pop_data, sgg_name, sido_name):
+    items = pop_data.get("items", [])
+    period = pop_data.get("period")
+    parts = sgg_name.split()
+
+    sgg_total = None
+    for row in items:
         c1_nm = row.get("C1_NM", "") or ""
         c2_nm = row.get("C2_NM", "") or ""
-        if not period:
-            period = row.get("PRD_DE")
-        if c1_nm == "서울특별시" and not c2_nm:
-            seoul_total = to_int_or_none(row.get("DT"))
-        # 자치구 매칭
-        for _, name, _ in SEOUL_GU:
-            if name in c1_nm or name in c2_nm:
-                per_gu[name] = {
-                    "total": to_int_or_none(row.get("DT")),
-                    "period": row.get("PRD_DE"),
-                }
+        full = f"{c1_nm} {c2_nm}".strip()
+
+        if len(parts) > 1:
+            # "수원시 영통구"처럼 시+구 매칭 필요
+            si, gu = parts[0], parts[1]
+            if si in full and gu in full:
+                sgg_total = to_int_or_none(row.get("DT"))
+                break
+        else:
+            # 단일 자치구 또는 시
+            if sgg_name in full and sido_name[:2] in (c1_nm[:2] if c1_nm else ""):
+                sgg_total = to_int_or_none(row.get("DT"))
+                break
+            if c2_nm == sgg_name:
+                sgg_total = to_int_or_none(row.get("DT"))
                 break
 
-    return {
-        "_per_gu": per_gu,
-        "_seoul_total": seoul_total,
-        "_period": period,
-    }
+    return {"sgg_total": sgg_total, "period": period}
+
+
+def get_sido_total(pop_data, sido_name):
+    items = pop_data.get("items", [])
+    for row in items:
+        c1_nm = row.get("C1_NM", "") or ""
+        c2_nm = row.get("C2_NM", "") or ""
+        if c1_nm == sido_name and not c2_nm:
+            return to_int_or_none(row.get("DT"))
+    return None
 
 
 # ─────────────────────────────────────────────────
@@ -376,99 +477,112 @@ def main():
 
     fetched_at = datetime.now(timezone.utc).isoformat()
 
-    print("[STEP 1/2] 공통 데이터 (서울 전체 → 자치구 분리)")
-    env_all, _    = safe("environment_all", fetch_environment_all, keys["AIRKOREA_KEY"], default={"_seoul_avg": None, "_per_gu": {}, "_measured_at": None})
-    med_all, _    = safe("medical_all",     fetch_medical_all,     keys["HIRA_KEY"],     default={"_total_seoul": 0, "_per_gu": {}})
-    edu_all, _    = safe("education_all",   fetch_education_all,   keys["NEIS_KEY"],     default={"_total_seoul": 0, "_per_gu": {}})
-    pop_all, _    = safe("population_all",  fetch_population_all,  keys["KOSIS_KEY"],    default={"_per_gu": {}, "_seoul_total": None, "_period": None})
+    # 인구는 전국 한 번에
+    print("[STEP 0] 인구 데이터 (KOSIS, 전국 한 번)")
+    pop_data, _ = safe("population", fetch_population_all, keys["KOSIS_KEY"], default={"items": [], "period": None})
 
-    print(f"\n[STEP 2/2] 자치구별 부동산 페치 ({len(SEOUL_GU)}개)")
-    all_records = []
-    for i, (lawd_cd, name, slug) in enumerate(SEOUL_GU, 1):
-        print(f"  [{i:2d}/{len(SEOUL_GU)}] {name} ({lawd_cd})", flush=True)
-        trade, _ = safe(f"  trade",  fetch_real_estate_trade, keys["MOLIT_TRADE_KEY"], lawd_cd, default={})
-        rent,  _ = safe(f"  rent",   fetch_real_estate_rent,  keys["MOLIT_RENT_KEY"],  lawd_cd, default={})
+    sidos_output = []
+    total_records = 0
 
-        record = {
-            "slug": f"seoul/{slug}",
-            "name": name,
-            "name_full": f"서울특별시 {name}",
-            "level": "gu",
-            "lawd_cd": lawd_cd,
-            "fetched_at": fetched_at,
-            "sections": {
-                "real_estate_trade": trade,
-                "real_estate_rent": rent,
-                "environment": {
-                    "seoul_avg": env_all.get("_seoul_avg"),
-                    "gangnam_station": env_all.get("_per_gu", {}).get(name),  # key 이름은 호환성 위해 유지
-                    "gu_station": env_all.get("_per_gu", {}).get(name),       # 새 일반화 키
-                    "measured_at": env_all.get("_measured_at"),
+    for sido in SIDO_LIST:
+        print(f"\n[{sido['sido_name']}] 시도 단위 공통 페치")
+        env_data, _ = safe("environment", fetch_environment, keys["AIRKOREA_KEY"], sido["sido_short"], default={"sido_avg": None, "items": [], "measured_at": None})
+        med_data, _ = safe("medical",     fetch_medical,     keys["HIRA_KEY"],     sido["hira_sido_cds"], default={"items": [], "total": 0})
+        edu_data, _ = safe("education",   fetch_education,   keys["NEIS_KEY"],     sido["neis_atpt"], default={"items": [], "total": 0})
+
+        sido_total = get_sido_total(pop_data, sido["sido_name"])
+
+        records = []
+        sgg_list = sido["sgg_list"]
+        print(f"\n[{sido['sido_name']}] 시군구별 부동산 페치 ({len(sgg_list)}개)")
+        for i, (lawd_cd, name, slug) in enumerate(sgg_list, 1):
+            print(f"  [{i:2d}/{len(sgg_list)}] {name} ({lawd_cd})", flush=True)
+            trade, _ = safe("    trade", fetch_real_estate_trade, keys["MOLIT_TRADE_KEY"], lawd_cd, default={})
+            rent, _  = safe("    rent",  fetch_real_estate_rent,  keys["MOLIT_RENT_KEY"],  lawd_cd, default={})
+
+            pop_match = match_population_for_sgg(pop_data, name, sido["sido_name"])
+
+            record = {
+                "slug": f"{sido['sido_slug']}/{slug}",
+                "sido_slug": sido["sido_slug"],
+                "sido_name": sido["sido_name"],
+                "name": name,
+                "name_full": f"{sido['sido_name']} {name}",
+                "level": "sgg",
+                "lawd_cd": lawd_cd,
+                "fetched_at": fetched_at,
+                "sections": {
+                    "real_estate_trade": trade,
+                    "real_estate_rent": rent,
+                    "environment": {
+                        "sido_avg": env_data.get("sido_avg"),
+                        "gu_station": match_environment_for_sgg(env_data, name),
+                        "measured_at": env_data.get("measured_at"),
+                    },
+                    "medical": match_medical_for_sgg(med_data, name),
+                    "education": match_education_for_sgg(edu_data, name),
+                    "population": {
+                        "table_id": "DT_1B040A3",
+                        "table_name": "행정구역(시군구)별/성별 인구수",
+                        "period": pop_match.get("period"),
+                        "sgg_total": pop_match.get("sgg_total"),
+                        "sido_total": sido_total,
+                        "share_of_sido_pct": (
+                            round(pop_match["sgg_total"] / sido_total * 100, 2)
+                            if pop_match.get("sgg_total") and sido_total else None
+                        ),
+                    },
                 },
-                "medical": med_all.get("_per_gu", {}).get(name, {"sgg_count": 0, "by_type": {}}),
-                "education": edu_all.get("_per_gu", {}).get(name, {"sgg_count": 0, "by_type": {}}),
-                "population": {
-                    "table_id": "DT_1B040A3",
-                    "table_name": "행정구역(시군구)별/성별 인구수",
-                    "period": pop_all.get("_period"),
-                    "sgg_total": (pop_all.get("_per_gu", {}).get(name) or {}).get("total"),
-                    "gangnam_total": (pop_all.get("_per_gu", {}).get(name) or {}).get("total"),  # 호환성
-                    "seoul_total": pop_all.get("_seoul_total"),
-                    "share_of_seoul_pct": round(
-                        ((pop_all.get("_per_gu", {}).get(name) or {}).get("total") or 0)
-                        / (pop_all.get("_seoul_total") or 1) * 100, 2
-                    ) if pop_all.get("_seoul_total") else None,
-                },
-            },
-            "errors": [],
-        }
-        all_records.append(record)
+                "errors": [],
+            }
+            records.append(record)
+            total_records += 1
+
+        sidos_output.append({
+            "sido_name": sido["sido_name"],
+            "sido_short": sido["sido_short"],
+            "sido_slug": sido["sido_slug"],
+            "sgg_count": len(records),
+            "records": records,
+        })
 
     # 통합 JSON 저장
     OUTPUT_INTEGRATED.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_INTEGRATED.write_text(
         json.dumps({
             "fetched_at": fetched_at,
-            "city": "seoul",
-            "city_name": "서울특별시",
-            "count": len(all_records),
-            "records": all_records,
+            "total_sido": len(sidos_output),
+            "total_sgg": total_records,
+            "sidos": sidos_output,
         }, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
-    print(f"\n✓ 통합 저장: {OUTPUT_INTEGRATED} ({len(all_records)}개 자치구)")
-
-    # 개별 JSON도 저장 (호환성)
-    OUTPUT_INDIVIDUAL_DIR.mkdir(parents=True, exist_ok=True)
-    for record in all_records:
-        slug_short = record["slug"].split("/")[-1]
-        path = OUTPUT_INDIVIDUAL_DIR / f"{slug_short}.json"
-        path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
-
-    print(f"  + 개별 JSON {len(all_records)}개 저장")
+    print(f"\n✓ 통합 저장: {OUTPUT_INTEGRATED}")
+    print(f"  시도: {len(sidos_output)}개, 시군구: {total_records}개")
 
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary_path:
         with open(summary_path, "a", encoding="utf-8") as f:
-            f.write(f"# 페치 결과 (서울 25개 자치구)\n\n")
-            f.write(f"- 페치 시각: {fetched_at}\n")
-            f.write(f"- 자치구 수: {len(all_records)}\n")
-            f.write(f"- 통합 파일: `{OUTPUT_INTEGRATED}`\n\n")
-            f.write("| 자치구 | 매매 | 전세 | 의료 | 학교 | 인구 |\n")
-            f.write("|---|---|---|---|---|---|\n")
-            for r in all_records:
-                t = r["sections"]["real_estate_trade"]
-                rt = r["sections"]["real_estate_rent"]
-                m = r["sections"]["medical"]
-                e = r["sections"]["education"]
-                p = r["sections"]["population"]
-                f.write(
-                    f"| {r['name']} | {t.get('count', '—')}건 "
-                    f"| {rt.get('jeonse_count', '—')}건 "
-                    f"| {m.get('sgg_count', '—')} "
-                    f"| {e.get('sgg_count', '—')} "
-                    f"| {p.get('sgg_total') or '—'} |\n"
-                )
+            f.write(f"# 페치 결과\n\n")
+            f.write(f"- 시도: {len(sidos_output)}개\n")
+            f.write(f"- 시군구: {total_records}개\n\n")
+            for sido in sidos_output:
+                f.write(f"\n## {sido['sido_name']} ({sido['sgg_count']}개)\n\n")
+                f.write("| 자치구 | 매매 | 전세 | 의료 | 학교 | 인구 |\n")
+                f.write("|---|---|---|---|---|---|\n")
+                for r in sido["records"]:
+                    t = r["sections"]["real_estate_trade"]
+                    rt = r["sections"]["real_estate_rent"]
+                    m = r["sections"]["medical"]
+                    e = r["sections"]["education"]
+                    p = r["sections"]["population"]
+                    f.write(
+                        f"| {r['name']} | {t.get('count', '—')}건 "
+                        f"| {rt.get('jeonse_count', '—')}건 "
+                        f"| {m.get('sgg_count', 0)} "
+                        f"| {e.get('sgg_count', 0)} "
+                        f"| {p.get('sgg_total') or '—'} |\n"
+                    )
 
 
 if __name__ == "__main__":
