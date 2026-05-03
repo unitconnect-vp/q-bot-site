@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Q렌즈 동네 카드 — API 인증키 검증 스크립트 (v2)
-변경:
-  - resultCode 파서: 00, 000, 0000 모두 정상 처리 (v1 버그 수정)
-  - MOLIT 매매 엔드포인트 fallback: Dev → 일반 순차 시도
+Q렌즈 동네 카드 — API 인증키 검증 스크립트 (v4)
+v3 → v4: NEIS(학교알리미) 검증 추가, 별도 파서 작성
 """
 
 import os
@@ -25,7 +23,6 @@ def is_normal_code(code: str) -> bool:
 
 
 def parse_xml_result(text):
-    """공공데이터포털 표준 XML 응답 파싱."""
     if "SERVICE_KEY_IS_NOT_REGISTERED" in text or "SERVICE KEY IS NOT REGISTERED" in text:
         return ("FAIL", "키 미등록 — 포털 승인 대기 또는 키 오타")
     if "<errMsg>" in text:
@@ -50,7 +47,6 @@ def parse_xml_result(text):
 
 
 def parse_json_result(text):
-    """공공데이터포털 표준 JSON 응답 파싱."""
     if "SERVICE_KEY_IS_NOT_REGISTERED" in text or "SERVICE KEY IS NOT REGISTERED" in text:
         return ("FAIL", "키 미등록 — 포털 승인 대기 또는 키 오타")
     try:
@@ -71,6 +67,48 @@ def parse_json_result(text):
         return ("PASS", f"정상 응답 ({len(j)}건)")
     if isinstance(j, dict) and ("err" in j or "errMsg" in j):
         return ("FAIL", f"KOSIS 에러: {j.get('err') or j.get('errMsg')}")
+    return ("UNKNOWN", text[:150].replace("\n", " "))
+
+
+def parse_neis_result(text):
+    """NEIS 학교알리미 응답 파싱 — 정상 시 schoolInfo[0].head[1].RESULT.CODE = INFO-000."""
+    try:
+        j = json.loads(text)
+    except json.JSONDecodeError:
+        return ("UNKNOWN", text[:150].replace("\n", " "))
+
+    # 에러 형태: 최상위에 RESULT
+    if isinstance(j, dict) and "RESULT" in j and isinstance(j["RESULT"], dict):
+        r = j["RESULT"]
+        code = r.get("CODE", "?")
+        msg = r.get("MESSAGE", "?")
+        # INFO-* 는 키 유효 (INFO-000 정상, INFO-200 데이터 없음)
+        if str(code).startswith("INFO"):
+            return ("PASS", f"NEIS {code} / {msg}")
+        return ("FAIL", f"NEIS {code} / {msg}")
+
+    # 정상 데이터 형태: 서비스명 키 안에 head + row
+    if isinstance(j, dict):
+        service_keys = [
+            "schoolInfo", "SchoolSchedule", "elsTimetable",
+            "misTimetable", "hisTimetable", "mealServiceDietInfo"
+        ]
+        for sk in service_keys:
+            if sk not in j:
+                continue
+            data = j[sk]
+            if isinstance(data, list) and len(data) > 0 and isinstance(data[0], dict):
+                head = data[0].get("head", [])
+                for h in head:
+                    if isinstance(h, dict) and "RESULT" in h:
+                        r = h["RESULT"]
+                        code = r.get("CODE", "?")
+                        msg = r.get("MESSAGE", "?")
+                        if str(code).startswith("INFO"):
+                            return ("PASS", f"NEIS {code} / {msg}")
+                        return ("FAIL", f"NEIS {code} / {msg}")
+            return ("PASS", f"정상 응답 ({sk})")
+
     return ("UNKNOWN", text[:150].replace("\n", " "))
 
 
@@ -107,12 +145,12 @@ def check_molit_trade(key):
         status, detail = call(url, params, parse_xml_result)
         if status == "PASS":
             return ("PASS", f"{label} 엔드포인트 정상 — {detail}")
-        last_status, last_detail = status, f"{label} 실패: {detail}"
+        last_status = status
+        last_detail = f"{label} 실패: {detail}"
     return (last_status, last_detail)
 
 
 def check_molit_rent(key):
-    """국토교통부 아파트 전월세 실거래가."""
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptRent/getRTMSDataSvcAptRent"
     return call(url, {
         "serviceKey": key,
@@ -157,6 +195,18 @@ def check_kosis(key):
     }, parse_json_result)
 
 
+def check_neis(key):
+    """NEIS 학교기본정보 — 서울특별시교육청(B10)."""
+    url = "https://open.neis.go.kr/hub/schoolInfo"
+    return call(url, {
+        "KEY": key,
+        "Type": "json",
+        "pIndex": "1",
+        "pSize": "1",
+        "ATPT_OFCDC_SC_CODE": "B10",
+    }, parse_neis_result)
+
+
 # ─────────────────────────────────────────────────
 # Main
 # ─────────────────────────────────────────────────
@@ -167,33 +217,42 @@ CHECKS = [
     ("AIRKOREA_KEY",    "대기오염 정보",          "한국환경공단",       check_airkorea),
     ("HIRA_KEY",        "병원·약국 정보",         "건강보험심사평가원", check_hira),
     ("KOSIS_KEY",       "통계표 목록",            "통계청 KOSIS",       check_kosis),
+    ("NEIS_KEY",        "학교 기본정보",          "교육부 NEIS",        check_neis),
 ]
 
 
 def main():
     now = datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
     lines = []
-    lines.append(f"# Q렌즈 동네 카드 — API 인증키 검증 (v2)")
+    lines.append("# Q렌즈 동네 카드 — API 인증키 검증 (v4)")
     lines.append("")
     lines.append(f"실행 시각: {now}")
     lines.append("")
     lines.append("| 결과 | 인증키 | API | 운영기관 | 상세 |")
     lines.append("|------|--------|-----|----------|------|")
 
-    pc = fc = uc = 0
+    pc = 0
+    fc = 0
+    uc = 0
+
     for env_name, label, agency, fn in CHECKS:
         key = os.environ.get(env_name, "").strip()
         if not key:
-            mark, status, detail = "❌", "MISSING", "환경변수 비어있음"
+            mark = "❌"
+            status = "MISSING"
+            detail = "환경변수 비어있음"
             fc += 1
         else:
             status, detail = fn(key)
             if status == "PASS":
-                mark, _ = "✅", pc := pc + 1
+                mark = "✅"
+                pc += 1
             elif status == "UNKNOWN":
-                mark, _ = "⚠️", uc := uc + 1
+                mark = "⚠️"
+                uc += 1
             else:
-                mark, _ = "❌", fc := fc + 1
+                mark = "❌"
+                fc += 1
 
         d = detail.replace("|", "\\|").replace("\n", " ")[:120]
         lines.append(f"| {mark} {status} | `{env_name}` | {label} | {agency} | {d} |")
