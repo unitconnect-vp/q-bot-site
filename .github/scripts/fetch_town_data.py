@@ -184,6 +184,71 @@ def fetch_kosis_and_build_sigun_list(key):
     return sigun_list, {"_per_lawd": per_lawd, "_sido_totals": sido_totals, "_period": period}
 
 
+
+def fetch_population_age_5y(key, lawd_cds):
+    """
+    KOSIS DT_1B04005N — 행정구역(시군구)별/5세별 인구.
+    - 페르소나 매칭(20대·30대·40대·...·은퇴 비율) 인풋
+    - 가중치 v1의 "인구 활력" 지표
+    
+    Returns:
+      {lawd_cd: {"total": int, "by_age_band": {"20s": int, "30s": int, ...},
+                 "shares": {"20s": float, ...}, "median_age_band": "30s"}}
+    """
+    url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
+    params = {
+        "method": "getList", "apiKey": key, "itmId": "T20",
+        "objL1": "ALL", "format": "json", "jsonVD": "Y",
+        "prdSe": "Y", "newEstPrdCnt": "1",
+        "orgId": "101", "tblId": "DT_1B04005N",
+    }
+    try:
+        r = requests.get(url, params=params, timeout=TIMEOUT)
+        j = r.json()
+    except Exception as e:
+        return {}
+    
+    if not isinstance(j, list):
+        return {}
+    
+    # 5세 단위를 10세 단위 밴드로 묶기 — 페르소나 매칭에 적합
+    # KOSIS C2 코드: 0~4세=0, 5~9=1, ..., 80+=16
+    band_map = {
+        "0": "under10", "1": "under10",
+        "2": "10s", "3": "10s",
+        "4": "20s", "5": "20s",
+        "6": "30s", "7": "30s",
+        "8": "40s", "9": "40s",
+        "10": "50s", "11": "50s",
+        "12": "60s", "13": "60s",
+        "14": "70s", "15": "70s",
+        "16": "80plus",
+    }
+    
+    target_lawd = set(lawd_cds)
+    result = {}  # lawd_cd → {total, by_age_band, shares}
+    
+    for row in j:
+        c1 = (row.get("C1") or "").strip()
+        c2 = (row.get("C2") or "").strip()
+        if c1 not in target_lawd or c2 not in band_map:
+            continue
+        dt = to_int_or_none(row.get("DT"))
+        if dt is None:
+            continue
+        band = band_map[c2]
+        result.setdefault(c1, {"by_age_band": {}, "total": 0})
+        result[c1]["by_age_band"][band] = result[c1]["by_age_band"].get(band, 0) + dt
+        result[c1]["total"] += dt
+    
+    # 비율 산출
+    for cd, r in result.items():
+        total = r["total"] or 1
+        r["shares"] = {b: round(v / total * 100, 2) for b, v in r["by_age_band"].items()}
+    
+    return result
+
+
 def fetch_real_estate_trade(key, lawd_cd):
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
     all_items = []
@@ -404,6 +469,11 @@ def main():
     sigun_list, pop_data = fetch_kosis_and_build_sigun_list(keys["KOSIS_KEY"])
     print(f"  추출: {len(sigun_list)}개")
 
+    print("[KOSIS] 5세별 연령 분포 페치")
+    all_lawd_cds = [item[0] for item in sigun_list]
+    pop_age_data = fetch_population_age_5y(keys["KOSIS_KEY"], all_lawd_cds)
+    print(f"  매칭: {len(pop_age_data)}개 시군구")
+
     by_sido = {}
     sigun_full_names = {}
     for lawd_cd, full_name, display, slug, prefix in sigun_list:
@@ -473,6 +543,12 @@ def main():
                         "share_of_sido_pct": share,
                         "share_of_seoul_pct": share if sido_slug == "seoul" else None,
                     },
+                    "population_age": pop_age_data.get(lawd_cd, {
+                        "table_id": "DT_1B04005N",
+                        "by_age_band": {},
+                        "shares": {},
+                        "total": 0,
+                    }),
                 },
                 "errors": [],
             }
