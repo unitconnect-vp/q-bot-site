@@ -33,22 +33,39 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .persona-cta-arrow { font-size: 22px; font-weight: 700; flex-shrink: 0; }
 .intro-note { background: #f8fafc; padding: 16px 20px; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.6; margin: 24px 0 32px; }
 .intro-note b { color: #0f172a; }
-.sido-section { margin: 24px 0 16px; }
-.sido-header { font-size: 12px; color: #64748b; font-weight: 700; letter-spacing: 0.1em; padding: 12px 0 8px; border-bottom: 2px solid #0f172a; display: flex; justify-content: space-between; align-items: baseline; cursor: pointer; user-select: none; }
-.sido-header:hover { color: #0f172a; }
-.sido-header .toggle { font-size: 14px; color: #94a3b8; font-weight: 500; transition: transform 0.15s; }
-.sido-header .toggle-arrow { display: inline-block; transition: transform 0.15s; }
-.sido-section.collapsed .toggle-arrow { transform: rotate(-90deg); }
-.sido-section.collapsed .gu-grid { display: none; }
-.sido-count { font-size: 11px; color: #94a3b8; font-weight: 500; letter-spacing: 0; }
-.gu-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 24px; }
+.filter-bar { position: sticky; top: 0; background: #ffffff; padding: 12px 0 8px; z-index: 10; margin-bottom: 16px; }
+.filter-input-wrap { position: relative; margin-bottom: 10px; }
+.filter-input { width: 100%; padding: 12px 40px 12px 16px; font-size: 15px; border: 1.5px solid #e5e7eb; border-radius: 4px; font-family: inherit; background: #fff; outline: none; transition: border-color 0.15s; }
+.filter-input:focus { border-color: #0f172a; }
+.filter-input-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: #f3f4f6; color: #6b7280; border-radius: 50%; cursor: pointer; font-size: 16px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0; line-height: 1; }
+.filter-input-clear:hover { background: #e5e7eb; color: #0f172a; }
+.filter-input-clear.show { display: flex; }
+.sido-chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.sido-chips::-webkit-scrollbar { display: none; }
+.sido-chip { flex-shrink: 0; padding: 7px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; white-space: nowrap; user-select: none; }
+.sido-chip:hover { border-color: #0f172a; color: #0f172a; }
+.sido-chip.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+.sido-chip .count { opacity: 0.6; font-weight: 500; margin-left: 4px; font-size: 11px; }
+.sido-chip.active .count { opacity: 0.7; }
+.sgg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 32px; }
+.sgg-card { display: block; padding: 12px 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.12s; }
+.sgg-card:hover { border-color: #0f172a; }
+.sgg-card.active { background: #0f172a; border-color: #0f172a; }
+.sgg-card.active .sgg-name, .sgg-card.active .sgg-sido { color: #fff; }
+.sgg-card.active .sgg-sido { opacity: 0.7; }
+.sgg-name { font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; }
+.sgg-sido { font-size: 11px; color: #94a3b8; font-weight: 500; margin-top: 2px; }
+.result-meta { font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 2px; }
+.empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 14px; }
+.empty-state b { color: #475569; }
 @media (max-width: 640px) {
-  .gu-grid { grid-template-columns: repeat(3, 1fr); }
-  .hero h1 { font-size: 36px; }
+  .sgg-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+  .sgg-card { padding: 10px 10px; }
+  .sgg-name { font-size: 13px; }
+  .filter-bar { padding: 10px 0 6px; }
+  .sido-chip { padding: 6px 12px; font-size: 12px; }
 }
-.gu-chip { display: block; padding: 12px 8px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: center; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; }
-.gu-chip:hover { border-color: #0f172a; color: #0f172a; }
-.gu-chip.active { background: #0f172a; color: #ffffff; border-color: #0f172a; }
+
 .card-area { min-height: 400px; margin-top: 32px; }
 .card-empty { text-align: center; padding: 64px 24px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
 .card-name { font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 8px 0 12px; }
@@ -125,349 +142,295 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     아래에서 시군구를 선택하세요. 데이터는 매주 자동 갱신됩니다.
     학원·사업장(LOCALDATA), 인구 연령 분포는 곧 추가됩니다.
   </div>
+<div class="filter-bar">
+  <div class="filter-input-wrap">
+    <input type="search" id="sgg-search" class="filter-input" placeholder="동네 이름 검색 (예: 강남, 마포, 분당)" autocomplete="off">
+    <button class="filter-input-clear" id="sgg-clear" aria-label="검색어 지우기">×</button>
+  </div>
+  <div class="sido-chips" id="sido-chips">
+    <button class="sido-chip active" data-sido="">전체<span class="count">255</span></button>
+    <button class="sido-chip" data-sido="서울특별시">서울<span class="count">25</span></button>
+  <button class="sido-chip" data-sido="부산광역시">부산<span class="count">16</span></button>
+  <button class="sido-chip" data-sido="대구광역시">대구<span class="count">9</span></button>
+  <button class="sido-chip" data-sido="인천광역시">인천<span class="count">10</span></button>
+  <button class="sido-chip" data-sido="광주광역시">광주<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="대전광역시">대전<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="울산광역시">울산<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="세종특별자치시">세종<span class="count">1</span></button>
+  <button class="sido-chip" data-sido="경기도">경기<span class="count">47</span></button>
+  <button class="sido-chip" data-sido="강원특별자치도">강원<span class="count">18</span></button>
+  <button class="sido-chip" data-sido="충청북도">충북<span class="count">14</span></button>
+  <button class="sido-chip" data-sido="충청남도">충남<span class="count">16</span></button>
+  <button class="sido-chip" data-sido="전북특별자치도">전북<span class="count">15</span></button>
+  <button class="sido-chip" data-sido="전라남도">전남<span class="count">22</span></button>
+  <button class="sido-chip" data-sido="경상북도">경북<span class="count">23</span></button>
+  <button class="sido-chip" data-sido="경상남도">경남<span class="count">22</span></button>
+  <button class="sido-chip" data-sido="제주특별자치도">제주<span class="count">2</span></button>
+  </div>
+</div>
 
-    <div class="sido-section">
-    <div class="sido-header"><span>서울특별시</span><span class="toggle"><span class="toggle-arrow">▼</span> 25개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="seoul/jongno">종로구</a>
-      <a class="gu-chip" data-slugkey="seoul/jung">중구</a>
-      <a class="gu-chip" data-slugkey="seoul/yongsan">용산구</a>
-      <a class="gu-chip" data-slugkey="seoul/seongdong">성동구</a>
-      <a class="gu-chip" data-slugkey="seoul/gwangjin">광진구</a>
-      <a class="gu-chip" data-slugkey="seoul/dongdaemun">동대문구</a>
-      <a class="gu-chip" data-slugkey="seoul/jungnang">중랑구</a>
-      <a class="gu-chip" data-slugkey="seoul/seongbuk">성북구</a>
-      <a class="gu-chip" data-slugkey="seoul/gangbuk">강북구</a>
-      <a class="gu-chip" data-slugkey="seoul/dobong">도봉구</a>
-      <a class="gu-chip" data-slugkey="seoul/nowon">노원구</a>
-      <a class="gu-chip" data-slugkey="seoul/eunpyeong">은평구</a>
-      <a class="gu-chip" data-slugkey="seoul/seodaemun">서대문구</a>
-      <a class="gu-chip" data-slugkey="seoul/mapo">마포구</a>
-      <a class="gu-chip" data-slugkey="seoul/yangcheon">양천구</a>
-      <a class="gu-chip" data-slugkey="seoul/gangseo">강서구</a>
-      <a class="gu-chip" data-slugkey="seoul/guro">구로구</a>
-      <a class="gu-chip" data-slugkey="seoul/geumcheon">금천구</a>
-      <a class="gu-chip" data-slugkey="seoul/yeongdeungpo">영등포구</a>
-      <a class="gu-chip" data-slugkey="seoul/dongjak">동작구</a>
-      <a class="gu-chip" data-slugkey="seoul/gwanak">관악구</a>
-      <a class="gu-chip" data-slugkey="seoul/seocho">서초구</a>
-      <a class="gu-chip" data-slugkey="seoul/gangnam">강남구</a>
-      <a class="gu-chip" data-slugkey="seoul/songpa">송파구</a>
-      <a class="gu-chip" data-slugkey="seoul/gang-dong">강동구</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>부산광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 16개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="busan/jung">중구</a>
-      <a class="gu-chip" data-slugkey="busan/seo">서구</a>
-      <a class="gu-chip" data-slugkey="busan/dong">동구</a>
-      <a class="gu-chip" data-slugkey="busan/yeongdo">영도구</a>
-      <a class="gu-chip" data-slugkey="busan/busanjin">부산진구</a>
-      <a class="gu-chip" data-slugkey="busan/dongnae">동래구</a>
-      <a class="gu-chip" data-slugkey="busan/nam">남구</a>
-      <a class="gu-chip" data-slugkey="busan/buk">북구</a>
-      <a class="gu-chip" data-slugkey="busan/haeundae">해운대구</a>
-      <a class="gu-chip" data-slugkey="busan/saha">사하구</a>
-      <a class="gu-chip" data-slugkey="busan/geumjeong">금정구</a>
-      <a class="gu-chip" data-slugkey="busan/gangseo">강서구</a>
-      <a class="gu-chip" data-slugkey="busan/yeonje">연제구</a>
-      <a class="gu-chip" data-slugkey="busan/suyeong">수영구</a>
-      <a class="gu-chip" data-slugkey="busan/sasang">사상구</a>
-      <a class="gu-chip" data-slugkey="busan/gijang">기장군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>대구광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 9개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="daegu/jung">중구</a>
-      <a class="gu-chip" data-slugkey="daegu/dong">동구</a>
-      <a class="gu-chip" data-slugkey="daegu/seo">서구</a>
-      <a class="gu-chip" data-slugkey="daegu/nam">남구</a>
-      <a class="gu-chip" data-slugkey="daegu/buk">북구</a>
-      <a class="gu-chip" data-slugkey="daegu/suseong">수성구</a>
-      <a class="gu-chip" data-slugkey="daegu/dalseo">달서구</a>
-      <a class="gu-chip" data-slugkey="daegu/dalseong">달성군</a>
-      <a class="gu-chip" data-slugkey="daegu/gunwi">군위군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>인천광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 10개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="incheon/jung">중구</a>
-      <a class="gu-chip" data-slugkey="incheon/dong">동구</a>
-      <a class="gu-chip" data-slugkey="incheon/michuhol">미추홀구</a>
-      <a class="gu-chip" data-slugkey="incheon/yeonsu">연수구</a>
-      <a class="gu-chip" data-slugkey="incheon/nam-dong">남동구</a>
-      <a class="gu-chip" data-slugkey="incheon/bupyeong">부평구</a>
-      <a class="gu-chip" data-slugkey="incheon/gyeyang">계양구</a>
-      <a class="gu-chip" data-slugkey="incheon/seo">서구</a>
-      <a class="gu-chip" data-slugkey="incheon/ganghwa">강화군</a>
-      <a class="gu-chip" data-slugkey="incheon/ongjin">옹진군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>광주광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="gwangju/dong">동구</a>
-      <a class="gu-chip" data-slugkey="gwangju/seo">서구</a>
-      <a class="gu-chip" data-slugkey="gwangju/nam">남구</a>
-      <a class="gu-chip" data-slugkey="gwangju/buk">북구</a>
-      <a class="gu-chip" data-slugkey="gwangju/gwangsan">광산구</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>대전광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="daejeon/dong">동구</a>
-      <a class="gu-chip" data-slugkey="daejeon/jung">중구</a>
-      <a class="gu-chip" data-slugkey="daejeon/seo">서구</a>
-      <a class="gu-chip" data-slugkey="daejeon/yuseong">유성구</a>
-      <a class="gu-chip" data-slugkey="daejeon/daedeok">대덕구</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>울산광역시</span><span class="toggle"><span class="toggle-arrow">▼</span> 5개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="ulsan/jung">중구</a>
-      <a class="gu-chip" data-slugkey="ulsan/nam">남구</a>
-      <a class="gu-chip" data-slugkey="ulsan/dong">동구</a>
-      <a class="gu-chip" data-slugkey="ulsan/buk">북구</a>
-      <a class="gu-chip" data-slugkey="ulsan/ulju">울주군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>세종특별자치시</span><span class="toggle"><span class="toggle-arrow">▼</span> 1개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="sejong/sejong">세종시</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>경기도</span><span class="toggle"><span class="toggle-arrow">▼</span> 47개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="gyeonggi/jangan">수원 장안</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gwonseon">수원 권선</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/paldal">수원 팔달</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/yondtong">수원 영통</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/sujeong">성남 수정</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/jungwon">성남 중원</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/bundang">성남 분당</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/uijeongbu">의정부시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/manan">안양 만안</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/dongan">안양 동안</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/wonmi">부천 원미</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/sosa">부천 소사</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/ojeong">부천 오정</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gwangmyeong">광명시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/pyeongtaek">평택시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/dongducheon">동두천시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/sangnok">안산 상록</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/danwon">안산 단원</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/deogyang">고양 덕양</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/ilsandong">고양 일산동</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/ilsanseo">고양 일산서</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gwacheon">과천시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/guri">구리시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/namyangju">남양주시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/osan">오산시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/siheung">시흥시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gunpo">군포시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/uiwang">의왕시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/hanam">하남시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/cheoin">용인 처인</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/giheung">용인 기흥</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/suji">용인 수지</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/paju">파주시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/icheon">이천시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/anseong">안성시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gimpo">김포시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/manse">화성 만세</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/hyohaeng">화성 효행</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/byeongjeom">화성 병점</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/dongtan">화성 동탄</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gwangju">광주시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/yangju">양주시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/pocheon">포천시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/yeoju">여주시</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/yeoncheon">연천군</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/gapyeong">가평군</a>
-      <a class="gu-chip" data-slugkey="gyeonggi/yangpyeong">양평군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>충청북도</span><span class="toggle"><span class="toggle-arrow">▼</span> 14개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="chungbuk/sangdang">청주 상당</a>
-      <a class="gu-chip" data-slugkey="chungbuk/seowon">청주 서원</a>
-      <a class="gu-chip" data-slugkey="chungbuk/heungdeok">청주 흥덕</a>
-      <a class="gu-chip" data-slugkey="chungbuk/cheongwon">청주 청원</a>
-      <a class="gu-chip" data-slugkey="chungbuk/chungju">충주시</a>
-      <a class="gu-chip" data-slugkey="chungbuk/jecheon">제천시</a>
-      <a class="gu-chip" data-slugkey="chungbuk/boeun">보은군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/okcheon">옥천군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/yeongdong">영동군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/jeungpyeong">증평군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/jincheon">진천군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/goesan">괴산군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/eumseong">음성군</a>
-      <a class="gu-chip" data-slugkey="chungbuk/danyang">단양군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>충청남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 16개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="chungnam/dongnam">천안 동남</a>
-      <a class="gu-chip" data-slugkey="chungnam/seobuk">천안 서북</a>
-      <a class="gu-chip" data-slugkey="chungnam/gongju">공주시</a>
-      <a class="gu-chip" data-slugkey="chungnam/boryeong">보령시</a>
-      <a class="gu-chip" data-slugkey="chungnam/asan">아산시</a>
-      <a class="gu-chip" data-slugkey="chungnam/seosan">서산시</a>
-      <a class="gu-chip" data-slugkey="chungnam/nonsan">논산시</a>
-      <a class="gu-chip" data-slugkey="chungnam/gyerong">계룡시</a>
-      <a class="gu-chip" data-slugkey="chungnam/dangjin">당진시</a>
-      <a class="gu-chip" data-slugkey="chungnam/geumsan">금산군</a>
-      <a class="gu-chip" data-slugkey="chungnam/buyeo">부여군</a>
-      <a class="gu-chip" data-slugkey="chungnam/seocheon">서천군</a>
-      <a class="gu-chip" data-slugkey="chungnam/cheongyang">청양군</a>
-      <a class="gu-chip" data-slugkey="chungnam/hongseong">홍성군</a>
-      <a class="gu-chip" data-slugkey="chungnam/yesan">예산군</a>
-      <a class="gu-chip" data-slugkey="chungnam/taean">태안군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>전라남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 22개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="jeonnam/mokpo">목포시</a>
-      <a class="gu-chip" data-slugkey="jeonnam/yeosu">여수시</a>
-      <a class="gu-chip" data-slugkey="jeonnam/suncheon">순천시</a>
-      <a class="gu-chip" data-slugkey="jeonnam/naju">나주시</a>
-      <a class="gu-chip" data-slugkey="jeonnam/gwangyang">광양시</a>
-      <a class="gu-chip" data-slugkey="jeonnam/damyang">담양군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/gokseong">곡성군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/gurye">구례군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/goheung">고흥군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/boseong">보성군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/hwasun">화순군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/jangheung">장흥군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/gangjin">강진군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/haenam">해남군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/yeongam">영암군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/muan">무안군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/hampyeong">함평군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/yeonggwang">영광군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/jangseong">장성군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/wando">완도군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/jindo">진도군</a>
-      <a class="gu-chip" data-slugkey="jeonnam/sinan">신안군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>경상북도</span><span class="toggle"><span class="toggle-arrow">▼</span> 23개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="gyeongbuk/nam">포항 남</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/buk">포항 북</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/gyeongju">경주시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/gimcheon">김천시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/andong">안동시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/gumi">구미시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/yeongju">영주시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/yeongcheon">영천시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/sangju">상주시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/mungyeong">문경시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/gyeongsan">경산시</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/uiseong">의성군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/cheongsong">청송군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/yeongyang">영양군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/yeongdeok">영덕군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/cheongdo">청도군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/goryeong">고령군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/seongju">성주군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/chilgok">칠곡군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/yecheon">예천군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/bonghwa">봉화군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/uljin">울진군</a>
-      <a class="gu-chip" data-slugkey="gyeongbuk/ulleung">울릉군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>경상남도</span><span class="toggle"><span class="toggle-arrow">▼</span> 22개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="gyeongnam/uichang">창원 의창</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/seongsan">창원 성산</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/masanhappo">창원 마산합포</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/masanhoewon">창원 마산회원</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/jinhae">창원 진해</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/jinju">진주시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/tongyeong">통영시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/sacheon">사천시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/gimhae">김해시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/miryang">밀양시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/geoje">거제시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/yangsan">양산시</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/uiryeong">의령군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/haman">함안군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/changnyeong">창녕군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/goseong">고성군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/namhae">남해군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/ha-dong">하동군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/sancheong">산청군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/hamyang">함양군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/geochang">거창군</a>
-      <a class="gu-chip" data-slugkey="gyeongnam/hapcheon">합천군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>제주특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 2개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="jeju/jeju">제주시</a>
-      <a class="gu-chip" data-slugkey="jeju/seogwipo">서귀포시</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>강원특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 18개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="gangwon/chuncheon">춘천시</a>
-      <a class="gu-chip" data-slugkey="gangwon/wonju">원주시</a>
-      <a class="gu-chip" data-slugkey="gangwon/gangneung">강릉시</a>
-      <a class="gu-chip" data-slugkey="gangwon/donghae">동해시</a>
-      <a class="gu-chip" data-slugkey="gangwon/taebaek">태백시</a>
-      <a class="gu-chip" data-slugkey="gangwon/sokcho">속초시</a>
-      <a class="gu-chip" data-slugkey="gangwon/samcheok">삼척시</a>
-      <a class="gu-chip" data-slugkey="gangwon/hongcheon">홍천군</a>
-      <a class="gu-chip" data-slugkey="gangwon/hoengseong">횡성군</a>
-      <a class="gu-chip" data-slugkey="gangwon/yeongwol">영월군</a>
-      <a class="gu-chip" data-slugkey="gangwon/pyeongchang">평창군</a>
-      <a class="gu-chip" data-slugkey="gangwon/jeongseon">정선군</a>
-      <a class="gu-chip" data-slugkey="gangwon/cheorwon">철원군</a>
-      <a class="gu-chip" data-slugkey="gangwon/hwacheon">화천군</a>
-      <a class="gu-chip" data-slugkey="gangwon/yanggu">양구군</a>
-      <a class="gu-chip" data-slugkey="gangwon/inje">인제군</a>
-      <a class="gu-chip" data-slugkey="gangwon/goseong">고성군</a>
-      <a class="gu-chip" data-slugkey="gangwon/yangyang">양양군</a>
-    </div>
-  </div>
-  <div class="sido-section collapsed">
-    <div class="sido-header"><span>전북특별자치도</span><span class="toggle"><span class="toggle-arrow">▼</span> 15개 시군구</span></div>
-    <div class="gu-grid">
-      <a class="gu-chip" data-slugkey="jeonbuk/wansan">전주 완산</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/deokjin">전주 덕진</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/gunsan">군산시</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/iksan">익산시</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/jeongeup">정읍시</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/namwon">남원시</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/gimje">김제시</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/wanju">완주군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/jinan">진안군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/muju">무주군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/jangsu">장수군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/imsil">임실군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/sunchang">순창군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/gochang">고창군</a>
-      <a class="gu-chip" data-slugkey="jeonbuk/buan">부안군</a>
-    </div>
-  </div>
+<div class="result-meta" id="result-meta">전국 255개 시군구</div>
 
-  <div class="card-area" id="card-area">
+<div class="sgg-grid" id="sgg-grid">
+  <a class="sgg-card" data-slugkey="seoul/jongno" data-sido="서울특별시" data-name="종로구"><div class="sgg-name">종로구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/jung" data-sido="서울특별시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/yongsan" data-sido="서울특별시" data-name="용산구"><div class="sgg-name">용산구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/seongdong" data-sido="서울특별시" data-name="성동구"><div class="sgg-name">성동구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gwangjin" data-sido="서울특별시" data-name="광진구"><div class="sgg-name">광진구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/dongdaemun" data-sido="서울특별시" data-name="동대문구"><div class="sgg-name">동대문구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/jungnang" data-sido="서울특별시" data-name="중랑구"><div class="sgg-name">중랑구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/seongbuk" data-sido="서울특별시" data-name="성북구"><div class="sgg-name">성북구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gangbuk" data-sido="서울특별시" data-name="강북구"><div class="sgg-name">강북구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/dobong" data-sido="서울특별시" data-name="도봉구"><div class="sgg-name">도봉구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/nowon" data-sido="서울특별시" data-name="노원구"><div class="sgg-name">노원구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/eunpyeong" data-sido="서울특별시" data-name="은평구"><div class="sgg-name">은평구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/seodaemun" data-sido="서울특별시" data-name="서대문구"><div class="sgg-name">서대문구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/mapo" data-sido="서울특별시" data-name="마포구"><div class="sgg-name">마포구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/yangcheon" data-sido="서울특별시" data-name="양천구"><div class="sgg-name">양천구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gangseo" data-sido="서울특별시" data-name="강서구"><div class="sgg-name">강서구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/guro" data-sido="서울특별시" data-name="구로구"><div class="sgg-name">구로구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/geumcheon" data-sido="서울특별시" data-name="금천구"><div class="sgg-name">금천구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/yeongdeungpo" data-sido="서울특별시" data-name="영등포구"><div class="sgg-name">영등포구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/dongjak" data-sido="서울특별시" data-name="동작구"><div class="sgg-name">동작구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gwanak" data-sido="서울특별시" data-name="관악구"><div class="sgg-name">관악구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/seocho" data-sido="서울특별시" data-name="서초구"><div class="sgg-name">서초구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gangnam" data-sido="서울특별시" data-name="강남구"><div class="sgg-name">강남구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/songpa" data-sido="서울특별시" data-name="송파구"><div class="sgg-name">송파구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="seoul/gang-dong" data-sido="서울특별시" data-name="강동구"><div class="sgg-name">강동구</div><div class="sgg-sido">서울</div></a>
+  <a class="sgg-card" data-slugkey="busan/jung" data-sido="부산광역시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/seo" data-sido="부산광역시" data-name="서구"><div class="sgg-name">서구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/dong" data-sido="부산광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/yeongdo" data-sido="부산광역시" data-name="영도구"><div class="sgg-name">영도구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/busanjin" data-sido="부산광역시" data-name="부산진구"><div class="sgg-name">부산진구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/dongnae" data-sido="부산광역시" data-name="동래구"><div class="sgg-name">동래구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/nam" data-sido="부산광역시" data-name="남구"><div class="sgg-name">남구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/buk" data-sido="부산광역시" data-name="북구"><div class="sgg-name">북구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/haeundae" data-sido="부산광역시" data-name="해운대구"><div class="sgg-name">해운대구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/saha" data-sido="부산광역시" data-name="사하구"><div class="sgg-name">사하구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/geumjeong" data-sido="부산광역시" data-name="금정구"><div class="sgg-name">금정구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/gangseo" data-sido="부산광역시" data-name="강서구"><div class="sgg-name">강서구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/yeonje" data-sido="부산광역시" data-name="연제구"><div class="sgg-name">연제구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/suyeong" data-sido="부산광역시" data-name="수영구"><div class="sgg-name">수영구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/sasang" data-sido="부산광역시" data-name="사상구"><div class="sgg-name">사상구</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="busan/gijang" data-sido="부산광역시" data-name="기장군"><div class="sgg-name">기장군</div><div class="sgg-sido">부산</div></a>
+  <a class="sgg-card" data-slugkey="daegu/jung" data-sido="대구광역시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/dong" data-sido="대구광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/seo" data-sido="대구광역시" data-name="서구"><div class="sgg-name">서구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/nam" data-sido="대구광역시" data-name="남구"><div class="sgg-name">남구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/buk" data-sido="대구광역시" data-name="북구"><div class="sgg-name">북구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/suseong" data-sido="대구광역시" data-name="수성구"><div class="sgg-name">수성구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/dalseo" data-sido="대구광역시" data-name="달서구"><div class="sgg-name">달서구</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/dalseong" data-sido="대구광역시" data-name="달성군"><div class="sgg-name">달성군</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="daegu/gunwi" data-sido="대구광역시" data-name="군위군"><div class="sgg-name">군위군</div><div class="sgg-sido">대구</div></a>
+  <a class="sgg-card" data-slugkey="incheon/jung" data-sido="인천광역시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/dong" data-sido="인천광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/michuhol" data-sido="인천광역시" data-name="미추홀구"><div class="sgg-name">미추홀구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/yeonsu" data-sido="인천광역시" data-name="연수구"><div class="sgg-name">연수구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/nam-dong" data-sido="인천광역시" data-name="남동구"><div class="sgg-name">남동구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/bupyeong" data-sido="인천광역시" data-name="부평구"><div class="sgg-name">부평구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/gyeyang" data-sido="인천광역시" data-name="계양구"><div class="sgg-name">계양구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/seo" data-sido="인천광역시" data-name="서구"><div class="sgg-name">서구</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/ganghwa" data-sido="인천광역시" data-name="강화군"><div class="sgg-name">강화군</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="incheon/ongjin" data-sido="인천광역시" data-name="옹진군"><div class="sgg-name">옹진군</div><div class="sgg-sido">인천</div></a>
+  <a class="sgg-card" data-slugkey="gwangju/dong" data-sido="광주광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">광주</div></a>
+  <a class="sgg-card" data-slugkey="gwangju/seo" data-sido="광주광역시" data-name="서구"><div class="sgg-name">서구</div><div class="sgg-sido">광주</div></a>
+  <a class="sgg-card" data-slugkey="gwangju/nam" data-sido="광주광역시" data-name="남구"><div class="sgg-name">남구</div><div class="sgg-sido">광주</div></a>
+  <a class="sgg-card" data-slugkey="gwangju/buk" data-sido="광주광역시" data-name="북구"><div class="sgg-name">북구</div><div class="sgg-sido">광주</div></a>
+  <a class="sgg-card" data-slugkey="gwangju/gwangsan" data-sido="광주광역시" data-name="광산구"><div class="sgg-name">광산구</div><div class="sgg-sido">광주</div></a>
+  <a class="sgg-card" data-slugkey="daejeon/dong" data-sido="대전광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">대전</div></a>
+  <a class="sgg-card" data-slugkey="daejeon/jung" data-sido="대전광역시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">대전</div></a>
+  <a class="sgg-card" data-slugkey="daejeon/seo" data-sido="대전광역시" data-name="서구"><div class="sgg-name">서구</div><div class="sgg-sido">대전</div></a>
+  <a class="sgg-card" data-slugkey="daejeon/yuseong" data-sido="대전광역시" data-name="유성구"><div class="sgg-name">유성구</div><div class="sgg-sido">대전</div></a>
+  <a class="sgg-card" data-slugkey="daejeon/daedeok" data-sido="대전광역시" data-name="대덕구"><div class="sgg-name">대덕구</div><div class="sgg-sido">대전</div></a>
+  <a class="sgg-card" data-slugkey="ulsan/jung" data-sido="울산광역시" data-name="중구"><div class="sgg-name">중구</div><div class="sgg-sido">울산</div></a>
+  <a class="sgg-card" data-slugkey="ulsan/nam" data-sido="울산광역시" data-name="남구"><div class="sgg-name">남구</div><div class="sgg-sido">울산</div></a>
+  <a class="sgg-card" data-slugkey="ulsan/dong" data-sido="울산광역시" data-name="동구"><div class="sgg-name">동구</div><div class="sgg-sido">울산</div></a>
+  <a class="sgg-card" data-slugkey="ulsan/buk" data-sido="울산광역시" data-name="북구"><div class="sgg-name">북구</div><div class="sgg-sido">울산</div></a>
+  <a class="sgg-card" data-slugkey="ulsan/ulju" data-sido="울산광역시" data-name="울주군"><div class="sgg-name">울주군</div><div class="sgg-sido">울산</div></a>
+  <a class="sgg-card" data-slugkey="sejong/sejong" data-sido="세종특별자치시" data-name="세종시"><div class="sgg-name">세종시</div><div class="sgg-sido">세종</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/jangan" data-sido="경기도" data-name="수원 장안"><div class="sgg-name">수원 장안</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gwonseon" data-sido="경기도" data-name="수원 권선"><div class="sgg-name">수원 권선</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/paldal" data-sido="경기도" data-name="수원 팔달"><div class="sgg-name">수원 팔달</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/yondtong" data-sido="경기도" data-name="수원 영통"><div class="sgg-name">수원 영통</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/sujeong" data-sido="경기도" data-name="성남 수정"><div class="sgg-name">성남 수정</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/jungwon" data-sido="경기도" data-name="성남 중원"><div class="sgg-name">성남 중원</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/bundang" data-sido="경기도" data-name="성남 분당"><div class="sgg-name">성남 분당</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/uijeongbu" data-sido="경기도" data-name="의정부시"><div class="sgg-name">의정부시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/manan" data-sido="경기도" data-name="안양 만안"><div class="sgg-name">안양 만안</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/dongan" data-sido="경기도" data-name="안양 동안"><div class="sgg-name">안양 동안</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/wonmi" data-sido="경기도" data-name="부천 원미"><div class="sgg-name">부천 원미</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/sosa" data-sido="경기도" data-name="부천 소사"><div class="sgg-name">부천 소사</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/ojeong" data-sido="경기도" data-name="부천 오정"><div class="sgg-name">부천 오정</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gwangmyeong" data-sido="경기도" data-name="광명시"><div class="sgg-name">광명시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/pyeongtaek" data-sido="경기도" data-name="평택시"><div class="sgg-name">평택시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/dongducheon" data-sido="경기도" data-name="동두천시"><div class="sgg-name">동두천시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/sangnok" data-sido="경기도" data-name="안산 상록"><div class="sgg-name">안산 상록</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/danwon" data-sido="경기도" data-name="안산 단원"><div class="sgg-name">안산 단원</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/deogyang" data-sido="경기도" data-name="고양 덕양"><div class="sgg-name">고양 덕양</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/ilsandong" data-sido="경기도" data-name="고양 일산동"><div class="sgg-name">고양 일산동</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/ilsanseo" data-sido="경기도" data-name="고양 일산서"><div class="sgg-name">고양 일산서</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gwacheon" data-sido="경기도" data-name="과천시"><div class="sgg-name">과천시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/guri" data-sido="경기도" data-name="구리시"><div class="sgg-name">구리시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/namyangju" data-sido="경기도" data-name="남양주시"><div class="sgg-name">남양주시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/osan" data-sido="경기도" data-name="오산시"><div class="sgg-name">오산시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/siheung" data-sido="경기도" data-name="시흥시"><div class="sgg-name">시흥시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gunpo" data-sido="경기도" data-name="군포시"><div class="sgg-name">군포시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/uiwang" data-sido="경기도" data-name="의왕시"><div class="sgg-name">의왕시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/hanam" data-sido="경기도" data-name="하남시"><div class="sgg-name">하남시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/cheoin" data-sido="경기도" data-name="용인 처인"><div class="sgg-name">용인 처인</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/giheung" data-sido="경기도" data-name="용인 기흥"><div class="sgg-name">용인 기흥</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/suji" data-sido="경기도" data-name="용인 수지"><div class="sgg-name">용인 수지</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/paju" data-sido="경기도" data-name="파주시"><div class="sgg-name">파주시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/icheon" data-sido="경기도" data-name="이천시"><div class="sgg-name">이천시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/anseong" data-sido="경기도" data-name="안성시"><div class="sgg-name">안성시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gimpo" data-sido="경기도" data-name="김포시"><div class="sgg-name">김포시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/manse" data-sido="경기도" data-name="화성 만세"><div class="sgg-name">화성 만세</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/hyohaeng" data-sido="경기도" data-name="화성 효행"><div class="sgg-name">화성 효행</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/byeongjeom" data-sido="경기도" data-name="화성 병점"><div class="sgg-name">화성 병점</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/dongtan" data-sido="경기도" data-name="화성 동탄"><div class="sgg-name">화성 동탄</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gwangju" data-sido="경기도" data-name="광주시"><div class="sgg-name">광주시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/yangju" data-sido="경기도" data-name="양주시"><div class="sgg-name">양주시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/pocheon" data-sido="경기도" data-name="포천시"><div class="sgg-name">포천시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/yeoju" data-sido="경기도" data-name="여주시"><div class="sgg-name">여주시</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/yeoncheon" data-sido="경기도" data-name="연천군"><div class="sgg-name">연천군</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/gapyeong" data-sido="경기도" data-name="가평군"><div class="sgg-name">가평군</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gyeonggi/yangpyeong" data-sido="경기도" data-name="양평군"><div class="sgg-name">양평군</div><div class="sgg-sido">경기</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/chuncheon" data-sido="강원특별자치도" data-name="춘천시"><div class="sgg-name">춘천시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/wonju" data-sido="강원특별자치도" data-name="원주시"><div class="sgg-name">원주시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/gangneung" data-sido="강원특별자치도" data-name="강릉시"><div class="sgg-name">강릉시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/donghae" data-sido="강원특별자치도" data-name="동해시"><div class="sgg-name">동해시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/taebaek" data-sido="강원특별자치도" data-name="태백시"><div class="sgg-name">태백시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/sokcho" data-sido="강원특별자치도" data-name="속초시"><div class="sgg-name">속초시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/samcheok" data-sido="강원특별자치도" data-name="삼척시"><div class="sgg-name">삼척시</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/hongcheon" data-sido="강원특별자치도" data-name="홍천군"><div class="sgg-name">홍천군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/hoengseong" data-sido="강원특별자치도" data-name="횡성군"><div class="sgg-name">횡성군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/yeongwol" data-sido="강원특별자치도" data-name="영월군"><div class="sgg-name">영월군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/pyeongchang" data-sido="강원특별자치도" data-name="평창군"><div class="sgg-name">평창군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/jeongseon" data-sido="강원특별자치도" data-name="정선군"><div class="sgg-name">정선군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/cheorwon" data-sido="강원특별자치도" data-name="철원군"><div class="sgg-name">철원군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/hwacheon" data-sido="강원특별자치도" data-name="화천군"><div class="sgg-name">화천군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/yanggu" data-sido="강원특별자치도" data-name="양구군"><div class="sgg-name">양구군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/inje" data-sido="강원특별자치도" data-name="인제군"><div class="sgg-name">인제군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/goseong" data-sido="강원특별자치도" data-name="고성군"><div class="sgg-name">고성군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="gangwon/yangyang" data-sido="강원특별자치도" data-name="양양군"><div class="sgg-name">양양군</div><div class="sgg-sido">강원</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/sangdang" data-sido="충청북도" data-name="청주 상당"><div class="sgg-name">청주 상당</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/seowon" data-sido="충청북도" data-name="청주 서원"><div class="sgg-name">청주 서원</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/heungdeok" data-sido="충청북도" data-name="청주 흥덕"><div class="sgg-name">청주 흥덕</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/cheongwon" data-sido="충청북도" data-name="청주 청원"><div class="sgg-name">청주 청원</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/chungju" data-sido="충청북도" data-name="충주시"><div class="sgg-name">충주시</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/jecheon" data-sido="충청북도" data-name="제천시"><div class="sgg-name">제천시</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/boeun" data-sido="충청북도" data-name="보은군"><div class="sgg-name">보은군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/okcheon" data-sido="충청북도" data-name="옥천군"><div class="sgg-name">옥천군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/yeongdong" data-sido="충청북도" data-name="영동군"><div class="sgg-name">영동군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/jeungpyeong" data-sido="충청북도" data-name="증평군"><div class="sgg-name">증평군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/jincheon" data-sido="충청북도" data-name="진천군"><div class="sgg-name">진천군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/goesan" data-sido="충청북도" data-name="괴산군"><div class="sgg-name">괴산군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/eumseong" data-sido="충청북도" data-name="음성군"><div class="sgg-name">음성군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungbuk/danyang" data-sido="충청북도" data-name="단양군"><div class="sgg-name">단양군</div><div class="sgg-sido">충북</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/dongnam" data-sido="충청남도" data-name="천안 동남"><div class="sgg-name">천안 동남</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/seobuk" data-sido="충청남도" data-name="천안 서북"><div class="sgg-name">천안 서북</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/gongju" data-sido="충청남도" data-name="공주시"><div class="sgg-name">공주시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/boryeong" data-sido="충청남도" data-name="보령시"><div class="sgg-name">보령시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/asan" data-sido="충청남도" data-name="아산시"><div class="sgg-name">아산시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/seosan" data-sido="충청남도" data-name="서산시"><div class="sgg-name">서산시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/nonsan" data-sido="충청남도" data-name="논산시"><div class="sgg-name">논산시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/gyerong" data-sido="충청남도" data-name="계룡시"><div class="sgg-name">계룡시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/dangjin" data-sido="충청남도" data-name="당진시"><div class="sgg-name">당진시</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/geumsan" data-sido="충청남도" data-name="금산군"><div class="sgg-name">금산군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/buyeo" data-sido="충청남도" data-name="부여군"><div class="sgg-name">부여군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/seocheon" data-sido="충청남도" data-name="서천군"><div class="sgg-name">서천군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/cheongyang" data-sido="충청남도" data-name="청양군"><div class="sgg-name">청양군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/hongseong" data-sido="충청남도" data-name="홍성군"><div class="sgg-name">홍성군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/yesan" data-sido="충청남도" data-name="예산군"><div class="sgg-name">예산군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="chungnam/taean" data-sido="충청남도" data-name="태안군"><div class="sgg-name">태안군</div><div class="sgg-sido">충남</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/wansan" data-sido="전북특별자치도" data-name="전주 완산"><div class="sgg-name">전주 완산</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/deokjin" data-sido="전북특별자치도" data-name="전주 덕진"><div class="sgg-name">전주 덕진</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/gunsan" data-sido="전북특별자치도" data-name="군산시"><div class="sgg-name">군산시</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/iksan" data-sido="전북특별자치도" data-name="익산시"><div class="sgg-name">익산시</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/jeongeup" data-sido="전북특별자치도" data-name="정읍시"><div class="sgg-name">정읍시</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/namwon" data-sido="전북특별자치도" data-name="남원시"><div class="sgg-name">남원시</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/gimje" data-sido="전북특별자치도" data-name="김제시"><div class="sgg-name">김제시</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/wanju" data-sido="전북특별자치도" data-name="완주군"><div class="sgg-name">완주군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/jinan" data-sido="전북특별자치도" data-name="진안군"><div class="sgg-name">진안군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/muju" data-sido="전북특별자치도" data-name="무주군"><div class="sgg-name">무주군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/jangsu" data-sido="전북특별자치도" data-name="장수군"><div class="sgg-name">장수군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/imsil" data-sido="전북특별자치도" data-name="임실군"><div class="sgg-name">임실군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/sunchang" data-sido="전북특별자치도" data-name="순창군"><div class="sgg-name">순창군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/gochang" data-sido="전북특별자치도" data-name="고창군"><div class="sgg-name">고창군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonbuk/buan" data-sido="전북특별자치도" data-name="부안군"><div class="sgg-name">부안군</div><div class="sgg-sido">전북</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/mokpo" data-sido="전라남도" data-name="목포시"><div class="sgg-name">목포시</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/yeosu" data-sido="전라남도" data-name="여수시"><div class="sgg-name">여수시</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/suncheon" data-sido="전라남도" data-name="순천시"><div class="sgg-name">순천시</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/naju" data-sido="전라남도" data-name="나주시"><div class="sgg-name">나주시</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/gwangyang" data-sido="전라남도" data-name="광양시"><div class="sgg-name">광양시</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/damyang" data-sido="전라남도" data-name="담양군"><div class="sgg-name">담양군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/gokseong" data-sido="전라남도" data-name="곡성군"><div class="sgg-name">곡성군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/gurye" data-sido="전라남도" data-name="구례군"><div class="sgg-name">구례군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/goheung" data-sido="전라남도" data-name="고흥군"><div class="sgg-name">고흥군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/boseong" data-sido="전라남도" data-name="보성군"><div class="sgg-name">보성군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/hwasun" data-sido="전라남도" data-name="화순군"><div class="sgg-name">화순군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/jangheung" data-sido="전라남도" data-name="장흥군"><div class="sgg-name">장흥군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/gangjin" data-sido="전라남도" data-name="강진군"><div class="sgg-name">강진군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/haenam" data-sido="전라남도" data-name="해남군"><div class="sgg-name">해남군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/yeongam" data-sido="전라남도" data-name="영암군"><div class="sgg-name">영암군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/muan" data-sido="전라남도" data-name="무안군"><div class="sgg-name">무안군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/hampyeong" data-sido="전라남도" data-name="함평군"><div class="sgg-name">함평군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/yeonggwang" data-sido="전라남도" data-name="영광군"><div class="sgg-name">영광군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/jangseong" data-sido="전라남도" data-name="장성군"><div class="sgg-name">장성군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/wando" data-sido="전라남도" data-name="완도군"><div class="sgg-name">완도군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/jindo" data-sido="전라남도" data-name="진도군"><div class="sgg-name">진도군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="jeonnam/sinan" data-sido="전라남도" data-name="신안군"><div class="sgg-name">신안군</div><div class="sgg-sido">전남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/nam" data-sido="경상북도" data-name="포항 남"><div class="sgg-name">포항 남</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/buk" data-sido="경상북도" data-name="포항 북"><div class="sgg-name">포항 북</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/gyeongju" data-sido="경상북도" data-name="경주시"><div class="sgg-name">경주시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/gimcheon" data-sido="경상북도" data-name="김천시"><div class="sgg-name">김천시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/andong" data-sido="경상북도" data-name="안동시"><div class="sgg-name">안동시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/gumi" data-sido="경상북도" data-name="구미시"><div class="sgg-name">구미시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/yeongju" data-sido="경상북도" data-name="영주시"><div class="sgg-name">영주시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/yeongcheon" data-sido="경상북도" data-name="영천시"><div class="sgg-name">영천시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/sangju" data-sido="경상북도" data-name="상주시"><div class="sgg-name">상주시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/mungyeong" data-sido="경상북도" data-name="문경시"><div class="sgg-name">문경시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/gyeongsan" data-sido="경상북도" data-name="경산시"><div class="sgg-name">경산시</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/uiseong" data-sido="경상북도" data-name="의성군"><div class="sgg-name">의성군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/cheongsong" data-sido="경상북도" data-name="청송군"><div class="sgg-name">청송군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/yeongyang" data-sido="경상북도" data-name="영양군"><div class="sgg-name">영양군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/yeongdeok" data-sido="경상북도" data-name="영덕군"><div class="sgg-name">영덕군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/cheongdo" data-sido="경상북도" data-name="청도군"><div class="sgg-name">청도군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/goryeong" data-sido="경상북도" data-name="고령군"><div class="sgg-name">고령군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/seongju" data-sido="경상북도" data-name="성주군"><div class="sgg-name">성주군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/chilgok" data-sido="경상북도" data-name="칠곡군"><div class="sgg-name">칠곡군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/yecheon" data-sido="경상북도" data-name="예천군"><div class="sgg-name">예천군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/bonghwa" data-sido="경상북도" data-name="봉화군"><div class="sgg-name">봉화군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/uljin" data-sido="경상북도" data-name="울진군"><div class="sgg-name">울진군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongbuk/ulleung" data-sido="경상북도" data-name="울릉군"><div class="sgg-name">울릉군</div><div class="sgg-sido">경북</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/uichang" data-sido="경상남도" data-name="창원 의창"><div class="sgg-name">창원 의창</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/seongsan" data-sido="경상남도" data-name="창원 성산"><div class="sgg-name">창원 성산</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/masanhappo" data-sido="경상남도" data-name="창원 마산합포"><div class="sgg-name">창원 마산합포</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/masanhoewon" data-sido="경상남도" data-name="창원 마산회원"><div class="sgg-name">창원 마산회원</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/jinhae" data-sido="경상남도" data-name="창원 진해"><div class="sgg-name">창원 진해</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/jinju" data-sido="경상남도" data-name="진주시"><div class="sgg-name">진주시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/tongyeong" data-sido="경상남도" data-name="통영시"><div class="sgg-name">통영시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/sacheon" data-sido="경상남도" data-name="사천시"><div class="sgg-name">사천시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/gimhae" data-sido="경상남도" data-name="김해시"><div class="sgg-name">김해시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/miryang" data-sido="경상남도" data-name="밀양시"><div class="sgg-name">밀양시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/geoje" data-sido="경상남도" data-name="거제시"><div class="sgg-name">거제시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/yangsan" data-sido="경상남도" data-name="양산시"><div class="sgg-name">양산시</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/uiryeong" data-sido="경상남도" data-name="의령군"><div class="sgg-name">의령군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/haman" data-sido="경상남도" data-name="함안군"><div class="sgg-name">함안군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/changnyeong" data-sido="경상남도" data-name="창녕군"><div class="sgg-name">창녕군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/goseong" data-sido="경상남도" data-name="고성군"><div class="sgg-name">고성군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/namhae" data-sido="경상남도" data-name="남해군"><div class="sgg-name">남해군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/ha-dong" data-sido="경상남도" data-name="하동군"><div class="sgg-name">하동군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/sancheong" data-sido="경상남도" data-name="산청군"><div class="sgg-name">산청군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/hamyang" data-sido="경상남도" data-name="함양군"><div class="sgg-name">함양군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/geochang" data-sido="경상남도" data-name="거창군"><div class="sgg-name">거창군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="gyeongnam/hapcheon" data-sido="경상남도" data-name="합천군"><div class="sgg-name">합천군</div><div class="sgg-sido">경남</div></a>
+  <a class="sgg-card" data-slugkey="jeju/jeju" data-sido="제주특별자치도" data-name="제주시"><div class="sgg-name">제주시</div><div class="sgg-sido">제주</div></a>
+  <a class="sgg-card" data-slugkey="jeju/seogwipo" data-sido="제주특별자치도" data-name="서귀포시"><div class="sgg-name">서귀포시</div><div class="sgg-sido">제주</div></a>
+</div>
+<div class="empty-state" id="empty-state" style="display:none;"><b>일치하는 동네가 없습니다.</b><br>다른 검색어를 시도해 주세요.</div>
+
+<div class="card-area" id="card-area">
     <div class="card-empty">위에서 시군구를 선택하면 카드가 여기에 나타납니다</div>
   </div>
 
@@ -722,7 +685,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       return;
     }
     area.innerHTML = buildCard(rec);
-    document.querySelectorAll('.gu-chip').forEach(function(el) {
+    document.querySelectorAll('.sgg-card').forEach(function(el) {
       el.classList.toggle('active', el.dataset.slugkey === slugKey);
     });
     if (pushState && history.pushState) {
@@ -732,13 +695,9 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     area.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
-  document.querySelectorAll('.sido-header').forEach(function(header) {
-    header.addEventListener('click', function() {
-      header.parentElement.classList.toggle('collapsed');
-    });
-  });
+  
 
-  document.querySelectorAll('.gu-chip').forEach(function(chip) {
+  document.querySelectorAll('.sgg-card').forEach(function(chip) {
     chip.addEventListener('click', function() {
       selectGu(chip.dataset.slugkey, true);
     });
@@ -765,6 +724,72 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       selectGu(resolved, false);
     }
   }
+})();
+
+(function() {
+  var input = document.getElementById('sgg-search');
+  var clearBtn = document.getElementById('sgg-clear');
+  var chipsWrap = document.getElementById('sido-chips');
+  var grid = document.getElementById('sgg-grid');
+  var meta = document.getElementById('result-meta');
+  var empty = document.getElementById('empty-state');
+  var allCards = Array.prototype.slice.call(grid.querySelectorAll('.sgg-card'));
+  var totalCount = allCards.length;
+  var activeSido = '';
+
+  function applyFilter() {
+    var q = (input.value || '').trim().toLowerCase();
+    var visible = 0;
+    for (var i = 0; i < allCards.length; i++) {
+      var card = allCards[i];
+      var sido = card.dataset.sido;
+      var name = card.dataset.name.toLowerCase();
+      var sidoShort = card.querySelector('.sgg-sido').textContent.toLowerCase();
+      var matchSido = !activeSido || sido === activeSido;
+      var matchQ = !q || name.indexOf(q) !== -1 || sido.toLowerCase().indexOf(q) !== -1 || sidoShort.indexOf(q) !== -1;
+      if (matchSido && matchQ) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    }
+    if (visible === 0) {
+      empty.style.display = 'block';
+      meta.style.display = 'none';
+    } else {
+      empty.style.display = 'none';
+      meta.style.display = 'block';
+      if (visible === totalCount) {
+        meta.textContent = '전국 ' + totalCount + '개 시군구';
+      } else {
+        meta.textContent = visible + '개 시군구 표시 중';
+      }
+    }
+    clearBtn.classList.toggle('show', q.length > 0);
+  }
+
+  input.addEventListener('input', applyFilter);
+  clearBtn.addEventListener('click', function() {
+    input.value = '';
+    applyFilter();
+    input.focus();
+  });
+  chipsWrap.addEventListener('click', function(e) {
+    var chip = e.target.closest('.sido-chip');
+    if (!chip) return;
+    var chips = chipsWrap.querySelectorAll('.sido-chip');
+    for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+    chip.classList.add('active');
+    activeSido = chip.dataset.sido;
+    applyFilter();
+    // 활성 칩이 보이게 스크롤
+    var rect = chip.getBoundingClientRect();
+    var wrapRect = chipsWrap.getBoundingClientRect();
+    if (rect.right > wrapRect.right || rect.left < wrapRect.left) {
+      chip.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+    }
+  });
 })();
 </script>
 
