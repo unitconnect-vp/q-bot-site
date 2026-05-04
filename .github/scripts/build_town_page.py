@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 from datetime import datetime
 
-DATA_PATH = Path("town/data/seoul.json")
+DATA_PATH = Path("town/data/all.json")
 OUTPUT = Path("town/index.html")
 
 
