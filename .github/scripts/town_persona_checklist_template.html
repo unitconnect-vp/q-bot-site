@@ -184,14 +184,25 @@ const AUTO_ITEMS = [
   },
   {
     id: 'env', title: '대기 환경',
-    detail: 'PM2.5 시도 평균 25 ㎍/㎥ 이하 (WHO 권고치 가까이)',
+    detail: 'PM2.5 1년 평균 25 ㎍/㎥ 이하 (WHO 연평균 권고치 5, 한국 환경기준 15)',
     check: (rec) => {
       const env = rec.sections.environment;
-      const pm = (env.gu_station || env.sigungu_station || env.sido_avg || env.seoul_avg || {}).pm25;
+      // 우선순위: 1년 평균 (KOSIS) > 시군구 측정소 > 시도 실시간 평균
+      let pm = null, source = null, period = null;
+      if (env.pm25_yearly && env.pm25_yearly.pm25_yearly != null) {
+        pm = env.pm25_yearly.pm25_yearly;
+        source = '1년 평균';
+        period = env.pm25_yearly.period;
+      } else {
+        pm = (env.gu_station || env.sigungu_station || env.sido_avg || env.seoul_avg || {}).pm25;
+        source = '시도 실시간';
+      }
       if (pm == null) return { status: 'unknown', text: '측정 데이터 없음' };
-      if (pm <= 15) return { status: 'passed', text: `PM2.5 ${pm} ㎍/㎥ — 양호` };
-      if (pm <= 25) return { status: 'passed', text: `PM2.5 ${pm} ㎍/㎥ — 보통` };
-      return { status: 'failed', text: `PM2.5 ${pm} ㎍/㎥ — WHO 권고치 초과` };
+      const periodTxt = period ? ` (${period})` : '';
+      if (pm <= 15) return { status: 'passed', text: `PM2.5 ${pm} ㎍/㎥ ${source}${periodTxt} — 양호` };
+      if (pm <= 25) return { status: 'passed', text: `PM2.5 ${pm} ㎍/㎥ ${source}${periodTxt} — 보통` };
+      if (pm <= 35) return { status: 'failed', text: `PM2.5 ${pm} ㎍/㎥ ${source}${periodTxt} — 환경기준 초과` };
+      return { status: 'failed', text: `PM2.5 ${pm} ㎍/㎥ ${source}${periodTxt} — WHO 권고치 크게 초과` };
     },
   },
   {
