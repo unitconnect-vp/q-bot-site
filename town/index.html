@@ -98,10 +98,6 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .kv-cell.label { color: #64748b; }
 .kv-cell.val { color: #0f172a; font-weight: 600; font-variant-numeric: tabular-nums; }
 .kv-cell.val.highlight { color: #3182f6; }
-.insight { background: #f8fafc; border-left: 4px solid #60a5fa; padding: 16px 20px; margin: 20px 0; border-radius: 0 4px 4px 0; }
-.insight-tag { font-size: 11px; font-weight: 700; color: #3182f6; letter-spacing: 0.1em; margin-bottom: 6px; }
-.insight p { font-size: 14px; color: #0f172a; line-height: 1.65; }
-.insight p b { font-weight: 700; }
 .source { font-size: 11px; color: #94a3b8; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
 footer { border-top: 1px solid #e5e7eb; padding: 32px 0 48px; font-size: 12px; color: #94a3b8; text-align: center; margin-top: 80px; }
 footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
@@ -487,72 +483,6 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     });
   }
 
-  function insightRealEstate(rec) {
-    var t = rec.sections.real_estate_trade || {};
-    var r = rec.sections.real_estate_rent || {};
-    var ppy = t.median_price_per_pyeong_man;
-    var monthly = t.monthly_count_avg;
-    var jeonse = r.median_jeonse_man;
-    var trade = t.median_deal_amount_man;
-    var ratio = (jeonse && trade) ? Math.round(jeonse / trade * 1000) / 10 : null;
-    var parts = [];
-    if (ppy) parts.push(rec.name + ' 아파트 평당가 중앙값은 <b>' + fmtNum(ppy) + '만원</b>');
-    if (monthly) parts.push('월평균 매매 거래는 <b>' + Math.round(monthly) + '건</b>');
-    if (ratio) parts.push('전세 중앙값 대비 매매 중앙값 비율은 <b>약 ' + ratio + '%</b>');
-    if (parts.length === 0) return '거래 데이터가 부족해 분석을 보류합니다.';
-    return parts.join(', ') + '입니다.';
-  }
-  function insightEnvironment(rec) {
-    var env = rec.sections.environment || {};
-    var avg = env.sido_avg || env.seoul_avg || {};
-    var gu = env.gu_station || env.gangnam_station;
-    var sidoLabel = rec.sido_name + ' 평균';
-    if (gu && gu.pm25 !== null && avg.pm25 !== null) {
-      var cmp = gu.pm25 < avg.pm25 ? '낮습니다' : (gu.pm25 > avg.pm25 ? '높습니다' : '같습니다');
-      return env.measured_at + ' 기준 PM2.5는 ' + sidoLabel + '(<b>' + avg.pm25 + '</b>)보다 ' + rec.name + '(<b>' + gu.pm25 + '</b>)이 ' + cmp + '. 단일 시점 측정값입니다.';
-    }
-    if (avg.pm25 !== null) {
-      return env.measured_at + ' 기준 ' + sidoLabel + ' PM2.5는 <b>' + avg.pm25 + ' µg</b>. ' + rec.name + ' 측정소는 다음 페치에 보강됩니다.';
-    }
-    return '환경 데이터를 받아오는 중입니다.';
-  }
-  function insightMedical(rec) {
-    var m = rec.sections.medical || {};
-    var t = m.sgg_count || 0;
-    var byType = m.by_type || {};
-    var eui = byType['의원'] || 0;
-    var sang = byType['상급종합'] || 0;
-    var jong = byType['종합병원'] || 0;
-    if (!t) return rec.name + '의 의료기관 데이터를 수집 중입니다.';
-    return rec.name + '에는 의료기관 <b>' + fmtNum(t) + '곳</b>이 있습니다. 의원 <b>' + fmtNum(eui) + '곳</b>, 상급종합 ' + sang + '곳, 종합병원 ' + jong + '곳.';
-  }
-  function insightEducation(rec) {
-    var e = rec.sections.education || {};
-    var t = e.sgg_count || 0;
-    var by = e.by_type || {};
-    if (!t) return rec.name + '의 학교 데이터를 수집 중입니다.';
-    return rec.name + ' 정규 학교는 <b>' + t + '개</b> (초 <b>' + (by['초등학교'] || 0) + '</b> · 중 <b>' + (by['중학교'] || 0) + '</b> · 고 <b>' + (by['고등학교'] || 0) + '</b>). 학원·교습소 데이터는 곧 추가됩니다.';
-  }
-  function insightPopulation(rec) {
-    var p = rec.sections.population || {};
-    var g = p.sgg_total || p.gangnam_total;
-    var sido = p.sido_total || p.seoul_total;
-    var share = p.share_of_sido_pct || p.share_of_seoul_pct;
-    var period = p.period;
-    var sidoCount = (DATA.sido_list || []).find(function(s) { return s.code === rec.sido_code; });
-    var nGu = sidoCount ? sidoCount.count : 0;
-    if (!g) return rec.name + '의 인구 데이터를 수집 중입니다.';
-    var periodStr = '';
-    if (period && period.length === 6) periodStr = period.substr(0,4) + '년 ' + parseInt(period.substr(4),10) + '월 ';
-    var avgGu = (sido && nGu) ? Math.round(sido / nGu) : null;
-    var ratioText = '';
-    if (avgGu && g) {
-      var ratio = Math.round(g / avgGu * 100) / 100;
-      ratioText = ' ' + rec.sido_name + ' ' + nGu + '개 시군구 평균(<b>' + fmtNum(avgGu) + '명</b>) 대비 <b>' + ratio + '배</b>.';
-    }
-    return periodStr + '기준 ' + rec.name + ' 인구는 <b>' + fmtNum(g) + '명</b>. ' + rec.sido_name + ' 전체의 <b>' + share + '%</b>를 차지합니다.' + ratioText;
-  }
-
   function renderBar(label, value, max, unit, accent) {
     var p = pct(value, max);
     var cls = accent ? 'bar-fill accent' : 'bar-fill';
@@ -649,31 +579,26 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       + '<div class="section-num">01 — 부동산</div><h2>집값과 거래의 흐름</h2>'
       + '<p class="section-sub">최근 3개월 아파트 매매·전월세 실거래.</p>'
       + renderRealEstate(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightRealEstate(rec) + '</p></div>'
       + '<div class="source">출처: 국토교통부 실거래가 공개시스템</div></section>'
       + '<section class="section">'
       + '<div class="section-num">02 — 환경</div><h2>공기와 측정값</h2>'
       + '<p class="section-sub">에어코리아 시도/측정소 실시간.</p>'
       + renderEnvironment(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightEnvironment(rec) + '</p></div>'
       + '<div class="source">출처: 한국환경공단 에어코리아</div></section>'
       + '<section class="section">'
       + '<div class="section-num">03 — 의료</div><h2>병원·의원 분포</h2>'
       + '<p class="section-sub">시군구 내 의료기관 종별.</p>'
       + renderMedical(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightMedical(rec) + '</p></div>'
       + '<div class="source">출처: 건강보험심사평가원</div></section>'
       + '<section class="section">'
       + '<div class="section-num">04 — 교육</div><h2>학교 분포</h2>'
       + '<p class="section-sub">시군구 내 정규 학교.</p>'
       + renderEducation(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightEducation(rec) + '</p></div>'
       + '<div class="source">출처: 교육부 NEIS</div></section>'
       + '<section class="section">'
       + '<div class="section-num">05 — 인구</div><h2>누가 살고 있나</h2>'
       + '<p class="section-sub">행정안전부 주민등록인구 — 동네의 골격.</p>'
       + renderPopulation(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightPopulation(rec) + '</p></div>'
       + '<div class="source">출처: 통계청 KOSIS · 주민등록인구 (DT_1B040A3)</div></section>';
   }
 
