@@ -34,7 +34,7 @@ SIDO_META = {
     "52": ("전북특별자치도", "jeonbuk","전북", ["350000", "450000"], "P10"),
 }
 
-OUTPUT_INTEGRATED = Path("town/data/seoul.json")
+OUTPUT_INTEGRATED = Path("town/data/all.json")
 TIMEOUT = 30
 
 
