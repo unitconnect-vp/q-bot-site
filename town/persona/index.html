@@ -132,7 +132,10 @@ select {
 .contrib-bar.low { background: #fb923c; }
 .contrib-num { text-align: right; color: #6b7280; font-variant-numeric: tabular-nums; font-weight: 600; }
 
-.ranking { margin-top: 20px; }
+.ranking { margin-top: 12px; }
+.rank-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 28px 0 4px; flex-wrap: wrap; }
+.rank-sido-select { width: auto; min-width: 140px; max-width: 180px; padding: 7px 10px; font-size: 0.82rem; border: 1px solid #e5e7eb; border-radius: 4px; background: #fff; font-family: inherit; }
+#rank-scope-label { color: #3182f6; }
 .rank-item {
   display: grid; grid-template-columns: 28px 1fr auto 56px;
   align-items: center; gap: 12px; padding: 10px 4px;
@@ -219,7 +222,10 @@ footer.site-footer {
   </div>
 </div>
 
-<span class="section-label">전국 TOP 10 — 같은 페르소나·슬라이더 기준</span>
+<div class="rank-header">
+  <span class="section-label" style="margin:0;">TOP 10 — <span id="rank-scope-label">전국</span></span>
+  <select id="rank-sido" class="rank-sido-select"><option value="">전국</option></select>
+</div>
 <div class="ranking" id="ranking"></div>
 
 <div class="note"><b>점수 산출 방식:</b> 각 지표를 인구 그룹(A=30만+, B=10~30만, C=10만 미만) 내에서 percentile 산출 후, 페르소나 가중치로 합산. 슬라이더는 도심·전원 그룹에 ±15점 가산점/감산점 부여.</div>
@@ -383,9 +389,10 @@ class PersonaScoreEngine {
     }
     return contribs.sort((a, b) => b.contribution - a.contribution);
   }
-  ranking(persona, t, limit = 20) {
+  ranking(persona, t, limit = 20, sidoCode = null) {
     const scored = [];
     for (const r of this.records) {
+      if (sidoCode && r.sido_code !== sidoCode) continue;
       const s = this.score(r.slug, persona, t);
       if (s == null) continue;
       scored.push({ slug: r.slug, name: r.name, sido: r.sido_name, group: this.groupMap.get(r.slug), score: s });
@@ -414,6 +421,7 @@ let state = {
   persona: '자녀가족',
   t: 60,
   selected: [],
+  rankSido: '',
 };
 
 function fmtMan(v) {
@@ -450,10 +458,33 @@ async function init() {
   setupPersona();
   setupSlider();
   setupAddRow();
+  setupRankSido();
 
   // 기본 선택: 강남
   if (RECORDS['seoul/gangnam']) addSlug('seoul/gangnam');
   render();
+}
+
+function setupRankSido() {
+  const sel = document.getElementById('rank-sido');
+  for (const s of DATA.sido_list) {
+    const opt = document.createElement('option');
+    opt.value = s.code;
+    opt.textContent = s.name;
+    sel.appendChild(opt);
+  }
+  sel.addEventListener('change', () => {
+    state.rankSido = sel.value;
+    renderRanking();
+    updateRankScopeLabel();
+  });
+}
+
+function updateRankScopeLabel() {
+  const label = document.getElementById('rank-scope-label');
+  if (!state.rankSido) { label.textContent = '전국'; return; }
+  const s = DATA.sido_list.find(x => x.code === state.rankSido);
+  label.textContent = s ? s.name : '전국';
 }
 
 function setupPersona() {
@@ -529,6 +560,16 @@ function setupAddRow() {
 function addSlug(slug) {
   if (state.selected.includes(slug)) return;
   if (state.selected.length >= 5) return;
+  // 첫 추가 시 그 시도를 랭킹 default로 (사용자가 명시적으로 바꾸기 전까지)
+  if (state.selected.length === 0 && !state.rankSido) {
+    const r = RECORDS[slug];
+    if (r && r.sido_code) {
+      state.rankSido = r.sido_code;
+      const sel = document.getElementById('rank-sido');
+      if (sel) sel.value = r.sido_code;
+      updateRankScopeLabel();
+    }
+  }
   state.selected.push(slug);
   render();
 }
@@ -684,9 +725,13 @@ function renderContributions() {
 }
 
 function renderRanking() {
-  const ranking = engine.ranking(state.persona, state.t, 10);
+  const ranking = engine.ranking(state.persona, state.t, 10, state.rankSido || null);
   const rWrap = document.getElementById('ranking');
   rWrap.innerHTML = '';
+  if (ranking.length === 0) {
+    rWrap.innerHTML = '<div style="color:#9ca3af;text-align:center;padding:20px 0;font-size:0.9rem;">이 지역에 데이터가 없습니다.</div>';
+    return;
+  }
   for (const [i, r] of ranking.entries()) {
     const row = document.createElement('div');
     row.className = 'rank-item';
