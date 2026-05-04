@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>거주지 의사결정 도구 — Q렌즈</title>
-<meta name="description" content="페르소나와 도시·전원 선호로 전국 255개 시군구를 비교하는 거주지 의사결정 도구. 인구·부동산·교육·의료·환경 데이터 기반.">
+<meta name="description" content="페르소나와 도시·전원 선호로 전국 255개 시군구를 한눈에 비교하는 거주지 의사결정 도구. 인구·부동산·교육·의료·환경 데이터 기반. 최대 5개 동네 동시 비교.">
 <meta property="og:title" content="거주지 의사결정 도구 — Q렌즈">
-<meta property="og:description" content="페르소나와 도시·전원 선호로 전국 255개 시군구를 비교하는 거주지 의사결정 도구.">
+<meta property="og:description" content="여러 동네를 한눈에 비교하는 거주지 의사결정 도구. 페르소나와 도시·전원 선호도로 전국 255개 시군구를 동시에 평가합니다.">
 <meta property="og:url" content="https://q-bot.kr/town/persona/">
 <meta property="og:type" content="website">
 <link rel="canonical" href="https://q-bot.kr/town/persona/">
@@ -50,9 +50,9 @@ h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom
   display: block; font-size: 0.78rem; color: #6b7280; font-weight: 700;
   letter-spacing: 0.06em; text-transform: uppercase; margin: 28px 0 12px;
 }
-.persona-row {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
-}
+.section-label .hint { font-weight: 500; text-transform: none; letter-spacing: 0; color: #9ca3af; margin-left: 8px; }
+
+.persona-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .persona-card {
   border: 1px solid #e5e7eb; border-radius: 4px; padding: 14px 8px;
   text-align: center; cursor: pointer; background: #fff;
@@ -61,76 +61,99 @@ h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom
 .persona-card:hover { border-color: #3182f6; }
 .persona-card.active { background: #3182f6; color: #fff; border-color: #3182f6; }
 .persona-default-t { font-size: 0.72rem; opacity: 0.75; margin-top: 2px; font-weight: 400; }
+
 .slider-wrap { padding: 16px 4px 8px; }
-.slider-labels {
-  display: flex; justify-content: space-between;
-  font-size: 0.78rem; color: #6b7280; margin-bottom: 8px; font-weight: 600;
-}
+.slider-labels { display: flex; justify-content: space-between; font-size: 0.78rem; color: #6b7280; margin-bottom: 8px; font-weight: 600; }
 .slider-labels b { color: #0a0a0a; }
 input[type="range"] { width: 100%; accent-color: #3182f6; height: 24px; }
 .slider-value { text-align: center; font-size: 0.85rem; color: #6b7280; margin-top: 4px; }
+
 select {
   width: 100%; padding: 12px 14px; font-size: 0.95rem;
   border: 1px solid #e5e7eb; border-radius: 4px; font-family: inherit; background: #fff;
 }
+.add-row { display: grid; grid-template-columns: 1fr 1fr auto; gap: 8px; align-items: stretch; }
+.add-row select { padding: 11px 12px; font-size: 0.9rem; }
+.add-btn {
+  padding: 0 18px; font-size: 0.92rem; font-weight: 700;
+  background: #3182f6; color: #fff; border: none; border-radius: 4px; cursor: pointer;
+  transition: background 0.15s;
+}
+.add-btn:hover { background: #2563eb; }
+.add-btn:disabled { background: #d1d5db; cursor: not-allowed; }
+.add-hint { font-size: 0.8rem; color: #9ca3af; margin-top: 8px; }
 
-.result-card {
-  border: 1px solid #e5e7eb; border-radius: 4px; padding: 24px;
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; min-height: 32px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 6px 6px 12px; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 600;
+  color: #fff; user-select: none;
+}
+.chip-x {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(255,255,255,0.25); cursor: pointer;
+  font-size: 14px; line-height: 1;
+}
+.chip-x:hover { background: rgba(255,255,255,0.4); }
+.chip-empty { color: #9ca3af; font-size: 0.85rem; padding: 6px 0; }
+
+.compare-card {
+  border: 1px solid #e5e7eb; border-radius: 4px; padding: 20px;
   margin-top: 12px; background: #fafafa;
 }
-.score-big {
-  font-size: 3.5rem; font-weight: 800; color: #3182f6;
-  letter-spacing: -0.03em; line-height: 1;
-}
-.score-suffix { font-size: 1.4rem; color: #6b7280; font-weight: 600; }
-.score-name { font-size: 1.1rem; font-weight: 700; margin: 6px 0 2px; }
-.score-meta { font-size: 0.85rem; color: #6b7280; }
-.contributions { margin-top: 20px; }
-.contributions-title { font-size: 0.78rem; color: #6b7280; margin-bottom: 8px; font-weight: 700; }
-.contrib-row {
-  display: grid; grid-template-columns: 100px 1fr 60px;
-  align-items: center; gap: 12px; padding: 6px 0; font-size: 0.88rem;
-}
+.compare-empty { color: #9ca3af; text-align: center; padding: 24px 0; font-size: 0.9rem; }
+
+.cmp-bar-row { display: grid; grid-template-columns: 100px 1fr 56px; align-items: center; gap: 12px; padding: 8px 0; }
+.cmp-bar-name { font-size: 0.88rem; font-weight: 600; color: #0a0a0a; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cmp-bar-track { height: 18px; background: #fff; border-radius: 4px; overflow: hidden; border: 1px solid #e5e7eb; }
+.cmp-bar-fill { height: 100%; transition: width 0.25s; border-radius: 3px; }
+.cmp-bar-num { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; font-size: 1rem; }
+
+.cmp-table-wrap { margin-top: 24px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.cmp-table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: 0.82rem; }
+.cmp-table th, .cmp-table td { padding: 8px 10px; text-align: right; border-bottom: 1px solid #e5e7eb; font-variant-numeric: tabular-nums; }
+.cmp-table th:first-child, .cmp-table td:first-child { text-align: left; }
+.cmp-table thead th { font-size: 0.72rem; color: #6b7280; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; border-bottom: 1.5px solid #d1d5db; }
+.cmp-table tbody tr:last-child td { border-bottom: none; }
+.cmp-table .name-cell { font-weight: 700; }
+.cmp-table .swatch { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+.cmp-table .best { color: #16a34a; font-weight: 700; }
+.cmp-table .worst { color: #dc2626; }
+
+.contributions-block { margin-top: 24px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
+.contributions-block-title { font-size: 0.82rem; color: #4b5563; margin-bottom: 10px; font-weight: 700; }
+.contributions-block-hint { font-size: 0.78rem; color: #9ca3af; margin-bottom: 8px; }
+.contrib-row { display: grid; grid-template-columns: 110px 1fr 60px; align-items: center; gap: 12px; padding: 5px 0; font-size: 0.85rem; }
 .contrib-key { color: #374151; font-weight: 600; }
-.contrib-bar-wrap {
-  height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden;
-}
+.contrib-bar-wrap { height: 8px; background: #e5e7eb; border-radius: 4px; overflow: hidden; }
 .contrib-bar { height: 100%; background: #3182f6; transition: width 0.2s; }
 .contrib-bar.low { background: #fb923c; }
-.contrib-num { text-align: right; color: #6b7280; font-variant-numeric: tabular-nums; }
-
-.raw-data {
-  margin-top: 20px; padding-top: 20px; border-top: 1px solid #e5e7eb;
-}
-.raw-data-title { font-size: 0.78rem; color: #6b7280; margin-bottom: 12px; font-weight: 700; }
-.raw-grid {
-  display: grid; grid-template-columns: repeat(2, 1fr);
-  gap: 12px; font-size: 0.85rem;
-}
-.raw-item { background: #fff; padding: 10px 12px; border-radius: 4px; border: 1px solid #e5e7eb; }
-.raw-label { color: #6b7280; font-size: 0.75rem; margin-bottom: 4px; }
-.raw-value { font-weight: 700; font-variant-numeric: tabular-nums; }
+.contrib-num { text-align: right; color: #6b7280; font-variant-numeric: tabular-nums; font-weight: 600; }
 
 .ranking { margin-top: 20px; }
 .rank-item {
-  display: grid; grid-template-columns: 28px 1fr 56px;
-  align-items: center; gap: 12px; padding: 10px 0;
+  display: grid; grid-template-columns: 28px 1fr auto 56px;
+  align-items: center; gap: 12px; padding: 10px 4px;
   border-bottom: 1px solid #f3f4f6; cursor: pointer;
 }
 .rank-item:hover { background: #f9fafb; }
 .rank-num { color: #6b7280; font-weight: 700; }
 .rank-name { font-weight: 600; }
 .rank-meta { font-size: 0.8rem; color: #6b7280; }
+.rank-add { font-size: 0.78rem; color: #3182f6; font-weight: 700; padding: 4px 10px; border: 1px solid #3182f6; border-radius: 4px; background: #fff; }
+.rank-add.added { color: #6b7280; border-color: #d1d5db; }
 .rank-score { text-align: right; font-weight: 700; color: #3182f6; }
-.rank-item.selected { background: #eff6ff; padding: 10px 12px; border-radius: 4px; border-bottom: none; }
 
-.note {
-  margin-top: 32px; padding: 16px;
-  background: #f9fafb; border-left: 3px solid #3182f6;
-  font-size: 0.85rem; color: #4b5563; border-radius: 0 4px 4px 0;
-}
+.note { margin-top: 32px; padding: 16px; background: #f9fafb; border-left: 3px solid #3182f6; font-size: 0.85rem; color: #4b5563; border-radius: 0 4px 4px 0; }
 .note b { color: #0a0a0a; }
 .note + .note { margin-top: 12px; }
+
+.loading-state { padding: 60px 20px; text-align: center; color: #6b7280; font-size: 0.95rem; }
+.loading-state .spinner { display: inline-block; width: 28px; height: 28px; border: 3px solid #e5e7eb; border-top-color: #3182f6; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 12px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.error-state { padding: 24px; text-align: center; color: #dc2626; background: #fef2f2; border-radius: 4px; font-size: 0.9rem; }
 
 footer.site-footer {
   border-top: 1px solid #f3f4f6;
@@ -153,8 +176,13 @@ footer.site-footer {
 <main>
 
 <h1>거주지 의사결정 도구</h1>
-<p class="lead">페르소나와 도시·전원 선호도로 전국 255개 시군구를 비교합니다. 인구·부동산·교육·의료·환경 5개 영역의 정부 공공데이터를 인구 그룹 내에서 표준화한 점수 기반.</p>
+<p class="lead">페르소나와 도시·전원 선호도로 전국 255개 시군구를 한눈에 비교합니다. 최대 5개 동네를 동시에 평가하고, 점수와 핵심 지표를 나란히 놓고 봅니다.</p>
 
+<div id="app-shell">
+  <div class="loading-state" id="loading"><div class="spinner"></div><div>전국 시군구 데이터를 불러오는 중…</div></div>
+</div>
+
+<template id="tpl-app">
 <span class="section-label">1. 페르소나 — 라이프스타일 가중치</span>
 <div class="persona-row" id="persona-row"></div>
 
@@ -165,49 +193,38 @@ footer.site-footer {
   <div class="slider-value">현재: <b id="slider-val">60</b></div>
 </div>
 
-<span class="section-label">3. 시군구 선택</span>
-<select id="sgg-select"></select>
-
-<span class="section-label">결과</span>
-<div class="result-card">
-  <div>
-    <span class="score-big" id="score-num">—</span>
-    <span class="score-suffix">점</span>
-  </div>
-  <div class="score-name" id="score-name">—</div>
-  <div class="score-meta" id="score-meta">—</div>
-  
-  <div class="contributions">
-    <div class="contributions-title">지표별 기여도 (그룹 내 percentile × 가중치)</div>
-    <div id="contributions"></div>
-  </div>
-  
-  <div class="raw-data">
-    <div class="raw-data-title">원본 데이터</div>
-    <div class="raw-grid" id="raw-data"></div>
-  </div>
+<span class="section-label">3. 비교할 동네 추가 <span class="hint">최대 5개</span></span>
+<div class="add-row">
+  <select id="sido-select"></select>
+  <select id="sgg-select"><option value="">시군구 선택</option></select>
+  <button class="add-btn" id="add-btn" disabled>추가</button>
 </div>
+<div class="add-hint">시도와 시군구를 골라 "추가"를 누르거나, 아래 전국 TOP 10에서 바로 추가하세요.</div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px;">
-  <a href="/town/persona/compare/" style="display:flex;flex-direction:column;justify-content:center;background:#fff;color:#3182f6;padding:14px 16px;border-radius:4px;text-decoration:none;border:1.5px solid #3182f6;font-weight:700;font-size:0.9rem;line-height:1.3;">
-    <span>두 동네 비교 →</span>
-    <span style="opacity:0.7;font-weight:500;font-size:0.78rem;margin-top:2px;">A vs B 동시 평가</span>
-  </a>
-  <a href="/town/persona/checklist/" style="display:flex;flex-direction:column;justify-content:center;background:#fff;color:#f97316;padding:14px 16px;border-radius:4px;text-decoration:none;border:1.5px solid #f97316;font-weight:700;font-size:0.9rem;line-height:1.3;">
-    <span>이사 전 12가지 →</span>
-    <span style="opacity:0.7;font-weight:500;font-size:0.78rem;margin-top:2px;">의사결정 체크리스트</span>
-  </a>
+<div class="chip-row" id="chip-row"></div>
+
+<span class="section-label">결과 — 점수 비교</span>
+<div class="compare-card" id="compare-card">
+  <div class="compare-empty" id="compare-empty">왼쪽에서 동네를 추가하면 여기에 점수와 지표 비교가 나타납니다.</div>
+  <div id="compare-content" style="display:none;">
+    <div id="cmp-bars"></div>
+    <div class="cmp-table-wrap">
+      <table class="cmp-table" id="cmp-table"></table>
+    </div>
+    <div class="contributions-block" id="contrib-block" style="display:none;">
+      <div class="contributions-block-title">첫 동네 — 지표별 기여도</div>
+      <div class="contributions-block-hint">그룹 내 percentile × 페르소나 가중치. "왜 이 점수인가"가 이 표에서 풀립니다.</div>
+      <div id="contributions"></div>
+    </div>
+  </div>
 </div>
 
 <span class="section-label">전국 TOP 10 — 같은 페르소나·슬라이더 기준</span>
 <div class="ranking" id="ranking"></div>
 
-<div class="note">
-<b>점수 산출 방식:</b> 각 지표를 인구 그룹(A=30만+, B=10~30만, C=10만 미만) 내에서 percentile 산출 후, 페르소나 가중치로 합산. 슬라이더는 도심·전원 그룹에 ±15점 가산점/감산점 부여.
-</div>
-<div class="note">
-<b>왜 페르소나·슬라이더 두 개인가:</b> 페르소나는 "무엇이 중요한가"(학교·의료·환경 가중치). 슬라이더는 "어떤 분위기 동네인가"(대도시·소도시·시골). 두 축이 분리되어야 사용자가 "30대 부부가 자녀 학교 보내며 도심 살고 싶다" 같은 실제 의사결정에 가까운 결과를 얻음.
-</div>
+<div class="note"><b>점수 산출 방식:</b> 각 지표를 인구 그룹(A=30만+, B=10~30만, C=10만 미만) 내에서 percentile 산출 후, 페르소나 가중치로 합산. 슬라이더는 도심·전원 그룹에 ±15점 가산점/감산점 부여.</div>
+<div class="note"><b>왜 페르소나·슬라이더 두 개인가:</b> 페르소나는 "무엇이 중요한가"(학교·의료·환경 가중치). 슬라이더는 "어떤 분위기 동네인가"(대도시·소도시·시골). 두 축이 분리되어야 사용자가 "30대 부부가 자녀 학교 보내며 도심 살고 싶다" 같은 실제 의사결정에 가까운 결과를 얻음.</div>
+</template>
 
 </main>
 
@@ -219,12 +236,7 @@ Q-Lens · q-bot.kr · <a href="/about/" style="color:inherit;">소개</a> · <a 
 /*!
  * persona_score_v3.js
  * 거주지 의사결정 도구 — 페르소나 점수 함수 (브라우저 사이드)
- * 
- * 사용:
- *   const engine = new PersonaScoreEngine(records);  // 한 번만 호출 (그룹별 percentile 사전 계산)
- *   engine.score('seoul/gangnam', '자녀가족', 60);   // 슬라이더 조작 시마다 호출 (가벼움)
  */
-
 const WEIGHTS = {
   '신혼':     { price_value: 25, rent_value: 15, school_density: 5, biz_convenience: 10, medical_access: 10, environment: 20, population_vitality: 10, life_stability: 0 },
   '자녀가족': { price_value: 15, rent_value: 10, school_density: 30, biz_convenience: 5, medical_access: 15, environment: 15, population_vitality: 0, life_stability: 10 },
@@ -233,7 +245,7 @@ const WEIGHTS = {
 };
 
 const PERSONA_DEFAULT_T = { '신혼': 50, '자녀가족': 60, '은퇴': 40, '1인가구': 70 };
-const UNAVAILABLE = new Set(['biz_convenience', 'life_stability']);  // v3.1: population_vitality 활성화
+const UNAVAILABLE = new Set(['biz_convenience', 'life_stability']);
 const INVERSE_METRICS = new Set(['price_value', 'rent_value', 'environment']);
 
 const populationGroup = (pop) => {
@@ -242,9 +254,8 @@ const populationGroup = (pop) => {
   if (pop >= 100000) return 'B';
   return 'C';
 };
-
 const groupBonus = (t, group) => {
-  const delta = (t - 50) / 50;  // -1 ~ +1
+  const delta = (t - 50) / 50;
   if (group === 'A') return delta * 15;
   if (group === 'B') return delta * 5;
   if (group === 'C') return -delta * 15;
@@ -256,7 +267,6 @@ class PersonaScoreEngine {
     this.records = records;
     this._precompute();
   }
-  
   _extractMetrics(record) {
     const s = record.sections || {};
     const pop = (s.population || {}).sgg_total || 0;
@@ -265,14 +275,11 @@ class PersonaScoreEngine {
     const env = s.environment || {};
     const med = s.medical || {};
     const edu = s.education || {};
-    
     let pm25 = null;
     const guSt = env.gu_station || env.sigungu_station;
     if (guSt && typeof guSt === 'object' && guSt.pm25 != null) pm25 = guSt.pm25;
     else if (env.seoul_avg && typeof env.seoul_avg === 'object') pm25 = env.seoul_avg.pm25;
     else if (env.sido_avg && typeof env.sido_avg === 'object') pm25 = env.sido_avg.pm25;
-    
-    // v3.1: 인구 활력 = 20·30·40대 비율 합 (생산연령 핵심)
     let vitality = null;
     const pageAge = s.population_age;
     if (pageAge && pageAge.shares) {
@@ -280,7 +287,6 @@ class PersonaScoreEngine {
       const sum = (sh['20s'] || 0) + (sh['30s'] || 0) + (sh['40s'] || 0);
       if (sum > 0) vitality = sum;
     }
-    
     return {
       population: pop,
       price_value: trade.median_price_per_pyeong_man ?? null,
@@ -291,22 +297,16 @@ class PersonaScoreEngine {
       population_vitality: vitality,
     };
   }
-  
   _precompute() {
-    // 1. 모든 record의 metrics 추출
-    this.metrics = new Map();  // slug → metrics
-    this.groupMap = new Map(); // slug → 'A'/'B'/'C'
-    
+    this.metrics = new Map();
+    this.groupMap = new Map();
     for (const r of this.records) {
       const m = this._extractMetrics(r);
       this.metrics.set(r.slug, m);
       this.groupMap.set(r.slug, populationGroup(m.population));
     }
-    
-    // 2. 그룹별 분포 (정렬된 배열) 사전 계산
     this.groupDist = { A: {}, B: {}, C: {}, X: {} };
     const keys = ['price_value', 'rent_value', 'school_density', 'medical_access', 'environment', 'population_vitality'];
-    
     for (const r of this.records) {
       const m = this.metrics.get(r.slug);
       const g = this.groupMap.get(r.slug);
@@ -321,20 +321,14 @@ class PersonaScoreEngine {
         this.groupDist[g][k].sort((a, b) => a - b);
       }
     }
-    
-    // 3. 각 record의 그룹 내 percentile 사전 계산
-    this.percentiles = new Map();  // slug → {key: pct, ...}
+    this.percentiles = new Map();
     for (const r of this.records) {
       const m = this.metrics.get(r.slug);
       const g = this.groupMap.get(r.slug);
       const p = {};
       for (const k of keys) {
         const sortedVals = this.groupDist[g][k] || [];
-        if (m[k] == null || sortedVals.length === 0) {
-          p[k] = null;
-          continue;
-        }
-        // binary search for rank (lower bound)
+        if (m[k] == null || sortedVals.length === 0) { p[k] = null; continue; }
         let lo = 0, hi = sortedVals.length;
         while (lo < hi) {
           const mid = (lo + hi) >>> 1;
@@ -347,20 +341,11 @@ class PersonaScoreEngine {
       this.percentiles.set(r.slug, p);
     }
   }
-  
-  /**
-   * 슬러그 + 페르소나 + 슬라이더 t로 점수 산출
-   * @param {string} slug - 'seoul/gangnam'
-   * @param {string} persona - '신혼' | '자녀가족' | '은퇴' | '1인가구'
-   * @param {number} t - 0~100 (도시·시골 슬라이더)
-   * @returns {number|null} 점수 (0~100) 또는 null (데이터 부재)
-   */
   score(slug, persona, t) {
     const p = this.percentiles.get(slug);
     if (!p) return null;
     const weights = WEIGHTS[persona];
     let activeTotal = 0, weightedSum = 0;
-    
     for (const [k, w] of Object.entries(weights)) {
       if (w === 0 || UNAVAILABLE.has(k)) continue;
       const pct = p[k];
@@ -369,17 +354,12 @@ class PersonaScoreEngine {
       activeTotal += w;
     }
     if (activeTotal === 0) return null;
-    
     const baseScore = weightedSum / activeTotal;
     const group = this.groupMap.get(slug);
     const bonus = groupBonus(t, group);
     const final = Math.max(0, Math.min(100, baseScore + bonus));
     return Math.round(final * 10) / 10;
   }
-  
-  /**
-   * 슬러그의 지표별 기여도 — UI에서 "왜 이 점수인가" 표시용
-   */
   contributions(slug, persona, t) {
     const p = this.percentiles.get(slug);
     if (!p) return [];
@@ -389,7 +369,6 @@ class PersonaScoreEngine {
       if (w === 0 || UNAVAILABLE.has(k) || p[k] == null) continue;
       activeTotal += w;
     }
-    
     const contribs = [];
     for (const [k, w] of Object.entries(weights)) {
       if (w === 0 || UNAVAILABLE.has(k)) continue;
@@ -397,176 +376,339 @@ class PersonaScoreEngine {
       if (pct == null) continue;
       const normalizedW = w / activeTotal;
       contribs.push({
-        key: k,
-        percentile: pct,
+        key: k, percentile: pct,
         weight: Math.round(normalizedW * 100 * 10) / 10,
         contribution: Math.round(pct * normalizedW * 10) / 10,
       });
     }
     return contribs.sort((a, b) => b.contribution - a.contribution);
   }
-  
-  /**
-   * 페르소나 + 슬라이더 t로 전국 정렬
-   */
   ranking(persona, t, limit = 20) {
     const scored = [];
     for (const r of this.records) {
       const s = this.score(r.slug, persona, t);
       if (s == null) continue;
-      scored.push({
-        slug: r.slug, name: r.name, sido: r.sido_name,
-        group: this.groupMap.get(r.slug), score: s,
-      });
+      scored.push({ slug: r.slug, name: r.name, sido: r.sido_name, group: this.groupMap.get(r.slug), score: s });
     }
     scored.sort((a, b) => b.score - a.score);
     return scored.slice(0, limit);
   }
 }
 
-// 노출 (브라우저 / Node.js 양쪽 호환)
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { PersonaScoreEngine, WEIGHTS, PERSONA_DEFAULT_T };
-} else {
-  window.PersonaScoreEngine = PersonaScoreEngine;
-  window.QLENS_PERSONA_DEFAULT_T = PERSONA_DEFAULT_T;
-}
-
-
-
-const TOWN_DATA = {"records":[]};
-const engine = new PersonaScoreEngine(TOWN_DATA.records);
-
-let state = {
-  persona: '자녀가족',
-  t: 60,
-  selectedSlug: 'seoul/gangnam',
-};
-
+// =================== UI ===================
+const CHIP_COLORS = ['#3182f6', '#16a34a', '#f59e0b', '#a855f7', '#ec4899'];
 const PERSONA_LABELS = {
   '신혼': { tDefault: 50 }, '자녀가족': { tDefault: 60 },
   '은퇴': { tDefault: 40 }, '1인가구': { tDefault: 70 },
 };
-
 const KEY_LABELS = {
-  price_value: '매매가 적정성',
-  rent_value: '전월세 가성비',
-  school_density: '학교 밀도',
-  medical_access: '의료 접근성',
-  environment: '환경 (PM2.5)',
+  price_value: '매매가 적정성', rent_value: '전월세 가성비',
+  school_density: '학교 밀도', medical_access: '의료 접근성',
+  environment: '환경 (PM2.5)', population_vitality: '인구 활력',
 };
 
-// 페르소나 카드
-const personaRow = document.getElementById('persona-row');
-for (const [name, meta] of Object.entries(PERSONA_LABELS)) {
-  const el = document.createElement('div');
-  el.className = 'persona-card' + (name === state.persona ? ' active' : '');
-  el.innerHTML = name + '<div class="persona-default-t">기본 t=' + meta.tDefault + '</div>';
-  el.onclick = () => {
-    state.persona = name;
-    state.t = meta.tDefault;
-    document.getElementById('slider').value = state.t;
-    document.getElementById('slider-val').textContent = state.t;
-    [...personaRow.children].forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    render();
-  };
-  personaRow.appendChild(el);
-}
-
-document.getElementById('slider').addEventListener('input', (e) => {
-  state.t = parseInt(e.target.value);
-  document.getElementById('slider-val').textContent = state.t;
-  render();
-});
-
-const select = document.getElementById('sgg-select');
-const records = TOWN_DATA.records.slice().sort((a, b) => a.name_full.localeCompare(b.name_full, 'ko'));
-for (const r of records) {
-  const opt = document.createElement('option');
-  opt.value = r.slug;
-  opt.textContent = r.name_full;
-  if (r.slug === state.selectedSlug) opt.selected = true;
-  select.appendChild(opt);
-}
-select.addEventListener('change', (e) => {
-  state.selectedSlug = e.target.value;
-  render();
-});
+let DATA = null;
+let RECORDS = {};
+let engine = null;
+let state = {
+  persona: '자녀가족',
+  t: 60,
+  selected: [],
+};
 
 function fmtMan(v) {
   if (v == null) return '—';
-  if (v >= 10000) return (v / 10000).toFixed(1) + '억원';
-  return v.toLocaleString() + '만원';
+  if (v >= 10000) return (v / 10000).toFixed(1) + '억';
+  return v.toLocaleString() + '만';
 }
-function fmtPm(v) {
+function fmtPm(v) { return v == null ? '—' : v + ''; }
+function fmtCount(v) { return v == null ? '—' : v.toLocaleString(); }
+function fmtPop(v) {
   if (v == null) return '—';
-  return v + ' ㎍/㎥';
+  if (v >= 10000) return Math.round(v / 1000) / 10 + '만';
+  return v.toLocaleString();
 }
-function fmtCount(v) {
-  return v == null ? '—' : v.toLocaleString();
+
+async function init() {
+  const shell = document.getElementById('app-shell');
+  try {
+    const res = await fetch('/data/town-records.json', { cache: 'force-cache' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+  } catch (e) {
+    shell.innerHTML = '<div class="error-state">데이터를 불러오지 못했습니다 (' + e.message + '). 잠시 후 새로고침해 주세요.</div>';
+    return;
+  }
+  for (const r of DATA.records) RECORDS[r.slug] = r;
+  engine = new PersonaScoreEngine(DATA.records);
+
+  // template 주입
+  const tpl = document.getElementById('tpl-app');
+  shell.innerHTML = '';
+  shell.appendChild(tpl.content.cloneNode(true));
+
+  setupPersona();
+  setupSlider();
+  setupAddRow();
+
+  // 기본 선택: 강남
+  if (RECORDS['seoul/gangnam']) addSlug('seoul/gangnam');
+  render();
+}
+
+function setupPersona() {
+  const personaRow = document.getElementById('persona-row');
+  for (const [name, meta] of Object.entries(PERSONA_LABELS)) {
+    const el = document.createElement('div');
+    el.className = 'persona-card' + (name === state.persona ? ' active' : '');
+    el.innerHTML = name + '<div class="persona-default-t">기본 t=' + meta.tDefault + '</div>';
+    el.onclick = () => {
+      state.persona = name;
+      state.t = meta.tDefault;
+      document.getElementById('slider').value = state.t;
+      document.getElementById('slider-val').textContent = state.t;
+      [...personaRow.children].forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      render();
+    };
+    personaRow.appendChild(el);
+  }
+}
+
+function setupSlider() {
+  document.getElementById('slider').addEventListener('input', (e) => {
+    state.t = parseInt(e.target.value);
+    document.getElementById('slider-val').textContent = state.t;
+    render();
+  });
+}
+
+function setupAddRow() {
+  const sidoSel = document.getElementById('sido-select');
+  const sggSel = document.getElementById('sgg-select');
+  const addBtn = document.getElementById('add-btn');
+
+  // 시도 옵션
+  sidoSel.innerHTML = '<option value="">시도 선택</option>';
+  for (const s of DATA.sido_list) {
+    const opt = document.createElement('option');
+    opt.value = s.code;
+    opt.textContent = s.name + ' (' + s.count + ')';
+    sidoSel.appendChild(opt);
+  }
+
+  sidoSel.addEventListener('change', () => {
+    const code = sidoSel.value;
+    sggSel.innerHTML = '<option value="">시군구 선택</option>';
+    addBtn.disabled = true;
+    if (!code) return;
+    const filtered = DATA.records
+      .filter(r => r.sido_code === code)
+      .sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+    for (const r of filtered) {
+      const opt = document.createElement('option');
+      opt.value = r.slug;
+      opt.textContent = r.name;
+      sggSel.appendChild(opt);
+    }
+  });
+
+  sggSel.addEventListener('change', () => {
+    addBtn.disabled = !sggSel.value || state.selected.includes(sggSel.value) || state.selected.length >= 5;
+  });
+
+  addBtn.addEventListener('click', () => {
+    if (sggSel.value) {
+      addSlug(sggSel.value);
+      sggSel.value = '';
+      addBtn.disabled = true;
+    }
+  });
+}
+
+function addSlug(slug) {
+  if (state.selected.includes(slug)) return;
+  if (state.selected.length >= 5) return;
+  state.selected.push(slug);
+  render();
+}
+function removeSlug(slug) {
+  state.selected = state.selected.filter(s => s !== slug);
+  render();
 }
 
 function render() {
-  const score = engine.score(state.selectedSlug, state.persona, state.t);
-  const record = TOWN_DATA.records.find(r => r.slug === state.selectedSlug);
-  const group = engine.groupMap.get(state.selectedSlug);
-  const groupLabel = { A: '대도시 (30만+)', B: '중도시 (10~30만)', C: '소도시·군 (10만 미만)' }[group] || '미상';
-  
-  document.getElementById('score-num').textContent = score != null ? score.toFixed(1) : '—';
-  document.getElementById('score-name').textContent = record ? record.name_full : '—';
-  document.getElementById('score-meta').textContent = 
-    `${groupLabel} · 인구 ${(record.sections.population.sgg_total || 0).toLocaleString()}명 · ${state.persona} 페르소나 · 슬라이더 ${state.t}`;
-  
-  const contribs = engine.contributions(state.selectedSlug, state.persona, state.t);
-  const cWrap = document.getElementById('contributions');
-  cWrap.innerHTML = '';
+  // 칩
+  const chipRow = document.getElementById('chip-row');
+  chipRow.innerHTML = '';
+  if (state.selected.length === 0) {
+    chipRow.innerHTML = '<div class="chip-empty">아직 선택된 동네가 없습니다.</div>';
+  } else {
+    state.selected.forEach((slug, i) => {
+      const r = RECORDS[slug];
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.style.background = CHIP_COLORS[i];
+      chip.innerHTML = (r ? r.name_full : slug) + '<span class="chip-x" title="제거">×</span>';
+      chip.querySelector('.chip-x').onclick = () => removeSlug(slug);
+      chipRow.appendChild(chip);
+    });
+  }
+  // 5개 도달 시 select 차단
+  const sggSel = document.getElementById('sgg-select');
+  const addBtn = document.getElementById('add-btn');
+  if (sggSel) addBtn.disabled = !sggSel.value || state.selected.includes(sggSel.value) || state.selected.length >= 5;
+
+  // 비교 영역
+  const empty = document.getElementById('compare-empty');
+  const content = document.getElementById('compare-content');
+  if (state.selected.length === 0) {
+    empty.style.display = 'block';
+    content.style.display = 'none';
+  } else {
+    empty.style.display = 'none';
+    content.style.display = 'block';
+    renderCompareBars();
+    renderCompareTable();
+    renderContributions();
+  }
+
+  renderRanking();
+}
+
+function renderCompareBars() {
+  const wrap = document.getElementById('cmp-bars');
+  wrap.innerHTML = '';
+  const scored = state.selected.map((slug, i) => {
+    const r = RECORDS[slug];
+    return {
+      slug, name: r ? r.name_full : slug,
+      score: engine.score(slug, state.persona, state.t),
+      color: CHIP_COLORS[i],
+    };
+  });
+  for (const s of scored) {
+    const row = document.createElement('div');
+    row.className = 'cmp-bar-row';
+    const w = s.score == null ? 0 : s.score;
+    row.innerHTML = '<div class="cmp-bar-name" title="' + s.name + '">' + s.name + '</div>'
+      + '<div class="cmp-bar-track"><div class="cmp-bar-fill" style="width:' + w + '%;background:' + s.color + ';"></div></div>'
+      + '<div class="cmp-bar-num" style="color:' + s.color + ';">' + (s.score == null ? '—' : s.score.toFixed(1)) + '</div>';
+    wrap.appendChild(row);
+  }
+}
+
+function renderCompareTable() {
+  const table = document.getElementById('cmp-table');
+  // 행: 동네, 열: 지표
+  const cols = [
+    { k: 'population', label: '인구', fmt: fmtPop, lower_is_better: false },
+    { k: 'price', label: '평당가(만원)', fmt: fmtCount, lower_is_better: true },
+    { k: 'jeonse', label: '전세 중위(만원)', fmt: fmtCount, lower_is_better: true },
+    { k: 'medical', label: '의료기관', fmt: fmtCount, lower_is_better: false },
+    { k: 'school', label: '학교', fmt: fmtCount, lower_is_better: false },
+    { k: 'pm25', label: 'PM2.5', fmt: fmtPm, lower_is_better: true },
+  ];
+
+  const rows = state.selected.map((slug, i) => {
+    const r = RECORDS[slug];
+    if (!r) return null;
+    const s = r.sections || {};
+    const env = s.environment || {};
+    let pm = null;
+    const guSt = env.gu_station || env.sigungu_station;
+    if (guSt && typeof guSt === 'object' && guSt.pm25 != null) pm = guSt.pm25;
+    else if (env.sido_avg && env.sido_avg.pm25 != null) pm = env.sido_avg.pm25;
+    return {
+      slug, color: CHIP_COLORS[i], name: r.name_full,
+      population: (s.population || {}).sgg_total,
+      price: (s.real_estate_trade || {}).median_price_per_pyeong_man,
+      jeonse: (s.real_estate_rent || {}).median_jeonse_man,
+      medical: (s.medical || {}).sgg_count,
+      school: (s.education || {}).sgg_count,
+      pm25: pm,
+    };
+  }).filter(Boolean);
+
+  // 각 컬럼별 best/worst slug 찾기 (값이 있는 것만)
+  const bestMap = {}, worstMap = {};
+  for (const c of cols) {
+    const vals = rows.map(r => r[c.k]).filter(v => v != null);
+    if (vals.length < 2) continue;
+    const best = c.lower_is_better ? Math.min(...vals) : Math.max(...vals);
+    const worst = c.lower_is_better ? Math.max(...vals) : Math.min(...vals);
+    bestMap[c.k] = best;
+    worstMap[c.k] = worst;
+  }
+
+  let html = '<thead><tr><th>동네</th>';
+  for (const c of cols) html += '<th>' + c.label + '</th>';
+  html += '</tr></thead><tbody>';
+
+  for (const r of rows) {
+    html += '<tr><td class="name-cell"><span class="swatch" style="background:' + r.color + '"></span>' + r.name + '</td>';
+    for (const c of cols) {
+      const v = r[c.k];
+      let cls = '';
+      if (v != null && bestMap[c.k] != null) {
+        if (v === bestMap[c.k]) cls = 'best';
+        else if (v === worstMap[c.k]) cls = 'worst';
+      }
+      html += '<td class="' + cls + '">' + c.fmt(v) + '</td>';
+    }
+    html += '</tr>';
+  }
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+function renderContributions() {
+  const block = document.getElementById('contrib-block');
+  if (state.selected.length === 0) { block.style.display = 'none'; return; }
+  const slug = state.selected[0];
+  const r = RECORDS[slug];
+  const contribs = engine.contributions(slug, state.persona, state.t);
+  block.style.display = 'block';
+  block.querySelector('.contributions-block-title').textContent = (r ? r.name_full : slug) + ' — 지표별 기여도';
+  const wrap = document.getElementById('contributions');
+  wrap.innerHTML = '';
   for (const c of contribs) {
     const row = document.createElement('div');
     row.className = 'contrib-row';
     const lowClass = c.percentile < 30 ? ' low' : '';
-    row.innerHTML = `
-      <div class="contrib-key">${KEY_LABELS[c.key] || c.key}</div>
-      <div class="contrib-bar-wrap"><div class="contrib-bar${lowClass}" style="width:${c.percentile}%"></div></div>
-      <div class="contrib-num">+${c.contribution.toFixed(1)}</div>`;
-    cWrap.appendChild(row);
+    row.innerHTML = '<div class="contrib-key">' + (KEY_LABELS[c.key] || c.key) + '</div>'
+      + '<div class="contrib-bar-wrap"><div class="contrib-bar' + lowClass + '" style="width:' + c.percentile + '%"></div></div>'
+      + '<div class="contrib-num">+' + c.contribution.toFixed(1) + '</div>';
+    wrap.appendChild(row);
   }
-  
-  // 원본 데이터 표시
-  const s = record.sections;
-  const rawWrap = document.getElementById('raw-data');
-  rawWrap.innerHTML = `
-    <div class="raw-item"><div class="raw-label">매매 평당 중위가</div><div class="raw-value">${fmtMan(s.real_estate_trade.median_price_per_pyeong_man)}</div></div>
-    <div class="raw-item"><div class="raw-label">전세 중위가</div><div class="raw-value">${fmtMan(s.real_estate_rent.median_jeonse_man)}</div></div>
-    <div class="raw-item"><div class="raw-label">학교 (초·중·고)</div><div class="raw-value">${fmtCount(s.education.sgg_count)}개</div></div>
-    <div class="raw-item"><div class="raw-label">의료기관</div><div class="raw-value">${fmtCount(s.medical.sgg_count)}개</div></div>
-    <div class="raw-item"><div class="raw-label">PM2.5 (시도 평균)</div><div class="raw-value">${fmtPm((s.environment.sido_avg || s.environment.seoul_avg || {}).pm25)}</div></div>
-    <div class="raw-item"><div class="raw-label">매매 거래 (최근 2개월)</div><div class="raw-value">${fmtCount(s.real_estate_trade.count)}건</div></div>
-  `;
-  
+}
+
+function renderRanking() {
   const ranking = engine.ranking(state.persona, state.t, 10);
   const rWrap = document.getElementById('ranking');
   rWrap.innerHTML = '';
   for (const [i, r] of ranking.entries()) {
     const row = document.createElement('div');
-    row.className = 'rank-item' + (r.slug === state.selectedSlug ? ' selected' : '');
-    row.innerHTML = `
-      <div class="rank-num">${i + 1}</div>
-      <div>
-        <div class="rank-name">${r.name}</div>
-        <div class="rank-meta">${r.sido} · 그룹 ${r.group}</div>
-      </div>
-      <div class="rank-score">${r.score.toFixed(1)}</div>`;
-    row.onclick = () => {
-      state.selectedSlug = r.slug;
-      select.value = r.slug;
-      render();
-    };
+    row.className = 'rank-item';
+    const isAdded = state.selected.includes(r.slug);
+    const isFull = state.selected.length >= 5 && !isAdded;
+    const btnLabel = isAdded ? '✓ 추가됨' : (isFull ? '5개 가득' : '+ 추가');
+    const btnClass = (isAdded || isFull) ? 'rank-add added' : 'rank-add';
+    row.innerHTML = '<div class="rank-num">' + (i + 1) + '</div>'
+      + '<div><div class="rank-name">' + r.name + '</div><div class="rank-meta">' + r.sido + ' · 그룹 ' + r.group + '</div></div>'
+      + '<button class="' + btnClass + '" ' + ((isAdded || isFull) ? 'disabled' : '') + '>' + btnLabel + '</button>'
+      + '<div class="rank-score">' + r.score.toFixed(1) + '</div>';
+    if (!isAdded && !isFull) {
+      row.querySelector('.rank-add').onclick = (ev) => {
+        ev.stopPropagation();
+        addSlug(r.slug);
+      };
+    }
     rWrap.appendChild(row);
   }
 }
 
-render();
+init();
 </script>
 </body>
 </html>
