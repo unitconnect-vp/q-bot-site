@@ -311,11 +311,17 @@ __DATA_JSON__
     var env = rec.sections.environment || {};
     var avg = env.sido_avg || env.seoul_avg || {};
     var gu = env.gu_station || env.gangnam_station;
+    var yearly = env.pm25_yearly;
     var bars = [];
-    if (avg.pm10 !== null) bars.push(renderBar('PM10 (' + rec.sido_name + ')', avg.pm10, 100, 'µg', false));
-    if (gu && gu.pm10 !== null && gu.pm10 !== undefined) bars.push(renderBar('PM10 (' + rec.name + ')', gu.pm10, 100, 'µg', true));
-    if (avg.pm25 !== null) bars.push(renderBar('PM2.5 (' + rec.sido_name + ')', avg.pm25, 50, 'µg', false));
-    if (gu && gu.pm25 !== null && gu.pm25 !== undefined) bars.push(renderBar('PM2.5 (' + rec.name + ')', gu.pm25, 50, 'µg', true));
+    // 1년 평균 (KOSIS) — 가장 위
+    if (yearly && yearly.pm25_yearly !== null && yearly.pm25_yearly !== undefined) {
+      bars.push(renderBar('PM2.5 1년 평균 (' + rec.sido_name + ')', yearly.pm25_yearly, 50, 'µg', true));
+    }
+    // 실시간 시도 평균
+    if (avg.pm10 !== null) bars.push(renderBar('PM10 실시간 (' + rec.sido_name + ')', avg.pm10, 100, 'µg', false));
+    if (gu && gu.pm10 !== null && gu.pm10 !== undefined) bars.push(renderBar('PM10 실시간 (' + rec.name + ')', gu.pm10, 100, 'µg', true));
+    if (avg.pm25 !== null) bars.push(renderBar('PM2.5 실시간 (' + rec.sido_name + ')', avg.pm25, 50, 'µg', false));
+    if (gu && gu.pm25 !== null && gu.pm25 !== undefined) bars.push(renderBar('PM2.5 실시간 (' + rec.name + ')', gu.pm25, 50, 'µg', true));
     return bars.length ? '<div class="bar-block">' + bars.join('') + '</div>' : '<p style="color:#94a3b8;font-size:13px;">측정소 데이터 없음</p>';
   }
   function renderMedical(rec) {
@@ -381,10 +387,10 @@ __DATA_JSON__
       + '<div class="source">출처: 국토교통부 실거래가 공개시스템</div></section>'
       + '<section class="section">'
       + '<div class="section-num">02 — 환경</div><h2>공기와 측정값</h2>'
-      + '<p class="section-sub">에어코리아 시도/측정소 실시간.</p>'
+      + '<p class="section-sub">PM2.5 1년 평균(KOSIS) + 시도/측정소 실시간(에어코리아).</p>'
       + renderEnvironment(rec)
       + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightEnvironment(rec) + '</p></div>'
-      + '<div class="source">출처: 한국환경공단 에어코리아</div></section>'
+      + '<div class="source">출처: 한국환경공단 에어코리아 · KOSIS 미세먼지 도시별 월별 통계</div></section>'
       + '<section class="section">'
       + '<div class="section-num">03 — 의료</div><h2>병원·의원 분포</h2>'
       + '<p class="section-sub">시군구 내 의료기관 종별.</p>'
