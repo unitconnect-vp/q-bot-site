@@ -49,10 +49,21 @@ class PersonaScoreEngine {
     const edu = s.education || {};
     
     let pm25 = null;
-    const guSt = env.gu_station || env.sigungu_station;
-    if (guSt && typeof guSt === 'object' && guSt.pm25 != null) pm25 = guSt.pm25;
-    else if (env.seoul_avg && typeof env.seoul_avg === 'object') pm25 = env.seoul_avg.pm25;
-    else if (env.sido_avg && typeof env.sido_avg === 'object') pm25 = env.sido_avg.pm25;
+    let pm25Source = null;
+    // 우선순위: 1년 평균 (KOSIS) > 시군구 측정소 > 시도 실시간 평균
+    if (env.pm25_yearly && env.pm25_yearly.pm25_yearly != null) {
+      pm25 = env.pm25_yearly.pm25_yearly;
+      pm25Source = 'yearly';
+    } else {
+      const guSt = env.gu_station || env.sigungu_station;
+      if (guSt && typeof guSt === 'object' && guSt.pm25 != null) {
+        pm25 = guSt.pm25; pm25Source = 'realtime_sgg';
+      } else if (env.seoul_avg && typeof env.seoul_avg === 'object') {
+        pm25 = env.seoul_avg.pm25; pm25Source = 'realtime_sido';
+      } else if (env.sido_avg && typeof env.sido_avg === 'object') {
+        pm25 = env.sido_avg.pm25; pm25Source = 'realtime_sido';
+      }
+    }
     
     // v3.1: 인구 활력 = 20·30·40대 비율 합 (생산연령 핵심)
     let vitality = null;
@@ -70,6 +81,7 @@ class PersonaScoreEngine {
       school_density: pop ? (edu.sgg_count || 0) / pop * 10000 : null,
       medical_access: pop ? (med.sgg_count || 0) / pop * 10000 : null,
       environment: pm25,
+      pm25_source: pm25Source,
       population_vitality: vitality,
     };
   }
