@@ -249,6 +249,61 @@ def fetch_population_age_5y(key, lawd_cds):
     return result
 
 
+def fetch_pm25_yearly(key):
+    """
+    KOSIS DT_106N_03_0200145 — 미세먼지(PM2.5) 월별 도시별 대기오염도
+    최근 12개월 페치 → 지역별 1년 평균 산출
+    """
+    url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
+    params = {
+        "method": "getList", "apiKey": key,
+        "itmId": "ALL",
+        "objL1": "ALL", "format": "json", "jsonVD": "Y",
+        "prdSe": "M", "newEstPrdCnt": "12",
+        "orgId": "106", "tblId": "DT_106N_03_0200145",
+    }
+    try:
+        r = requests.get(url, params=params, timeout=TIMEOUT)
+        j = r.json()
+    except Exception as e:
+        print(f"  [PM2.5 yearly] 페치 실패: {e}")
+        return {}
+    if not isinstance(j, list) or not j:
+        print(f"  [PM2.5 yearly] 응답 형식 예상 외")
+        return {}
+    print(f"  [PM2.5 yearly] 샘플 row: {dict(list(j[0].items())[:8])}")
+    by_region = {}
+    for row in j:
+        region = (row.get("C1_NM") or row.get("C2_NM") or row.get("C3_NM") or "").strip()
+        if not region:
+            continue
+        dt_raw = row.get("DT")
+        if not dt_raw or dt_raw in ("-", "..", ""):
+            continue
+        try:
+            val = float(dt_raw)
+        except (ValueError, TypeError):
+            continue
+        prd = (row.get("PRD_DE") or "").strip()
+        if region not in by_region:
+            by_region[region] = {"sum": 0.0, "count": 0, "periods": []}
+        by_region[region]["sum"] += val
+        by_region[region]["count"] += 1
+        by_region[region]["periods"].append(prd)
+    result = {}
+    for name, info in by_region.items():
+        if info["count"] == 0:
+            continue
+        periods = sorted(info["periods"])
+        result[name] = {
+            "pm25_yearly": round(info["sum"] / info["count"], 1),
+            "period": f"{periods[0]}~{periods[-1]}",
+            "month_count": info["count"],
+        }
+    print(f"  [PM2.5 yearly] 지역 {len(result)}개 매칭")
+    return result
+
+
 def fetch_real_estate_trade(key, lawd_cd):
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
     all_items = []
@@ -474,6 +529,9 @@ def main():
     pop_age_data = fetch_population_age_5y(keys["KOSIS_KEY"], all_lawd_cds)
     print(f"  매칭: {len(pop_age_data)}개 시군구")
 
+    print("[KOSIS] PM2.5 1년 평균 페치 (DT_106N_03_0200145)")
+    pm25_yearly = fetch_pm25_yearly(keys["KOSIS_KEY"])
+
     by_sido = {}
     sigun_full_names = {}
     for lawd_cd, full_name, display, slug, prefix in sigun_list:
@@ -529,6 +587,10 @@ def main():
                         "gu_station": None,
                         "gangnam_station": None,
                         "measured_at": env.get("_measured_at"),
+                        "pm25_yearly": (
+                            pm25_yearly.get(sido_full_name)
+                            or pm25_yearly.get(sido_full_name.replace("특별시", "").replace("광역시", "").replace("특별자치시", "").replace("특별자치도", "").replace("도", "").strip())
+                        ),
                     },
                     "medical": med.get("_per_lawd", {}).get(lawd_cd, {"sgg_count": 0, "by_type": {}}),
                     "education": edu.get("_per_lawd", {}).get(lawd_cd, {"sgg_count": 0, "by_type": {}}),
