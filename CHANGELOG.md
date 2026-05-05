@@ -1,3 +1,30 @@
+## 2026-05-05 — v5.3: 홈 섹션 디바이더 무결성 + 필자 노출 정리
+
+**홈 섹션 구분 사고 복구**
+- index.html에서 `<section class="section">` 닫는 태그 2개 누락된 채 prerender가 누적되어 인기글 → 최신글 → 계산기가 nested 구조였음
+- CSS `.section:first-of-type` 룰이 nested 섹션에 잘못 매칭되면서 4px 검정 + 블루 액센트 디바이더가 두 번째·세 번째 섹션에서 사라짐
+- index.html에 `</section>` 2개 직접 보강 + nested 평탄화 (commit 17c3df4)
+
+**디자인 토큰 강화**
+- `.section` padding 72→88px (섹션 간 호흡 +22%)
+- 블루 액센트 디바이더 폭 48→64px
+- `.section:first-of-type` padding-top 0→24px (hero-featured와 자연스러운 간격) (commit b815f94)
+
+**publisher v5.3 — 자동 보강**
+- `_verify_and_fix_section_balance()` 신설: 매 발행마다 홈 `<section>` 열림/닫힘 개수 비교 → 부족분만큼 `</main>` 직전에 자동 삽입
+- _prerender_home() 끝부분에서 호출, 보강 발생 시 `🔧 <section> 닫힘 부족 N개 자동 보강` 로그 출력
+- v5.2의 `_sweep_orphans_after_container` (articles 컨테이너 청소) 대비 `<section>` 균형까지 보호 범위 확장
+
+**소개 페이지(/about/) 필자 노출 제거**
+- meta description / og:description / §3 편집팀 본문에서 "11명의 필자" 표현 제거
+- "필진 소개 →" 링크(`/authors/`) 삭제
+- 편집팀 단일 주체 표기로 일원화 (commit 3c54fa5)
+
+**가이드 v3.6 → v3.7**
+- §7-1 QA 체크리스트에 홈 디바이더 시각 확인 + publisher 자동화 로그 검증 2줄 추가
+
+---
+
 ## 2026-05-05 — /tools/ 12개 + /town/ 표준 헤더 통일
 
 이전 보고에서 보류했던 13개 마이크로사이트 페이지를 표준 헤더로 통일.
