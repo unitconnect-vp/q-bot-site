@@ -1,3 +1,21 @@
+## 2026-05-05 — 시리즈 잔존 일괄 정리 (37개 페이지)
+
+v3.7에서 시리즈 기능 삭제 후 산재한 잔존 흔적을 모두 제거.
+
+**변경 사항**
+- 푸터 dead link `<li><a href="/series/">시리즈</a></li>` 31개 페이지에서 일괄 제거
+  - articles/ 목록·about·contact·privacy·terms / authors/* / categories/*
+- 글 6편의 본문 시리즈 배너/참조/링크 카드 통째 삭제 (마커 `<!-- 시리즈 ... -->` + 다음 div 블록)
+  - 12eok-nontax-trap-high-value-home, capital-gains-tax-sunset-d21-signal, temp-2house-3year-rule-trap (집 매도 3부작)
+  - battery-lfp-ncm-market-restructure, ev-battery-contract-restructure-post-chungla, ev-fire-statistics-reality-check (전기차 화재 3부작)
+  - 카드 내 링크는 모두 /articles/ 직접 링크였음 (dead link 0). 자동 관련 글 렌더링(site.js v3.5)이 보충
+- about "발행 리듬" 섹션 본문의 시리즈 기획 문단 + dead link 제거
+
+**검증**
+- 변경 후 37개 파일 모두 `/series/` 또는 `시리즈` 텍스트 잔여 0건
+
+---
+
 ## 2026-05-05 — about 페이지: 편집팀 섹션 삭제
 
 **변경**
