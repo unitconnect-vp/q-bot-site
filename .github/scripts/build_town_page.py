@@ -23,17 +23,13 @@ PAGE = """<!DOCTYPE html>
 <meta property="og:title" content="Q렌즈 동네 카드">
 <meta property="og:description" content="당신의 동네는 어떻게 보일까요? 전국 시군구 데이터.">
 <meta property="og:url" content="https://q-bot.kr/town/">
+<link href="/assets/style.css" rel="stylesheet">
 <meta property="og:type" content="website">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif; background: #ffffff; color: #0f172a; font-feature-settings: 'tnum'; -webkit-font-smoothing: antialiased; line-height: 1.6; }
 .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-.topbar { border-bottom: 1px solid #e5e7eb; padding: 14px 0; margin-bottom: 56px; }
-.topbar-inner { display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-.brand { font-weight: 700; color: #0f172a; text-decoration: none; }
-.brand-sub { color: #64748b; margin-left: 8px; font-weight: 500; }
-.back-link { color: #475569; font-size: 13px; text-decoration: none; }
 .hero { margin-bottom: 32px; }
 .hero-eyebrow { font-size: 13px; color: #64748b; margin-bottom: 8px; letter-spacing: 0.02em; }
 .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; color: #0f172a; margin-bottom: 12px; }
@@ -194,24 +190,22 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 </head>
 <body>
 
-<div class="topbar">
-  <div class="wrap">
-    <div class="topbar-inner">
-      <div>
-        <a href="/town/" class="brand">Q렌즈 동네 카드</a>
-        <span class="brand-sub">보이는 것 너머를 묻습니다</span>
-      </div>
-      <a href="/" class="back-link">← Q렌즈 본 사이트</a>
-    </div>
-  </div>
-</div>
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/town/">동네 카드</a>
+    <a href="/tools/">계산기</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
 
 <div class="wrap">
 
   <section class="hero">
     <div class="hero-eyebrow">전국 __TOTAL_COUNT__개 시군구</div>
     <h1>당신의 동네는<br>어떻게 보일까요?</h1>
-    <p class="hero-tagline">시군구를 선택하면 그 동네의 인구·부동산·교육·환경·의료 데이터를 카드 한 장에 보여드립니다. 정부 공공데이터를 그대로, 그러나 의미 있게.</p>
+    <p class="hero-tagline">시군구를 선택하면 그 동네의 인구·부동산·교육·환경·의료 데이터를 카드 한 장에 보여드립니다.</p>
     <div class="hero-meta">데이터 갱신 <b>__UPDATED__</b> · 출처 국토교통부·환경공단·심평원·교육부·통계청</div>
   </section>
 
@@ -424,9 +418,13 @@ __DATA_JSON__
   function renderMedical(rec) {
     var m = rec.sections.medical || {};
     var by = m.by_type || {};
-    var entries = Object.keys(by).map(function(k) { return [k, by[k]]; }).sort(function(a, b) { return b[1] - a[1]; });
+    // 의료기관 위계 순서: 최상위 시설 → 작은 규모
+    var ORDER = ['상급종합','종합병원','병원','요양병원','정신병원','치과병원','한방병원','의원','치과의원','한의원','조산원','보건의료원','보건소','보건지소','보건진료소'];
+    var entries = [];
+    ORDER.forEach(function(k) { if (by[k]) entries.push([k, by[k]]); });
+    Object.keys(by).forEach(function(k) { if (ORDER.indexOf(k) === -1 && by[k]) entries.push([k, by[k]]); });
     if (!entries.length) return '<p style="color:#94a3b8;font-size:13px;">데이터 없음</p>';
-    var max = entries[0][1];
+    var max = Math.max.apply(null, entries.map(function(e) { return e[1]; }));
     return '<div class="bar-block">' + entries.map(function(e) { return renderBar(e[0], e[1], max, '곳', false); }).join('') + '</div>';
   }
   function renderEducation(rec) {
