@@ -672,7 +672,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     var m = rec.sections.medical || {};
     var by = m.by_type || {};
     // 의료기관 위계 순서: 최상위 시설 → 작은 규모
-    var ORDER = ['상급종합','종합병원','병원','요양병원','정신병원','치과병원','한방병원','의원','치과의원','한의원','조산원','보건의료원','보건소','보건지소','보건진료소'];
+    var ORDER = ['상급종합','종합병원','병원','치과병원','한방병원','요양병원','정신병원','의원','치과의원','한의원','조산원','보건의료원','보건소','보건지소','보건진료소'];
     var entries = [];
     ORDER.forEach(function(k) { if (by[k]) entries.push([k, by[k]]); });
     Object.keys(by).forEach(function(k) { if (ORDER.indexOf(k) === -1 && by[k]) entries.push([k, by[k]]); });
