@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+<!-- /Google Analytics 4 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>한국어 워들 — Q-Lens</title>
+<meta name="description" content="하루 한 번, 받침 있는 두 글자 한국어 단어를 6번의 시도 안에 맞히는 일일 퍼즐 게임.">
+<link rel="canonical" href="https://q-bot.kr/play/wordle/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="한국어 워들 — Q-Lens">
+<meta property="og:description" content="하루 한 번, 받침 있는 두 글자 단어를 6번 안에 맞히는 일일 퍼즐.">
+<meta property="og:url" content="https://q-bot.kr/play/wordle/">
+<meta property="og:site_name" content="Q-Lens">
+<link rel="stylesheet" href="/assets/style.css">
+
+<style>
+:root{
+  --g-bg:#ffffff; --g-ink:#1a1612; --g-muted:#6b7684;
+  --g-line:#e5e8eb; --g-soft:#f7f8fa;
+  --g-accent:#3182f6; --g-accent-strong:#1b64da;
+  --g-correct:#3182f6; --g-present:#fbbf24; --g-absent:#6b7684;
+}
+.game-wrap{
+  max-width:480px;
+  margin:0 auto;
+  padding:32px 16px 60px;
+  font-family:"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  color:var(--g-ink);
+}
+.game-header{
+  display:flex; justify-content:space-between; align-items:flex-end;
+  gap:16px; margin-bottom:20px;
+}
+.game-title h1{
+  font-size:28px; font-weight:800; letter-spacing:-0.02em; margin:0 0 4px;
+}
+.game-title p{ font-size:13px; color:var(--g-muted); margin:0; line-height:1.5; }
+.game-actions{ display:flex; gap:6px; flex-shrink:0; }
+.icon-btn{
+  height:36px; padding:0 12px;
+  border:1px solid var(--g-line); background:#fff; border-radius:4px;
+  cursor:pointer; font-size:13px; font-family:inherit;
+  color:var(--g-muted); font-weight:700;
+}
+.icon-btn:hover{ border-color:var(--g-ink); color:var(--g-ink); }
+.daily-info{
+  font-size:12px; color:var(--g-muted); margin-bottom:12px;
+  display:flex; justify-content:space-between; font-weight:600;
+}
+.daily-info span:last-child{ font-variant-numeric:tabular-nums; }
+.board{ display:grid; grid-template-rows:repeat(6, 1fr); gap:6px; margin-bottom:18px; }
+.row{ display:grid; grid-template-columns:repeat(6, 1fr); gap:6px; }
+.cell{
+  background:#fff; border:2px solid var(--g-line); border-radius:4px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:clamp(18px, 5.5vw, 26px); font-weight:800;
+  aspect-ratio:1/1; color:var(--g-ink);
+  transition:border-color 0.1s, transform 0.15s;
+}
+.cell.filled{ border-color:var(--g-ink); animation:w-pop 0.1s ease-out; }
+.cell.correct{ background:var(--g-correct); border-color:var(--g-correct); color:#fff; }
+.cell.present{ background:var(--g-present); border-color:var(--g-present); color:var(--g-ink); }
+.cell.absent { background:var(--g-absent);  border-color:var(--g-absent);  color:#fff; }
+.row.shake{ animation:w-shake 0.4s; }
+.row.reveal .cell{ animation:w-flip 0.5s ease forwards; }
+.row.reveal .cell:nth-child(2){ animation-delay:0.1s; }
+.row.reveal .cell:nth-child(3){ animation-delay:0.2s; }
+.row.reveal .cell:nth-child(4){ animation-delay:0.3s; }
+.row.reveal .cell:nth-child(5){ animation-delay:0.4s; }
+.row.reveal .cell:nth-child(6){ animation-delay:0.5s; }
+@keyframes w-pop{ 0%{ transform:scale(1); } 50%{ transform:scale(1.08); } 100%{ transform:scale(1); } }
+@keyframes w-shake{ 0%,100%{ transform:translateX(0); } 20%,60%{ transform:translateX(-6px); } 40%,80%{ transform:translateX(6px); } }
+@keyframes w-flip{ 0%{ transform:rotateX(0); } 50%{ transform:rotateX(90deg); } 100%{ transform:rotateX(0); } }
+.input-wrap{ display:flex; gap:8px; margin-bottom:18px; }
+.guess-input{
+  flex:1; padding:12px 14px; border:1px solid var(--g-line); border-radius:4px;
+  font-size:16px; font-family:inherit; font-weight:600;
+  color:var(--g-ink); background:#fff; outline:none;
+  transition:border-color 0.1s;
+}
+.guess-input:focus{ border-color:var(--g-accent); }
+.guess-input:disabled{ background:var(--g-soft); color:var(--g-muted); }
+.btn-submit{
+  padding:12px 20px; border:none; background:var(--g-accent); color:#fff;
+  font-size:14px; font-weight:700; border-radius:4px; cursor:pointer; font-family:inherit;
+}
+.btn-submit:hover{ background:var(--g-accent-strong); }
+.btn-submit:disabled{ background:var(--g-muted); cursor:not-allowed; opacity:0.6; }
+
+.toast{
+  position:fixed; top:20px; left:50%; transform:translateX(-50%);
+  background:var(--g-ink); color:#fff; padding:10px 18px; border-radius:4px;
+  font-size:13px; font-weight:600; z-index:100;
+  opacity:0; pointer-events:none; transition:opacity 0.2s; white-space:nowrap;
+}
+.toast.show{ opacity:1; }
+
+.help{
+  padding:14px 16px; background:var(--g-soft); border-radius:4px;
+  font-size:12.5px; line-height:1.7; color:var(--g-muted);
+}
+.help strong{ color:var(--g-ink); display:block; margin-bottom:4px; font-size:13px; }
+.help-color{
+  display:inline-block; width:14px; height:14px; border-radius:3px;
+  vertical-align:middle; margin:0 2px;
+}
+.hc-correct{ background:var(--g-correct); }
+.hc-present{ background:var(--g-present); }
+.hc-absent { background:var(--g-absent); }
+
+.modal-back{
+  position:fixed; inset:0; background:rgba(26,22,18,0.5);
+  display:none; align-items:center; justify-content:center; z-index:50; padding:16px;
+}
+.modal-back.show{ display:flex; }
+.modal{ background:#fff; border-radius:8px; max-width:380px; width:100%; padding:24px; font-family:inherit; }
+.modal h2{ font-size:22px; font-weight:800; margin:0 0 6px; letter-spacing:-0.02em; }
+.modal h2.win{ color:var(--g-accent); }
+.modal-sub{ font-size:13px; color:var(--g-muted); margin-bottom:16px; }
+.modal-stats{ display:grid; grid-template-columns:repeat(4, 1fr); gap:8px; margin-bottom:16px; }
+.stat-cell{ text-align:center; background:var(--g-soft); border-radius:4px; padding:8px 4px; }
+.stat-num{ font-size:20px; font-weight:800; font-variant-numeric:tabular-nums; }
+.stat-lbl{ font-size:10px; color:var(--g-muted); font-weight:700; margin-top:2px; }
+.dist-row{ display:flex; align-items:center; gap:8px; margin-bottom:4px; font-size:12px; }
+.dist-num{ width:16px; font-weight:700; color:var(--g-muted); }
+.dist-bar{ flex:1; height:18px; background:var(--g-soft); border-radius:3px; position:relative; overflow:hidden; }
+.dist-fill{
+  height:100%; background:var(--g-muted); border-radius:3px;
+  display:flex; align-items:center; justify-content:flex-end;
+  padding-right:6px; color:#fff; font-size:11px; font-weight:700; min-width:24px;
+}
+.dist-fill.curr{ background:var(--g-accent); }
+.answer-reveal{
+  text-align:center; padding:14px; background:var(--g-soft); border-radius:4px;
+  margin-bottom:16px; font-size:14px; color:var(--g-muted);
+}
+.answer-reveal strong{
+  display:block; font-size:24px; font-weight:800; color:var(--g-ink);
+  margin-top:4px; letter-spacing:-0.02em;
+}
+.modal-actions{ display:flex; gap:8px; }
+.modal-actions .btn{
+  flex:1; padding:11px; border:1px solid var(--g-line); background:#fff;
+  border-radius:4px; font-size:13px; font-weight:700; color:var(--g-ink);
+  cursor:pointer; font-family:inherit;
+}
+.modal-actions .btn-primary{ background:var(--g-accent); border-color:var(--g-accent); color:#fff; }
+.countdown{ text-align:center; font-size:12px; color:var(--g-muted); margin-top:12px; font-variant-numeric:tabular-nums; }
+.countdown strong{ color:var(--g-ink); }
+
+@media (max-width:480px){
+  .game-title h1{ font-size:24px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/tools/">계산기</a>
+    <a href="/play/" aria-current="page">게임</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
+
+<main class="game-wrap">
+  <div class="game-header">
+    <div class="game-title">
+      <h1>한국어 워들</h1>
+      <p>받침 있는 두 글자 단어를 여섯 번 안에 맞혀 보세요.</p>
+    </div>
+    <div class="game-actions">
+      <button class="icon-btn" id="statsBtn">통계</button>
+    </div>
+  </div>
+
+  <div class="daily-info">
+    <span id="dailyNum">#1</span>
+    <span id="dailyDate"></span>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <div class="input-wrap">
+    <input type="text" class="guess-input" id="guessInput" maxlength="2"
+      placeholder="두 글자 입력 (예: 한국)"
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" lang="ko">
+    <button class="btn-submit" id="submitBtn">제출</button>
+  </div>
+
+  <div class="help">
+    <strong>채점 방법</strong>
+    <span class="help-color hc-correct"></span> 자모와 위치 모두 정답 ·
+    <span class="help-color hc-present"></span> 자모는 있지만 위치 다름 ·
+    <span class="help-color hc-absent"></span> 정답에 없는 자모<br>
+    <strong style="margin-top:8px;">규칙</strong>
+    한국어 두 글자, 두 음절 모두 받침이 있어야 합니다. (예: 한국, 진실, 행복) 자모 단위로 채점됩니다.
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-back" id="modal">
+  <div class="modal">
+    <h2 id="modalTitle"></h2>
+    <p class="modal-sub" id="modalSub"></p>
+    <div class="answer-reveal" id="answerReveal" style="display:none;">
+      정답<strong id="answerWord"></strong>
+    </div>
+    <div class="modal-stats" id="modalStats"></div>
+    <div id="distribution" style="margin-bottom:16px;"></div>
+    <div class="modal-actions">
+      <button class="btn" id="closeModalBtn">닫기</button>
+      <button class="btn btn-primary" id="shareBtn">결과 공유</button>
+    </div>
+    <div class="countdown" id="countdown" style="display:none;">
+      다음 워들까지 <strong id="countdownTime">--:--:--</strong>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  const HANGUL_BASE = 0xAC00, HANGUL_END = 0xD7A3;
+  const CHO  = ['ㄱ','ㄲ','ㄴ','ㄷ','ㄸ','ㄹ','ㅁ','ㅂ','ㅃ','ㅅ','ㅆ','ㅇ','ㅈ','ㅉ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+  const JUNG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+  const JONG = ['','ㄱ','ㄲ','ㄳ','ㄴ','ㄵ','ㄶ','ㄷ','ㄹ','ㄺ','ㄻ','ㄼ','ㄽ','ㄾ','ㄿ','ㅀ','ㅁ','ㅂ','ㅄ','ㅅ','ㅆ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+
+  function decompose(str){
+    const out = [];
+    for (const ch of str){
+      const code = ch.charCodeAt(0);
+      if (code >= HANGUL_BASE && code <= HANGUL_END){
+        const idx = code - HANGUL_BASE;
+        const cho = Math.floor(idx / (21 * 28));
+        const jung = Math.floor((idx % (21 * 28)) / 28);
+        const jong = idx % 28;
+        out.push(CHO[cho], JUNG[jung]);
+        if (jong > 0) out.push(JONG[jong]);
+      }
+    }
+    return out;
+  }
+  function isValidSixJamo(word){
+    if (!word || word.length !== 2) return false;
+    return decompose(word).length === 6;
+  }
+
+  const RAW_POOL = [
+    '한국','한복','한식','학생','선생','본인','인간','인생','인격','인성',
+    '인심','인종','인정','국민','민족','종족','영웅','영혼','학원','청년',
+    '진심','진실','진정','결심','결단','결정','결말','결국','결실','결혼',
+    '본능','본심','본질','양심','욕심','욕망','동심','신념','신앙','신음',
+    '행복','분담','절망','환상','감정','감동','감성','감각','존경','존중',
+    '정량','정직','정확','정성','정신','정상','정원','정착','정복','정점',
+    '평등','평안','평형','평준','평정','평성','평행',
+    '명분','명성','명함','명단','명상','명심','명중','명백','명문',
+    '학식','학문','학설','학습','학점','학년','음악','문학','철학','관점',
+    '충돌','경험','인식','용감','발음','발견','발명','발전','발달','발생',
+    '권력','권한','긴장','권익','책임','책상','책장','직업','직원','직장',
+    '직접','직책','직권','경영','경향','경각','독립','판단','판결','판정',
+    '변동','변경','변신','변심','변형','변혁','변환','운동','운명','운영',
+    '진행','진통','진단','진동','입학','졸업','입원','출발','출장','출현',
+    '안건','강물','폭풍','별빛','달빛','햇빛','봄날','순간','영원','영광',
+    '식당','식품','식단','식별','음식','영양','영업','영역','영상','영향'
+  ];
+  const ANSWERS = RAW_POOL.filter(isValidSixJamo);
+
+  const LAUNCH_DATE = '2026-05-05';
+  function getKSTDateString(){
+    const now = new Date();
+    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+    const kst = new Date(utcMs + 9 * 3600 * 1000);
+    const y = kst.getFullYear();
+    const m = String(kst.getMonth() + 1).padStart(2, '0');
+    const d = String(kst.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + d;
+  }
+  function getDailyIndex(){
+    const today = getKSTDateString();
+    const ty = parseInt(today.slice(0,4),10), tm = parseInt(today.slice(5,7),10), td = parseInt(today.slice(8,10),10);
+    const ly = parseInt(LAUNCH_DATE.slice(0,4),10), lm = parseInt(LAUNCH_DATE.slice(5,7),10), ld = parseInt(LAUNCH_DATE.slice(8,10),10);
+    const days = Math.floor((Date.UTC(ty, tm-1, td) - Date.UTC(ly, lm-1, ld)) / 86400000);
+    return days >= 0 ? days % ANSWERS.length : 0;
+  }
+  function getDailyNum(){ return getDailyIndex() + 1; }
+
+  function judge(guess, answer){
+    const N = answer.length;
+    const result = Array(N).fill('absent');
+    const pool = {};
+    for (let i = 0; i < N; i++){
+      if (guess[i] === answer[i]){ result[i] = 'correct'; }
+      else { pool[answer[i]] = (pool[answer[i]] || 0) + 1; }
+    }
+    for (let i = 0; i < N; i++){
+      if (result[i] === 'correct') continue;
+      if (pool[guess[i]] > 0){ result[i] = 'present'; pool[guess[i]]--; }
+    }
+    return result;
+  }
+
+  const KEY_DAILY = 'q-wordle-daily', KEY_STATS = 'q-wordle-stats';
+  function loadDaily(){
+    try {
+      const raw = localStorage.getItem(KEY_DAILY);
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (d.date !== getKSTDateString()) return null;
+      return d;
+    } catch(e){ return null; }
+  }
+  function saveDaily(d){ try { localStorage.setItem(KEY_DAILY, JSON.stringify(d)); } catch(e){} }
+  function loadStats(){
+    try { const raw = localStorage.getItem(KEY_STATS); if (raw) return JSON.parse(raw); } catch(e){}
+    return { played:0, won:0, currentStreak:0, maxStreak:0, distribution:[0,0,0,0,0,0] };
+  }
+  function saveStats(s){ try { localStorage.setItem(KEY_STATS, JSON.stringify(s)); } catch(e){} }
+
+  const MAX_GUESSES = 6, JAMO_LEN = 6;
+  let answerWord, answerJamo, dailyIdx, guesses, finished, won, stats;
+
+  const $board = document.getElementById('board');
+  const $input = document.getElementById('guessInput');
+  const $submit = document.getElementById('submitBtn');
+  const $toast = document.getElementById('toast');
+  const $modal = document.getElementById('modal');
+  const $modalTitle = document.getElementById('modalTitle');
+  const $modalSub = document.getElementById('modalSub');
+  const $modalStats = document.getElementById('modalStats');
+  const $dist = document.getElementById('distribution');
+  const $answerReveal = document.getElementById('answerReveal');
+  const $answerWord = document.getElementById('answerWord');
+  const $countdown = document.getElementById('countdown');
+  const $countdownTime = document.getElementById('countdownTime');
+  const $statsBtn = document.getElementById('statsBtn');
+  const $shareBtn = document.getElementById('shareBtn');
+  const $closeModal = document.getElementById('closeModalBtn');
+  const $dailyNum = document.getElementById('dailyNum');
+  const $dailyDate = document.getElementById('dailyDate');
+
+  function buildBoard(){
+    $board.innerHTML = '';
+    for (let r = 0; r < MAX_GUESSES; r++){
+      const row = document.createElement('div');
+      row.className = 'row';
+      row.id = 'row-' + r;
+      for (let c = 0; c < JAMO_LEN; c++){
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.id = 'cell-' + r + '-' + c;
+        row.appendChild(cell);
+      }
+      $board.appendChild(row);
+    }
+  }
+  function renderRow(rowIdx, jamo, judgeArr){
+    const row = document.getElementById('row-' + rowIdx);
+    if (!row) return;
+    for (let c = 0; c < JAMO_LEN; c++){
+      const cell = document.getElementById('cell-' + rowIdx + '-' + c);
+      cell.textContent = jamo[c] || '';
+      cell.className = 'cell';
+      if (jamo[c]) cell.classList.add('filled');
+      if (judgeArr && judgeArr[c]) cell.classList.add(judgeArr[c]);
+    }
+    if (judgeArr) row.classList.add('reveal');
+  }
+  function showToast(msg, ms){
+    if (ms == null) ms = 1800;
+    $toast.textContent = msg;
+    $toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => $toast.classList.remove('show'), ms);
+  }
+  function shakeRow(rowIdx){
+    const row = document.getElementById('row-' + rowIdx);
+    if (!row) return;
+    row.classList.remove('shake');
+    void row.offsetWidth;
+    row.classList.add('shake');
+  }
+  function onInputChange(){
+    if (finished) return;
+    const word = $input.value.trim();
+    const currentRow = guesses.length;
+    if (currentRow >= MAX_GUESSES) return;
+    const d = decompose(word);
+    const padded = [...d, '', '', '', '', '', ''].slice(0, JAMO_LEN);
+    renderRow(currentRow, padded, null);
+  }
+  function submitGuess(){
+    if (finished) return;
+    const word = $input.value.trim();
+    if (word.length === 0){ showToast('두 글자를 입력해 주세요'); return; }
+    if (word.length !== 2){
+      showToast('두 글자만 입력 가능합니다');
+      shakeRow(guesses.length);
+      return;
+    }
+    if (!isValidSixJamo(word)){
+      showToast('두 글자 모두 받침이 있어야 합니다');
+      shakeRow(guesses.length);
+      return;
+    }
+    const guessJamo = decompose(word);
+    const judgeArr = judge(guessJamo, answerJamo);
+    guesses.push({ word, jamo:guessJamo, judge:judgeArr });
+    renderRow(guesses.length - 1, guessJamo, judgeArr);
+    $input.value = '';
+    const isCorrect = judgeArr.every(j => j === 'correct');
+    if (isCorrect){ finished = true; won = true; updateStats(true, guesses.length); }
+    else if (guesses.length >= MAX_GUESSES){ finished = true; won = false; updateStats(false, 0); }
+    saveDaily({ date: getKSTDateString(), idx: dailyIdx, guesses: guesses.map(g => g.word), finished, won });
+    if (finished){
+      $input.disabled = true; $submit.disabled = true;
+      setTimeout(() => openResultModal(), 1200);
+    } else { $input.focus(); }
+  }
+  function updateStats(didWin, attempt){
+    stats.played += 1;
+    if (didWin){
+      stats.won += 1;
+      stats.currentStreak += 1;
+      stats.maxStreak = Math.max(stats.maxStreak, stats.currentStreak);
+      stats.distribution[attempt - 1] += 1;
+    } else { stats.currentStreak = 0; }
+    saveStats(stats);
+  }
+  function openResultModal(){
+    if (won){
+      $modalTitle.textContent = '정답!';
+      $modalTitle.className = 'win';
+      $modalSub.textContent = guesses.length + '번 만에 맞히셨습니다.';
+      $answerReveal.style.display = 'none';
+    } else if (finished){
+      $modalTitle.textContent = '게임 종료';
+      $modalTitle.className = '';
+      $modalSub.textContent = '아쉽게 맞히지 못했습니다.';
+      $answerReveal.style.display = '';
+      $answerWord.textContent = answerWord;
+    } else {
+      $modalTitle.textContent = '통계';
+      $modalTitle.className = '';
+      $modalSub.textContent = '지금까지의 기록입니다.';
+      $answerReveal.style.display = 'none';
+    }
+    const winRate = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
+    $modalStats.innerHTML =
+      '<div class="stat-cell"><div class="stat-num">' + stats.played + '</div><div class="stat-lbl">플레이</div></div>' +
+      '<div class="stat-cell"><div class="stat-num">' + winRate + '<span style="font-size:14px;">%</span></div><div class="stat-lbl">승률</div></div>' +
+      '<div class="stat-cell"><div class="stat-num">' + stats.currentStreak + '</div><div class="stat-lbl">현재 연승</div></div>' +
+      '<div class="stat-cell"><div class="stat-num">' + stats.maxStreak + '</div><div class="stat-lbl">최고 연승</div></div>';
+    const maxDist = Math.max(1, ...stats.distribution);
+    let distHtml = '<div style="font-size:12px;font-weight:700;color:var(--g-ink);margin-bottom:8px;">시도 횟수 분포</div>';
+    for (let i = 0; i < 6; i++){
+      const cnt = stats.distribution[i];
+      const pct = (cnt / maxDist) * 100;
+      const isCurr = won && guesses.length === i + 1;
+      distHtml +=
+        '<div class="dist-row"><span class="dist-num">' + (i+1) + '</span>' +
+        '<div class="dist-bar"><div class="dist-fill ' + (isCurr?'curr':'') + '" style="width:' + Math.max(pct, cnt>0?12:0) + '%;">' + cnt + '</div></div></div>';
+    }
+    $dist.innerHTML = distHtml;
+    if (finished){
+      $countdown.style.display = '';
+      startCountdown();
+      $shareBtn.style.display = '';
+    } else {
+      $countdown.style.display = 'none';
+      $shareBtn.style.display = 'none';
+    }
+    $modal.classList.add('show');
+  }
+  function closeModal(){ $modal.classList.remove('show'); stopCountdown(); }
+  let countdownTimer = null;
+  function startCountdown(){
+    function tick(){
+      const now = new Date();
+      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
+      const kst = new Date(utcMs + 9 * 3600 * 1000);
+      const next = new Date(Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate() + 1));
+      const diffMs = next.getTime() - kst.getTime();
+      if (diffMs <= 0){ $countdownTime.textContent = '00:00:00'; return; }
+      const h = Math.floor(diffMs / 3600000);
+      const m = Math.floor((diffMs % 3600000) / 60000);
+      const s = Math.floor((diffMs % 60000) / 1000);
+      $countdownTime.textContent =
+        String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    }
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  }
+  function stopCountdown(){ if (countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; } }
+  function buildShareText(){
+    const num = getDailyNum();
+    const score = won ? guesses.length : 'X';
+    let txt = 'Q-Lens 워들 #' + num + ' ' + score + '/6\n';
+    for (const g of guesses){
+      for (const j of g.judge){
+        if (j === 'correct') txt += '🟦';
+        else if (j === 'present') txt += '🟨';
+        else txt += '⬛';
+      }
+      txt += '\n';
+    }
+    txt += 'https://q-bot.kr/play/wordle/';
+    return txt;
+  }
+  function shareResult(){
+    const text = buildShareText();
+    if (navigator.share){ navigator.share({ text }).catch(() => fallbackCopy(text)); }
+    else { fallbackCopy(text); }
+  }
+  function fallbackCopy(text){
+    try {
+      navigator.clipboard.writeText(text).then(
+        () => showToast('결과가 복사되었습니다'),
+        () => showToast('복사에 실패했습니다')
+      );
+    } catch(e){ showToast('복사 기능을 사용할 수 없습니다'); }
+  }
+
+  function init(){
+    if (ANSWERS.length === 0){ showToast('단어 풀이 비어있습니다'); return; }
+    dailyIdx = getDailyIndex();
+    answerWord = ANSWERS[dailyIdx];
+    answerJamo = decompose(answerWord);
+    stats = loadStats();
+    guesses = []; finished = false; won = false;
+    $dailyNum.textContent = '#' + getDailyNum();
+    $dailyDate.textContent = getKSTDateString();
+    buildBoard();
+    const saved = loadDaily();
+    if (saved && saved.idx === dailyIdx && Array.isArray(saved.guesses)){
+      for (const word of saved.guesses){
+        if (!isValidSixJamo(word)) continue;
+        const gj = decompose(word);
+        const jr = judge(gj, answerJamo);
+        guesses.push({ word, jamo:gj, judge:jr });
+        renderRow(guesses.length - 1, gj, jr);
+      }
+      finished = !!saved.finished; won = !!saved.won;
+      if (finished){ $input.disabled = true; $submit.disabled = true; }
+    }
+    $input.addEventListener('input', onInputChange);
+    $input.addEventListener('keydown', (e) => { if (e.key === 'Enter'){ e.preventDefault(); submitGuess(); } });
+    $submit.addEventListener('click', submitGuess);
+    $statsBtn.addEventListener('click', openResultModal);
+    $closeModal.addEventListener('click', closeModal);
+    $shareBtn.addEventListener('click', shareResult);
+    $modal.addEventListener('click', (e) => { if (e.target === $modal) closeModal(); });
+    if (!finished){ setTimeout(() => $input.focus(), 100); }
+    else { setTimeout(() => openResultModal(), 400); }
+  }
+  init();
+})();
+</script>
+
+</body>
+</html>
