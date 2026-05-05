@@ -6,6 +6,12 @@ on:
     # 매주 월요일 04:00 KST = 일요일 19:00 UTC
     - cron: '0 19 * * 0'
 
+# 동시 실행 방지 — 진행 중인 잡이 끝나야 다음 잡 시작
+# (cancel-in-progress: false → 새 잡은 큐에서 대기)
+concurrency:
+  group: fetch-town-data
+  cancel-in-progress: false
+
 jobs:
   fetch_and_build:
     runs-on: ubuntu-latest
@@ -57,3 +63,4 @@ jobs:
           done
           echo "❌ push 3회 실패"
           exit 1
+
