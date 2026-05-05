@@ -40,7 +40,10 @@ jobs:
           NEIS_KEY: ${{ secrets.NEIS_KEY }}
         run: python .github/scripts/fetch_town_data.py
 
+      # [2026-05-05] 옵션 A 마이그레이션 진행 중 — 빌더 옛 sgg-grid 모델
+      # 출력 방지를 위해 일시 비활성화. Phase 4 검증 후 if 제거.
       - name: Build town pages
+        if: false
         run: python .github/scripts/build_town_page.py
 
       - name: Commit and push if changed
