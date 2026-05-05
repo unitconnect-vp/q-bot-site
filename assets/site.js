@@ -1,7 +1,7 @@
-/* Q-Lens site.js v5.1 (2026-05-05)
+/* Q-Lens site.js v5.2 (2026-05-05)
  * - 홈 피드: featured / ranking / categories / writers / recent
  * - 4그룹 팔레트 자동 부여 (g-deep/g-coast/g-marine/g-sunset)
- * - 아티클 progress bar
+ * - 글 progress bar
  * - 라우터: /authors/, /authors/{id}/, /categories/
  */
 
@@ -9,7 +9,7 @@
   'use strict';
 
   // ============================================
-  // 1. Progress bar (아티클 페이지)
+  // 1. Progress bar (글 페이지)
   // ============================================
   const progressBar = document.querySelector('.ql-progress-bar');
   if (progressBar) {
@@ -102,7 +102,7 @@
   }
 
   // ============================================
-  // 5. 홈 — 피처드 (이 주의 아티클)
+  // 5. 홈 — 피처드 (이 주의 글)
   // ============================================
   function renderHomeFeatured(articles, authorsArr) {
     const host = document.getElementById('home-featured');
@@ -117,7 +117,7 @@
         <img src="/articles/${esc(hero.slug)}/thumb.webp" alt="${esc(hero.title)}" loading="eager">
       </a>
       <div>
-        <div class="hero-featured__label">이 주의 아티클</div>
+        <div class="hero-featured__label">이 주의 글</div>
         <a href="/articles/${esc(hero.slug)}/">
           <h2 class="hero-featured__title">${esc(hero.title)}</h2>
         </a>
@@ -135,7 +135,7 @@
   }
 
   // ============================================
-  // 6. 홈 — 지금 많이 읽는 글 (Ranking)
+  // 6. 홈 — 인기글 (Ranking)
   // ============================================
   function renderHomeRanking(articles, authorsArr) {
     const host = document.getElementById('home-ranking');
@@ -156,7 +156,7 @@
   }
 
   // ============================================
-  // 7. 홈 — 최신 아티클 (카드 그리드)
+  // 7. 홈 — 최신글 (카드 그리드)
   // ============================================
   function renderHomeRecent(articles, authorsArr) {
     const host = document.getElementById('home-recent');
@@ -242,7 +242,7 @@
         <div class="writer__name">${esc(w.name)}</div>
         <div class="writer__tagline">${esc(w.tagline || '')}</div>
         <div class="writer__bio">${esc(w.bio || '')}</div>
-        <div class="writer__latest">아티클 ${counts[w.name] || counts[w.name_kr] || 0}편</div>
+        <div class="writer__latest">글 ${counts[w.name] || counts[w.name_kr] || 0}편</div>
       </a>
     `).join('') + '</div>';
   }
@@ -308,7 +308,7 @@
               <div class="card__cat">카테고리</div>
               <div class="card__title">${esc(c.name)}</div>
               <div class="card__excerpt">${esc(c.description || '')}</div>
-              <div class="card__meta">아티클 ${counts[c.name] || 0}편</div>
+              <div class="card__meta">글 ${counts[c.name] || 0}편</div>
             </a>
           `).join('')}
         </div>
@@ -353,7 +353,7 @@
 
 })();
 
-/* ===== READER RESPONSE: 관련 아티클 자동 렌더 (v3.5, 2026-04-18) ===== */
+/* ===== READER RESPONSE: 관련 글 자동 렌더 (v3.5, 2026-04-18) ===== */
 (function() {
   var container = document.querySelector('[data-rr-related]');
   if (!container) return;
@@ -388,7 +388,7 @@
         .slice(0, 3);
 
       if (related.length === 0) {
-        container.innerHTML = '<div class="ql-rr-related__empty">곧 이어질 관련 아티클을 준비 중입니다.</div>';
+        container.innerHTML = '<div class="ql-rr-related__empty">곧 이어질 관련 글을 준비 중입니다.</div>';
         return;
       }
 
@@ -401,7 +401,7 @@
       }).join('');
     })
     .catch(function(){
-      container.innerHTML = '<div class="ql-rr-related__empty">관련 아티클을 불러오지 못했습니다.</div>';
+      container.innerHTML = '<div class="ql-rr-related__empty">관련 글을 불러오지 못했습니다.</div>';
     });
 })();
 
