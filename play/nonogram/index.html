@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+<!-- /Google Analytics 4 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>네모네모로직 — Q-Lens</title>
+<meta name="description" content="픽처 크로스워드 퍼즐. 5×5, 10×10, 15×15 세 가지 사이즈, 자동 저장.">
+<link rel="canonical" href="https://q-bot.kr/play/nonogram/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="네모네모로직 — Q-Lens">
+<meta property="og:description" content="픽처 크로스워드 퍼즐. 5×5, 10×10, 15×15 세 가지 사이즈.">
+<meta property="og:url" content="https://q-bot.kr/play/nonogram/">
+<link rel="stylesheet" href="/assets/style.css">
+
+<style>
+.nono-wrap {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 24px 16px 48px;
+}
+.nono-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.nono-head h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+.nono-stats {
+  display: flex;
+  gap: 16px;
+  font-size: 0.875rem;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.nono-stat strong {
+  color: #0a0a0a;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.size-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 8px;
+}
+.size-tab {
+  flex: 1;
+  padding: 10px 4px;
+  border: none;
+  background: transparent;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  border-radius: 6px;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.15s, color 0.15s;
+}
+.size-tab.active {
+  background: #ffffff;
+  color: #0a0a0a;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+
+.board-wrap {
+  position: relative;
+  margin-bottom: 16px;
+}
+.nono-grid {
+  --N: 10;
+  --CLUE: 4;
+  display: grid;
+  grid-template-columns: repeat(calc(var(--N) + var(--CLUE)), 1fr);
+  grid-template-rows: repeat(calc(var(--N) + var(--CLUE)), 1fr);
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 2.5px solid #0a0a0a;
+  background: #ffffff;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+.nono-corner {
+  grid-row: 1 / span var(--CLUE);
+  grid-column: 1 / span var(--CLUE);
+  border-right: 2.5px solid #0a0a0a;
+  border-bottom: 2.5px solid #0a0a0a;
+}
+.col-clue {
+  grid-row: 1 / span var(--CLUE);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 4px 0;
+  font-size: clamp(0.55rem, 1.7vw, 0.875rem);
+  font-weight: 700;
+  color: var(--ink-muted);
+  border-bottom: 2.5px solid #0a0a0a;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.col-clue.thick-right { border-right: 2px solid #0a0a0a; }
+.col-clue.complete { color: #d1d5db; }
+.col-clue span { display: block; padding: 1px 0; }
+.row-clue {
+  grid-column: 1 / span var(--CLUE);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  font-size: clamp(0.55rem, 1.7vw, 0.875rem);
+  font-weight: 700;
+  color: var(--ink-muted);
+  border-right: 2.5px solid #0a0a0a;
+  font-variant-numeric: tabular-nums;
+}
+.row-clue.thick-bottom { border-bottom: 2px solid #0a0a0a; }
+.row-clue.complete { color: #d1d5db; }
+
+.cell {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+  transition: background 0.05s;
+}
+.cell.filled { background: #0a0a0a; }
+.cell.x::before, .cell.x::after {
+  content: '';
+  position: absolute;
+  width: 55%;
+  height: 2px;
+  background: #6b7280;
+  top: 50%;
+  left: 22.5%;
+  margin-top: -1px;
+}
+.cell.x::before { transform: rotate(45deg); }
+.cell.x::after  { transform: rotate(-45deg); }
+.cell.mistake { background: #fee2e2; animation: nshake 0.25s; }
+.cell.mistake.filled { background: #ef4444; }
+.cell.thick-right { border-right: 2px solid #0a0a0a; }
+.cell.thick-bottom { border-bottom: 2px solid #0a0a0a; }
+@keyframes nshake {
+  0%, 100% { transform: translateX(0); }
+  33% { transform: translateX(-2px); }
+  66% { transform: translateX(2px); }
+}
+
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  z-index: 10;
+}
+.loading-overlay.hidden { display: none; }
+
+.mode-toggle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.mode-btn {
+  padding: 12px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.mode-btn.active {
+  background: var(--accent-soft);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 4px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 6px;
+  background: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-muted);
+  -webkit-tap-highlight-color: transparent;
+}
+.action-btn:active { background: #f3f4f6; }
+.action-btn .icon { font-size: 1.25rem; line-height: 1; }
+.action-btn.disabled { opacity: 0.4; pointer-events: none; }
+
+/* 모달 */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 200;
+  padding: 16px;
+}
+.modal-backdrop.hidden { display: none; }
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  max-width: 360px;
+  width: 100%;
+  padding: 32px 24px;
+  text-align: center;
+}
+.modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+.modal p { color: var(--ink-muted); font-size: 0.9375rem; margin-bottom: 16px; }
+.modal-time {
+  font-size: 2.25rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 24px;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+}
+.modal-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+}
+.modal-btn:active { background: var(--accent-hover); }
+
+@media (max-width: 480px) {
+  .nono-wrap { padding: 16px 8px 32px; }
+  .actions { gap: 3px; }
+  .row-clue { gap: 4px; padding: 0 4px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/town/">동네 카드</a>
+    <a href="/tools/">계산기</a>
+    <a href="/play/">게임</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
+
+<main class="nono-wrap">
+  <div class="nono-head">
+    <h1>네모네모로직</h1>
+    <div class="nono-stats">
+      <span class="nono-stat">시간 <strong id="timer">00:00</strong></span>
+      <span class="nono-stat">실수 <strong id="mistakes">0</strong></span>
+    </div>
+  </div>
+
+  <div class="size-tabs" role="tablist">
+    <button class="size-tab" data-size="5">5×5</button>
+    <button class="size-tab active" data-size="10">10×10</button>
+    <button class="size-tab" data-size="15">15×15</button>
+  </div>
+
+  <div class="board-wrap">
+    <div class="nono-grid" id="grid"></div>
+    <div class="loading-overlay hidden" id="loading">새 판을 만드는 중…</div>
+  </div>
+
+  <div class="mode-toggle">
+    <button class="mode-btn active" data-mode="fill" id="modeFill">■ 채움</button>
+    <button class="mode-btn" data-mode="x" id="modeX">✕ X 표시</button>
+  </div>
+
+  <div class="actions">
+    <button class="action-btn" id="btn-undo"><span class="icon">↶</span><span>되돌리기</span></button>
+    <button class="action-btn" id="btn-reset"><span class="icon">⌫</span><span>전체 지우기</span></button>
+    <button class="action-btn" id="btn-hint"><span class="icon">💡</span><span>힌트</span></button>
+    <button class="action-btn" id="btn-new"><span class="icon">＋</span><span>새 게임</span></button>
+  </div>
+</main>
+
+<div class="modal-backdrop hidden" id="winModal">
+  <div class="modal">
+    <h2>완성!</h2>
+    <p id="winMsg">그림이 보이시나요?</p>
+    <div class="modal-time" id="winTime">00:00</div>
+    <button class="modal-btn" id="winNew">새 게임 시작</button>
+  </div>
+</div>
+
+<script>
+// ============ Q-Lens Nonogram v1 ============
+(function () {
+  'use strict';
+
+  const $ = id => document.getElementById(id);
+
+  // ---------- 단서 계산 ----------
+  function clueFromLine(line) {
+    const r = []; let cnt = 0;
+    for (const v of line) {
+      if (v) cnt++;
+      else if (cnt > 0) { r.push(cnt); cnt = 0; }
+    }
+    if (cnt > 0) r.push(cnt);
+    return r.length === 0 ? [0] : r;
+  }
+
+  // ---------- enumerate possible line arrangements ----------
+  function* enumerate(clues, len) {
+    if (clues.length === 1 && clues[0] === 0) {
+      yield new Array(len).fill(0);
+      return;
+    }
+    const sumC = clues.reduce((a, b) => a + b, 0) + clues.length - 1;
+    const slack = len - sumC;
+    if (slack < 0) return;
+    function* dist(idx, slackLeft) {
+      if (idx === clues.length) { yield [slackLeft]; return; }
+      for (let s = 0; s <= slackLeft; s++)
+        for (const rest of dist(idx + 1, slackLeft - s))
+          yield [s, ...rest];
+    }
+    for (const gaps of dist(0, slack)) {
+      const line = new Array(len).fill(0);
+      let pos = 0;
+      for (let i = 0; i < clues.length; i++) {
+        pos += gaps[i] + (i > 0 ? 1 : 0);
+        for (let j = 0; j < clues[i]; j++) line[pos + j] = 1;
+        pos += clues[i];
+      }
+      yield line;
+    }
+  }
+
+  // ---------- line solver ----------
+  function lineSolve(clues, line) {
+    const len = line.length;
+    const possible = [];
+    for (const arr of enumerate(clues, len)) {
+      let ok = true;
+      for (let i = 0; i < len; i++) {
+        const a = arr[i] ? 1 : -1;
+        if (line[i] !== 0 && line[i] !== a) { ok = false; break; }
+      }
+      if (ok) possible.push(arr);
+    }
+    if (possible.length === 0) return null;
+    const result = line.slice();
+    for (let i = 0; i < len; i++) {
+      if (result[i] !== 0) continue;
+      let allF = true, allE = true;
+      for (const arr of possible) {
+        if (arr[i]) allE = false; else allF = false;
+        if (!allF && !allE) break;
+      }
+      if (allF) result[i] = 1;
+      else if (allE) result[i] = -1;
+    }
+    return result;
+  }
+
+  // ---------- 전체 풀이 (constraint propagation) ----------
+  function solve(rowClues, colClues, n) {
+    const grid = Array.from({ length: n }, () => new Array(n).fill(0));
+    let changed = true;
+    let iter = 0;
+    while (changed && iter < 200) {
+      changed = false;
+      iter++;
+      for (let r = 0; r < n; r++) {
+        const nr = lineSolve(rowClues[r], grid[r]);
+        if (!nr) return null;
+        for (let c = 0; c < n; c++) {
+          if (grid[r][c] !== nr[c]) { grid[r][c] = nr[c]; changed = true; }
+        }
+      }
+      for (let c = 0; c < n; c++) {
+        const col = grid.map(row => row[c]);
+        const nc = lineSolve(colClues[c], col);
+        if (!nc) return null;
+        for (let r = 0; r < n; r++) {
+          if (grid[r][c] !== nc[r]) { grid[r][c] = nc[r]; changed = true; }
+        }
+      }
+    }
+    return grid;
+  }
+  function isFull(g) {
+    for (const r of g) for (const c of r) if (c === 0) return false;
+    return true;
+  }
+
+  // ---------- 퍼즐 생성 ----------
+  function generatePuzzle(size) {
+    const density = 0.55;
+    for (let attempt = 0; attempt < 80; attempt++) {
+      const pat = Array.from({ length: size }, () =>
+        Array.from({ length: size }, () => Math.random() < density ? 1 : 0)
+      );
+      // 모든 셀 비어 있으면 재시도
+      let any = false;
+      for (const r of pat) { for (const v of r) if (v) { any = true; break; } if (any) break; }
+      if (!any) continue;
+      const rowClues = pat.map(clueFromLine);
+      const colClues = [];
+      for (let c = 0; c < size; c++) {
+        colClues.push(clueFromLine(pat.map(r => r[c])));
+      }
+      const solved = solve(rowClues, colClues, size);
+      if (solved && isFull(solved)) {
+        return { pat, rowClues, colClues };
+      }
+    }
+    return null;
+  }
+
+  // ---------- 상태 ----------
+  const state = {
+    size: 10,
+    pat: [],
+    rowClues: [],
+    colClues: [],
+    user: [],
+    mode: 'fill',         // 'fill' or 'x'
+    mistakes: 0,
+    history: [],
+    startTime: 0,
+    elapsedBeforePause: 0,
+    timerId: null,
+    finished: false,
+    generating: false,
+    drag: null            // { startVal, endVal, axis: null|'h'|'v', startR, startC }
+  };
+  const STORAGE_KEY = 'qlens-nonogram-v1';
+
+  // ---------- 저장/로드 ----------
+  function save() {
+    if (state.finished || state.generating) {
+      if (state.finished) localStorage.removeItem(STORAGE_KEY);
+      return;
+    }
+    const data = {
+      size: state.size,
+      pat: state.pat,
+      rowClues: state.rowClues,
+      colClues: state.colClues,
+      user: state.user,
+      mistakes: state.mistakes,
+      mode: state.mode,
+      elapsed: getElapsed()
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
+  }
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (!d.pat || !d.user) return null;
+      return d;
+    } catch (e) { return null; }
+  }
+
+  // ---------- 새 게임 ----------
+  function newGame(size) {
+    if (state.generating) return;
+    state.size = size || state.size;
+    state.generating = true;
+    $('loading').classList.remove('hidden');
+    setTimeout(() => {
+      const r = generatePuzzle(state.size);
+      if (!r) {
+        // 매우 드문 케이스 — 다시 시도
+        state.generating = false;
+        $('loading').classList.add('hidden');
+        return newGame(state.size);
+      }
+      state.pat = r.pat;
+      state.rowClues = r.rowClues;
+      state.colClues = r.colClues;
+      state.user = Array.from({ length: state.size }, () => new Array(state.size).fill(0));
+      state.mistakes = 0;
+      state.history = [];
+      state.elapsedBeforePause = 0;
+      state.startTime = Date.now();
+      state.finished = false;
+      state.generating = false;
+      $('loading').classList.add('hidden');
+      buildGrid();
+      startTimer();
+      render();
+      save();
+    }, 30);
+  }
+
+  function loadGame(d) {
+    state.size = d.size;
+    state.pat = d.pat;
+    state.rowClues = d.rowClues;
+    state.colClues = d.colClues;
+    state.user = d.user;
+    state.mistakes = d.mistakes || 0;
+    state.mode = d.mode || 'fill';
+    state.history = [];
+    state.elapsedBeforePause = d.elapsed || 0;
+    state.startTime = Date.now();
+    state.finished = false;
+    buildGrid();
+    startTimer();
+    render();
+  }
+
+  // ---------- 타이머 ----------
+  function getElapsed() {
+    return state.elapsedBeforePause + (state.startTime ? Date.now() - state.startTime : 0);
+  }
+  function startTimer() {
+    if (state.timerId) clearInterval(state.timerId);
+    $('timer').textContent = fmtTime(getElapsed());
+    state.timerId = setInterval(() => {
+      $('timer').textContent = fmtTime(getElapsed());
+    }, 1000);
+  }
+  function stopTimer() {
+    if (state.timerId) { clearInterval(state.timerId); state.timerId = null; }
+    state.elapsedBeforePause = getElapsed();
+    state.startTime = 0;
+  }
+  function fmtTime(ms) {
+    const s = Math.floor(ms / 1000);
+    const m = Math.floor(s / 60);
+    return `${String(m).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+  }
+
+  // ---------- 격자 빌드 ----------
+  function buildGrid() {
+    const grid = $('grid');
+    const n = state.size;
+    const maxRowClues = Math.max(...state.rowClues.map(c => c.length));
+    const maxColClues = Math.max(...state.colClues.map(c => c.length));
+    const clue = Math.max(maxRowClues, maxColClues, 2);
+    grid.style.setProperty('--N', n);
+    grid.style.setProperty('--CLUE', clue);
+    grid.innerHTML = '';
+
+    // 코너
+    const corner = document.createElement('div');
+    corner.className = 'nono-corner';
+    grid.appendChild(corner);
+
+    // 컬럼 단서
+    for (let c = 0; c < n; c++) {
+      const div = document.createElement('div');
+      div.className = 'col-clue';
+      div.dataset.col = c;
+      if ((c + 1) % 5 === 0 && c !== n - 1) div.classList.add('thick-right');
+      for (const v of state.colClues[c]) {
+        const sp = document.createElement('span');
+        sp.textContent = v;
+        div.appendChild(sp);
+      }
+      grid.appendChild(div);
+    }
+
+    // 행 단서 + 셀
+    for (let r = 0; r < n; r++) {
+      const rowClue = document.createElement('div');
+      rowClue.className = 'row-clue';
+      rowClue.dataset.row = r;
+      if ((r + 1) % 5 === 0 && r !== n - 1) rowClue.classList.add('thick-bottom');
+      for (const v of state.rowClues[r]) {
+        const sp = document.createElement('span');
+        sp.textContent = v;
+        rowClue.appendChild(sp);
+      }
+      grid.appendChild(rowClue);
+      for (let c = 0; c < n; c++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.dataset.r = r;
+        cell.dataset.c = c;
+        if ((c + 1) % 5 === 0 && c !== n - 1) cell.classList.add('thick-right');
+        if ((r + 1) % 5 === 0 && r !== n - 1) cell.classList.add('thick-bottom');
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  // ---------- 입력 ----------
+  function applyCell(r, c, target) {
+    // target: 0 / 1 / -1
+    if (state.finished || state.generating) return false;
+    if (state.user[r][c] === target) return false;
+    state.history.push({ r, c, prev: state.user[r][c], mistakesPrev: state.mistakes });
+    state.user[r][c] = target;
+    // 실수 판정 — 채움/X 시도가 정답과 어긋나면
+    if (target === 1 && state.pat[r][c] === 0) state.mistakes++;
+    else if (target === -1 && state.pat[r][c] === 1) state.mistakes++;
+    return true;
+  }
+
+  function decideTarget(r, c) {
+    // 클릭 모드와 현재 셀 상태로 다음 값 결정
+    const cur = state.user[r][c];
+    if (state.mode === 'fill') {
+      return cur === 1 ? 0 : 1;
+    } else {
+      return cur === -1 ? 0 : -1;
+    }
+  }
+
+  function clickCell(r, c) {
+    const target = decideTarget(r, c);
+    if (applyCell(r, c, target)) {
+      render();
+      checkWin();
+      save();
+    }
+  }
+
+  // ---------- 드래그 ----------
+  function getCellFromPoint(x, y) {
+    const el = document.elementFromPoint(x, y);
+    if (!el || !el.classList.contains('cell')) return null;
+    return [+el.dataset.r, +el.dataset.c];
+  }
+
+  function dragStart(e) {
+    if (state.finished || state.generating) return;
+    const t = e.touches ? e.touches[0] : e;
+    const pos = getCellFromPoint(t.clientX, t.clientY);
+    if (!pos) return;
+    const [r, c] = pos;
+    const target = decideTarget(r, c);
+    state.drag = {
+      startR: r, startC: c,
+      target,
+      lastR: r, lastC: c,
+      axis: null,
+      mistakeStart: state.mistakes
+    };
+    if (applyCell(r, c, target)) {
+      render();
+    }
+    e.preventDefault();
+  }
+
+  function dragMove(e) {
+    if (!state.drag) return;
+    const t = e.touches ? e.touches[0] : e;
+    const pos = getCellFromPoint(t.clientX, t.clientY);
+    if (!pos) return;
+    const [r, c] = pos;
+    if (r === state.drag.lastR && c === state.drag.lastC) return;
+
+    // 첫 이동 시 axis 결정 (수평/수직 잠금)
+    if (state.drag.axis === null) {
+      if (r === state.drag.startR && c !== state.drag.startC) state.drag.axis = 'h';
+      else if (c === state.drag.startC && r !== state.drag.startR) state.drag.axis = 'v';
+    }
+
+    let useR = r, useC = c;
+    if (state.drag.axis === 'h') useR = state.drag.startR;
+    else if (state.drag.axis === 'v') useC = state.drag.startC;
+
+    if (useR === state.drag.lastR && useC === state.drag.lastC) return;
+    state.drag.lastR = useR;
+    state.drag.lastC = useC;
+
+    if (applyCell(useR, useC, state.drag.target)) {
+      render();
+    }
+    e.preventDefault();
+  }
+
+  function dragEnd() {
+    if (!state.drag) return;
+    state.drag = null;
+    checkWin();
+    save();
+  }
+
+  // 우클릭 (데스크탑) — X 토글
+  function rightClick(e) {
+    if (state.finished || state.generating) return;
+    const el = e.target.closest('.cell');
+    if (!el) return;
+    e.preventDefault();
+    const r = +el.dataset.r, c = +el.dataset.c;
+    const cur = state.user[r][c];
+    const target = cur === -1 ? 0 : -1;
+    if (applyCell(r, c, target)) {
+      render();
+      checkWin();
+      save();
+    }
+  }
+
+  // ---------- 액션 ----------
+  function undo() {
+    if (state.finished || state.generating) return;
+    if (state.history.length === 0) return;
+    const h = state.history.pop();
+    state.user[h.r][h.c] = h.prev;
+    state.mistakes = h.mistakesPrev;
+    render();
+    save();
+  }
+
+  function reset() {
+    if (state.finished || state.generating) return;
+    if (!confirm('보드를 모두 지울까요?')) return;
+    state.user = Array.from({ length: state.size }, () => new Array(state.size).fill(0));
+    state.history = [];
+    render();
+    save();
+  }
+
+  function hint() {
+    if (state.finished || state.generating) return;
+    // 정답이 채움인데 사용자가 채움 안 한 셀 무작위 1개
+    const candidates = [];
+    for (let r = 0; r < state.size; r++) {
+      for (let c = 0; c < state.size; c++) {
+        if (state.pat[r][c] === 1 && state.user[r][c] !== 1) {
+          candidates.push([r, c]);
+        }
+      }
+    }
+    if (candidates.length === 0) return;
+    const [r, c] = candidates[Math.floor(Math.random() * candidates.length)];
+    state.history.push({ r, c, prev: state.user[r][c], mistakesPrev: state.mistakes });
+    state.user[r][c] = 1;
+    render();
+    save();
+    checkWin();
+  }
+
+  function setMode(m) {
+    state.mode = m;
+    $('modeFill').classList.toggle('active', m === 'fill');
+    $('modeX').classList.toggle('active', m === 'x');
+    save();
+  }
+
+  function checkWin() {
+    for (let r = 0; r < state.size; r++) {
+      for (let c = 0; c < state.size; c++) {
+        if (state.pat[r][c] === 1 && state.user[r][c] !== 1) return false;
+      }
+    }
+    state.finished = true;
+    stopTimer();
+    showWin();
+    return true;
+  }
+
+  function showWin() {
+    $('winTime').textContent = fmtTime(getElapsed());
+    $('winMsg').textContent = `${state.size}×${state.size} · 실수 ${state.mistakes}회`;
+    $('winModal').classList.remove('hidden');
+    save();
+  }
+
+  // ---------- 렌더 ----------
+  function render() {
+    const grid = $('grid');
+    const n = state.size;
+    // 셀 갱신
+    for (let r = 0; r < n; r++) {
+      for (let c = 0; c < n; c++) {
+        const cell = grid.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
+        if (!cell) continue;
+        const v = state.user[r][c];
+        cell.classList.toggle('filled', v === 1);
+        cell.classList.toggle('x', v === -1);
+        // 실수: 채움인데 정답이 0, 또는 X인데 정답이 1
+        const isMistake = (v === 1 && state.pat[r][c] === 0)
+                       || (v === -1 && state.pat[r][c] === 1);
+        cell.classList.toggle('mistake', isMistake);
+      }
+    }
+    // 단서 완성 표시
+    for (let r = 0; r < n; r++) {
+      const userClues = clueFromLine(state.user[r].map(v => v === 1 ? 1 : 0));
+      const ans = state.rowClues[r];
+      const same = userClues.length === ans.length
+                && userClues.every((v, i) => v === ans[i]);
+      const rowClue = grid.querySelector(`.row-clue[data-row="${r}"]`);
+      if (rowClue) rowClue.classList.toggle('complete', same);
+    }
+    for (let c = 0; c < n; c++) {
+      const col = state.user.map(row => row[c] === 1 ? 1 : 0);
+      const userClues = clueFromLine(col);
+      const ans = state.colClues[c];
+      const same = userClues.length === ans.length
+                && userClues.every((v, i) => v === ans[i]);
+      const colClue = grid.querySelector(`.col-clue[data-col="${c}"]`);
+      if (colClue) colClue.classList.toggle('complete', same);
+    }
+    $('mistakes').textContent = state.mistakes;
+    const undoBtn = $('btn-undo');
+    undoBtn.classList.toggle('disabled', state.history.length === 0);
+  }
+
+  // ---------- 바인딩 ----------
+  document.querySelectorAll('.size-tab').forEach(t => {
+    t.addEventListener('click', () => {
+      const newSize = +t.dataset.size;
+      const inProgress = state.user.length === state.size && !state.finished
+        && state.user.some(row => row.some(v => v !== 0));
+      if (newSize !== state.size) {
+        if (inProgress && !confirm(`${newSize}×${newSize}로 새 게임을 시작합니다. 진행 중인 판은 사라집니다.`)) return;
+      } else if (inProgress && !confirm('같은 사이즈로 새 게임을 시작할까요?')) {
+        return;
+      }
+      document.querySelectorAll('.size-tab').forEach(x =>
+        x.classList.toggle('active', x.dataset.size === t.dataset.size)
+      );
+      newGame(newSize);
+    });
+  });
+  $('modeFill').addEventListener('click', () => setMode('fill'));
+  $('modeX').addEventListener('click', () => setMode('x'));
+  $('btn-undo').addEventListener('click', undo);
+  $('btn-reset').addEventListener('click', reset);
+  $('btn-hint').addEventListener('click', hint);
+  $('btn-new').addEventListener('click', () => {
+    const inProgress = !state.finished
+      && state.user.some(row => row.some(v => v !== 0));
+    if (inProgress && !confirm('새 게임을 시작하시겠습니까? 진행 중인 판은 사라집니다.')) return;
+    newGame();
+  });
+  $('winNew').addEventListener('click', () => {
+    $('winModal').classList.add('hidden');
+    newGame();
+  });
+
+  // 드래그 (pointer events 통합)
+  const grid = $('grid');
+  grid.addEventListener('pointerdown', dragStart);
+  grid.addEventListener('pointermove', dragMove);
+  document.addEventListener('pointerup', dragEnd);
+  document.addEventListener('pointercancel', dragEnd);
+  grid.addEventListener('contextmenu', rightClick);
+
+  // 키보드 단축키
+  document.addEventListener('keydown', e => {
+    if (state.generating) return;
+    if (!$('winModal').classList.contains('hidden')) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        $('winModal').classList.add('hidden');
+        newGame();
+        e.preventDefault();
+      }
+      return;
+    }
+    if (e.key === 'f' || e.key === 'F') { setMode('fill'); e.preventDefault(); }
+    else if (e.key === 'x' || e.key === 'X') { setMode('x'); e.preventDefault(); }
+    else if (e.key === 'h' || e.key === 'H') { hint(); e.preventDefault(); }
+    else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { undo(); e.preventDefault(); }
+  });
+
+  // 가시성
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopTimer();
+      save();
+    } else if (!state.finished && !state.generating) {
+      state.startTime = Date.now();
+      startTimer();
+    }
+  });
+
+  // ---------- 초기화 ----------
+  const saved = load();
+  const hasProgress = saved && saved.user
+    && saved.user.some(row => row.some(v => v !== 0));
+  if (hasProgress) {
+    loadGame(saved);
+    // size 탭 동기화
+    document.querySelectorAll('.size-tab').forEach(t =>
+      t.classList.toggle('active', +t.dataset.size === state.size)
+    );
+    setMode(state.mode);
+  } else {
+    newGame(10);
+  }
+})();
+</script>
+
+</body>
+</html>
