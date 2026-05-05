@@ -795,7 +795,8 @@ main.home-wrap, .home-wrap {
   .writers-grid { grid-template-columns: 1fr; }
   .site-nav { gap: 0; font-size: 0.8125rem; }
   .site-nav a { padding: 6px 10px; }
-  .wrap, main.home-wrap, .home-wrap { padding: 0 16px; }
+  main.home-wrap, .home-wrap { padding: 0 16px; }
+  .wrap { padding: 28px 16px 0; }
   .article-wrap { padding: 32px 16px 60px; }
 }
 
@@ -1048,6 +1049,7 @@ main.home-wrap, .home-wrap {
 /* ===== HUB RESPONSIVE ===== */
 @media (max-width: 900px) {
   .feed-wrap { padding: 32px 20px 72px; }
+  .wrap { padding: 32px 20px 0; }
   .page-head__title { font-size: 1.625rem; }
   .feed-recent { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
 }
