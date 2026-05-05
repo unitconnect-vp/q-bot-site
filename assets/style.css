@@ -82,6 +82,16 @@ button { font-family: inherit; cursor: pointer; }
   padding: 0 32px;
   height: 64px;
 }
+.site-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent);
+  pointer-events: none;
+}
 .site-logo {
   font-size: 1.25rem;
   font-weight: 800;
