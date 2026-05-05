@@ -26,7 +26,12 @@
   max-width: 560px;
   margin: 0 auto;
   padding: 24px 16px 48px;
+  transition: max-width 0.2s ease;
 }
+.nono-wrap.size-5  { max-width: 480px; }
+.nono-wrap.size-10 { max-width: 560px; }
+.nono-wrap.size-15 { max-width: 660px; }
+.nono-wrap.size-20 { max-width: 760px; }
 .nono-head {
   display: flex;
   align-items: baseline;
@@ -654,6 +659,12 @@
   function buildGrid() {
     const grid = $('grid');
     const n = state.size;
+
+    // 사이즈에 따른 wrap max-width 동기화
+    const wrap = document.querySelector('.nono-wrap');
+    wrap.classList.remove('size-5', 'size-10', 'size-15', 'size-20');
+    wrap.classList.add(`size-${n}`);
+
     const maxRowClues = Math.max(...state.rowClues.map(c => c.length));
     const maxColClues = Math.max(...state.colClues.map(c => c.length));
     const clue = Math.max(maxRowClues, maxColClues, 2);
