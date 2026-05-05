@@ -308,7 +308,8 @@ def fetch_real_estate_trade(key, lawd_cd):
     url = "http://apis.data.go.kr/1613000/RTMSDataSvcAptTrade/getRTMSDataSvcAptTrade"
     all_items = []
     months_used = []
-    for m in range(3):
+    monthly_breakdown = []  # 시계열 추세용
+    for m in range(12):  # 3 → 12개월
         ym = get_recent_yyyymm(m)
         params = {"serviceKey": key, "LAWD_CD": lawd_cd, "DEAL_YMD": ym, "numOfRows": "1000", "pageNo": "1"}
         try:
@@ -319,15 +320,38 @@ def fetch_real_estate_trade(key, lawd_cd):
         except (requests.RequestException, ET.ParseError):
             continue
         items = root.findall(".//item")
-        if items:
-            months_used.append(ym)
+        month_items = []
         for item in items:
             d = {child.tag: (child.text or "").strip() for child in item}
+            month_items.append(d)
             all_items.append(d)
+        if month_items:
+            months_used.append(ym)
+            # 월별 통계 계산
+            mp, md = [], []
+            for it in month_items:
+                amt = parse_amount_man(it.get("dealAmount", "0"))
+                try:
+                    area = float(it.get("excluUseAr", 0))
+                except (ValueError, TypeError):
+                    continue
+                if area > 0 and amt > 0:
+                    mp.append(amt / m2_to_pyeong(area))
+                    md.append(amt)
+            monthly_breakdown.append({
+                "ym": ym,
+                "count": len(month_items),
+                "median_price_per_pyeong_man": int(statistics.median(mp)) if mp else None,
+                "median_deal_amount_man": int(statistics.median(md)) if md else None,
+            })
 
     if not all_items:
-        return {"status": "no_data", "count": 0, "period_months": months_used}
+        return {"status": "no_data", "count": 0, "period_months": months_used, "monthly_breakdown": []}
 
+    # 직전 3개월 합산 통계 (기존 호환)
+    recent_3 = [m for m in monthly_breakdown[:3]]
+    recent_items = [it for it in all_items if any(m["ym"] == it.get("dealYear", "") + str(int(it.get("dealMonth", "1"))).zfill(2) or m["ym"] == get_recent_yyyymm(0) for m in recent_3)]
+    # 단순화: 전체 12개월 통계 사용 (overall)
     pyeong_prices, deal_prices = [], []
     for it in all_items:
         amt = parse_amount_man(it.get("dealAmount", "0"))
@@ -339,13 +363,21 @@ def fetch_real_estate_trade(key, lawd_cd):
             pyeong_prices.append(amt / m2_to_pyeong(area))
             deal_prices.append(amt)
 
+    # 정렬: 오래된 → 최근 (차트 왼→오 시간순)
+    monthly_breakdown.sort(key=lambda x: x["ym"])
+
+    # 직전 3개월 중앙값을 카드의 대표 통계로 (기존 동작 유지)
+    last3_prices = [p for m in monthly_breakdown[-3:] for p in [m["median_price_per_pyeong_man"]] if p]
+    last3_deals = [p for m in monthly_breakdown[-3:] for p in [m["median_deal_amount_man"]] if p]
+
     return {
         "count": len(all_items),
-        "median_price_per_pyeong_man": int(statistics.median(pyeong_prices)) if pyeong_prices else None,
+        "median_price_per_pyeong_man": int(statistics.median(last3_prices)) if last3_prices else (int(statistics.median(pyeong_prices)) if pyeong_prices else None),
         "mean_price_per_pyeong_man": int(statistics.mean(pyeong_prices)) if pyeong_prices else None,
-        "median_deal_amount_man": int(statistics.median(deal_prices)) if deal_prices else None,
+        "median_deal_amount_man": int(statistics.median(last3_deals)) if last3_deals else (int(statistics.median(deal_prices)) if deal_prices else None),
         "period_months": months_used,
         "monthly_count_avg": round(len(all_items) / max(len(months_used), 1), 1),
+        "monthly_breakdown": monthly_breakdown,  # 신규: 시계열 추세
     }
 
 
