@@ -620,6 +620,10 @@ __DATA_JSON__
     if (resolved && RECORDS[resolved]) {
       selectGu(resolved, false);
     }
+  } else {
+    // 디폴트: 서울 송파구 (URL 파라미터 없을 때)
+    var DEFAULT_SLUG = 'seoul/songpa';
+    if (RECORDS[DEFAULT_SLUG]) selectGu(DEFAULT_SLUG, false);
   }
 })();
 (function() {
