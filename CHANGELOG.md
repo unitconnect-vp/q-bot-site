@@ -1,3 +1,21 @@
+## 2026-05-05 — /tools/ 12개 + /town/ 표준 헤더 통일
+
+이전 보고에서 보류했던 13개 마이크로사이트 페이지를 표준 헤더로 통일.
+
+**변경 사항 (페이지당 동일)**
+- 자체 인라인 네비/topbar 제거
+- `<head>`에 `/assets/style.css` 로드 추가 (13개 모두 미로드 상태였음)
+- `<body>` 직후 표준 헤더 삽입 (logo plain — 페이지 자체 H1 보존)
+
+**대상 13개**
+- /town/
+- /tools/{12개 계산기}: capital-gains-tax / compound / ev-insurance / ev-vs-ice / freelancer-tax / gift-tax / loan / portfolio-concentration / resignation-simulator / salary / severance / unemployment
+
+**알려진 이슈 (시각 정합 후속 작업)**
+- 9개 계산기는 body 룰에 max-width 640px / margin auto / padding 2rem 1.25rem 4rem 박스 구조라 표준 헤더가 박스 안에 갇힘 (sticky 동작 제한). 메뉴 마크업/링크는 통일됐으나 헤더 폭은 본문 폭과 동일하게 표시될 수 있음. 디자인 정합은 후속 작업으로 분리.
+
+---
+
 ## 2026-05-05 — 페이지별 상단 메뉴 통일
 
 **56개 페이지의 site-nav 마크업을 홈과 동일한 표준으로 일괄 교체**
