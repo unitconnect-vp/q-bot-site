@@ -1,3 +1,31 @@
+## 2026-05-05 — publisher v5.7: sitemap 게임 누락 사고 차단 + 게임 3종 신규 배포
+
+**배경**
+
+publisher v5.6까지 sitemap.xml 생성 시 `/play/*` URL을 포함시키는 로직이 없어서, 매 아티클 발행마다 sitemap이 덮어쓰일 때 게임 페이지가 계속 빠졌음. 결과적으로 기존 sudoku·nonogram이 장기간 검색엔진에 등록되지 않은 상태였음. 신규 게임 3종 배포(2026-05-05) 점검 중 발견.
+
+**변경**
+- 게임 3종 신규 배포 (`/play/2048/`, `/play/wordle/`, `/play/slitherlink/`)
+  - 2048 — 슬라이드/머지, 키보드+스와이프+마우스 드래그, localStorage 자동 저장
+  - 한국어 워들 — 자모 분해 채점, 일일 챌린지, 단어 풀 156개(검증 통과 한자어 명사)
+  - 슬리더링크 — 5×5 동적 polygon 생성, 모든 클루 노출, 단일 폐곡선 검증
+- `/play/index.html` 허브에 카드 3장 추가 (총 5종 게임)
+- `sitemap.xml`에 6개 URL 수동 등록 (게임 허브 + 5개 게임)
+- publisher v5.7 패치
+  - `SITEMAP_HUBS`에 `("play/", "weekly", "0.8")` 추가
+  - `SITEMAP_GAMES` 신규 상수 — sudoku/nonogram/2048/wordle/slitherlink
+  - `deploy()` sitemap 생성 루프에 4-3.5 게임 섹션 추가
+  - `SITE_VERSION` v5.6 → v5.7
+
+**검증**
+- 5개 게임 페이지: GA / canonical `/play/` / nav 4메뉴 / footer 없음 / 베이지·오렌지 금지 팔레트 0건
+- 슬리더링크 polygon 생성 100회 시뮬레이션 → 100% valid 슬리더링크 솔루션
+- 워들 단어 풀 156개 모두 양음절 양받침 자모 6개 검증 통과
+- publisher v5.7 모듈 import 정상 + SITEMAP_GAMES 5개 + deploy() 루프 포함 확인
+- 다음 아티클 발행부터 sitemap.xml에 게임 URL 자동 포함됨
+
+---
+
 ## 2026-05-05 — 시리즈 잔존 일괄 정리 (37개 페이지)
 
 v3.7에서 시리즈 기능 삭제 후 산재한 잔존 흔적을 모두 제거.
