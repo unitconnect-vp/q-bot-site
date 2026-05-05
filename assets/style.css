@@ -1,4 +1,8 @@
 /* ============================================================
+ * Q-Lens Stylesheet v5.4 (2026-05-05) — 가독성 개편
+ *   - body font-size 16px → 17px, line-height 1.6 → 1.75
+ *   - 회색 토큰 제거: --ink-muted/--ink-soft를 슬레이트 검정으로
+ *   - footer 회색 → 밝은 톤(d1d5db)으로 가독성 강화
  * Q-Lens Stylesheet v5.0 (2026-04-18)
  * - 전면 흰색 배경 (토스피드 스타일)
  * - Pretendard 단일 폰트
@@ -17,7 +21,8 @@ body {
     'Noto Sans KR', 'Malgun Gothic', sans-serif;
   background: #ffffff;
   color: #0a0a0a;
-  line-height: 1.6;
+  font-size: 17px;          /* v5.4 가독성 개편 — 기본 16px → 17px */
+  line-height: 1.75;        /* v5.4 가독성 개편 — 1.6 → 1.75 */
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,8 +36,8 @@ button { font-family: inherit; cursor: pointer; }
   --paper: #ffffff;
   --ink: #0a0a0a;
   --ink-strong: #000000;
-  --ink-muted: #6b7280;
-  --ink-soft: #9ca3af;
+  --ink-muted: #1f2937;  /* v5.4: 회색 #6b7280 → 슬레이트 검정. 위계는 폰트 크기/굵기로 */
+  --ink-soft:  #374151;  /* v5.4: 회색 #9ca3af → 다크 슬레이트 */
   --rule: #f3f4f6;
   --rule-strong: #e5e7eb;
   --accent: #3182f6;
@@ -44,7 +49,7 @@ button { font-family: inherit; cursor: pointer; }
   /* 아티클 본문 (레거시 호환용) */
   --art-paper: #ffffff;
   --art-ink: #0a0a0a;
-  --art-muted: #6b7280;
+  --art-muted: #1f2937;  /* v5.4 */
   --art-rule: #e5e7eb;
   --art-accent: #3182f6;
 
@@ -662,7 +667,7 @@ button { font-family: inherit; cursor: pointer; }
   color: var(--ink-strong);
   line-height: 1.1;
 }
-.ql-stat-num.sm { font-size: 1.7rem; }
+.ql-stat-num.sm { font-size: 1.85rem; }  /* v5.4: 1.7 → 1.85 */
 .ql-stat-label {
   font-size: 0.8125rem;
   line-height: 1.5;
@@ -706,7 +711,7 @@ button { font-family: inherit; cursor: pointer; }
 .footer-logo span { color: var(--accent); }
 .footer-tagline {
   font-size: 0.9375rem;
-  color: #9ca3af;
+  color: #d1d5db;  /* v5.4: footer 가독성 */
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -715,7 +720,7 @@ button { font-family: inherit; cursor: pointer; }
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9ca3af;
+  color: #d1d5db;  /* v5.4: footer 가독성 */
   margin-bottom: 12px;
 }
 .footer-col a, .footer-nav a {
@@ -740,23 +745,23 @@ button { font-family: inherit; cursor: pointer; }
 }
 .footer-copy {
   font-size: 0.8125rem;
-  color: #6b7280;
+  color: #d1d5db;  /* v5.4: footer 가독성 */
   margin: 0;
 }
 .footer-legal {
   font-size: 0.8125rem;
-  color: #6b7280;
+  color: #d1d5db;  /* v5.4: footer 가독성 */
   margin: 0;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .footer-legal a {
-  color: #9ca3af;
+  color: #d1d5db;  /* v5.4: footer 가독성 */
   transition: color 0.15s;
 }
 .footer-legal a:hover { color: var(--accent); }
-.footer-legal span { color: #4b5563; }
+.footer-legal span { color: #6b7280;  /* v5.4: footer 구분점 약간 진하게 */ }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1100px) {
@@ -1054,7 +1059,7 @@ button { font-family: inherit; cursor: pointer; }
    ========================================= */
 .footer-legal .footer-version,
 .footer-nav .footer-version {
-  color: #6b7280;
+  color: #d1d5db;  /* v5.4: footer 버전 가독성 */
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
   transition: color 0.15s;

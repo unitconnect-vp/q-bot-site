@@ -29,12 +29,12 @@
   header { border-bottom: 4px solid #000000; padding-bottom: 20px; margin-bottom: 28px; position: relative; }
   header::after { content: ''; position: absolute; left: 0; bottom: -4px; width: 72px; height: 4px; background: #3182f6; }
   h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; line-height: 1.25; }
-  .subtitle { font-size: 14px; color: #6b7280; margin-top: 8px; font-weight: 500; }
+  .subtitle { font-size: 14px; color: #1f2937; margin-top: 8px; font-weight: 500; }
   .rev-note { display: inline-block; font-size: 12px; color: #3182f6; background: #eff6ff; padding: 4px 10px; border-radius: 4px; margin-top: 12px; font-weight: 600; }
 
   /* Step indicator */
   .steps { display: flex; gap: 8px; margin-bottom: 24px; }
-  .step { flex: 1; padding: 12px 8px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 4px; background: #f3f4f6; color: #9ca3af; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; user-select: none; }
+  .step { flex: 1; padding: 12px 8px; text-align: center; font-size: 13px; font-weight: 600; border-radius: 4px; background: #f3f4f6; color: #374151; cursor: pointer; transition: all 0.15s; border: 1px solid transparent; user-select: none; }
   .step.active { background: #0a0a0a; color: #ffffff; }
   .step.done { background: #eff6ff; color: #3182f6; border-color: #bfdbfe; }
   .step-num { display: block; font-size: 11px; opacity: 0.7; margin-bottom: 2px; }
@@ -48,14 +48,14 @@
   .field { margin-bottom: 20px; }
   .label { display: block; font-size: 14px; font-weight: 600; color: #1f2937; margin-bottom: 8px; }
   .label .req { color: #dc2626; margin-left: 2px; }
-  .help { font-size: 12px; color: #6b7280; margin-top: 6px; line-height: 1.5; }
+  .help { font-size: 12px; color: #1f2937; margin-top: 6px; line-height: 1.5; }
   input[type="text"], input[type="number"], input[type="date"], select {
     width: 100%; padding: 14px 14px; font-size: 17px; border: 1px solid #d1d5db; border-radius: 4px; background: #ffffff; font-family: inherit; font-weight: 500; transition: border-color 0.15s, box-shadow 0.15s;
   }
   input:focus, select:focus { outline: none; border-color: #3182f6; box-shadow: 0 0 0 3px rgba(49, 130, 246, 0.15); }
-  input[readonly] { background: #f9fafb; color: #6b7280; }
+  input[readonly] { background: #f9fafb; color: #1f2937; }
   .input-suffix { position: relative; }
-  .input-suffix .suffix { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #6b7280; font-weight: 500; pointer-events: none; }
+  .input-suffix .suffix { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #1f2937; font-weight: 500; pointer-events: none; }
   .input-suffix input { padding-right: 40px; }
 
   /* Radio group */
@@ -65,7 +65,7 @@
   .radio-item input { margin-top: 4px; accent-color: #3182f6; flex-shrink: 0; }
   .radio-item-content { flex: 1; }
   .radio-item-title { font-size: 15px; font-weight: 600; color: #0a0a0a; }
-  .radio-item-desc { font-size: 12px; color: #6b7280; margin-top: 2px; line-height: 1.5; }
+  .radio-item-desc { font-size: 12px; color: #1f2937; margin-top: 2px; line-height: 1.5; }
 
   /* Two column */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -85,9 +85,9 @@
   .result { margin-top: 32px; border-top: 4px solid #000000; padding-top: 28px; position: relative; display: none; }
   .result.show { display: block; }
   .result::after { content: ''; position: absolute; left: 0; top: -4px; width: 72px; height: 4px; background: #3182f6; }
-  .result-title { font-size: 14px; font-weight: 700; color: #6b7280; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase; }
+  .result-title { font-size: 14px; font-weight: 700; color: #1f2937; letter-spacing: 0.05em; margin-bottom: 12px; text-transform: uppercase; }
   .final-amount { font-size: 40px; font-weight: 800; color: #0a0a0a; letter-spacing: -0.03em; line-height: 1.1; }
-  .final-label { font-size: 13px; color: #6b7280; margin-top: 6px; }
+  .final-label { font-size: 13px; color: #1f2937; margin-top: 6px; }
   .final-amount.nontax { color: #3182f6; }
   .final-amount.nontax-small { font-size: 28px; }
 
@@ -96,15 +96,15 @@
   .breakdown-title { font-size: 13px; font-weight: 700; color: #374151; margin-bottom: 14px; letter-spacing: 0.02em; }
   .br-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #e5e7eb; }
   .br-row:last-child { border-bottom: none; padding-bottom: 0; }
-  .br-row .k { color: #6b7280; font-weight: 500; }
+  .br-row .k { color: #1f2937; font-weight: 500; }
   .br-row .v { color: #0a0a0a; font-weight: 600; font-variant-numeric: tabular-nums; }
-  .br-row.minus .v { color: #6b7280; }
+  .br-row.minus .v { color: #1f2937; }
   .br-row.total { font-size: 15px; padding-top: 12px; margin-top: 4px; border-top: 2px solid #0a0a0a; border-bottom: none; }
   .br-row.total .k { color: #0a0a0a; font-weight: 700; }
   .br-row.total .v { color: #3182f6; font-weight: 800; font-size: 18px; }
   .br-row.sub { padding-left: 14px; }
-  .br-row.sub .k { font-size: 13px; color: #9ca3af; }
-  .br-row.sub .v { font-size: 13px; color: #6b7280; font-weight: 500; }
+  .br-row.sub .k { font-size: 13px; color: #374151; }
+  .br-row.sub .v { font-size: 13px; color: #1f2937; font-weight: 500; }
 
   /* Notes */
   .notes { margin-top: 20px; padding: 16px; background: #fffbeb; border-left: 3px solid #f59e0b; border-radius: 0 4px 4px 0; font-size: 13px; line-height: 1.7; color: #78350f; }
@@ -118,9 +118,9 @@
   .actions .btn { flex: 1; padding: 14px; font-size: 14px; }
 
   /* Footer */
-  .disclaimer { margin-top: 32px; padding: 16px; background: #f9fafb; border-radius: 4px; font-size: 12px; color: #6b7280; line-height: 1.7; }
+  .disclaimer { margin-top: 32px; padding: 16px; background: #f9fafb; border-radius: 4px; font-size: 12px; color: #1f2937; line-height: 1.7; }
   .disclaimer strong { color: #374151; font-weight: 700; }
-  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #9ca3af; }
+  footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #374151; }
   footer a { color: #3182f6; text-decoration: none; font-weight: 600; }
 
   /* Print */
@@ -433,17 +433,17 @@
 <!-- Q-Lens 푸터 -->
 <div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
   <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
-  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
-  <div style="font-size:0.8rem;color:#6b7280;">
-    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+  <div style="font-size:0.8rem;color:#374151;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#1f2937;">
+    <a href="/" style="color:#1f2937;text-decoration:none;margin:0 8px;">홈</a>
     ·
-    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    <a href="/articles/" style="color:#1f2937;text-decoration:none;margin:0 8px;">아티클</a>
     ·
-    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    <a href="/tools/" style="color:#1f2937;text-decoration:none;margin:0 8px;">계산기</a>
     ·
-    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+    <a href="/about/" style="color:#1f2937;text-decoration:none;margin:0 8px;">소개</a>
   </div>
-  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+  <div style="font-size:0.75rem;color:#374151;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
 </div>
 
 <script>

@@ -23,13 +23,13 @@ body {
   }
 .page-label { font-size: 0.82rem; color: #3182f6; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.4rem; }
 .page-title { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.35rem; }
-.page-desc  { font-size: 0.92rem; color: #6b7280; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
+.page-desc  { font-size: 0.92rem; color: #1f2937; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid #111; }
 .card { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 1.5rem; margin-bottom: 1.25rem; }
-.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 1.25rem; }
+.card-title { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #1f2937; margin-bottom: 1.25rem; }
 .field { margin-bottom: 1.1rem; }
 .field:last-child { margin-bottom: 0; }
 .field label { display: block; font-size: 0.92rem; font-weight: 600; color: #374151; margin-bottom: 0.4rem; }
-.field-hint { font-size: 0.82rem; color: #9ca3af; font-weight: 400; margin-left: 0.3rem; }
+.field-hint { font-size: 0.82rem; color: #374151; font-weight: 400; margin-left: 0.3rem; }
 .input-wrap { display: flex; align-items: center; gap: 0.5rem; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 input[type="text"], input[type="date"] {
@@ -37,7 +37,7 @@ input[type="text"], input[type="date"] {
   font-size: 1rem; font-family: inherit; color: #111; background: #fff; outline: none; transition: border-color 0.15s;
 }
 input:focus { border-color: #3182f6; }
-.input-unit { font-size: 0.88rem; color: #6b7280; white-space: nowrap; }
+.input-unit { font-size: 0.88rem; color: #1f2937; white-space: nowrap; }
 .btn { width: 100%; padding: 0.9rem; background: #3182f6; color: #fff; border: none; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: background 0.15s; margin-bottom: 1.25rem; }
 .btn:hover { background: #1b64da; }
 .result { display: none; }
@@ -48,14 +48,14 @@ input:focus { border-color: #3182f6; }
 .hero-sub    { font-size: 0.88rem; color: #93c5fd; }
 .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.25rem; }
 .summary-cell { border: 1px solid #e5e7eb; border-radius: 8px; padding: 1rem; }
-.summary-cell-label { font-size: 0.82rem; color: #6b7280; margin-bottom: 0.3rem; }
+.summary-cell-label { font-size: 0.82rem; color: #1f2937; margin-bottom: 0.3rem; }
 .summary-cell-val   { font-size: 1.15rem; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
 .detail-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; margin-bottom: 1.25rem; }
-.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #6b7280; }
+.detail-head { padding: 0.75rem 1.25rem; background: #f9fafb; border-bottom: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1f2937; }
 .detail-row  { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem 1.25rem; border-bottom: 1px solid #f3f4f6; font-size: 0.95rem; }
 .detail-row:last-child { border-bottom: none; }
 .detail-name { color: #374151; }
-.detail-sub  { font-size: 0.82rem; color: #9ca3af; margin-left: 0.3rem; }
+.detail-sub  { font-size: 0.82rem; color: #374151; margin-left: 0.3rem; }
 .detail-val  { font-weight: 700; color: #111; font-variant-numeric: tabular-nums; }
 .detail-total { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.25rem; background: #f9fafb; border-top: 2px solid #e5e7eb; font-size: 1rem; font-weight: 700; }
 .detail-total .pos { color: #3182f6; }
@@ -63,7 +63,7 @@ input:focus { border-color: #3182f6; }
 .dl-btn { display: none; width: 100%; padding: 0.8rem; background: #fff; color: #3182f6; border: 1.5px solid #3182f6; border-radius: 8px; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.15s; margin-bottom: 1rem; }
 .dl-btn:hover { background: #eff6ff; }
 .dl-btn.visible { display: block; }
-.note  { font-size: 0.85rem; color: #9ca3af; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
+.note  { font-size: 0.85rem; color: #374151; line-height: 1.7; border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 0.5rem; }
 .brand { text-align: center; margin-top: 2rem; font-size: 0.85rem; color: #d1d5db; }
 .brand a { color: #3182f6; text-decoration: none; }
 @media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } .summary-grid { grid-template-columns: 1fr; } .hero-amount { font-size: 1.8rem; } }
@@ -342,17 +342,17 @@ function downloadPDF() {
 <!-- Q-Lens 푸터 -->
 <div style="max-width:720px;margin:40px auto 0;padding:24px 20px 32px;border-top:1px solid #e5e7eb;background:#ffffff;font-family:-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;text-align:center;">
   <div style="font-size:1rem;font-weight:800;letter-spacing:-0.02em;color:#0a0a0a;margin-bottom:4px;">Q-Lens</div>
-  <div style="font-size:0.8rem;color:#9ca3af;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
-  <div style="font-size:0.8rem;color:#6b7280;">
-    <a href="/" style="color:#6b7280;text-decoration:none;margin:0 8px;">홈</a>
+  <div style="font-size:0.8rem;color:#374151;margin-bottom:12px;">보이는 것 너머를 묻습니다</div>
+  <div style="font-size:0.8rem;color:#1f2937;">
+    <a href="/" style="color:#1f2937;text-decoration:none;margin:0 8px;">홈</a>
     ·
-    <a href="/articles/" style="color:#6b7280;text-decoration:none;margin:0 8px;">아티클</a>
+    <a href="/articles/" style="color:#1f2937;text-decoration:none;margin:0 8px;">아티클</a>
     ·
-    <a href="/tools/" style="color:#6b7280;text-decoration:none;margin:0 8px;">계산기</a>
+    <a href="/tools/" style="color:#1f2937;text-decoration:none;margin:0 8px;">계산기</a>
     ·
-    <a href="/about/" style="color:#6b7280;text-decoration:none;margin:0 8px;">소개</a>
+    <a href="/about/" style="color:#1f2937;text-decoration:none;margin:0 8px;">소개</a>
   </div>
-  <div style="font-size:0.75rem;color:#9ca3af;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
+  <div style="font-size:0.75rem;color:#374151;margin-top:10px;">© 2026 Q-Lens. All rights reserved.</div>
 </div>
 
 </div>
