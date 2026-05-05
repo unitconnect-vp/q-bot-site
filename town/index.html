@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Q렌즈 동네 카드 — 전국 시군구 데이터</title>
-<meta name="description" content="전국 17개 시도 255개 시군구의 인구·부동산·교육·환경·의료 데이터.">
+<meta name="description" content="주소 한 줄이면 그 동네의 인구·부동산·교육·환경·의료 데이터를 한 장에. 전국 17개 시도 시군구.">
 <link rel="canonical" href="https://q-bot.kr/town/">
 <meta property="og:title" content="Q렌즈 동네 카드">
-<meta property="og:description" content="전국 255개 시군구 데이터를 한 페이지로 제공합니다.">
+<meta property="og:description" content="당신의 동네는 어떻게 보일까요? 전국 시군구 데이터.">
 <meta property="og:url" content="https://q-bot.kr/town/">
 <link href="/assets/style.css" rel="stylesheet">
 <meta property="og:type" content="website">
@@ -176,8 +176,8 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 
   <section class="hero">
     <div class="hero-eyebrow">전국 255개 시군구</div>
-    <h1>전국 시군구 데이터</h1>
-    <p class="hero-tagline">시군구별 인구·부동산·교육·환경·의료 데이터를 한 페이지로 제공합니다.</p>
+    <h1>당신의 동네는<br>어떻게 보일까요?</h1>
+    <p class="hero-tagline">시군구를 선택하면 그 동네의 인구·부동산·교육·환경·의료 데이터를 카드 한 장에 보여드립니다.</p>
     <div class="hero-meta">데이터 갱신 <b>2026년 05월 04일</b> · 출처 국토교통부·환경공단·심평원·교육부·통계청</div>
   </section>
 
@@ -509,49 +509,12 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 
 </div>
 
-<footer class="site-footer">
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="footer-logo">Q<span>-</span>Lens</div>
-      <p class="footer-tagline">보이는 것 너머를 묻습니다</p>
-      <div class="footer-social">
-        <a class="footer-social__link" href="https://x.com/heyqbot" target="_blank" rel="noopener" aria-label="X (Twitter)">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        </a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4 class="footer-col__title">카테고리</h4>
-      <ul class="footer-col__list">
-        <li><a href="/categories/industry/">산업·전략</a></li>
-        <li><a href="/categories/corporate/">기업·경영</a></li>
-        <li><a href="/categories/stocks/">주식·투자</a></li>
-        <li><a href="/categories/bonds/">채권·금리</a></li>
-        <li><a href="/categories/economy/">경제·정책</a></li>
-        <li><a href="/categories/realestate/">부동산</a></li>
-        <li><a href="/categories/society/">사회·이슈</a></li>
-        <li><a href="/categories/data/">데이터·리서치</a></li>
-        <li><a href="/categories/" class="footer-col__more">전체 보기 →</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 class="footer-col__title">정보</h4>
-      <ul class="footer-col__list">
-        <li><a href="/about/">소개</a></li>
-        <li><a href="/contact/">문의</a></li>
-        <li><a href="/tools/">계산기</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
-    <p class="footer-legal">
-      <a href="/privacy/">개인정보처리방침</a>
-      <span>·</span>
-      <a href="/terms/">이용약관</a>
-      <span>·</span>
-      <a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
-    </p>
+<footer>
+  <div class="wrap">
+    Q렌즈 · q-bot.kr ·
+    <a href="/about/">소개</a>
+    <a href="/town/">동네 카드 홈</a>
+    <a href="/contact/">문의</a>
   </div>
 </footer>
 
@@ -720,7 +683,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   function renderEducation(rec) {
     var e = rec.sections.education || {};
     var by = e.by_type || {};
-    var main = ['초등학교', '중학교', '고등학교', '특수학교'];
+    var main = ['초등학교', '중학교', '고등학교', '특수학교', '대학교', '전문대학'];
     var rows = main.filter(function(k) { return by[k]; }).map(function(k) { return [k, by[k]]; });
     var other = 0;
     Object.keys(by).forEach(function(k) { if (main.indexOf(k) === -1) other += by[k]; });
@@ -827,7 +790,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       + '<div class="source">출처: 건강보험심사평가원</div></section>'
       + '<section class="section">'
       + '<div class="section-num">03 — 교육</div><h2>학교 분포</h2>'
-      + '<p class="section-sub">시군구 내 정규 학교.</p>'
+      + '<p class="section-sub">유·초·중·고·특수학교 기준. 대학·전문대 미포함.</p>'
       + renderEducation(rec)
       + '<div class="source">출처: 교육부 NEIS</div></section>'
       + '<section class="section">'
