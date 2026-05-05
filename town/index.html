@@ -102,24 +102,81 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .kv-cell.val { color: #0f172a; font-weight: 600; font-variant-numeric: tabular-nums; }
 .kv-cell.val.highlight { color: #3182f6; }
 .source { font-size: 11px; color: #94a3b8; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
+.compare-add { display: inline-block; padding: 8px 14px; background: #fff; border: 1.5px solid #3182f6; color: #3182f6; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; margin-left: 8px; transition: all 0.12s; font-family: inherit; }
+.compare-add:hover { background: #3182f6; color: #fff; }
+.compare-add.added { background: #3182f6; color: #fff; border-color: #3182f6; }
+.compare-add.added::before { content: '✓ '; }
+.compare-tray { position: sticky; top: 0; background: #fff; border-bottom: 4px solid #3182f6; padding: 14px 0; margin-bottom: 24px; z-index: 20; display: none; }
+.compare-tray.show { display: block; }
+.compare-tray-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.compare-tray-label { font-size: 13px; font-weight: 700; color: #0f172a; }
+.compare-tray-chips { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.compare-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 6px 6px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 999px; font-size: 13px; font-weight: 600; color: #1e40af; }
+.compare-chip-x { width: 22px; height: 22px; border: none; background: #1e40af; color: #fff; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 1; padding: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.compare-chip-x:hover { background: #0f172a; }
+.compare-tray-actions { display: flex; gap: 8px; }
+.compare-btn { padding: 8px 16px; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: all 0.12s; font-family: inherit; }
+.compare-btn.primary { background: #0f172a; color: #fff; }
+.compare-btn.primary:hover { background: #1e293b; }
+.compare-btn.primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+.compare-btn.ghost { background: #fff; color: #64748b; border: 1px solid #e5e7eb; }
+.compare-btn.ghost:hover { color: #0f172a; border-color: #0f172a; }
+.compare-view { display: none; }
+.compare-view.show { display: block; }
+.compare-view-head { padding: 24px 0 16px; border-bottom: 4px solid #0f172a; margin-bottom: 24px; }
+.compare-view-head h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 6px; }
+.compare-view-head p { font-size: 14px; color: #64748b; }
+.compare-table-wrap { overflow-x: auto; margin-bottom: 32px; -webkit-overflow-scrolling: touch; }
+.compare-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.compare-table th, .compare-table td { padding: 16px 14px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+.compare-table th { background: #f8fafc; font-size: 13px; font-weight: 600; color: #64748b; }
+.compare-table th.sgg-head { background: #0f172a; color: #fff; font-size: 15px; font-weight: 800; text-align: center; padding: 14px 12px; letter-spacing: -0.01em; }
+.compare-table th.sgg-head .sub { display: block; font-size: 11px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
+.compare-table td.metric-label { font-size: 13px; color: #64748b; font-weight: 600; background: #f8fafc; width: 28%; }
+.compare-table td.value { font-variant-numeric: tabular-nums; font-weight: 700; color: #0f172a; text-align: right; font-size: 15px; }
+.compare-table td.value.best { color: #3182f6; }
+.compare-table td.value.worst { color: #94a3b8; }
+.compare-empty { text-align: center; padding: 60px 20px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
+.trend-block { margin: 24px 0 8px; }
+.trend-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+.trend-title { font-size: 14px; font-weight: 700; color: #0f172a; }
+.trend-change { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.trend-change.up { color: #dc2626; }
+.trend-change.down { color: #2563eb; }
+.trend-change.flat { color: #64748b; }
+.trend-svg { width: 100%; height: 110px; display: block; }
+.trend-axis { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; padding: 4px 0 0; }
+.trend-meta { font-size: 12px; color: #64748b; padding-top: 6px; }
+.trend-empty { color: #94a3b8; font-size: 13px; padding: 16px 0; line-height: 1.5; background: #f8fafc; border-radius: 4px; padding: 16px; text-align: center; margin: 16px 0; }
+.compare-trend-cell { font-variant-numeric: tabular-nums; font-weight: 700; }
+.compare-trend-cell.up { color: #dc2626; }
+.compare-trend-cell.down { color: #2563eb; }
+.compare-trend-cell.flat { color: #64748b; }
+@media (max-width: 640px) {
+  .compare-tray-actions { width: 100%; justify-content: stretch; }
+  .compare-tray-actions .compare-btn { flex: 1; }
+  .compare-view-head h2 { font-size: 24px; }
+  .compare-table th.sgg-head { font-size: 13px; padding: 10px 8px; }
+  .compare-table td.value { font-size: 13px; padding: 12px 8px; }
+  .compare-table td.metric-label { font-size: 12px; padding: 12px 8px; }
+}
 footer { border-top: 1px solid #e5e7eb; padding: 32px 0 48px; font-size: 12px; color: #94a3b8; text-align: center; margin-top: 80px; }
 footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 </style>
-<link rel="stylesheet" href="/assets/style.css">
 </head>
 <body>
-<header class="site-header">
-<a class="site-logo" href="/">Q<span>-</span>Lens</a>
-<nav class="site-nav">
-      <a href="/">홈</a>
-      <a href="/town/">동네 카드</a>
-      <a href="/tools/">계산기</a>
-      <a href="/articles/">글</a>
-    </nav>
-</header>
 
-
-
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar-inner">
+      <div>
+        <a href="/town/" class="brand">Q렌즈 동네 카드</a>
+        <span class="brand-sub">보이는 것 너머를 묻습니다</span>
+      </div>
+      <a href="/" class="back-link">← Q렌즈 본 사이트</a>
+    </div>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -134,6 +191,17 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   <div class="intro-note">
     아래에서 시군구를 선택하세요. 데이터는 매주 자동 갱신됩니다.
     학원·사업장(LOCALDATA), 인구 연령 분포는 곧 추가됩니다.
+  </div>
+
+  <div class="compare-tray" id="compare-tray">
+    <div class="compare-tray-inner">
+      <span class="compare-tray-label">비교</span>
+      <div class="compare-tray-chips" id="compare-tray-chips"></div>
+      <div class="compare-tray-actions">
+        <button class="compare-btn ghost" id="compare-clear">전체 해제</button>
+        <button class="compare-btn primary" id="compare-show" disabled>비교 보기 →</button>
+      </div>
+    </div>
   </div>
 
   <div class="filter-bar">
@@ -436,6 +504,15 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     <div class="card-empty">위에서 시군구를 선택하면 카드가 여기에 나타납니다</div>
   </div>
 
+  <div class="compare-view" id="compare-view">
+    <div class="compare-view-head">
+      <h2 id="compare-title">동네 비교</h2>
+      <p>핵심 지표를 나란히 비교합니다. 파란색 = 가장 높은 값.</p>
+    </div>
+    <div class="compare-table-wrap" id="compare-table-wrap"></div>
+    <button class="compare-btn ghost" id="compare-back" style="margin-bottom:48px;">← 동네 선택으로 돌아가기</button>
+  </div>
+
 </div>
 
 <footer>
@@ -467,6 +544,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   DATA.records.forEach(function(r) {
     RECORDS[r.slug] = r;
   });
+  window.__TOWN_RECORDS__ = RECORDS;
 
   function fmtNum(n) {
     if (n === null || n === undefined) return '—';
@@ -487,6 +565,76 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     return String(s).replace(/[&<>"']/g, function(c) {
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
+  }
+
+  function renderTrendChart(monthlyBreakdown, field, label, unit, isCount) {
+    var mb = monthlyBreakdown || [];
+    if (!mb.length) {
+      return '<div class="trend-empty"><b>12개월 추세 데이터 수집 중</b><br>다음 데이터 갱신(매주 월) 이후 추세 차트가 표시됩니다.</div>';
+    }
+    var data = mb.filter(function(d) { return d[field] !== null && d[field] !== undefined; });
+    if (data.length < 3) {
+      return '<div class="trend-empty">최근 ' + mb.length + '개월 거래 데이터 — 추세 표시는 3개월 이상부터.</div>';
+    }
+    var w = 600, h = 110, pad = 12;
+    var values = data.map(function(d) { return d[field]; });
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var range = maxV - minV || 1;
+    // count는 0부터 시작이 자연스러움
+    if (isCount) { minV = 0; range = maxV || 1; }
+    var step = data.length > 1 ? (w - 2*pad) / (data.length - 1) : 0;
+    var points = data.map(function(d, i) {
+      var x = pad + i * step;
+      var y = h - pad - ((d[field] - minV) / range) * (h - 2*pad);
+      return [x, y, d];
+    });
+    var svgInner;
+    if (isCount) {
+      // 막대 차트
+      var barW = Math.max(8, step * 0.6);
+      svgInner = points.map(function(p) {
+        var bx = p[0] - barW/2;
+        var by = p[1];
+        var bh = (h - pad) - p[1];
+        return '<rect x="' + bx + '" y="' + by + '" width="' + barW + '" height="' + Math.max(0, bh) + '" fill="#3182f6" rx="1"/>';
+      }).join('');
+    } else {
+      // 라인 차트 (영역 + 라인 + 점)
+      var path = 'M ' + points.map(function(p) { return p[0] + ',' + p[1]; }).join(' L ');
+      var area = path + ' L ' + points[points.length-1][0] + ',' + (h-pad) + ' L ' + points[0][0] + ',' + (h-pad) + ' Z';
+      svgInner = '<path d="' + area + '" fill="#3182f6" fill-opacity="0.08"/>' +
+                 '<path d="' + path + '" stroke="#3182f6" stroke-width="2" fill="none"/>' +
+                 points.map(function(p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#3182f6"/>'; }).join('');
+    }
+
+    function fmtYm(ym) { return ym.substring(2,4) + '.' + ym.substring(4) + '월'; }
+    var first = data[0][field];
+    var last = data[data.length-1][field];
+    var changeHtml = '';
+    if (first > 0 && !isCount) {
+      var pct = ((last - first) / first) * 100;
+      var dir = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+      var sign = pct >= 0 ? '+' : '';
+      changeHtml = '<span class="trend-change ' + dir + '">' + sign + pct.toFixed(1) + '%</span>';
+    } else if (isCount) {
+      var totalCount = values.reduce(function(a,b){return a+b;}, 0);
+      changeHtml = '<span class="trend-meta">총 ' + totalCount + ' 건</span>';
+    }
+
+    var metaLine;
+    if (isCount) {
+      metaLine = '월 평균 ' + Math.round(values.reduce(function(a,b){return a+b;}, 0) / values.length) + ' ' + unit;
+    } else {
+      metaLine = '시작 ' + fmtNum(first) + unit + ' → 최근 ' + fmtNum(last) + unit;
+    }
+
+    return '<div class="trend-block">' +
+      '<div class="trend-head"><span class="trend-title">' + label + ' (' + data.length + '개월)</span>' + changeHtml + '</div>' +
+      '<svg class="trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' + svgInner + '</svg>' +
+      '<div class="trend-axis"><span>' + fmtYm(data[0].ym) + '</span><span>' + fmtYm(data[data.length-1].ym) + '</span></div>' +
+      '<div class="trend-meta">' + metaLine + '</div>' +
+      '</div>';
   }
 
   function renderBar(label, value, max, unit, accent) {
@@ -573,9 +721,14 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     var stat2 = medianJeonse ? '<div class="ql-stat-num">' + fmtEok(medianJeonse).replace('억','') + '<span class="unit">억</span></div><div class="ql-stat-label">전세 중앙값</div>' : '<div class="ql-stat-num">—</div><div class="ql-stat-label">전세 중앙값</div>';
     var stat3 = popTotal ? '<div class="ql-stat-num">' + fmtNum(popTotal) + '<span class="unit">명</span></div><div class="ql-stat-label">인구 (주민등록 기준)</div>' : '<div class="ql-stat-num">—</div><div class="ql-stat-label">인구</div>';
 
+    var compareBtn = '<button class="compare-add" data-slugkey="' + escapeHTML(rec.slug) + '" data-name="' + escapeHTML(rec.name) + '" data-sido="' + escapeHTML(rec.sido_name) + '">+ 비교에 추가</button>';
+
     return ''
-      + '<div class="card-region">' + escapeHTML(rec.name_full) + '</div>'
-      + '<div class="card-name">' + escapeHTML(rec.name) + '</div>'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">'
+      + '<div><div class="card-region">' + escapeHTML(rec.name_full) + '</div>'
+      + '<div class="card-name">' + escapeHTML(rec.name) + '</div></div>'
+      + compareBtn
+      + '</div>'
       + '<div class="ql-stat-row">'
       + '<div class="ql-stat-cell">' + stat1 + '</div>'
       + '<div class="ql-stat-cell">' + stat2 + '</div>'
@@ -583,26 +736,23 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       + '</div>'
       + '<section class="section">'
       + '<div class="section-num">01 — 부동산</div><h2>집값과 거래의 흐름</h2>'
-      + '<p class="section-sub">최근 3개월 아파트 매매·전월세 실거래.</p>'
+      + '<p class="section-sub">최근 12개월 아파트 매매·전월세 실거래.</p>'
       + renderRealEstate(rec)
+      + renderTrendChart((rec.sections.real_estate_trade || {}).monthly_breakdown, 'median_price_per_pyeong_man', '평당가 추이', '만원', false)
+      + renderTrendChart((rec.sections.real_estate_trade || {}).monthly_breakdown, 'count', '월별 거래 건수', '건', true)
       + '<div class="source">출처: 국토교통부 실거래가 공개시스템</div></section>'
       + '<section class="section">'
-      + '<div class="section-num">02 — 환경</div><h2>공기와 측정값</h2>'
-      + '<p class="section-sub">에어코리아 시도/측정소 실시간.</p>'
-      + renderEnvironment(rec)
-      + '<div class="source">출처: 한국환경공단 에어코리아</div></section>'
-      + '<section class="section">'
-      + '<div class="section-num">03 — 의료</div><h2>병원·의원 분포</h2>'
+      + '<div class="section-num">02 — 의료</div><h2>병원·의원 분포</h2>'
       + '<p class="section-sub">시군구 내 의료기관 종별.</p>'
       + renderMedical(rec)
       + '<div class="source">출처: 건강보험심사평가원</div></section>'
       + '<section class="section">'
-      + '<div class="section-num">04 — 교육</div><h2>학교 분포</h2>'
+      + '<div class="section-num">03 — 교육</div><h2>학교 분포</h2>'
       + '<p class="section-sub">시군구 내 정규 학교.</p>'
       + renderEducation(rec)
       + '<div class="source">출처: 교육부 NEIS</div></section>'
       + '<section class="section">'
-      + '<div class="section-num">05 — 인구</div><h2>누가 살고 있나</h2>'
+      + '<div class="section-num">04 — 인구</div><h2>누가 살고 있나</h2>'
       + '<p class="section-sub">행정안전부 주민등록인구 — 동네의 골격.</p>'
       + renderPopulation(rec)
       + '<div class="source">출처: 통계청 KOSIS · 주민등록인구 (DT_1B040A3)</div></section>';
@@ -619,6 +769,8 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     document.querySelectorAll('.sgg-card').forEach(function(el) {
       el.classList.toggle('active', el.dataset.slugkey === slugKey);
     });
+    // 비교 모드에 이미 추가된 경우 버튼 상태 갱신
+    if (typeof window.__updateCompareAdd__ === 'function') window.__updateCompareAdd__();
     if (pushState && history.pushState) {
       history.pushState({slug: slugKey}, '', '?gu=' + slugKey);
     }
@@ -796,6 +948,280 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     if (rect.right > wrapRect.right || rect.left < wrapRect.left) {
       chip.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
     }
+  });
+})();
+
+// ==================== 비교 모드 ====================
+(function() {
+  var TRAY = document.getElementById('compare-tray');
+  var TRAY_CHIPS = document.getElementById('compare-tray-chips');
+  var BTN_SHOW = document.getElementById('compare-show');
+  var BTN_CLEAR = document.getElementById('compare-clear');
+  var BTN_BACK = document.getElementById('compare-back');
+  var VIEW = document.getElementById('compare-view');
+  var TABLE_WRAP = document.getElementById('compare-table-wrap');
+  var TITLE = document.getElementById('compare-title');
+  var CARD_AREA = document.getElementById('card-area');
+  var FILTER_BAR = document.querySelector('.filter-bar');
+  var SGG_GRID = document.getElementById('sgg-grid');
+  var RESULT_META = document.getElementById('result-meta');
+  var REGION_ROW = document.getElementById('region-row');
+
+  var compareList = []; // [{slugkey, name, sido}]
+  var MAX_COMPARE = 3;
+
+  // RECORDS는 첫 번째 IIFE에서 closure 안에 있어서 접근 불가. window에 노출 필요.
+  function getRecord(slugkey) {
+    return (window.__TOWN_RECORDS__ || {})[slugkey];
+  }
+
+  function renderTray() {
+    if (compareList.length === 0) {
+      TRAY.classList.remove('show');
+      BTN_SHOW.disabled = true;
+      return;
+    }
+    TRAY.classList.add('show');
+    BTN_SHOW.disabled = compareList.length < 2;
+    TRAY_CHIPS.innerHTML = compareList.map(function(item) {
+      return '<span class="compare-chip">' + escHtml(item.name) +
+             '<button class="compare-chip-x" data-slugkey="' + escHtml(item.slugkey) + '" aria-label="제거">×</button></span>';
+    }).join('');
+    BTN_SHOW.textContent = '비교 보기 (' + compareList.length + ') →';
+  }
+
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function fmtNum(n) {
+    if (n === null || n === undefined || n === '') return '—';
+    return Number(n).toLocaleString('ko-KR');
+  }
+
+  function fmtEok(man) {
+    if (!man) return '—';
+    var eok = man / 10000;
+    return eok >= 10 ? Math.round(eok) + '억' : (Math.round(eok * 10) / 10) + '억';
+  }
+
+  function addToCompare(slugkey, name, sido) {
+    if (compareList.find(function(x) { return x.slugkey === slugkey; })) return false;
+    if (compareList.length >= MAX_COMPARE) {
+      alert('비교는 최대 ' + MAX_COMPARE + '개까지 가능합니다.');
+      return false;
+    }
+    compareList.push({slugkey: slugkey, name: name, sido: sido});
+    renderTray();
+    updateAddButtons();
+    return true;
+  }
+
+  function removeFromCompare(slugkey) {
+    compareList = compareList.filter(function(x) { return x.slugkey !== slugkey; });
+    renderTray();
+    updateAddButtons();
+  }
+
+  function clearCompare() {
+    compareList = [];
+    renderTray();
+    updateAddButtons();
+  }
+
+  function updateAddButtons() {
+    var btns = document.querySelectorAll('.compare-add');
+    btns.forEach(function(b) {
+      var slugkey = b.dataset.slugkey;
+      var added = compareList.some(function(x) { return x.slugkey === slugkey; });
+      if (added) {
+        b.classList.add('added');
+        b.textContent = ''; // ::before가 ✓ 표시함, 텍스트는 비움
+        b.innerHTML = '추가됨';
+      } else {
+        b.classList.remove('added');
+        b.innerHTML = '+ 비교에 추가';
+      }
+    });
+  }
+  window.__updateCompareAdd__ = updateAddButtons;
+
+  // 비교 보기 화면
+  function showCompareView() {
+    if (compareList.length < 2) return;
+    var records = compareList.map(function(item) { return getRecord(item.slugkey); }).filter(Boolean);
+    if (records.length < 2) {
+      alert('데이터를 불러올 수 없습니다.');
+      return;
+    }
+    TITLE.textContent = records.map(function(r) { return r.name; }).join(' vs ');
+    TABLE_WRAP.innerHTML = buildCompareTable(records);
+    // 입력 영역 숨기기
+    FILTER_BAR.style.display = 'none';
+    if (REGION_ROW && REGION_ROW.parentElement) REGION_ROW.parentElement.style.display = 'none';
+    SGG_GRID.style.display = 'none';
+    RESULT_META.style.display = 'none';
+    CARD_AREA.style.display = 'none';
+    var introNote = document.querySelector('.intro-note');
+    if (introNote) introNote.style.display = 'none';
+    var emptySt = document.getElementById('empty-state');
+    if (emptySt) emptySt.style.display = 'none';
+    // 인트로 텍스트도 가린다
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'none';
+    VIEW.classList.add('show');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function hideCompareView() {
+    FILTER_BAR.style.display = '';
+    SGG_GRID.style.display = '';
+    RESULT_META.style.display = '';
+    CARD_AREA.style.display = '';
+    var introNote = document.querySelector('.intro-note');
+    if (introNote) introNote.style.display = '';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = '';
+    VIEW.classList.remove('show');
+  }
+
+  function buildCompareTable(records) {
+    // 핵심 지표 정의
+    var metrics = [
+      {label: '아파트 평당가 (중앙값)', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).median_price_per_pyeong_man;
+        return {raw: v, display: v ? fmtNum(v) + ' 만원' : '—'};
+      }, dir: 'high'},
+      {label: '매매 평균 거래액 (중앙값)', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).median_deal_amount_man;
+        return {raw: v, display: v ? fmtEok(v) : '—'};
+      }, dir: 'high'},
+      {label: '월평균 매매 건수', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).monthly_count_avg;
+        return {raw: v, display: v ? Math.round(v) + ' 건' : '—'};
+      }, dir: 'high'},
+      {label: '전세 중앙값', get: function(r) {
+        var v = (r.sections.real_estate_rent || {}).median_jeonse_man;
+        return {raw: v, display: v ? fmtEok(v) : '—'};
+      }, dir: 'high'},
+      {label: '매매-전세 비율', get: function(r) {
+        var t = r.sections.real_estate_trade || {};
+        var rt = r.sections.real_estate_rent || {};
+        if (rt.median_jeonse_man && t.median_deal_amount_man) {
+          var pct = Math.round(rt.median_jeonse_man / t.median_deal_amount_man * 1000) / 10;
+          return {raw: pct, display: pct + ' %'};
+        }
+        return {raw: null, display: '—'};
+      }, dir: 'high'},
+      {label: '인구 (주민등록)', get: function(r) {
+        var p = r.sections.population || {};
+        var v = p.sgg_total || p.gangnam_total;
+        return {raw: v, display: v ? fmtNum(v) + ' 명' : '—'};
+      }, dir: 'high'},
+      {label: '의료기관 합계', get: function(r) {
+        var m = r.sections.medical || {};
+        var v = m.sgg_count;
+        if (!v && m.by_type) {
+          v = Object.keys(m.by_type).reduce(function(a, k) { return a + m.by_type[k]; }, 0);
+        }
+        return {raw: v, display: v ? fmtNum(v) + ' 곳' : '—'};
+      }, dir: 'high'},
+      {label: '학교 합계', get: function(r) {
+        var e = r.sections.education || {};
+        var v = e.sgg_count;
+        if (!v && e.by_type) {
+          v = Object.keys(e.by_type).reduce(function(a, k) { return a + e.by_type[k]; }, 0);
+        }
+        return {raw: v, display: v ? fmtNum(v) + ' 개' : '—'};
+      }, dir: 'high'},
+      {label: '평당가 추이 (12개월)', get: function(r) {
+        var mb = (r.sections.real_estate_trade || {}).monthly_breakdown || [];
+        var data = mb.filter(function(d) { return d.median_price_per_pyeong_man; });
+        if (data.length < 3) return {raw: null, display: '데이터 부족'};
+        var first = data[0].median_price_per_pyeong_man;
+        var last = data[data.length-1].median_price_per_pyeong_man;
+        if (!first) return {raw: null, display: '—'};
+        var pct = ((last - first) / first) * 100;
+        var sign = pct >= 0 ? '+' : '';
+        var cls = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+        return {raw: pct, display: '<span class="compare-trend-cell ' + cls + '">' + sign + pct.toFixed(1) + '%</span>', isHtml: true};
+      }, dir: 'high'},
+      {label: '월평균 거래량 (12개월)', get: function(r) {
+        var mb = (r.sections.real_estate_trade || {}).monthly_breakdown || [];
+        if (!mb.length) return {raw: null, display: '데이터 부족'};
+        var counts = mb.map(function(d) { return d.count || 0; });
+        var avg = counts.reduce(function(a,b){return a+b;}, 0) / counts.length;
+        return {raw: avg, display: Math.round(avg) + ' 건'};
+      }, dir: 'high'}
+    ];
+
+    var html = '<table class="compare-table"><thead><tr>';
+    html += '<th>지표</th>';
+    records.forEach(function(r) {
+      html += '<th class="sgg-head">' + escHtml(r.name) + '<span class="sub">' + escHtml(r.sido_name) + '</span></th>';
+    });
+    html += '</tr></thead><tbody>';
+
+    metrics.forEach(function(m) {
+      var values = records.map(function(r) { return m.get(r); });
+      var raws = values.map(function(v) { return v.raw; }).filter(function(v) { return v !== null && v !== undefined; });
+      var best = null, worst = null;
+      if (raws.length >= 2) {
+        if (m.dir === 'high') {
+          best = Math.max.apply(null, raws);
+          worst = Math.min.apply(null, raws);
+        } else {
+          best = Math.min.apply(null, raws);
+          worst = Math.max.apply(null, raws);
+        }
+      }
+      html += '<tr><td class="metric-label">' + escHtml(m.label) + '</td>';
+      values.forEach(function(v) {
+        var cls = 'value';
+        if (best !== null && v.raw === best && raws.length >= 2 && best !== worst) cls += ' best';
+        else if (worst !== null && v.raw === worst && raws.length >= 2 && best !== worst) cls += ' worst';
+        // 추세 셀은 isHtml로 들어오므로 escape하지 않음
+        var content = v.isHtml ? v.display : escHtml(v.display);
+        html += '<td class="' + cls + '">' + content + '</td>';
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    return html;
+  }
+
+  // 이벤트 바인딩
+  document.addEventListener('click', function(e) {
+    var addBtn = e.target.closest('.compare-add');
+    if (addBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      var slugkey = addBtn.dataset.slugkey;
+      var name = addBtn.dataset.name;
+      var sido = addBtn.dataset.sido;
+      if (compareList.some(function(x) { return x.slugkey === slugkey; })) {
+        removeFromCompare(slugkey);
+      } else {
+        addToCompare(slugkey, name, sido);
+      }
+      return;
+    }
+    var xBtn = e.target.closest('.compare-chip-x');
+    if (xBtn) {
+      e.preventDefault();
+      removeFromCompare(xBtn.dataset.slugkey);
+      return;
+    }
+  });
+
+  BTN_SHOW.addEventListener('click', showCompareView);
+  BTN_BACK.addEventListener('click', hideCompareView);
+  BTN_CLEAR.addEventListener('click', function() {
+    if (compareList.length === 0) return;
+    if (confirm('비교 목록을 모두 비울까요?')) clearCompare();
   });
 })();
 
