@@ -1,3 +1,20 @@
+## 2026-05-05 — 오리지널 시리즈 기능 제거
+
+**제거**
+- 홈 `오리지널 시리즈` 섹션 (index.html)
+- `/series/` 디렉토리 전체 (허브 + market-concentration-2026 상세)
+- `/data/series.json`
+- `assets/site.js`의 시리즈 라우터·렌더 함수 (`renderHomeSeries`, `renderSeriesList`, `renderSeriesDetail`) → v5.1
+- `assets/style.css`의 `.series-grid`, `.series-card*` 클래스
+- `sitemap.xml`의 `/series/` URL 엔트리
+- 푸터의 시리즈 링크
+- `articles.json`에서 두 아티클의 `series`/`series_order` 필드 (kospi-6000-concentration, nps-rebalancing-suspension)
+
+**유지**
+- 시리즈에 속해 있던 두 아티클 본문 페이지 (`/articles/kospi-6000-concentration/`, `/articles/nps-rebalancing-suspension/`)는 독립 아티클로 그대로 유지
+
+---
+
 # Q-Lens Changelog
 
 Q렌즈 사이트의 버전별 변경 기록입니다. 이 문서의 최상단 버전은 사이트 푸터의 버전 표기와 동기화됩니다.

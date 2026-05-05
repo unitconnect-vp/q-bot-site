@@ -1,8 +1,8 @@
-/* Q-Lens site.js v5.0 (2026-04-18)
- * - 홈 피드: featured / ranking / categories / writers / series / recent
+/* Q-Lens site.js v5.1 (2026-05-05)
+ * - 홈 피드: featured / ranking / categories / writers / recent
  * - 4그룹 팔레트 자동 부여 (g-deep/g-coast/g-marine/g-sunset)
  * - 아티클 progress bar
- * - 라우터: /authors/, /authors/{id}/, /series/, /series/{id}/, /categories/
+ * - 라우터: /authors/, /authors/{id}/, /categories/
  */
 
 (function () {
@@ -56,7 +56,6 @@
   function loadData() {
     return Promise.all([
       fetch('/articles/articles.json').then(r => r.json()),
-      fetch('/data/series.json').then(r => r.ok ? r.json() : []).catch(() => []),
       fetch('/data/authors.json').then(r => r.ok ? r.json() : []).catch(() => []),
       fetch('/data/categories.json').then(r => r.ok ? r.json() : []).catch(() => [])
     ]);
@@ -71,45 +70,33 @@
   const homeFeed = document.getElementById('qlens-home');
   const authorList = document.getElementById('qlens-author-list');
   const authorDetail = document.getElementById('qlens-author-detail');
-  const seriesList = document.getElementById('qlens-series-list');
-  const seriesDetail = document.getElementById('qlens-series-detail');
   const categoryList = document.getElementById('qlens-category-list');
   const categoryDetail = document.getElementById('qlens-category-detail');
 
   if (homeFeed) {
-    loadData().then(([articles, seriesArr, authorsArr, categoriesArr]) => {
+    loadData().then(([articles, authorsArr, categoriesArr]) => {
       const sorted = sortByDate(articles);
       renderHomeFeatured(sorted, authorsArr);
       renderHomeRanking(sorted, authorsArr);
       renderHomeRecent(sorted, authorsArr);
       renderHomeTools();
-      renderHomeSeries(seriesArr, sorted);
     }).catch(handleError);
   } else if (authorList) {
-    loadData().then(([articles, _, authorsArr]) => {
+    loadData().then(([articles, authorsArr]) => {
       renderAuthorList(authorsArr, articles);
     }).catch(handleError);
   } else if (authorDetail) {
     const id = authorDetail.dataset.authorId;
-    loadData().then(([articles, _, authorsArr]) => {
+    loadData().then(([articles, authorsArr]) => {
       renderAuthorDetail(id, authorsArr, articles);
     }).catch(handleError);
-  } else if (seriesList) {
-    loadData().then(([articles, seriesArr]) => {
-      renderSeriesList(seriesArr, articles);
-    }).catch(handleError);
-  } else if (seriesDetail) {
-    const id = seriesDetail.dataset.seriesId;
-    loadData().then(([articles, seriesArr]) => {
-      renderSeriesDetail(id, seriesArr, articles);
-    }).catch(handleError);
   } else if (categoryList) {
-    loadData().then(([articles, _, authorsArr, categoriesArr]) => {
+    loadData().then(([articles, authorsArr, categoriesArr]) => {
       renderCategoryList(categoriesArr, articles);
     }).catch(handleError);
   } else if (categoryDetail) {
     const id = categoryDetail.dataset.categoryId;
-    loadData().then(([articles, _, authorsArr, categoriesArr]) => {
+    loadData().then(([articles, authorsArr, categoriesArr]) => {
       renderCategoryDetail(id, categoriesArr, authorsArr, articles);
     }).catch(handleError);
   }
@@ -220,27 +207,6 @@
   }
 
   // ============================================
-  // 9. 홈 — 시리즈
-  // ============================================
-  function renderHomeSeries(seriesArr, articles) {
-    const host = document.getElementById('home-series');
-    if (!host || !seriesArr || seriesArr.length === 0) return;
-    const counts = {};
-    articles.forEach(a => {
-      if (a.series) counts[a.series] = (counts[a.series] || 0) + 1;
-    });
-    const show = seriesArr.slice(0, 6);
-    host.innerHTML = show.map(s => `
-      <a href="/series/${esc(s.id)}/" class="series-card">
-        <div class="series-card__emoji">${esc(s.emoji || '📰')}</div>
-        <div class="series-card__name">${esc(s.name)}</div>
-        <div class="series-card__desc">${esc(s.description || '')}</div>
-        <div class="series-card__count">아티클 ${counts[s.id] || 0}편</div>
-      </a>
-    `).join('');
-  }
-
-  // ============================================
   // 9.5. 홈 — 계산기 (외부 도구 4개)
   // ============================================
   function renderHomeTools() {
@@ -308,61 +274,6 @@
             <div class="card__title">${esc(a.title)}</div>
             ${a.excerpt ? `<div class="card__excerpt">${esc(a.excerpt)}</div>` : ''}
             <div class="card__meta">${formatDate(a.date)}</div>
-          </a>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  // ============================================
-  // 12. 시리즈 목록
-  // ============================================
-  function renderSeriesList(seriesArr, articles) {
-    const host = document.getElementById('qlens-series-list');
-    if (!host || !seriesArr) return;
-    const counts = {};
-    articles.forEach(a => { if (a.series) counts[a.series] = (counts[a.series] || 0) + 1; });
-    host.innerHTML = `
-      <div class="series-grid">
-        ${seriesArr.map(s => `
-          <a href="/series/${esc(s.id)}/" class="series-card">
-            <div class="series-card__emoji">${esc(s.emoji || '📰')}</div>
-            <div class="series-card__name">${esc(s.name)}</div>
-            <div class="series-card__desc">${esc(s.description || '')}</div>
-            <div class="series-card__count">아티클 ${counts[s.id] || 0}편</div>
-          </a>
-        `).join('')}
-      </div>
-    `;
-  }
-
-  // ============================================
-  // 13. 시리즈 상세
-  // ============================================
-  function renderSeriesDetail(id, seriesArr, articles) {
-    const host = document.getElementById('qlens-series-detail');
-    if (!host) return;
-    const series = seriesArr.find(s => s.id === id);
-    if (!series) { host.innerHTML = '<p>시리즈를 찾을 수 없습니다.</p>'; return; }
-    const myArticles = articles
-      .filter(a => a.series === id)
-      .sort((a, b) => (a.series_order || 0) - (b.series_order || 0));
-    host.innerHTML = `
-      <div style="padding:48px 0; border-top:4px solid #000; position:relative;">
-        <div style="position:absolute; top:-4px; left:0; width:48px; height:4px; background:#3182f6;"></div>
-        <div style="font-size:2rem; margin-bottom:12px;">${esc(series.emoji || '📰')}</div>
-        <h1 style="font-size:2rem; font-weight:800; letter-spacing:-0.035em; margin-bottom:8px;">${esc(series.name)}</h1>
-        <p style="color:#6b7280; font-size:1rem; max-width:640px;">${esc(series.description || '')}</p>
-      </div>
-      <div class="card-grid" style="margin-top:48px;">
-        ${myArticles.map(a => `
-          <a href="/articles/${esc(a.slug)}/" class="card">
-            <div class="card__thumb g-deep">
-              <img src="/articles/${esc(a.slug)}/thumb.webp" alt="${esc(a.title)}" loading="lazy">
-            </div>
-            <div class="card__cat">${a.series_order ? `${a.series_order}부` : esc(a.category)}</div>
-            <div class="card__title">${esc(a.title)}</div>
-            <div class="card__meta">${esc(a.author)} · ${formatDate(a.date)}</div>
           </a>
         `).join('')}
       </div>

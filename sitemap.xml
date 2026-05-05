@@ -31,12 +31,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://q-bot.kr/series/</loc>
-    <lastmod>2026-05-03</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://q-bot.kr/about/</loc>
     <lastmod>2026-05-03</lastmod>
     <changefreq>monthly</changefreq>

@@ -466,48 +466,6 @@ button { font-family: inherit; cursor: pointer; }
   overflow: hidden;
 }
 
-/* ===== SERIES ===== */
-.series-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.series-card {
-  background: var(--paper-warm);
-  border-radius: 8px;
-  padding: 28px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-.series-card:hover { background: #f3f4f6; }
-.series-card__emoji {
-  font-size: 1.75rem;
-  margin-bottom: 14px;
-}
-.series-card__name {
-  font-size: 1.1875rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--ink-strong);
-  margin-bottom: 10px;
-}
-.series-card__desc {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--ink-muted);
-  margin-bottom: 14px;
-  word-break: keep-all;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.series-card__count {
-  font-size: 0.8125rem;
-  color: var(--accent);
-  font-weight: 700;
-}
-
 /* ===== ARTICLE PAGE ===== */
 .article-wrap {
   max-width: 760px;
@@ -786,7 +744,6 @@ button { font-family: inherit; cursor: pointer; }
   .ranking { grid-template-columns: 1fr; gap: 0; }
   .card-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
   .writers-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .series-grid { grid-template-columns: 1fr; }
   .footer-inner { grid-template-columns: 1fr; gap: 24px; }
   .section { padding: 52px 0; }
   .section-head h2 { font-size: 1.5rem; }
