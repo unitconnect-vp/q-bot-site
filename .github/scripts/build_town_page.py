@@ -30,14 +30,12 @@ PAGE = """<!DOCTYPE html>
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans-serif; background: #ffffff; color: #0f172a; font-feature-settings: 'tnum'; -webkit-font-smoothing: antialiased; line-height: 1.6; }
 .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
-.hero { margin-bottom: 32px; }
+.hero { padding-top: 48px; margin-bottom: 32px; }
 .hero-eyebrow { font-size: 13px; color: #64748b; margin-bottom: 8px; letter-spacing: 0.02em; }
 .hero h1 { font-size: 48px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; color: #0f172a; margin-bottom: 12px; }
 .hero-tagline { font-size: 17px; color: #475569; margin-bottom: 24px; max-width: 540px; }
 .hero-meta { font-size: 12px; color: #94a3b8; padding-top: 12px; border-top: 1px solid #e5e7eb; }
 .hero-meta b { color: #3182f6; font-weight: 600; }
-.intro-note { background: #f8fafc; padding: 16px 20px; border-radius: 4px; font-size: 13px; color: #475569; line-height: 1.6; margin: 24px 0 32px; }
-.intro-note b { color: #0f172a; }
 .filter-bar { position: sticky; top: 0; background: #ffffff; padding: 12px 0 8px; z-index: 10; margin-bottom: 16px; }
 .filter-input-wrap { position: relative; margin-bottom: 10px; }
 .filter-input { width: 100%; padding: 12px 40px 12px 16px; font-size: 15px; border: 1.5px solid #e5e7eb; border-radius: 4px; font-family: inherit; background: #fff; outline: none; transition: border-color 0.15s; }
@@ -45,107 +43,58 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .filter-input-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: #f3f4f6; color: #6b7280; border-radius: 50%; cursor: pointer; font-size: 16px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0; line-height: 1; }
 .filter-input-clear:hover { background: #e5e7eb; color: #0f172a; }
 .filter-input-clear.show { display: flex; }
-.region-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-.region-chip { flex: 0 0 auto; padding: 10px 16px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 4px; font-size: 14px; font-weight: 700; color: #0f172a; cursor: pointer; transition: all 0.12s; user-select: none; font-family: inherit; }
-.region-chip:hover { border-color: #0f172a; }
-.region-chip.active { background: #3182f6; color: #fff; border-color: #3182f6; }
-.region-chip .count { opacity: 0.65; font-weight: 500; margin-left: 5px; font-size: 12px; }
-.region-chip.active .count { opacity: 0.85; }
-.sido-chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-.sido-chips::-webkit-scrollbar { display: none; }
-.sido-chip { flex-shrink: 0; padding: 8px 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; font-size: 14px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; white-space: nowrap; user-select: none; font-family: inherit; }
-.sido-chip:hover { border-color: #0f172a; color: #0f172a; }
-.sido-chip.active { background: #0f172a; color: #fff; border-color: #0f172a; }
-.sido-chip .count { opacity: 0.6; font-weight: 500; margin-left: 4px; font-size: 12px; }
-.sido-chip.active .count { opacity: 0.7; }
-.sido-chip.hidden { display: none; }
-.sgg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 32px; }
-.sgg-card { display: block; padding: 16px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.12s; position: relative; }
-.sgg-card:hover { border-color: #0f172a; }
-.sgg-card.active { background: #0f172a; border-color: #0f172a; }
-.sgg-card.active .sgg-name, .sgg-card.active .sgg-sido { color: #fff; }
-.sgg-card.active .sgg-sido { opacity: 0.7; }
-.sgg-card.in-compare { border-color: #3182f6; border-width: 2px; }
-.sgg-card.in-compare::after { content: '비교중'; position: absolute; top: 6px; right: 6px; font-size: 10px; font-weight: 700; color: #3182f6; background: #eff6ff; padding: 2px 6px; border-radius: 3px; }
+/* === 검색 autocomplete 드롭다운 (v3.7.5, 2026-05-05) === */
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  max-height: 420px;
+  overflow-y: auto;
+  z-index: 20;
+}
+.search-dropdown[hidden] { display: none; }
+.search-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 12px 16px 6px;
+}
+.search-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  border: 0;
+  background: #fff;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.1s;
+}
+.search-item:last-child { border-bottom: 0; }
+.search-item:hover, .search-item.active { background: #f8fafc; }
+.search-item-name { font-size: 15px; font-weight: 600; color: #0f172a; }
+.search-item-sido { font-size: 12px; color: #94a3b8; flex-shrink: 0; }
+.search-empty { padding: 28px 16px; text-align: center; color: #94a3b8; font-size: 13px; }
+.search-empty b { color: #475569; }
 .sgg-name { font-size: 17px; font-weight: 700; color: #0f172a; line-height: 1.25; letter-spacing: -0.01em; }
 .sgg-sido { font-size: 13px; color: #94a3b8; font-weight: 500; margin-top: 4px; }
-.result-meta { font-size: 13px; color: #64748b; margin-bottom: 14px; padding-left: 2px; font-weight: 500; }
-.empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 14px; }
-.empty-state b { color: #475569; }
 @media (max-width: 640px) {
-  .sgg-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .sgg-card { padding: 14px 12px; }
   .sgg-name { font-size: 16px; }
   .sgg-sido { font-size: 12px; }
   .filter-bar { padding: 10px 0 6px; }
-  .sido-chip { padding: 7px 14px; font-size: 13px; }
-  .region-chip { padding: 9px 14px; font-size: 13px; flex: 1 1 calc(50% - 4px); text-align: center; }
-}
-/* 비교 모드 UI */
-.compare-bar { background: #f0f9ff; border: 1.5px solid #3182f6; border-radius: 6px; padding: 14px 16px; margin-bottom: 24px; display: none; }
-.compare-bar.active { display: block; }
-.compare-bar-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.compare-bar-title { font-size: 14px; font-weight: 700; color: #0f172a; }
-.compare-bar-actions { display: flex; gap: 8px; }
-.compare-btn { padding: 6px 12px; font-size: 12px; font-weight: 700; border-radius: 4px; cursor: pointer; border: none; font-family: inherit; }
-.compare-btn-primary { background: #3182f6; color: #fff; }
-.compare-btn-primary:disabled { background: #cbd5e1; cursor: not-allowed; }
-.compare-btn-ghost { background: #fff; color: #475569; border: 1px solid #cbd5e1; }
-.compare-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-.compare-slot { background: #fff; border: 1px dashed #93c5fd; border-radius: 4px; padding: 10px 12px; min-height: 56px; display: flex; flex-direction: column; justify-content: center; position: relative; }
-.compare-slot.filled { border-style: solid; border-color: #3182f6; }
-.compare-slot-empty { color: #94a3b8; font-size: 12px; text-align: center; }
-.compare-slot-name { font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; }
-.compare-slot-sido { font-size: 11px; color: #64748b; margin-top: 2px; }
-.compare-slot-remove { position: absolute; top: 4px; right: 4px; width: 20px; height: 20px; border: none; background: #f3f4f6; color: #6b7280; border-radius: 50%; cursor: pointer; font-size: 12px; line-height: 1; padding: 0; }
-.compare-slot-remove:hover { background: #fee2e2; color: #ef4444; }
-.toggle-compare-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #fff; border: 1.5px solid #3182f6; border-radius: 4px; color: #3182f6; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; margin-bottom: 14px; }
-.toggle-compare-btn.active { background: #3182f6; color: #fff; }
-.toggle-compare-btn:hover { background: #eff6ff; }
-.toggle-compare-btn.active:hover { background: #1d4ed8; }
-.card-add-compare { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; background: #fff; border: 1.5px solid #3182f6; border-radius: 4px; color: #3182f6; font-size: 13px; font-weight: 700; cursor: pointer; font-family: inherit; margin: 0 0 24px; }
-.card-add-compare:hover { background: #eff6ff; }
-.card-add-compare.added { background: #3182f6; color: #fff; }
-@media (max-width: 640px) {
-  .compare-slots { grid-template-columns: 1fr; }
-}
-/* 추세 차트 (월별 라인) */
-.trend-block { margin: 20px 0 12px; }
-.trend-title { font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: baseline; }
-.trend-title-delta { font-size: 12px; font-weight: 600; }
-.trend-title-delta.up { color: #ef4444; }
-.trend-title-delta.down { color: #3182f6; }
-.trend-title-delta.flat { color: #94a3b8; }
-.trend-svg { width: 100%; height: 80px; display: block; }
-.trend-axis { font-size: 10px; color: #94a3b8; display: flex; justify-content: space-between; margin-top: 4px; padding: 0 2px; }
-.trend-empty { font-size: 12px; color: #94a3b8; padding: 12px; background: #f8fafc; border-radius: 4px; text-align: center; }
-/* 비교 패널 (사이드바이사이드) */
-.compare-panel { background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; padding: 24px; margin-top: 32px; }
-.compare-panel-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 4px solid #0f172a; }
-.compare-panel-head h2 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
-.compare-panel-close { background: none; border: none; color: #64748b; font-size: 14px; cursor: pointer; font-family: inherit; }
-.compare-panel-close:hover { color: #0f172a; }
-.compare-grid { display: grid; gap: 16px; margin-bottom: 24px; }
-.compare-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
-.compare-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
-.compare-col { padding: 16px; background: #f8fafc; border-radius: 4px; }
-.compare-col-name { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 4px; }
-.compare-col-sido { font-size: 11px; color: #64748b; margin-bottom: 16px; }
-.compare-row { display: grid; padding: 12px 0; border-bottom: 1px solid #e5e7eb; align-items: baseline; gap: 8px; }
-.compare-row.cols-2 { grid-template-columns: 110px repeat(2, 1fr); }
-.compare-row.cols-3 { grid-template-columns: 110px repeat(3, 1fr); }
-.compare-row:last-child { border-bottom: none; }
-.compare-row-label { font-size: 12px; color: #64748b; font-weight: 500; }
-.compare-row-val { font-size: 14px; font-weight: 700; color: #0f172a; font-variant-numeric: tabular-nums; }
-.compare-row-val.best { color: #3182f6; }
-.compare-row-val.worst { color: #ef4444; }
-.compare-row-val.dim { color: #cbd5e1; font-weight: 500; }
-@media (max-width: 640px) {
-  .compare-grid.cols-2, .compare-grid.cols-3 { grid-template-columns: 1fr; }
-  .compare-row.cols-2 { grid-template-columns: 100px 1fr 1fr; font-size: 12px; }
-  .compare-row.cols-3 { grid-template-columns: 90px repeat(3, 1fr); font-size: 11px; }
-  .compare-row-val { font-size: 13px; }
-  .compare-panel { padding: 16px; }
+  .hero { padding-top: 32px; }
+  .hero h1 { font-size: 36px; }
 }
 .card-area { min-height: 400px; margin-top: 32px; }
 .card-empty { text-align: center; padding: 64px 24px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
@@ -179,12 +128,65 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .kv-cell.label { color: #64748b; }
 .kv-cell.val { color: #0f172a; font-weight: 600; font-variant-numeric: tabular-nums; }
 .kv-cell.val.highlight { color: #3182f6; }
-.insight { background: #f8fafc; border-left: 4px solid #60a5fa; padding: 16px 20px; margin: 20px 0; border-radius: 0 4px 4px 0; }
-.insight-tag { font-size: 11px; font-weight: 700; color: #3182f6; letter-spacing: 0.1em; margin-bottom: 6px; }
-.insight p { font-size: 14px; color: #0f172a; line-height: 1.65; }
-.insight p b { font-weight: 700; }
 .source { font-size: 11px; color: #94a3b8; margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
-footer { border-top: 1px solid #e5e7eb; padding: 32px 0 48px; font-size: 12px; color: #94a3b8; text-align: center; margin-top: 80px; }
+.compare-add { display: inline-block; padding: 8px 14px; background: #fff; border: 1.5px solid #3182f6; color: #3182f6; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; margin-left: 8px; transition: all 0.12s; font-family: inherit; }
+.compare-add:hover { background: #3182f6; color: #fff; }
+.compare-add.added { background: #3182f6; color: #fff; border-color: #3182f6; }
+.compare-add.added::before { content: '✓ '; }
+.compare-tray { position: sticky; top: 0; background: #fff; border-bottom: 4px solid #3182f6; padding: 14px 0; margin-bottom: 24px; z-index: 20; display: none; }
+.compare-tray.show { display: block; }
+.compare-tray-inner { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.compare-tray-label { font-size: 13px; font-weight: 700; color: #0f172a; }
+.compare-tray-chips { display: flex; gap: 6px; flex: 1; flex-wrap: wrap; }
+.compare-chip { display: inline-flex; align-items: center; gap: 6px; padding: 6px 6px 6px 12px; background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 999px; font-size: 13px; font-weight: 600; color: #1e40af; }
+.compare-chip-x { width: 22px; height: 22px; border: none; background: #1e40af; color: #fff; border-radius: 50%; cursor: pointer; font-size: 14px; line-height: 1; padding: 0; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.compare-chip-x:hover { background: #0f172a; }
+.compare-tray-actions { display: flex; gap: 8px; }
+.compare-btn { padding: 8px 16px; border-radius: 4px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: all 0.12s; font-family: inherit; }
+.compare-btn.primary { background: #0f172a; color: #fff; }
+.compare-btn.primary:hover { background: #1e293b; }
+.compare-btn.primary:disabled { background: #cbd5e1; cursor: not-allowed; }
+.compare-btn.ghost { background: #fff; color: #64748b; border: 1px solid #e5e7eb; }
+.compare-btn.ghost:hover { color: #0f172a; border-color: #0f172a; }
+.compare-view { display: none; }
+.compare-view.show { display: block; }
+.compare-view-head { padding: 24px 0 16px; border-bottom: 4px solid #0f172a; margin-bottom: 24px; }
+.compare-view-head h2 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; color: #0f172a; margin-bottom: 6px; }
+.compare-view-head p { font-size: 14px; color: #64748b; }
+.compare-table-wrap { overflow-x: auto; margin-bottom: 32px; -webkit-overflow-scrolling: touch; }
+.compare-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.compare-table th, .compare-table td { padding: 16px 14px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+.compare-table th { background: #f8fafc; font-size: 13px; font-weight: 600; color: #64748b; }
+.compare-table th.sgg-head { background: #0f172a; color: #fff; font-size: 15px; font-weight: 800; text-align: center; padding: 14px 12px; letter-spacing: -0.01em; }
+.compare-table th.sgg-head .sub { display: block; font-size: 11px; color: #cbd5e1; font-weight: 500; margin-top: 2px; }
+.compare-table td.metric-label { font-size: 13px; color: #64748b; font-weight: 600; background: #f8fafc; width: 28%; }
+.compare-table td.value { font-variant-numeric: tabular-nums; font-weight: 700; color: #0f172a; text-align: right; font-size: 15px; }
+.compare-table td.value.best { color: #3182f6; }
+.compare-table td.value.worst { color: #94a3b8; }
+.compare-empty { text-align: center; padding: 60px 20px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
+.trend-block { margin: 24px 0 8px; }
+.trend-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; gap: 12px; flex-wrap: wrap; }
+.trend-title { font-size: 14px; font-weight: 700; color: #0f172a; }
+.trend-change { font-size: 15px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.trend-change.up { color: #dc2626; }
+.trend-change.down { color: #2563eb; }
+.trend-change.flat { color: #64748b; }
+.trend-svg { width: 100%; height: 110px; display: block; }
+.trend-axis { display: flex; justify-content: space-between; font-size: 11px; color: #94a3b8; padding: 4px 0 0; }
+.trend-meta { font-size: 12px; color: #64748b; padding-top: 6px; }
+.trend-empty { color: #94a3b8; font-size: 13px; padding: 16px 0; line-height: 1.5; background: #f8fafc; border-radius: 4px; padding: 16px; text-align: center; margin: 16px 0; }
+.compare-trend-cell { font-variant-numeric: tabular-nums; font-weight: 700; }
+.compare-trend-cell.up { color: #dc2626; }
+.compare-trend-cell.down { color: #2563eb; }
+.compare-trend-cell.flat { color: #64748b; }
+@media (max-width: 640px) {
+  .compare-tray-actions { width: 100%; justify-content: stretch; }
+  .compare-tray-actions .compare-btn { flex: 1; }
+  .compare-view-head h2 { font-size: 24px; }
+  .compare-table th.sgg-head { font-size: 13px; padding: 10px 8px; }
+  .compare-table td.value { font-size: 13px; padding: 12px 8px; }
+  .compare-table td.metric-label { font-size: 12px; padding: 12px 8px; }
+}
 footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 </style>
 </head>
@@ -193,11 +195,12 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 <header class="site-header">
   <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
   <nav class="site-nav">
-    <a href="/">홈</a>
-    <a href="/town/">동네 카드</a>
-    <a href="/tools/">계산기</a>
-    <a href="/articles/">글</a>
-  </nav>
+      <a href="/">홈</a>
+      <a href="/town/">동네 카드</a>
+      <a href="/tools/">계산기</a>
+      <a href="/play/">게임</a>
+      <a href="/articles/">글</a>
+    </nav>
 </header>
 
 <div class="wrap">
@@ -209,51 +212,85 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     <div class="hero-meta">데이터 갱신 <b>__UPDATED__</b> · 출처 국토교통부·환경공단·심평원·교육부·통계청</div>
   </section>
 
-
-  <div class="intro-note">
-    아래에서 시군구를 선택하세요. 데이터는 매주 자동 갱신됩니다.
-    학원·사업장(LOCALDATA), 인구 연령 분포는 곧 추가됩니다.
-  </div>
-
-  <button class="toggle-compare-btn" id="toggle-compare" aria-pressed="false">⊕ 비교 모드</button>
-
-  <div class="compare-bar" id="compare-bar">
-    <div class="compare-bar-head">
-      <div class="compare-bar-title">비교할 동네 선택 (최대 3개)</div>
-      <div class="compare-bar-actions">
-        <button class="compare-btn compare-btn-ghost" id="compare-clear">전체 비우기</button>
-        <button class="compare-btn compare-btn-primary" id="compare-show" disabled>비교 보기</button>
+  <div class="compare-tray" id="compare-tray">
+    <div class="compare-tray-inner">
+      <span class="compare-tray-label">비교</span>
+      <div class="compare-tray-chips" id="compare-tray-chips"></div>
+      <div class="compare-tray-actions">
+        <button class="compare-btn ghost" id="compare-clear">전체 해제</button>
+        <button class="compare-btn primary" id="compare-show" disabled>비교 보기 →</button>
       </div>
     </div>
-    <div class="compare-slots" id="compare-slots">
-      <div class="compare-slot" data-slot="0"><div class="compare-slot-empty">슬롯 1 비어있음</div></div>
-      <div class="compare-slot" data-slot="1"><div class="compare-slot-empty">슬롯 2 비어있음</div></div>
-      <div class="compare-slot" data-slot="2"><div class="compare-slot-empty">슬롯 3 비어있음</div></div>
-    </div>
   </div>
 
-  __SIDO_SECTIONS__
+  <div class="filter-bar">
+  <div class="filter-input-wrap">
+    <input type="search" id="sgg-search" class="filter-input" placeholder="동네 이름 검색 (예: 강남, 마포, 분당)" autocomplete="off">
+    <button class="filter-input-clear" id="sgg-clear" aria-label="검색어 지우기">×</button>
+  </div>
+  <div class="search-dropdown" id="search-dropdown" hidden></div>
+</div>
+
 
   <div class="card-area" id="card-area">
-    <div class="card-empty">위에서 시군구를 선택하면 카드가 여기에 나타납니다</div>
+    <div class="card-empty">동네를 검색해 선택하면 카드가 여기에 나타납니다</div>
   </div>
 
-  <div class="compare-panel" id="compare-panel" style="display:none;">
-    <div class="compare-panel-head">
-      <h2>동네 비교</h2>
-      <button class="compare-panel-close" id="compare-panel-close">✕ 닫기</button>
+  <div class="compare-view" id="compare-view">
+    <div class="compare-view-head">
+      <h2 id="compare-title">동네 비교</h2>
+      <p>핵심 지표를 나란히 비교합니다. 파란색 = 가장 높은 값.</p>
     </div>
-    <div id="compare-panel-body"></div>
+    <div class="compare-table-wrap" id="compare-table-wrap"></div>
+    <button class="compare-btn ghost" id="compare-back" style="margin-bottom:48px;">← 동네 선택으로 돌아가기</button>
   </div>
 
 </div>
 
-<footer>
-  <div class="wrap">
-    Q렌즈 · q-bot.kr ·
-    <a href="/about/">소개</a>
-    <a href="/town/">동네 카드 홈</a>
-    <a href="/contact/">문의</a>
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Q<span>-</span>Lens</div>
+      <p class="footer-tagline">보이는 것 너머를 묻습니다</p>
+      <div class="footer-social">
+        <a class="footer-social__link" href="https://x.com/heyqbot" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col__title">카테고리</h4>
+      <ul class="footer-col__list">
+        <li><a href="/categories/industry/">산업·전략</a></li>
+        <li><a href="/categories/corporate/">기업·경영</a></li>
+        <li><a href="/categories/stocks/">주식·투자</a></li>
+        <li><a href="/categories/bonds/">채권·금리</a></li>
+        <li><a href="/categories/economy/">경제·정책</a></li>
+        <li><a href="/categories/realestate/">부동산</a></li>
+        <li><a href="/categories/society/">사회·이슈</a></li>
+        <li><a href="/categories/data/">데이터·리서치</a></li>
+        <li><a href="/categories/" class="footer-col__more">전체 보기 →</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col__title">정보</h4>
+      <ul class="footer-col__list">
+        <li><a href="/about/">소개</a></li>
+        <li><a href="/contact/">문의</a></li>
+        <li><a href="/town/">동네 카드</a></li>
+        <li><a href="/tools/">계산기</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+    <p class="footer-legal">
+      <a href="/privacy/">개인정보처리방침</a>
+      <span>·</span>
+      <a href="/terms/">이용약관</a>
+      <span>·</span>
+      <a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+    </p>
   </div>
 </footer>
 
@@ -265,9 +302,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   gtag('config', 'G-04MMSE99PJ');
 </script>
 
-<script id="town-data" type="application/json">
-__DATA_JSON__
-</script>
+<script id="town-data" type="application/json">__DATA_JSON__</script>
 
 <script>
 (function() {
@@ -277,13 +312,7 @@ __DATA_JSON__
   DATA.records.forEach(function(r) {
     RECORDS[r.slug] = r;
   });
-
-  // 비교 모드 전역 상태
-  var COMPARE_STATE = {
-    enabled: false,
-    slots: []  // 최대 3개 슬러그
-  };
-  window.__COMPARE = COMPARE_STATE;
+  window.__TOWN_RECORDS__ = RECORDS;
 
   function fmtNum(n) {
     if (n === null || n === undefined) return '—';
@@ -306,70 +335,74 @@ __DATA_JSON__
     });
   }
 
-  function insightRealEstate(rec) {
-    var t = rec.sections.real_estate_trade || {};
-    var r = rec.sections.real_estate_rent || {};
-    var ppy = t.median_price_per_pyeong_man;
-    var monthly = t.monthly_count_avg;
-    var jeonse = r.median_jeonse_man;
-    var trade = t.median_deal_amount_man;
-    var ratio = (jeonse && trade) ? Math.round(jeonse / trade * 1000) / 10 : null;
-    var parts = [];
-    if (ppy) parts.push(rec.name + ' 아파트 평당가 중앙값은 <b>' + fmtNum(ppy) + '만원</b>');
-    if (monthly) parts.push('월평균 매매 거래는 <b>' + Math.round(monthly) + '건</b>');
-    if (ratio) parts.push('전세 중앙값 대비 매매 중앙값 비율은 <b>약 ' + ratio + '%</b>');
-    if (parts.length === 0) return '거래 데이터가 부족해 분석을 보류합니다.';
-    return parts.join(', ') + '입니다.';
-  }
-  function insightEnvironment(rec) {
-    var env = rec.sections.environment || {};
-    var avg = env.sido_avg || env.seoul_avg || {};
-    var gu = env.gu_station || env.gangnam_station;
-    var sidoLabel = rec.sido_name + ' 평균';
-    if (gu && gu.pm25 !== null && avg.pm25 !== null) {
-      var cmp = gu.pm25 < avg.pm25 ? '낮습니다' : (gu.pm25 > avg.pm25 ? '높습니다' : '같습니다');
-      return env.measured_at + ' 기준 PM2.5는 ' + sidoLabel + '(<b>' + avg.pm25 + '</b>)보다 ' + rec.name + '(<b>' + gu.pm25 + '</b>)이 ' + cmp + '. 단일 시점 측정값입니다.';
+  function renderTrendChart(monthlyBreakdown, field, label, unit, isCount) {
+    var mb = monthlyBreakdown || [];
+    if (!mb.length) {
+      return '<div class="trend-empty"><b>12개월 추세 데이터 수집 중</b><br>다음 데이터 갱신(매주 월) 이후 추세 차트가 표시됩니다.</div>';
     }
-    if (avg.pm25 !== null) {
-      return env.measured_at + ' 기준 ' + sidoLabel + ' PM2.5는 <b>' + avg.pm25 + ' µg</b>. ' + rec.name + ' 측정소는 다음 페치에 보강됩니다.';
+    var data = mb.filter(function(d) { return d[field] !== null && d[field] !== undefined; });
+    if (data.length < 3) {
+      return '<div class="trend-empty">최근 ' + mb.length + '개월 거래 데이터 — 추세 표시는 3개월 이상부터.</div>';
     }
-    return '환경 데이터를 받아오는 중입니다.';
-  }
-  function insightMedical(rec) {
-    var m = rec.sections.medical || {};
-    var t = m.sgg_count || 0;
-    var byType = m.by_type || {};
-    var eui = byType['의원'] || 0;
-    var sang = byType['상급종합'] || 0;
-    var jong = byType['종합병원'] || 0;
-    if (!t) return rec.name + '의 의료기관 데이터를 수집 중입니다.';
-    return rec.name + '에는 의료기관 <b>' + fmtNum(t) + '곳</b>이 있습니다. 의원 <b>' + fmtNum(eui) + '곳</b>, 상급종합 ' + sang + '곳, 종합병원 ' + jong + '곳.';
-  }
-  function insightEducation(rec) {
-    var e = rec.sections.education || {};
-    var t = e.sgg_count || 0;
-    var by = e.by_type || {};
-    if (!t) return rec.name + '의 학교 데이터를 수집 중입니다.';
-    return rec.name + ' 정규 학교는 <b>' + t + '개</b> (초 <b>' + (by['초등학교'] || 0) + '</b> · 중 <b>' + (by['중학교'] || 0) + '</b> · 고 <b>' + (by['고등학교'] || 0) + '</b> · 대 <b>' + ((by['대학교'] || 0) + (by['전문대학'] || 0)) + '</b>). 학원·교습소 데이터는 곧 추가됩니다.';
-  }
-  function insightPopulation(rec) {
-    var p = rec.sections.population || {};
-    var g = p.sgg_total || p.gangnam_total;
-    var sido = p.sido_total || p.seoul_total;
-    var share = p.share_of_sido_pct || p.share_of_seoul_pct;
-    var period = p.period;
-    var sidoCount = (DATA.sido_list || []).find(function(s) { return s.code === rec.sido_code; });
-    var nGu = sidoCount ? sidoCount.count : 0;
-    if (!g) return rec.name + '의 인구 데이터를 수집 중입니다.';
-    var periodStr = '';
-    if (period && period.length === 6) periodStr = period.substr(0,4) + '년 ' + parseInt(period.substr(4),10) + '월 ';
-    var avgGu = (sido && nGu) ? Math.round(sido / nGu) : null;
-    var ratioText = '';
-    if (avgGu && g) {
-      var ratio = Math.round(g / avgGu * 100) / 100;
-      ratioText = ' ' + rec.sido_name + ' ' + nGu + '개 시군구 평균(<b>' + fmtNum(avgGu) + '명</b>) 대비 <b>' + ratio + '배</b>.';
+    var w = 600, h = 110, pad = 12;
+    var values = data.map(function(d) { return d[field]; });
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var range = maxV - minV || 1;
+    // count는 0부터 시작이 자연스러움
+    if (isCount) { minV = 0; range = maxV || 1; }
+    var step = data.length > 1 ? (w - 2*pad) / (data.length - 1) : 0;
+    var points = data.map(function(d, i) {
+      var x = pad + i * step;
+      var y = h - pad - ((d[field] - minV) / range) * (h - 2*pad);
+      return [x, y, d];
+    });
+    var svgInner;
+    if (isCount) {
+      // 막대 차트
+      var barW = Math.max(8, step * 0.6);
+      svgInner = points.map(function(p) {
+        var bx = p[0] - barW/2;
+        var by = p[1];
+        var bh = (h - pad) - p[1];
+        return '<rect x="' + bx + '" y="' + by + '" width="' + barW + '" height="' + Math.max(0, bh) + '" fill="#3182f6" rx="1"/>';
+      }).join('');
+    } else {
+      // 라인 차트 (영역 + 라인 + 점)
+      var path = 'M ' + points.map(function(p) { return p[0] + ',' + p[1]; }).join(' L ');
+      var area = path + ' L ' + points[points.length-1][0] + ',' + (h-pad) + ' L ' + points[0][0] + ',' + (h-pad) + ' Z';
+      svgInner = '<path d="' + area + '" fill="#3182f6" fill-opacity="0.08"/>' +
+                 '<path d="' + path + '" stroke="#3182f6" stroke-width="2" fill="none"/>' +
+                 points.map(function(p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="3" fill="#3182f6"/>'; }).join('');
     }
-    return periodStr + '기준 ' + rec.name + ' 인구는 <b>' + fmtNum(g) + '명</b>. ' + rec.sido_name + ' 전체의 <b>' + share + '%</b>를 차지합니다.' + ratioText;
+
+    function fmtYm(ym) { return ym.substring(2,4) + '.' + ym.substring(4) + '월'; }
+    var first = data[0][field];
+    var last = data[data.length-1][field];
+    var changeHtml = '';
+    if (first > 0 && !isCount) {
+      var pct = ((last - first) / first) * 100;
+      var dir = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+      var sign = pct >= 0 ? '+' : '';
+      changeHtml = '<span class="trend-change ' + dir + '">' + sign + pct.toFixed(1) + '%</span>';
+    } else if (isCount) {
+      var totalCount = values.reduce(function(a,b){return a+b;}, 0);
+      changeHtml = '<span class="trend-meta">총 ' + totalCount + ' 건</span>';
+    }
+
+    var metaLine;
+    if (isCount) {
+      metaLine = '월 평균 ' + Math.round(values.reduce(function(a,b){return a+b;}, 0) / values.length) + ' ' + unit;
+    } else {
+      metaLine = '시작 ' + fmtNum(first) + unit + ' → 최근 ' + fmtNum(last) + unit;
+    }
+
+    return '<div class="trend-block">' +
+      '<div class="trend-head"><span class="trend-title">' + label + ' (' + data.length + '개월)</span>' + changeHtml + '</div>' +
+      '<svg class="trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' + svgInner + '</svg>' +
+      '<div class="trend-axis"><span>' + fmtYm(data[0].ym) + '</span><span>' + fmtYm(data[data.length-1].ym) + '</span></div>' +
+      '<div class="trend-meta">' + metaLine + '</div>' +
+      '</div>';
   }
 
   function renderBar(label, value, max, unit, accent) {
@@ -402,17 +435,11 @@ __DATA_JSON__
     var env = rec.sections.environment || {};
     var avg = env.sido_avg || env.seoul_avg || {};
     var gu = env.gu_station || env.gangnam_station;
-    var yearly = env.pm25_yearly;
     var bars = [];
-    // 1년 평균 (KOSIS) — 가장 위
-    if (yearly && yearly.pm25_yearly !== null && yearly.pm25_yearly !== undefined) {
-      bars.push(renderBar('PM2.5 1년 평균 (' + rec.sido_name + ')', yearly.pm25_yearly, 50, 'µg', true));
-    }
-    // 실시간 시도 평균
-    if (avg.pm10 !== null) bars.push(renderBar('PM10 실시간 (' + rec.sido_name + ')', avg.pm10, 100, 'µg', false));
-    if (gu && gu.pm10 !== null && gu.pm10 !== undefined) bars.push(renderBar('PM10 실시간 (' + rec.name + ')', gu.pm10, 100, 'µg', true));
-    if (avg.pm25 !== null) bars.push(renderBar('PM2.5 실시간 (' + rec.sido_name + ')', avg.pm25, 50, 'µg', false));
-    if (gu && gu.pm25 !== null && gu.pm25 !== undefined) bars.push(renderBar('PM2.5 실시간 (' + rec.name + ')', gu.pm25, 50, 'µg', true));
+    if (avg.pm10 !== null) bars.push(renderBar('PM10 (' + rec.sido_name + ')', avg.pm10, 100, 'µg', false));
+    if (gu && gu.pm10 !== null && gu.pm10 !== undefined) bars.push(renderBar('PM10 (' + rec.name + ')', gu.pm10, 100, 'µg', true));
+    if (avg.pm25 !== null) bars.push(renderBar('PM2.5 (' + rec.sido_name + ')', avg.pm25, 50, 'µg', false));
+    if (gu && gu.pm25 !== null && gu.pm25 !== undefined) bars.push(renderBar('PM2.5 (' + rec.name + ')', gu.pm25, 50, 'µg', true));
     return bars.length ? '<div class="bar-block">' + bars.join('') + '</div>' : '<p style="color:#94a3b8;font-size:13px;">측정소 데이터 없음</p>';
   }
   function renderMedical(rec) {
@@ -454,58 +481,48 @@ __DATA_JSON__
     return '<div class="bar-block">' + bars.join('') + '</div>';
   }
 
-  function renderTrend(rec) {
-    var t = rec.sections.real_estate_trade || {};
-    var monthly = t.monthly_breakdown;
-    if (!monthly || monthly.length < 2) {
-      return '<div class="trend-block">'
-        + '<div class="trend-title">월별 거래량·가격 추이</div>'
-        + '<div class="trend-empty">시계열 데이터는 다음 데이터 갱신 후 표시됩니다 (12개월 누적 후 차트 활성화).</div>'
-        + '</div>';
+  function renderPopulationTrend(rec) {
+    var p = rec.sections.population || {};
+    var yearly = p.yearly || [];
+    if (!yearly.length) {
+      return '<div class="trend-empty"><b>5년 인구 추이 데이터 수집 중</b><br>다음 데이터 갱신 이후 추이 차트가 표시됩니다.</div>';
     }
-    // 거래량 라인 + 평당가 라인 (정규화)
-    var counts = monthly.map(function(m) { return m.count || 0; });
-    var prices = monthly.map(function(m) { return m.median_price_per_pyeong_man || 0; });
-    var maxC = Math.max.apply(null, counts) || 1;
-    var maxP = Math.max.apply(null, prices) || 1;
-    var minP = Math.min.apply(null, prices.filter(function(x) { return x > 0; })) || 0;
-    var W = 600, H = 80, pad = 6;
-    function lineCount() {
-      return counts.map(function(v, i) {
-        var x = pad + (W - 2*pad) * (i / (counts.length - 1));
-        var y = H - pad - (H - 2*pad) * (v / maxC);
-        return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
-      }).join(' ');
+    if (yearly.length < 2) {
+      return '<div class="trend-empty">' + yearly.length + '개 연도 데이터 — 추이 표시는 2년 이상부터.</div>';
     }
-    function linePrice() {
-      var range = maxP - minP || 1;
-      return prices.map(function(v, i) {
-        var x = pad + (W - 2*pad) * (i / (prices.length - 1));
-        var y = v > 0 ? (H - pad - (H - 2*pad) * ((v - minP) / range)) : (H/2);
-        return (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1);
-      }).join(' ');
-    }
-    // 평당가 변화율 (첫 vs 마지막)
-    var first = prices.find(function(p) { return p > 0; });
-    var last = prices.slice().reverse().find(function(p) { return p > 0; });
-    var deltaHTML = '';
-    if (first && last) {
-      var pct = Math.round((last - first) / first * 1000) / 10;
-      var cls = pct > 1 ? 'up' : (pct < -1 ? 'down' : 'flat');
-      var sign = pct > 0 ? '+' : '';
-      deltaHTML = '<span class="trend-title-delta ' + cls + '">평당가 ' + sign + pct + '%</span>';
-    }
-    var firstYM = monthly[0].ym || '';
-    var lastYM = monthly[monthly.length-1].ym || '';
-    function ymLabel(s) { return s.length === 6 ? s.substr(2,2)+'.'+s.substr(4,2) : s; }
-    return '<div class="trend-block">'
-      + '<div class="trend-title"><span>월별 거래량 (선) · 평당가 변동 (점선)</span>' + deltaHTML + '</div>'
-      + '<svg class="trend-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">'
-      + '<path d="' + lineCount() + '" fill="none" stroke="#0f172a" stroke-width="2" />'
-      + '<path d="' + linePrice() + '" fill="none" stroke="#3182f6" stroke-width="2" stroke-dasharray="4 3" />'
-      + '</svg>'
-      + '<div class="trend-axis"><span>' + ymLabel(firstYM) + '</span><span>' + ymLabel(lastYM) + '</span></div>'
-      + '</div>';
+    var w = 600, h = 110, pad = 12;
+    var values = yearly.map(function(d) { return d.total; });
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var range = maxV - minV || 1;
+    var step = yearly.length > 1 ? (w - 2*pad) / (yearly.length - 1) : 0;
+    var points = yearly.map(function(d, i) {
+      var x = pad + i * step;
+      var y = h - pad - ((d.total - minV) / range) * (h - 2*pad);
+      return [x, y, d];
+    });
+    var path = 'M ' + points.map(function(p) { return p[0] + ',' + p[1]; }).join(' L ');
+    var area = path + ' L ' + points[points.length-1][0] + ',' + (h-pad) + ' L ' + points[0][0] + ',' + (h-pad) + ' Z';
+    var svgInner = '<path d="' + area + '" fill="#3182f6" fill-opacity="0.08"/>' +
+                   '<path d="' + path + '" stroke="#3182f6" stroke-width="2" fill="none"/>' +
+                   points.map(function(pt) { return '<circle cx="' + pt[0] + '" cy="' + pt[1] + '" r="3" fill="#3182f6"/>'; }).join('');
+
+    var first = yearly[0].total;
+    var last = yearly[yearly.length-1].total;
+    var pct = first > 0 ? ((last - first) / first) * 100 : 0;
+    var dir = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+    // 인구는 증가가 좋은 신호이므로 색 매핑 일반 라인과 동일하게: up=빨강(상승, 부동산 상승과 동일 톤), down=파랑
+    // 단 의미는 다름 — 인구 감소는 보통 우려 신호라서 회색 처리하는 게 더 정확함.
+    // 결정: 인구는 단순 % 변화만 표기 (색상은 fixed 회색이 안전)
+    var sign = pct >= 0 ? '+' : '';
+    var changeHtml = '<span class="trend-change flat">' + sign + pct.toFixed(1) + '%</span>';
+
+    return '<div class="trend-block">' +
+      '<div class="trend-head"><span class="trend-title">인구 ' + yearly.length + '년 추이</span>' + changeHtml + '</div>' +
+      '<svg class="trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' + svgInner + '</svg>' +
+      '<div class="trend-axis"><span>' + yearly[0].year + '</span><span>' + yearly[yearly.length-1].year + '</span></div>' +
+      '<div class="trend-meta">' + yearly[0].year + '년 ' + fmtNum(first) + '명 → ' + yearly[yearly.length-1].year + '년 ' + fmtNum(last) + '명</div>' +
+      '</div>';
   }
 
   function buildCard(rec) {
@@ -520,14 +537,14 @@ __DATA_JSON__
     var stat2 = medianJeonse ? '<div class="ql-stat-num">' + fmtEok(medianJeonse).replace('억','') + '<span class="unit">억</span></div><div class="ql-stat-label">전세 중앙값</div>' : '<div class="ql-stat-num">—</div><div class="ql-stat-label">전세 중앙값</div>';
     var stat3 = popTotal ? '<div class="ql-stat-num">' + fmtNum(popTotal) + '<span class="unit">명</span></div><div class="ql-stat-label">인구 (주민등록 기준)</div>' : '<div class="ql-stat-num">—</div><div class="ql-stat-label">인구</div>';
 
-    var inCompare = COMPARE_STATE.slots.indexOf(rec.slug) !== -1;
-    var addBtnLabel = inCompare ? '✓ 비교 슬롯에 추가됨' : '⊕ 비교에 추가';
-    var addBtnCls = inCompare ? 'card-add-compare added' : 'card-add-compare';
+    var compareBtn = '<button class="compare-add" data-slugkey="' + escapeHTML(rec.slug) + '" data-name="' + escapeHTML(rec.name) + '" data-sido="' + escapeHTML(rec.sido_name) + '">+ 비교에 추가</button>';
 
     return ''
-      + '<div class="card-region">' + escapeHTML(rec.name_full) + '</div>'
-      + '<div class="card-name">' + escapeHTML(rec.name) + '</div>'
-      + '<button class="' + addBtnCls + '" data-slug="' + escapeHTML(rec.slug) + '" id="card-add-compare-btn">' + addBtnLabel + '</button>'
+      + '<div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">'
+      + '<div><div class="card-region">' + escapeHTML(rec.name_full) + '</div>'
+      + '<div class="card-name">' + escapeHTML(rec.name) + '</div></div>'
+      + compareBtn
+      + '</div>'
       + '<div class="ql-stat-row">'
       + '<div class="ql-stat-cell">' + stat1 + '</div>'
       + '<div class="ql-stat-cell">' + stat2 + '</div>'
@@ -535,29 +552,27 @@ __DATA_JSON__
       + '</div>'
       + '<section class="section">'
       + '<div class="section-num">01 — 부동산</div><h2>집값과 거래의 흐름</h2>'
-      + '<p class="section-sub">최근 3개월 아파트 매매·전월세 실거래.</p>'
+      + '<p class="section-sub">최근 12개월 아파트 매매·전월세 실거래.</p>'
       + renderRealEstate(rec)
-      + renderTrend(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightRealEstate(rec) + '</p></div>'
+      + renderTrendChart((rec.sections.real_estate_trade || {}).monthly_breakdown, 'median_price_per_pyeong_man', '평당가 추이', '만원', false)
+      + renderTrendChart((rec.sections.real_estate_trade || {}).monthly_breakdown, 'count', '월별 거래 건수', '건', true)
       + '<div class="source">출처: 국토교통부 실거래가 공개시스템</div></section>'
       + '<section class="section">'
       + '<div class="section-num">02 — 의료</div><h2>병원·의원 분포</h2>'
       + '<p class="section-sub">시군구 내 의료기관 종별.</p>'
       + renderMedical(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightMedical(rec) + '</p></div>'
       + '<div class="source">출처: 건강보험심사평가원</div></section>'
       + '<section class="section">'
       + '<div class="section-num">03 — 교육</div><h2>학교 분포</h2>'
       + '<p class="section-sub">유·초·중·고·특수학교 기준. 대학·전문대 미포함.</p>'
       + renderEducation(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightEducation(rec) + '</p></div>'
       + '<div class="source">출처: 교육부 NEIS</div></section>'
       + '<section class="section">'
       + '<div class="section-num">04 — 인구</div><h2>누가 살고 있나</h2>'
       + '<p class="section-sub">행정안전부 주민등록인구 — 동네의 골격.</p>'
       + renderPopulation(rec)
-      + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightPopulation(rec) + '</p></div>'
-      + '<div class="source">출처: 통계청 KOSIS · 주민등록인구 (DT_1B040A3)</div></section>';
+      + renderPopulationTrend(rec)
+      + '<div class="source">출처: 통계청 KOSIS · 행정안전부 주민등록 (DT_1B040A3)</div></section>';
   }
 
   function selectGu(slugKey, pushState) {
@@ -568,35 +583,16 @@ __DATA_JSON__
       return;
     }
     area.innerHTML = buildCard(rec);
-    document.querySelectorAll('.sgg-card').forEach(function(el) {
-      el.classList.toggle('active', el.dataset.slugkey === slugKey);
-    });
+    // 비교 모드에 이미 추가된 경우 버튼 상태 갱신
+    if (typeof window.__updateCompareAdd__ === 'function') window.__updateCompareAdd__();
     if (pushState && history.pushState) {
       history.pushState({slug: slugKey}, '', '?gu=' + slugKey);
     }
     document.title = rec.name + ' — Q렌즈 동네 카드';
-    // 카드 내 "비교 추가" 버튼
-    var addBtn = document.getElementById('card-add-compare-btn');
-    if (addBtn) {
-      addBtn.addEventListener('click', function() {
-        toggleCompareSlot(addBtn.dataset.slug);
-      });
-    }
     area.scrollIntoView({behavior: 'smooth', block: 'start'});
   }
 
   
-
-  document.querySelectorAll('.sgg-card').forEach(function(chip) {
-    chip.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (COMPARE_STATE.enabled) {
-        toggleCompareSlot(chip.dataset.slugkey);
-      } else {
-        selectGu(chip.dataset.slugkey, true);
-      }
-    });
-  });
 
   window.addEventListener('popstate', function() {
     var slug = (new URLSearchParams(location.search)).get('gu');
@@ -625,351 +621,442 @@ __DATA_JSON__
   }
 })();
 (function() {
+  // === 시군구 검색 autocomplete (v3.7.5, 2026-05-05) ===
+  // 폐기된 sgg-grid + region-row + sido-chips + result-meta 대체.
+  // input focus → 인기 동네 8개 / 입력 → 실시간 매칭 / 클릭 → selectGu 호출.
   var input = document.getElementById('sgg-search');
   var clearBtn = document.getElementById('sgg-clear');
-  var regionRow = document.getElementById('region-row');
-  var chipsWrap = document.getElementById('sido-chips');
-  var grid = document.getElementById('sgg-grid');
-  var meta = document.getElementById('result-meta');
-  var empty = document.getElementById('empty-state');
-  var allCards = Array.prototype.slice.call(grid.querySelectorAll('.sgg-card'));
-  var totalCount = allCards.length;
-  var activeSido = '';
-  var activeRegion = '';
+  var dropdown = document.getElementById('search-dropdown');
+  if (!input || !dropdown) return;
 
-  // 권역 → 시도 매핑
-  var REGION_MAP = {
-    capital: ['서울특별시', '인천광역시', '경기도'],
-    chungcheong: ['대전광역시', '세종특별자치시', '충청북도', '충청남도'],
-    honam: ['광주광역시', '전라남도', '전북특별자치도'],
-    yeongnam: ['부산광역시', '대구광역시', '울산광역시', '경상북도', '경상남도'],
-    gangwon_jeju: ['강원특별자치도', '제주특별자치도']
-  };
+  var SEARCH_INDEX = __SEARCH_INDEX__;
+  var POPULAR = ["seoul/gangnam", "seoul/seocho", "seoul/songpa", "seoul/mapo", "seoul/yongsan", "seoul/seongdong", "gyeonggi/bundang", "busan/haeundae"];
+  var MAX_RESULTS = 12;
+  var activeIdx = -1;
+  var currentItems = []; // 현재 드롭다운에 노출된 항목들의 slugkey
 
-  function applyFilter() {
-    var q = (input.value || '').trim().toLowerCase();
-    var visible = 0;
-    var regionSidos = activeRegion ? REGION_MAP[activeRegion] : null;
-    for (var i = 0; i < allCards.length; i++) {
-      var card = allCards[i];
-      var sido = card.dataset.sido;
-      var name = card.dataset.name.toLowerCase();
-      var sidoShort = card.querySelector('.sgg-sido').textContent.toLowerCase();
-      var matchRegion = !regionSidos || regionSidos.indexOf(sido) !== -1;
-      var matchSido = !activeSido || sido === activeSido;
-      var matchQ = !q || name.indexOf(q) !== -1 || sido.toLowerCase().indexOf(q) !== -1 || sidoShort.indexOf(q) !== -1;
-      if (matchRegion && matchSido && matchQ) {
-        card.style.display = '';
-        visible++;
-      } else {
-        card.style.display = 'none';
-      }
-    }
-    if (visible === 0) {
-      empty.style.display = 'block';
-      meta.style.display = 'none';
-    } else {
-      empty.style.display = 'none';
-      meta.style.display = 'block';
-      meta.textContent = visible === totalCount ? '전국 ' + totalCount + '개 시군구' : visible + '개 시군구 표시 중';
-    }
-    clearBtn.classList.toggle('show', q.length > 0);
-  }
-
-  function updateSidoChips() {
-    var sidoChips = chipsWrap.querySelectorAll('.sido-chip');
-    for (var i = 0; i < sidoChips.length; i++) {
-      var chip = sidoChips[i];
-      var chipRegion = chip.dataset.region;
-      if (!chip.dataset.sido) {
-        chip.classList.remove('hidden');
-        var countEl = chip.querySelector('.count');
-        if (activeRegion) {
-          var total = 0;
-          var sidos = REGION_MAP[activeRegion];
-          for (var j = 0; j < sidos.length; j++) {
-            var match = chipsWrap.querySelector('[data-sido="' + sidos[j] + '"]');
-            if (match) {
-              var c = match.querySelector('.count');
-              if (c) total += parseInt(c.textContent, 10) || 0;
-            }
-          }
-          if (countEl) countEl.textContent = total;
-        } else {
-          if (countEl) countEl.textContent = totalCount;
-        }
-        continue;
-      }
-      if (!activeRegion || chipRegion === activeRegion) {
-        chip.classList.remove('hidden');
-      } else {
-        chip.classList.add('hidden');
-        if (chip.classList.contains('active')) {
-          chip.classList.remove('active');
-          activeSido = '';
-          var allChip = chipsWrap.querySelector('.sido-chip[data-sido=""]');
-          if (allChip) allChip.classList.add('active');
-        }
-      }
-    }
-  }
-
-  input.addEventListener('input', applyFilter);
-  clearBtn.addEventListener('click', function() {
-    input.value = '';
-    applyFilter();
-    input.focus();
-  });
-
-  if (regionRow) {
-    regionRow.addEventListener('click', function(e) {
-      var chip = e.target.closest('.region-chip');
-      if (!chip) return;
-      var chips = regionRow.querySelectorAll('.region-chip');
-      for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
-      chip.classList.add('active');
-      activeRegion = chip.dataset.region || '';
-      activeSido = '';
-      var sidoChips = chipsWrap.querySelectorAll('.sido-chip');
-      for (var j = 0; j < sidoChips.length; j++) sidoChips[j].classList.remove('active');
-      var allSidoChip = chipsWrap.querySelector('.sido-chip[data-sido=""]');
-      if (allSidoChip) allSidoChip.classList.add('active');
-      updateSidoChips();
-      applyFilter();
+  function escHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
 
-  chipsWrap.addEventListener('click', function(e) {
-    var chip = e.target.closest('.sido-chip');
-    if (!chip || chip.classList.contains('hidden')) return;
-    var chips = chipsWrap.querySelectorAll('.sido-chip');
-    for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
-    chip.classList.add('active');
-    activeSido = chip.dataset.sido;
-    applyFilter();
-    var rect = chip.getBoundingClientRect();
-    var wrapRect = chipsWrap.getBoundingClientRect();
-    if (rect.right > wrapRect.right || rect.left < wrapRect.left) {
-      chip.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+  function renderItems(items, label) {
+    if (!items.length) {
+      dropdown.innerHTML = '<div class="search-empty"><b>일치하는 동네가 없습니다.</b><br>다른 검색어를 시도해 주세요.</div>';
+      currentItems = [];
+      activeIdx = -1;
+      dropdown.hidden = false;
+      return;
+    }
+    var labelHtml = label ? '<div class="search-section-label">' + escHtml(label) + '</div>' : '';
+    var html = labelHtml + items.map(function(it) {
+      return '<button type="button" class="search-item" data-slugkey="' + escHtml(it.k) + '">' +
+             '<span class="search-item-name">' + escHtml(it.n) + '</span>' +
+             '<span class="search-item-sido">' + escHtml(it.ss) + '</span>' +
+             '</button>';
+    }).join('');
+    dropdown.innerHTML = html;
+    currentItems = items;
+    activeIdx = -1;
+    dropdown.hidden = false;
+  }
+
+  function showPopular() {
+    var popular = POPULAR.map(function(k) {
+      for (var i = 0; i < SEARCH_INDEX.length; i++) {
+        if (SEARCH_INDEX[i].k === k) return SEARCH_INDEX[i];
+      }
+      return null;
+    }).filter(Boolean);
+    renderItems(popular, '인기 동네');
+  }
+
+  function search(q) {
+    q = q.trim().toLowerCase();
+    if (!q) { showPopular(); return; }
+    // 매칭: name(소문자) / sido(소문자) / sidoShort(소문자) 부분일치
+    // 우선순위: name 시작 일치 > name 부분 일치 > sido/sidoShort 일치
+    var startsWith = [], contains = [], sidoMatch = [];
+    for (var i = 0; i < SEARCH_INDEX.length; i++) {
+      var it = SEARCH_INDEX[i];
+      var n = it.n.toLowerCase();
+      var s = it.s.toLowerCase();
+      var ss = it.ss.toLowerCase();
+      if (n === q || n.indexOf(q) === 0) {
+        startsWith.push(it);
+      } else if (n.indexOf(q) !== -1) {
+        contains.push(it);
+      } else if (s.indexOf(q) !== -1 || ss.indexOf(q) !== -1) {
+        sidoMatch.push(it);
+      }
+    }
+    var results = startsWith.concat(contains, sidoMatch).slice(0, MAX_RESULTS);
+    renderItems(results, null);
+  }
+
+  function closeDropdown() {
+    dropdown.hidden = true;
+    activeIdx = -1;
+  }
+
+  function moveActive(delta) {
+    var els = dropdown.querySelectorAll('.search-item');
+    if (!els.length) return;
+    if (activeIdx >= 0) els[activeIdx].classList.remove('active');
+    activeIdx = (activeIdx + delta + els.length) % els.length;
+    els[activeIdx].classList.add('active');
+    els[activeIdx].scrollIntoView({block: 'nearest'});
+  }
+
+  function selectByIdx(idx) {
+    if (idx < 0 || idx >= currentItems.length) return;
+    var it = currentItems[idx];
+    selectItem(it);
+  }
+
+  function selectItem(it) {
+    input.value = it.n;
+    closeDropdown();
+    // selectGu는 첫 번째 IIFE에서 정의돼 있고 외부에서 직접 호출 불가하므로,
+    // hashchange/popstate 트리거 대신 ?gu= 쿼리 변경 후 popstate 시뮬레이션
+    var newUrl = location.pathname + '?gu=' + encodeURIComponent(it.k);
+    history.pushState({slug: it.k}, '', newUrl);
+    window.dispatchEvent(new PopStateEvent('popstate', {state: {slug: it.k}}));
+    // 카드 영역으로 스크롤
+    var area = document.getElementById('card-area');
+    if (area) area.scrollIntoView({behavior: 'smooth', block: 'start'});
+  }
+
+  // 이벤트 바인딩
+  input.addEventListener('focus', function() {
+    var q = input.value.trim();
+    if (q) search(q); else showPopular();
+  });
+  input.addEventListener('input', function() {
+    search(input.value);
+  });
+  input.addEventListener('keydown', function(e) {
+    if (dropdown.hidden) {
+      if (e.key === 'ArrowDown') { showPopular(); e.preventDefault(); }
+      return;
+    }
+    if (e.key === 'ArrowDown') { moveActive(1); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { moveActive(-1); e.preventDefault(); }
+    else if (e.key === 'Enter') {
+      if (activeIdx >= 0) { selectByIdx(activeIdx); e.preventDefault(); }
+      else if (currentItems.length === 1) { selectByIdx(0); e.preventDefault(); }
+    } else if (e.key === 'Escape') {
+      closeDropdown();
+      input.blur();
     }
   });
 
-  // ============ 비교 모드 ============
-  var COMPARE = window.__COMPARE;
-  var toggleBtn = document.getElementById('toggle-compare');
-  var compareBar = document.getElementById('compare-bar');
-  var slotEls = compareBar.querySelectorAll('.compare-slot');
-  var clearBtnC = document.getElementById('compare-clear');
-  var showBtn = document.getElementById('compare-show');
-  var panel = document.getElementById('compare-panel');
-  var panelBody = document.getElementById('compare-panel-body');
-  var panelClose = document.getElementById('compare-panel-close');
+  dropdown.addEventListener('mousedown', function(e) {
+    // mousedown으로 처리 — blur 전에 발화되어 input.blur()로 인한 dropdown 닫힘 회피
+    var item = e.target.closest('.search-item');
+    if (!item) return;
+    e.preventDefault();
+    var slug = item.dataset.slugkey;
+    for (var i = 0; i < currentItems.length; i++) {
+      if (currentItems[i].k === slug) { selectItem(currentItems[i]); return; }
+    }
+  });
 
-  function getRecord(slug) { return RECORDS[slug]; }
+  document.addEventListener('mousedown', function(e) {
+    if (dropdown.hidden) return;
+    if (e.target.closest('.filter-input-wrap, .search-dropdown')) return;
+    closeDropdown();
+  });
 
-  window.toggleCompareSlot = function(slug) {
-    var idx = COMPARE.slots.indexOf(slug);
-    if (idx !== -1) {
-      COMPARE.slots.splice(idx, 1);
-    } else if (COMPARE.slots.length < 3) {
-      COMPARE.slots.push(slug);
-      if (!COMPARE.enabled) {
-        COMPARE.enabled = true;
-        compareBar.classList.add('active');
-        toggleBtn.classList.add('active');
-        toggleBtn.setAttribute('aria-pressed', 'true');
-      }
-    } else {
-      // 슬롯 가득
+  if (clearBtn) {
+    clearBtn.addEventListener('click', function() {
+      input.value = '';
+      input.focus();
+      showPopular();
+    });
+  }
+})();
+
+// ==================== 비교 모드 ====================
+(function() {
+  var TRAY = document.getElementById('compare-tray');
+  var TRAY_CHIPS = document.getElementById('compare-tray-chips');
+  var BTN_SHOW = document.getElementById('compare-show');
+  var BTN_CLEAR = document.getElementById('compare-clear');
+  var BTN_BACK = document.getElementById('compare-back');
+  var VIEW = document.getElementById('compare-view');
+  var TABLE_WRAP = document.getElementById('compare-table-wrap');
+  var TITLE = document.getElementById('compare-title');
+  var CARD_AREA = document.getElementById('card-area');
+  var FILTER_BAR = document.querySelector('.filter-bar');
+
+  var compareList = []; // [{slugkey, name, sido}]
+  var MAX_COMPARE = 3;
+
+  // RECORDS는 첫 번째 IIFE에서 closure 안에 있어서 접근 불가. window에 노출 필요.
+  function getRecord(slugkey) {
+    return (window.__TOWN_RECORDS__ || {})[slugkey];
+  }
+
+  function renderTray() {
+    if (compareList.length === 0) {
+      TRAY.classList.remove('show');
+      BTN_SHOW.disabled = true;
       return;
     }
-    renderSlots();
-    syncCardCompareMarks();
-    // 카드 내 추가 버튼 라벨 갱신
-    var addBtn = document.getElementById('card-add-compare-btn');
-    if (addBtn && addBtn.dataset.slug === slug) {
-      var inCompare = COMPARE.slots.indexOf(slug) !== -1;
-      addBtn.textContent = inCompare ? '✓ 비교 슬롯에 추가됨' : '⊕ 비교에 추가';
-      addBtn.classList.toggle('added', inCompare);
-    }
-  };
-
-  function renderSlots() {
-    for (var i = 0; i < 3; i++) {
-      var el = slotEls[i];
-      var slug = COMPARE.slots[i];
-      if (slug && RECORDS[slug]) {
-        var rec = RECORDS[slug];
-        el.classList.add('filled');
-        el.innerHTML = '<div class="compare-slot-name">' + escapeHTMLLocal(rec.name) + '</div>'
-          + '<div class="compare-slot-sido">' + escapeHTMLLocal(rec.sido_name) + '</div>'
-          + '<button class="compare-slot-remove" data-slot="' + i + '" aria-label="제거">✕</button>';
-      } else {
-        el.classList.remove('filled');
-        el.innerHTML = '<div class="compare-slot-empty">슬롯 ' + (i+1) + ' 비어있음</div>';
-      }
-    }
-    showBtn.disabled = COMPARE.slots.length < 2;
+    TRAY.classList.add('show');
+    BTN_SHOW.disabled = compareList.length < 2;
+    TRAY_CHIPS.innerHTML = compareList.map(function(item) {
+      return '<span class="compare-chip">' + escHtml(item.name) +
+             '<button class="compare-chip-x" data-slugkey="' + escHtml(item.slugkey) + '" aria-label="제거">×</button></span>';
+    }).join('');
+    BTN_SHOW.textContent = '비교 보기 (' + compareList.length + ') →';
   }
 
-  function syncCardCompareMarks() {
-    for (var i = 0; i < allCards.length; i++) {
-      var slug = allCards[i].dataset.slugkey;
-      allCards[i].classList.toggle('in-compare', COMPARE.slots.indexOf(slug) !== -1);
-    }
-  }
-
-  function escapeHTMLLocal(s) {
-    if (s === null || s === undefined) return '';
+  function escHtml(s) {
     return String(s).replace(/[&<>"']/g, function(c) {
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
 
   function fmtNum(n) {
-    if (n === null || n === undefined) return '—';
+    if (n === null || n === undefined || n === '') return '—';
     return Number(n).toLocaleString('ko-KR');
   }
+
   function fmtEok(man) {
     if (!man) return '—';
     var eok = man / 10000;
-    if (eok >= 10) return Math.round(eok) + '억';
-    return eok.toFixed(1) + '억';
+    return eok >= 10 ? Math.round(eok) + '억' : (Math.round(eok * 10) / 10) + '억';
   }
 
-  toggleBtn.addEventListener('click', function() {
-    COMPARE.enabled = !COMPARE.enabled;
-    compareBar.classList.toggle('active', COMPARE.enabled);
-    toggleBtn.classList.toggle('active', COMPARE.enabled);
-    toggleBtn.setAttribute('aria-pressed', COMPARE.enabled ? 'true' : 'false');
-    toggleBtn.textContent = COMPARE.enabled ? '✕ 비교 모드 끄기' : '⊕ 비교 모드';
-  });
-
-  clearBtnC.addEventListener('click', function() {
-    COMPARE.slots = [];
-    renderSlots();
-    syncCardCompareMarks();
-    panel.style.display = 'none';
-  });
-
-  compareBar.addEventListener('click', function(e) {
-    var btn = e.target.closest('.compare-slot-remove');
-    if (!btn) return;
-    var idx = parseInt(btn.dataset.slot, 10);
-    if (!isNaN(idx)) {
-      COMPARE.slots.splice(idx, 1);
-      renderSlots();
-      syncCardCompareMarks();
-      var addBtn = document.getElementById('card-add-compare-btn');
-      if (addBtn) {
-        var inC = COMPARE.slots.indexOf(addBtn.dataset.slug) !== -1;
-        addBtn.textContent = inC ? '✓ 비교 슬롯에 추가됨' : '⊕ 비교에 추가';
-        addBtn.classList.toggle('added', inC);
-      }
+  function addToCompare(slugkey, name, sido) {
+    if (compareList.find(function(x) { return x.slugkey === slugkey; })) return false;
+    if (compareList.length >= MAX_COMPARE) {
+      alert('비교는 최대 ' + MAX_COMPARE + '개까지 가능합니다.');
+      return false;
     }
-  });
+    compareList.push({slugkey: slugkey, name: name, sido: sido});
+    renderTray();
+    updateAddButtons();
+    return true;
+  }
 
-  showBtn.addEventListener('click', function() {
-    if (COMPARE.slots.length < 2) return;
-    renderComparePanel();
-    panel.style.display = 'block';
-    panel.scrollIntoView({behavior: 'smooth', block: 'start'});
-  });
+  function removeFromCompare(slugkey) {
+    compareList = compareList.filter(function(x) { return x.slugkey !== slugkey; });
+    renderTray();
+    updateAddButtons();
+  }
 
-  panelClose.addEventListener('click', function() {
-    panel.style.display = 'none';
-  });
+  function clearCompare() {
+    compareList = [];
+    renderTray();
+    updateAddButtons();
+  }
 
-  function renderComparePanel() {
-    var recs = COMPARE.slots.map(getRecord).filter(function(x) { return x; });
-    var n = recs.length;
-    var colsCls = 'cols-' + n;
+  function updateAddButtons() {
+    var btns = document.querySelectorAll('.compare-add');
+    btns.forEach(function(b) {
+      var slugkey = b.dataset.slugkey;
+      var added = compareList.some(function(x) { return x.slugkey === slugkey; });
+      if (added) {
+        b.classList.add('added');
+        b.textContent = ''; // ::before가 ✓ 표시함, 텍스트는 비움
+        b.innerHTML = '추가됨';
+      } else {
+        b.classList.remove('added');
+        b.innerHTML = '+ 비교에 추가';
+      }
+    });
+  }
+  window.__updateCompareAdd__ = updateAddButtons;
 
-    // 비교 행 정의
-    var rows = [
-      {label: '평당가 (만원)', get: function(r) { return (r.sections.real_estate_trade || {}).median_price_per_pyeong_man; }, fmt: 'num', dir: 'lowBest'},
-      {label: '매매 중앙값 (억)', get: function(r) { return (r.sections.real_estate_trade || {}).median_deal_amount_man; }, fmt: 'eok', dir: 'lowBest'},
-      {label: '월평균 거래', get: function(r) { return (r.sections.real_estate_trade || {}).monthly_count_avg; }, fmt: 'numRound', dir: 'highBest'},
-      {label: '전세 중앙값 (억)', get: function(r) { return (r.sections.real_estate_rent || {}).median_jeonse_man; }, fmt: 'eok', dir: 'lowBest'},
-      {label: '인구', get: function(r) { return (r.sections.population || {}).sgg_total; }, fmt: 'num', dir: 'none'},
-      {label: '의료기관', get: function(r) { return (r.sections.medical || {}).sgg_count; }, fmt: 'num', dir: 'highBest', unit: '곳'},
-      {label: '학교', get: function(r) { return (r.sections.education || {}).sgg_count; }, fmt: 'num', dir: 'highBest', unit: '개'}
+  // 비교 보기 화면
+  function showCompareView() {
+    if (compareList.length < 2) return;
+    var records = compareList.map(function(item) { return getRecord(item.slugkey); }).filter(Boolean);
+    if (records.length < 2) {
+      alert('데이터를 불러올 수 없습니다.');
+      return;
+    }
+    TITLE.textContent = records.map(function(r) { return r.name; }).join(' vs ');
+    TABLE_WRAP.innerHTML = buildCompareTable(records);
+    // 입력 영역 숨기기
+    FILTER_BAR.style.display = 'none';
+    CARD_AREA.style.display = 'none';
+    var dropdown = document.getElementById('search-dropdown');
+    if (dropdown) dropdown.hidden = true;
+    // 인트로 텍스트도 가린다
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'none';
+    VIEW.classList.add('show');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  function hideCompareView() {
+    FILTER_BAR.style.display = '';
+    CARD_AREA.style.display = '';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = '';
+    VIEW.classList.remove('show');
+  }
+
+  function buildCompareTable(records) {
+    // 핵심 지표 정의
+    var metrics = [
+      {label: '아파트 평당가 (중앙값)', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).median_price_per_pyeong_man;
+        return {raw: v, display: v ? fmtNum(v) + ' 만원' : '—'};
+      }, dir: 'high'},
+      {label: '매매 평균 거래액 (중앙값)', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).median_deal_amount_man;
+        return {raw: v, display: v ? fmtEok(v) : '—'};
+      }, dir: 'high'},
+      {label: '월평균 매매 건수', get: function(r) {
+        var v = (r.sections.real_estate_trade || {}).monthly_count_avg;
+        return {raw: v, display: v ? Math.round(v) + ' 건' : '—'};
+      }, dir: 'high'},
+      {label: '전세 중앙값', get: function(r) {
+        var v = (r.sections.real_estate_rent || {}).median_jeonse_man;
+        return {raw: v, display: v ? fmtEok(v) : '—'};
+      }, dir: 'high'},
+      {label: '매매-전세 비율', get: function(r) {
+        var t = r.sections.real_estate_trade || {};
+        var rt = r.sections.real_estate_rent || {};
+        if (rt.median_jeonse_man && t.median_deal_amount_man) {
+          var pct = Math.round(rt.median_jeonse_man / t.median_deal_amount_man * 1000) / 10;
+          return {raw: pct, display: pct + ' %'};
+        }
+        return {raw: null, display: '—'};
+      }, dir: 'high'},
+      {label: '인구 (주민등록)', get: function(r) {
+        var p = r.sections.population || {};
+        var v = p.sgg_total || p.gangnam_total;
+        return {raw: v, display: v ? fmtNum(v) + ' 명' : '—'};
+      }, dir: 'high'},
+      {label: '의료기관 합계', get: function(r) {
+        var m = r.sections.medical || {};
+        var v = m.sgg_count;
+        if (!v && m.by_type) {
+          v = Object.keys(m.by_type).reduce(function(a, k) { return a + m.by_type[k]; }, 0);
+        }
+        return {raw: v, display: v ? fmtNum(v) + ' 곳' : '—'};
+      }, dir: 'high'},
+      {label: '학교 합계', get: function(r) {
+        var e = r.sections.education || {};
+        var v = e.sgg_count;
+        if (!v && e.by_type) {
+          v = Object.keys(e.by_type).reduce(function(a, k) { return a + e.by_type[k]; }, 0);
+        }
+        return {raw: v, display: v ? fmtNum(v) + ' 개' : '—'};
+      }, dir: 'high'},
+      {label: '평당가 추이 (12개월)', get: function(r) {
+        var mb = (r.sections.real_estate_trade || {}).monthly_breakdown || [];
+        var data = mb.filter(function(d) { return d.median_price_per_pyeong_man; });
+        if (data.length < 3) return {raw: null, display: '데이터 부족'};
+        var first = data[0].median_price_per_pyeong_man;
+        var last = data[data.length-1].median_price_per_pyeong_man;
+        if (!first) return {raw: null, display: '—'};
+        var pct = ((last - first) / first) * 100;
+        var sign = pct >= 0 ? '+' : '';
+        var cls = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+        return {raw: pct, display: '<span class="compare-trend-cell ' + cls + '">' + sign + pct.toFixed(1) + '%</span>', isHtml: true};
+      }, dir: 'high'},
+      {label: '월평균 거래량 (12개월)', get: function(r) {
+        var mb = (r.sections.real_estate_trade || {}).monthly_breakdown || [];
+        if (!mb.length) return {raw: null, display: '데이터 부족'};
+        var counts = mb.map(function(d) { return d.count || 0; });
+        var avg = counts.reduce(function(a,b){return a+b;}, 0) / counts.length;
+        return {raw: avg, display: Math.round(avg) + ' 건'};
+      }, dir: 'high'},
+      {label: '인구 추이 (5년)', get: function(r) {
+        var yearly = (r.sections.population || {}).yearly || [];
+        if (yearly.length < 2) return {raw: null, display: '데이터 부족'};
+        var first = yearly[0].total;
+        var last = yearly[yearly.length-1].total;
+        if (!first) return {raw: null, display: '—'};
+        var pct = ((last - first) / first) * 100;
+        var sign = pct >= 0 ? '+' : '';
+        var cls = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+        // 인구 증감의 색상 의미는 부동산과 다름 — flat 톤으로 통일
+        return {raw: pct, display: '<span class="compare-trend-cell flat">' + sign + pct.toFixed(1) + '%</span>', isHtml: true};
+      }, dir: 'high'}
     ];
 
-    var html = '';
-    // 헤더 (이름 카드들)
-    html += '<div class="compare-grid ' + colsCls + '">';
-    for (var i = 0; i < n; i++) {
-      var rec = recs[i];
-      html += '<div class="compare-col">'
-        + '<div class="compare-col-name">' + escapeHTMLLocal(rec.name) + '</div>'
-        + '<div class="compare-col-sido">' + escapeHTMLLocal(rec.sido_name) + '</div>'
-        + '</div>';
-    }
-    html += '</div>';
+    var html = '<table class="compare-table"><thead><tr>';
+    html += '<th>지표</th>';
+    records.forEach(function(r) {
+      html += '<th class="sgg-head">' + escHtml(r.name) + '<span class="sub">' + escHtml(r.sido_name) + '</span></th>';
+    });
+    html += '</tr></thead><tbody>';
 
-    // 비교 행
-    html += '<div>';
-    rows.forEach(function(row) {
-      var values = recs.map(function(r) { return row.get(r); });
-      var nums = values.filter(function(v) { return v !== null && v !== undefined && v !== 0; });
-      var bestVal = null, worstVal = null;
-      if (nums.length > 1 && row.dir !== 'none') {
-        if (row.dir === 'lowBest') { bestVal = Math.min.apply(null, nums); worstVal = Math.max.apply(null, nums); }
-        else { bestVal = Math.max.apply(null, nums); worstVal = Math.min.apply(null, nums); }
+    metrics.forEach(function(m) {
+      var values = records.map(function(r) { return m.get(r); });
+      var raws = values.map(function(v) { return v.raw; }).filter(function(v) { return v !== null && v !== undefined; });
+      var best = null, worst = null;
+      if (raws.length >= 2) {
+        if (m.dir === 'high') {
+          best = Math.max.apply(null, raws);
+          worst = Math.min.apply(null, raws);
+        } else {
+          best = Math.min.apply(null, raws);
+          worst = Math.max.apply(null, raws);
+        }
       }
-      html += '<div class="compare-row ' + colsCls + '">'
-        + '<div class="compare-row-label">' + row.label + '</div>';
+      html += '<tr><td class="metric-label">' + escHtml(m.label) + '</td>';
       values.forEach(function(v) {
-        var disp = '—';
-        var cls = 'compare-row-val';
-        if (v === null || v === undefined || v === 0) { cls += ' dim'; }
-        else {
-          if (row.fmt === 'num') disp = fmtNum(v) + (row.unit ? ' ' + row.unit : '');
-          else if (row.fmt === 'numRound') disp = Math.round(v) + (row.unit || '건');
-          else if (row.fmt === 'eok') disp = fmtEok(v);
-          else disp = String(v);
-          if (bestVal !== null && v === bestVal && nums.length > 1) cls += ' best';
-          else if (worstVal !== null && v === worstVal && nums.length > 1) cls += ' worst';
-        }
-        html += '<div class="' + cls + '">' + disp + '</div>';
+        var cls = 'value';
+        if (best !== null && v.raw === best && raws.length >= 2 && best !== worst) cls += ' best';
+        else if (worst !== null && v.raw === worst && raws.length >= 2 && best !== worst) cls += ' worst';
+        // 추세 셀은 isHtml로 들어오므로 escape하지 않음
+        var content = v.isHtml ? v.display : escHtml(v.display);
+        html += '<td class="' + cls + '">' + content + '</td>';
       });
-      html += '</div>';
+      html += '</tr>';
     });
-    html += '</div>';
 
-    // 추세 요약 (12개월 데이터 있으면)
-    var trendSummary = '';
-    recs.forEach(function(r, idx) {
-      var t = r.sections.real_estate_trade || {};
-      if (t.monthly_breakdown && t.monthly_breakdown.length >= 2) {
-        var prices = t.monthly_breakdown.map(function(m) { return m.median_price_per_pyeong_man; }).filter(function(x) { return x > 0; });
-        if (prices.length >= 2) {
-          var first = prices[0], last = prices[prices.length-1];
-          var pct = Math.round((last - first) / first * 1000) / 10;
-          trendSummary += '<div style="font-size:13px;margin:6px 0;color:#475569;">' + escapeHTMLLocal(r.name) + ' 평당가 추세: <b style="color:' + (pct > 1 ? '#ef4444' : (pct < -1 ? '#3182f6' : '#94a3b8')) + '">' + (pct > 0 ? '+' : '') + pct + '%</b></div>';
-        }
-      }
-    });
-    if (trendSummary) {
-      html += '<div style="margin-top:24px;padding:16px;background:#f0f9ff;border-radius:4px;">'
-        + '<div style="font-size:12px;font-weight:700;color:#3182f6;letter-spacing:0.1em;margin-bottom:8px;">추세 요약</div>'
-        + trendSummary + '</div>';
-    } else {
-      html += '<div style="margin-top:24px;padding:12px;background:#f8fafc;border-radius:4px;font-size:12px;color:#64748b;text-align:center;">추세 데이터(12개월 누적)는 다음 데이터 갱신 후 표시됩니다.</div>';
-    }
-
-    panelBody.innerHTML = html;
+    html += '</tbody></table>';
+    return html;
   }
 
-  // 초기 비교 슬롯 렌더
-  renderSlots();
+  // 이벤트 바인딩
+  document.addEventListener('click', function(e) {
+    var addBtn = e.target.closest('.compare-add');
+    if (addBtn) {
+      e.preventDefault();
+      e.stopPropagation();
+      var slugkey = addBtn.dataset.slugkey;
+      var name = addBtn.dataset.name;
+      var sido = addBtn.dataset.sido;
+      if (compareList.some(function(x) { return x.slugkey === slugkey; })) {
+        removeFromCompare(slugkey);
+      } else {
+        addToCompare(slugkey, name, sido);
+      }
+      return;
+    }
+    var xBtn = e.target.closest('.compare-chip-x');
+    if (xBtn) {
+      e.preventDefault();
+      removeFromCompare(xBtn.dataset.slugkey);
+      return;
+    }
+  });
+
+  BTN_SHOW.addEventListener('click', showCompareView);
+  BTN_BACK.addEventListener('click', hideCompareView);
+  BTN_CLEAR.addEventListener('click', function() {
+    if (compareList.length === 0) return;
+    if (confirm('비교 목록을 모두 비울까요?')) clearCompare();
+  });
 })();
 
 </script>
 
 </body>
 </html>
+
 """
 
 
