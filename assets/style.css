@@ -124,7 +124,7 @@ button { font-family: inherit; cursor: pointer; }
 
 /* ===== SECTIONS ===== */
 .section {
-  padding: 72px 0;
+  padding: 88px 0;
   border-top: 4px solid var(--ink-strong);
   position: relative;
 }
@@ -133,13 +133,13 @@ button { font-family: inherit; cursor: pointer; }
   position: absolute;
   top: -4px;
   left: 0;
-  width: 48px;
+  width: 64px;
   height: 4px;
   background: var(--accent);
 }
 .section:first-of-type {
   border-top: 0;
-  padding-top: 0;
+  padding-top: 24px;
 }
 .section:first-of-type::before { display: none; }
 
