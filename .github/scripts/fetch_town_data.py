@@ -185,6 +185,56 @@ def fetch_kosis_and_build_sigun_list(key):
 
 
 
+def fetch_population_yearly(key, lawd_cds, years=5):
+    """
+    KOSIS DT_1B040A3 — 5년치 연도별(12월 기준) 시군구 인구 스냅샷.
+
+    매년 12월의 시군구별 총 인구를 가져와 추세 데이터로 사용.
+    API 호출은 연도당 1회 = 총 N회 (현재 5회).
+
+    Returns:
+      {lawd_cd: {"yearly": [{"year": 2021, "total": 130000}, ...]}}
+      (연도 오름차순 정렬)
+    """
+    url = "https://kosis.kr/openapi/Param/statisticsParameterData.do"
+    target = set(lawd_cds)
+    current_year = datetime.now().year
+    # 과거 N년 + 직전 완료 연도까지: e.g. 2026년 5월 기준 → 2020~2025 (Dec 2025 가용)
+    years_to_fetch = list(range(current_year - years, current_year))
+    result = {}  # {lawd_cd: {"yearly": [...]}}
+
+    for year in years_to_fetch:
+        ym = f"{year}12"
+        params = {
+            "method": "getList", "apiKey": key, "itmId": "T20",
+            "objL1": "ALL", "format": "json", "jsonVD": "Y",
+            "prdSe": "M", "startPrdDe": ym, "endPrdDe": ym,
+            "orgId": "101", "tblId": "DT_1B040A3",
+        }
+        try:
+            r = requests.get(url, params=params, timeout=TIMEOUT)
+            j = r.json()
+        except Exception as e:
+            print(f"  [population_yearly] {year}-12 fetch 실패: {e}")
+            continue
+        if not isinstance(j, list):
+            continue
+        for row in j:
+            c1 = (row.get("C1") or "").strip()
+            if c1 not in target or len(c1) != 5:
+                continue
+            dt = to_int_or_none(row.get("DT"))
+            if dt is None:
+                continue
+            result.setdefault(c1, {"yearly": []})
+            result[c1]["yearly"].append({"year": year, "total": dt})
+
+    # 연도 오름차순 정렬
+    for cd in result:
+        result[cd]["yearly"].sort(key=lambda x: x["year"])
+    return result
+
+
 def fetch_population_age_5y(key, lawd_cds):
     """
     KOSIS DT_1B04005N — 행정구역(시군구)별/5세별 인구.
@@ -561,6 +611,10 @@ def main():
     pop_age_data = fetch_population_age_5y(keys["KOSIS_KEY"], all_lawd_cds)
     print(f"  매칭: {len(pop_age_data)}개 시군구")
 
+    print("[KOSIS] 인구 5년 추이 페치 (12월 기준)")
+    pop_yearly_data = fetch_population_yearly(keys["KOSIS_KEY"], all_lawd_cds, years=5)
+    print(f"  매칭: {len(pop_yearly_data)}개 시군구")
+
     print("[KOSIS] PM2.5 1년 평균 페치 (DT_106N_03_0200145)")
     pm25_yearly = fetch_pm25_yearly(keys["KOSIS_KEY"])
 
@@ -636,6 +690,7 @@ def main():
                         "seoul_total": sido_total if sido_slug == "seoul" else None,
                         "share_of_sido_pct": share,
                         "share_of_seoul_pct": share if sido_slug == "seoul" else None,
+                        "yearly": pop_yearly_data.get(lawd_cd, {}).get("yearly", []),
                     },
                     "population_age": pop_age_data.get(lawd_cd, {
                         "table_id": "DT_1B04005N",
@@ -673,3 +728,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
