@@ -413,3 +413,23 @@
   s.async = false;
   document.head.appendChild(s);
 })();
+
+
+/* === Q렌즈 v2.0 — 카테고리 archived 필터 (2026-05-05) === */
+window.__qlensFilterArchivedCategories = function(cats) {
+  if (!Array.isArray(cats)) return cats;
+  return cats.filter(function(c) { return c && c.archived !== true; });
+};
+window.__qlensFilterArchivedArticles = function(articles, cats) {
+  if (!Array.isArray(articles)) return articles;
+  if (!Array.isArray(cats)) return articles;
+  var archivedIds = {};
+  cats.forEach(function(c) { if (c && c.archived === true) archivedIds[c.id] = true; });
+  return articles.filter(function(a) {
+    if (!a) return false;
+    // category 필드가 한글 표시명일 수도, ID일 수도 있음
+    if (archivedIds[a.category]) return false;
+    if (archivedIds[a.categoryId]) return false;
+    return true;
+  });
+};
