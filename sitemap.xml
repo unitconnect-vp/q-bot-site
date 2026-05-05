@@ -43,36 +43,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://q-bot.kr/articles/seongnam-redev-5/</loc>
-    <lastmod>2026-05-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/articles/seongnam-redev-4/</loc>
-    <lastmod>2026-05-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/articles/seongnam-redev-3/</loc>
-    <lastmod>2026-05-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/articles/seongnam-redev-2/</loc>
-    <lastmod>2026-05-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://q-bot.kr/articles/seongnam-redev-1/</loc>
-    <lastmod>2026-05-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://q-bot.kr/articles/apartment-auction-avg-return-misframing/</loc>
     <lastmod>2026-05-05</lastmod>
     <changefreq>monthly</changefreq>
