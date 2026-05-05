@@ -1,45 +1,22 @@
-## 2026-05-05 — v5.3: 홈 섹션 디바이더 무결성 + 필자 노출 정리
+## 2026-05-05 — 9개 계산기 body 박스 → .tool-wrap 분리
 
-**홈 섹션 구분 사고 복구**
-- index.html에서 `<section class="section">` 닫는 태그 2개 누락된 채 prerender가 누적되어 인기글 → 최신글 → 계산기가 nested 구조였음
-- CSS `.section:first-of-type` 룰이 nested 섹션에 잘못 매칭되면서 4px 검정 + 블루 액센트 디바이더가 두 번째·세 번째 섹션에서 사라짐
-- index.html에 `</section>` 2개 직접 보강 + nested 평탄화 (commit 17c3df4)
+이전 커밋의 알려진 이슈(헤더가 body 640px 박스 안에 갇힘) 해결.
 
-**디자인 토큰 강화**
-- `.section` padding 72→88px (섹션 간 호흡 +22%)
-- 블루 액센트 디바이더 폭 48→64px
-- `.section:first-of-type` padding-top 0→24px (hero-featured와 자연스러운 간격) (commit b815f94)
+**변경 사항 (9개 계산기 동일)**
+- body 룰에서 `padding: 2rem 1.25rem 4rem` / `max-width: 640px` / `margin: 0 auto` 3속성 제거 → body 풀폭으로 해방
+- 표준 헤더 다음에 `<div class="tool-wrap">` 시작, `</body>` 직전에 `</div>` 닫음
+- assets/style.css에 `.tool-wrap { max-width: 640px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }` 추가
 
-**publisher v5.3 — 자동 보강**
-- `_verify_and_fix_section_balance()` 신설: 매 발행마다 홈 `<section>` 열림/닫힘 개수 비교 → 부족분만큼 `</main>` 직전에 자동 삽입
-- _prerender_home() 끝부분에서 호출, 보강 발생 시 `🔧 <section> 닫힘 부족 N개 자동 보강` 로그 출력
-- v5.2의 `_sweep_orphans_after_container` (articles 컨테이너 청소) 대비 `<section>` 균형까지 보호 범위 확장
+**효과**
+- 표준 헤더가 viewport 풀폭으로 표시 (다른 페이지와 동일)
+- 본문은 기존과 동일한 640px 박스 유지
+- sticky 헤더 정상 동작
 
-**소개 페이지(/about/) 필자 노출 제거**
-- meta description / og:description / §3 편집팀 본문에서 "11명의 필자" 표현 제거
-- "필진 소개 →" 링크(`/authors/`) 삭제
-- 편집팀 단일 주체 표기로 일원화 (commit 3c54fa5)
+**대상 9개 (균일 패턴)**
+- compound / freelancer-tax / gift-tax / loan / portfolio-concentration / resignation-simulator / salary / severance / unemployment
 
-**가이드 v3.6 → v3.7**
-- §7-1 QA 체크리스트에 홈 디바이더 시각 확인 + publisher 자동화 로그 검증 2줄 추가
-
----
-
-## 2026-05-05 — /tools/ 12개 + /town/ 표준 헤더 통일
-
-이전 보고에서 보류했던 13개 마이크로사이트 페이지를 표준 헤더로 통일.
-
-**변경 사항 (페이지당 동일)**
-- 자체 인라인 네비/topbar 제거
-- `<head>`에 `/assets/style.css` 로드 추가 (13개 모두 미로드 상태였음)
-- `<body>` 직후 표준 헤더 삽입 (logo plain — 페이지 자체 H1 보존)
-
-**대상 13개**
-- /town/
-- /tools/{12개 계산기}: capital-gains-tax / compound / ev-insurance / ev-vs-ice / freelancer-tax / gift-tax / loan / portfolio-concentration / resignation-simulator / salary / severance / unemployment
-
-**알려진 이슈 (시각 정합 후속 작업)**
-- 9개 계산기는 body 룰에 max-width 640px / margin auto / padding 2rem 1.25rem 4rem 박스 구조라 표준 헤더가 박스 안에 갇힘 (sticky 동작 제한). 메뉴 마크업/링크는 통일됐으나 헤더 폭은 본문 폭과 동일하게 표시될 수 있음. 디자인 정합은 후속 작업으로 분리.
+**범위 외 (3개 outlier)**
+- capital-gains-tax / ev-vs-ice / ev-insurance: body 룰이 다른 패턴(Pretendard 사용 또는 max-width 미사용)이라 별도 검토 필요
 
 ---
 

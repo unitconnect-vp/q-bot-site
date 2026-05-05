@@ -115,6 +115,13 @@ button { font-family: inherit; cursor: pointer; }
   background: rgba(49, 130, 246, 0.08);
 }
 
+/* ===== TOOL PAGE WRAP (9개 계산기 본문 박스) ===== */
+.tool-wrap {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
 /* ===== LAYOUT ===== */
 .wrap, main.home-wrap, .home-wrap {
   max-width: 1200px;
