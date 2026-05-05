@@ -12,6 +12,7 @@ database_id = "9fee7d6a-47cc-4198-88b9-29c97d16465d"
 [vars]
 GOOGLE_CLIENT_ID = "1045698164533-1bg1bb03viit2knt41r85q7g92hpg2d7.apps.googleusercontent.com"
 SITE_URL = "https://q-bot.kr"
+API_URL = "https://api.q-bot.kr"
 
 # === Routes ===
 # 배포 후 Cloudflare 대시보드에서 별도 설정 권장:
