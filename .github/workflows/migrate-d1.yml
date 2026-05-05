@@ -1,0 +1,43 @@
+name: Migrate D1
+
+# 수동 트리거 전용. GitHub Actions 탭에서 "Run workflow" 클릭 → target 선택 → 실행
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: '마이그레이션 대상 (remote=프로덕션 D1, local=로컬)'
+        required: true
+        default: 'remote'
+        type: choice
+        options:
+          - remote
+          - local
+      file:
+        description: '실행할 마이그레이션 파일 (api/migrations/ 기준)'
+        required: true
+        default: '0001_init.sql'
+        type: string
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: api
+        run: npm install
+
+      - name: Run migration
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: api
+          command: d1 execute qlens-db --${{ inputs.target }} --file=migrations/${{ inputs.file }}
