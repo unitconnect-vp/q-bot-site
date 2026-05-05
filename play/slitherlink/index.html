@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+<!-- /Google Analytics 4 -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>슬리더링크 — Q-Lens</title>
+<meta name="description" content="격자의 점을 이어 단일 폐곡선을 만드는 일본식 논리 퍼즐. 각 칸의 숫자만큼 변을 사용하세요.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://q-bot.kr/play/slitherlink/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="슬리더링크 — Q-Lens">
+<meta property="og:description" content="격자의 점을 이어 단일 폐곡선을 만드는 논리 퍼즐.">
+<meta property="og:url" content="https://q-bot.kr/play/slitherlink/">
+<meta property="og:site_name" content="Q-Lens">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="/assets/style.css">
+
+<style>
+:root{
+  --bg:#ffffff;
+  --ink:#1a1612;
+  --muted:#6b7684;
+  --line:#e5e8eb;
+  --soft:#f7f8fa;
+  --accent:#3182f6;
+  --accent-strong:#1b64da;
+  --error:#ef4444;
+  --ok:#10b981;
+}
+
+.game-wrap{
+  max-width:520px;
+  margin:0 auto;
+  padding:32px 16px 60px;
+  font-family:"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  color:var(--ink);
+}
+
+.game-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  margin-bottom:20px;
+}
+.game-title h1{
+  font-size:28px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  margin:0 0 4px;
+}
+.game-title p{
+  font-size:13px;
+  color:var(--muted);
+  margin:0;
+  line-height:1.5;
+}
+.timer{
+  font-size:14px;
+  font-weight:800;
+  color:var(--ink);
+  font-variant-numeric:tabular-nums;
+  background:var(--soft);
+  padding:6px 12px;
+  border-radius:4px;
+  flex-shrink:0;
+}
+
+.game-controls{
+  display:flex;
+  gap:8px;
+  margin-bottom:16px;
+  flex-wrap:wrap;
+}
+.btn{
+  padding:10px 14px;
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:700;
+  color:var(--ink);
+  cursor:pointer;
+  font-family:inherit;
+  flex:1;
+  min-width:64px;
+  transition:border-color 0.1s, background 0.1s;
+}
+.btn:hover{ border-color:var(--ink); }
+.btn-primary{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#fff;
+}
+.btn-primary:hover{
+  background:var(--accent-strong);
+  border-color:var(--accent-strong);
+}
+.btn:disabled{ opacity:0.4; cursor:not-allowed; }
+.btn:disabled:hover{ border-color:var(--line); }
+
+.board-wrap{
+  background:var(--soft);
+  border-radius:4px;
+  padding:24px;
+  margin-bottom:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.board-svg{
+  display:block;
+  width:100%;
+  height:auto;
+  max-width:400px;
+  user-select:none;
+  -webkit-user-select:none;
+}
+
+.dot{ fill:var(--ink); }
+.cell-clue{
+  font-family:"Pretendard Variable", sans-serif;
+  font-weight:800;
+  font-size:18px;
+  text-anchor:middle;
+  dominant-baseline:central;
+  fill:var(--ink);
+  pointer-events:none;
+  user-select:none;
+}
+.cell-clue.satisfied{ fill:var(--muted); }
+.cell-clue.violated{ fill:var(--error); }
+
+.edge-hit{
+  fill:transparent;
+  cursor:pointer;
+}
+
+.edge-vis{
+  pointer-events:none;
+}
+.edge-line{
+  stroke:var(--ink);
+  stroke-width:4;
+  stroke-linecap:round;
+}
+.edge-cross-mark{
+  stroke:var(--muted);
+  stroke-width:2.5;
+  stroke-linecap:round;
+}
+
+.status{
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:12px;
+  font-weight:600;
+  min-height:20px;
+}
+.status.ok{ color:var(--ok); }
+.status.err{ color:var(--error); }
+
+.help{
+  padding:14px 16px;
+  background:var(--soft);
+  border-radius:4px;
+  font-size:12.5px;
+  line-height:1.7;
+  color:var(--muted);
+}
+.help strong{
+  color:var(--ink);
+  display:block;
+  margin-bottom:4px;
+  font-size:13px;
+}
+.help-row{ margin-top:8px; }
+.help b{ color:var(--ink); }
+
+.toast{
+  position:fixed;
+  top:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:var(--ink);
+  color:#fff;
+  padding:10px 18px;
+  border-radius:4px;
+  font-size:13px;
+  font-weight:600;
+  z-index:100;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.2s;
+  white-space:nowrap;
+}
+.toast.show{ opacity:1; }
+
+.modal-back{
+  position:fixed;
+  inset:0;
+  background:rgba(26,22,18,0.5);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:50;
+  padding:16px;
+}
+.modal-back.show{ display:flex; }
+.modal{
+  background:#fff;
+  border-radius:8px;
+  max-width:340px;
+  width:100%;
+  padding:24px;
+}
+.modal h2{
+  font-size:24px;
+  font-weight:800;
+  color:var(--accent);
+  margin:0 0 6px;
+  letter-spacing:-0.02em;
+}
+.modal-sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-bottom:16px;
+  line-height:1.6;
+}
+.modal-stat{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 12px;
+  background:var(--soft);
+  border-radius:4px;
+  margin-bottom:8px;
+  font-size:13px;
+}
+.modal-stat strong{
+  font-variant-numeric:tabular-nums;
+  color:var(--ink);
+}
+.modal-actions{
+  display:flex;
+  gap:8px;
+  margin-top:16px;
+}
+.modal-actions .btn{ flex:1; }
+
+@media (max-width:520px){
+  .game-title h1{ font-size:24px; }
+  .board-wrap{ padding:16px; }
+  .cell-clue{ font-size:16px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/tools/">계산기</a>
+    <a href="/play/" aria-current="page">게임</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
+
+<main class="game-wrap">
+  <div class="game-header">
+    <div class="game-title">
+      <h1>슬리더링크</h1>
+      <p>점을 이어 단일 폐곡선을 만드세요.</p>
+    </div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+
+  <div class="game-controls">
+    <button class="btn" id="undoBtn" disabled>되돌리기</button>
+    <button class="btn" id="clearBtn">초기화</button>
+    <button class="btn" id="solveBtn">정답 보기</button>
+    <button class="btn btn-primary" id="newBtn">새 게임</button>
+  </div>
+
+  <div class="status" id="status">변을 클릭해서 선·X·미정을 전환하세요</div>
+
+  <div class="board-wrap">
+    <svg class="board-svg" id="board" viewBox="0 0 360 360" aria-label="슬리더링크 보드"></svg>
+  </div>
+
+  <div class="help">
+    <strong>규칙</strong>
+    숫자가 적힌 칸은 그 칸의 네 변 중 정확히 그 숫자만큼만 폐곡선의 일부여야 합니다. (0이면 변 없음, 3이면 세 변)
+    <div class="help-row">
+      <strong>조작</strong>
+      변(점과 점 사이)을 한 번 클릭하면 <b>선</b>, 다시 클릭하면 <b>X(선 아님)</b>, 한 번 더 클릭하면 <b>미정</b>으로 돌아갑니다. X 표시는 풀이를 추적하는 데 도움이 됩니다.
+    </div>
+    <div class="help-row">
+      <strong>완성 조건</strong>
+      ① 모든 숫자 칸의 클루 만족 ② 사용된 모든 점은 정확히 두 개의 선과 연결 ③ 끊어진 부분 없는 단일 폐곡선
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-back" id="modal">
+  <div class="modal">
+    <h2>완성!</h2>
+    <p class="modal-sub">단일 폐곡선이 완성되었습니다.</p>
+    <div class="modal-stat"><span>풀이 시간</span><strong id="modalTime">--:--</strong></div>
+    <div class="modal-stat"><span>되돌리기 사용</span><strong id="modalUndos">0회</strong></div>
+    <div class="modal-actions">
+      <button class="btn" id="modalCloseBtn">닫기</button>
+      <button class="btn btn-primary" id="modalNewBtn">새 게임</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  'use strict';
+
+  // 격자: SIZE×SIZE 셀
+  // 점 좌표: (r, c), r in [0..SIZE], c in [0..SIZE]
+  // 가로변 hEdges[r][c]: 점 (r,c)와 (r,c+1) 사이.  r in [0..SIZE], c in [0..SIZE-1]
+  // 세로변 vEdges[r][c]: 점 (r,c)와 (r+1,c) 사이.  r in [0..SIZE-1], c in [0..SIZE]
+
+  const SIZE = 5;
+  const CELL_PX = 60;
+  const PAD = 30;
+  const SVG_PX = SIZE * CELL_PX + PAD * 2;
+  const DOT_R = 3;
+  const HIT_W = 24;
+
+  const U = 0, L = 1, X = 2;
+
+  let clues, solution, interior;
+  let hEdges, vEdges;
+  let history, undoCount;
+  let solved;
+  let startTime, timerInterval;
+
+  const $svg = document.getElementById('board');
+  const $status = document.getElementById('status');
+  const $timer = document.getElementById('timer');
+  const $toast = document.getElementById('toast');
+  const $undo = document.getElementById('undoBtn');
+  const $clear = document.getElementById('clearBtn');
+  const $solve = document.getElementById('solveBtn');
+  const $new = document.getElementById('newBtn');
+  const $modal = document.getElementById('modal');
+  const $modalTime = document.getElementById('modalTime');
+  const $modalUndos = document.getElementById('modalUndos');
+  const $modalClose = document.getElementById('modalCloseBtn');
+  const $modalNew = document.getElementById('modalNewBtn');
+
+  $svg.setAttribute('viewBox', '0 0 ' + SVG_PX + ' ' + SVG_PX);
+
+  // =========================================================
+  // Polygon 생성
+  // =========================================================
+  function cellIdx(r, c){ return r * SIZE + c; }
+
+  function exteriorConnected(set){
+    let start = -1;
+    for (let i = 0; i < SIZE * SIZE; i++){
+      if (!set.has(i)){ start = i; break; }
+    }
+    if (start === -1) return false;
+
+    const visited = new Set([start]);
+    const queue = [start];
+    while (queue.length > 0){
+      const idx = queue.shift();
+      const r = Math.floor(idx / SIZE);
+      const c = idx % SIZE;
+      const nbrs = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+      for (const [nr, nc] of nbrs){
+        if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE) continue;
+        const nidx = nr * SIZE + nc;
+        if (set.has(nidx)) continue;
+        if (visited.has(nidx)) continue;
+        visited.add(nidx);
+        queue.push(nidx);
+      }
+    }
+    let extCount = 0;
+    for (let i = 0; i < SIZE * SIZE; i++) if (!set.has(i)) extCount++;
+    return visited.size === extCount;
+  }
+
+  function generatePolygon(){
+    const total = SIZE * SIZE;
+    const target = Math.floor(total * (0.3 + Math.random() * 0.3));
+    const set = new Set();
+    set.add(cellIdx(Math.floor(SIZE/2), Math.floor(SIZE/2)));
+
+    let attempts = 0;
+    while (set.size < target && attempts < 200){
+      attempts++;
+      const cand = new Set();
+      for (const idx of set){
+        const r = Math.floor(idx / SIZE), c = idx % SIZE;
+        for (const [dr, dc] of [[0,1],[0,-1],[1,0],[-1,0]]){
+          const nr = r+dr, nc = c+dc;
+          if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE) continue;
+          const ni = cellIdx(nr, nc);
+          if (!set.has(ni)) cand.add(ni);
+        }
+      }
+      if (cand.size === 0) break;
+      const arr = [...cand];
+      const pick = arr[Math.floor(Math.random() * arr.length)];
+
+      const trial = new Set(set);
+      trial.add(pick);
+      if (exteriorConnected(trial)){
+        set.add(pick);
+      }
+    }
+
+    if (set.size < 3){
+      set.clear();
+      set.add(cellIdx(1,1));
+      set.add(cellIdx(1,2));
+      set.add(cellIdx(2,1));
+      set.add(cellIdx(2,2));
+    }
+    return set;
+  }
+
+  function extractClues(set){
+    const out = [];
+    for (let r = 0; r < SIZE; r++){
+      const row = [];
+      for (let c = 0; c < SIZE; c++){
+        const isIn = set.has(cellIdx(r, c));
+        let count = 0;
+        const sides = [[r-1,c],[r+1,c],[r,c-1],[r,c+1]];
+        for (const [nr, nc] of sides){
+          let nIn;
+          if (nr < 0 || nr >= SIZE || nc < 0 || nc >= SIZE) nIn = false;
+          else nIn = set.has(cellIdx(nr, nc));
+          if (isIn !== nIn) count++;
+        }
+        row.push(count);
+      }
+      out.push(row);
+    }
+    return out;
+  }
+
+  function extractSolution(set){
+    const h = [];
+    for (let r = 0; r <= SIZE; r++){
+      const row = [];
+      for (let c = 0; c < SIZE; c++){
+        const above = (r > 0) ? set.has(cellIdx(r-1, c)) : false;
+        const below = (r < SIZE) ? set.has(cellIdx(r, c)) : false;
+        row.push(above !== below);
+      }
+      h.push(row);
+    }
+    const v = [];
+    for (let r = 0; r < SIZE; r++){
+      const row = [];
+      for (let c = 0; c <= SIZE; c++){
+        const left = (c > 0) ? set.has(cellIdx(r, c-1)) : false;
+        const right = (c < SIZE) ? set.has(cellIdx(r, c)) : false;
+        row.push(left !== right);
+      }
+      v.push(row);
+    }
+    return { h, v };
+  }
+
+  // =========================================================
+  // 보드 렌더링
+  // =========================================================
+  function pointXY(r, c){
+    return { x: PAD + c * CELL_PX, y: PAD + r * CELL_PX };
+  }
+
+  function buildBoard(){
+    $svg.innerHTML = '';
+    const ns = 'http://www.w3.org/2000/svg';
+
+    function makeXMark(cx, cy){
+      const xs = 5;
+      const g = document.createElementNS(ns, 'g');
+      g.setAttribute('class', 'edge-cross');
+      g.style.display = 'none';
+      const x1 = document.createElementNS(ns, 'line');
+      x1.setAttribute('class', 'edge-cross-mark');
+      x1.setAttribute('x1', cx-xs); x1.setAttribute('y1', cy-xs);
+      x1.setAttribute('x2', cx+xs); x1.setAttribute('y2', cy+xs);
+      const x2 = document.createElementNS(ns, 'line');
+      x2.setAttribute('class', 'edge-cross-mark');
+      x2.setAttribute('x1', cx-xs); x2.setAttribute('y1', cy+xs);
+      x2.setAttribute('x2', cx+xs); x2.setAttribute('y2', cy-xs);
+      g.appendChild(x1);
+      g.appendChild(x2);
+      return g;
+    }
+
+    // 가로변
+    for (let r = 0; r <= SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        const a = pointXY(r, c);
+        const b = pointXY(r, c+1);
+        const hit = document.createElementNS(ns, 'rect');
+        hit.setAttribute('class', 'edge-hit');
+        hit.setAttribute('x', a.x);
+        hit.setAttribute('y', a.y - HIT_W/2);
+        hit.setAttribute('width', CELL_PX);
+        hit.setAttribute('height', HIT_W);
+        hit.setAttribute('data-type', 'h');
+        hit.setAttribute('data-r', r);
+        hit.setAttribute('data-c', c);
+        $svg.appendChild(hit);
+
+        const vis = document.createElementNS(ns, 'g');
+        vis.setAttribute('class', 'edge-vis');
+        vis.setAttribute('id', 'eh-' + r + '-' + c);
+
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('class', 'edge-line');
+        line.setAttribute('x1', a.x);
+        line.setAttribute('y1', a.y);
+        line.setAttribute('x2', b.x);
+        line.setAttribute('y2', b.y);
+        line.style.display = 'none';
+        vis.appendChild(line);
+
+        const cx = (a.x + b.x) / 2;
+        const cy = (a.y + b.y) / 2;
+        vis.appendChild(makeXMark(cx, cy));
+        $svg.appendChild(vis);
+      }
+    }
+
+    // 세로변
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c <= SIZE; c++){
+        const a = pointXY(r, c);
+        const b = pointXY(r+1, c);
+        const hit = document.createElementNS(ns, 'rect');
+        hit.setAttribute('class', 'edge-hit');
+        hit.setAttribute('x', a.x - HIT_W/2);
+        hit.setAttribute('y', a.y);
+        hit.setAttribute('width', HIT_W);
+        hit.setAttribute('height', CELL_PX);
+        hit.setAttribute('data-type', 'v');
+        hit.setAttribute('data-r', r);
+        hit.setAttribute('data-c', c);
+        $svg.appendChild(hit);
+
+        const vis = document.createElementNS(ns, 'g');
+        vis.setAttribute('class', 'edge-vis');
+        vis.setAttribute('id', 'ev-' + r + '-' + c);
+
+        const line = document.createElementNS(ns, 'line');
+        line.setAttribute('class', 'edge-line');
+        line.setAttribute('x1', a.x);
+        line.setAttribute('y1', a.y);
+        line.setAttribute('x2', b.x);
+        line.setAttribute('y2', b.y);
+        line.style.display = 'none';
+        vis.appendChild(line);
+
+        const cx = (a.x + b.x) / 2;
+        const cy = (a.y + b.y) / 2;
+        vis.appendChild(makeXMark(cx, cy));
+        $svg.appendChild(vis);
+      }
+    }
+
+    // 클루
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        if (clues[r][c] === null) continue;
+        const cx = PAD + c * CELL_PX + CELL_PX / 2;
+        const cy = PAD + r * CELL_PX + CELL_PX / 2;
+        const t = document.createElementNS(ns, 'text');
+        t.setAttribute('class', 'cell-clue');
+        t.setAttribute('id', 'clue-' + r + '-' + c);
+        t.setAttribute('x', cx);
+        t.setAttribute('y', cy);
+        t.textContent = String(clues[r][c]);
+        $svg.appendChild(t);
+      }
+    }
+
+    // 점
+    for (let r = 0; r <= SIZE; r++){
+      for (let c = 0; c <= SIZE; c++){
+        const p = pointXY(r, c);
+        const dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('class', 'dot');
+        dot.setAttribute('cx', p.x);
+        dot.setAttribute('cy', p.y);
+        dot.setAttribute('r', DOT_R);
+        $svg.appendChild(dot);
+      }
+    }
+
+    $svg.addEventListener('click', onEdgeClick);
+  }
+
+  function renderEdges(){
+    for (let r = 0; r <= SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        const g = document.getElementById('eh-' + r + '-' + c);
+        const state = hEdges[r][c];
+        const line = g.querySelector('.edge-line');
+        const xm = g.querySelector('.edge-cross');
+        line.style.display = state === L ? '' : 'none';
+        xm.style.display = state === X ? '' : 'none';
+      }
+    }
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c <= SIZE; c++){
+        const g = document.getElementById('ev-' + r + '-' + c);
+        const state = vEdges[r][c];
+        const line = g.querySelector('.edge-line');
+        const xm = g.querySelector('.edge-cross');
+        line.style.display = state === L ? '' : 'none';
+        xm.style.display = state === X ? '' : 'none';
+      }
+    }
+    renderClueColors();
+  }
+
+  function renderClueColors(){
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        if (clues[r][c] === null) continue;
+        const t = document.getElementById('clue-' + r + '-' + c);
+        if (!t) continue;
+        const lineCount = countLinesAroundCell(r, c);
+        const undecidedCount = countUndecidedAroundCell(r, c);
+        const target = clues[r][c];
+        t.classList.remove('satisfied','violated');
+        if (lineCount > target || (undecidedCount === 0 && lineCount !== target)){
+          t.classList.add('violated');
+        } else if (lineCount === target && undecidedCount === 0){
+          t.classList.add('satisfied');
+        }
+      }
+    }
+  }
+
+  // =========================================================
+  // 입력
+  // =========================================================
+  function onEdgeClick(e){
+    if (solved) return;
+    const t = e.target.closest('.edge-hit');
+    if (!t) return;
+    const type = t.getAttribute('data-type');
+    const r = parseInt(t.getAttribute('data-r'), 10);
+    const c = parseInt(t.getAttribute('data-c'), 10);
+    pushHistory();
+    if (type === 'h'){
+      hEdges[r][c] = (hEdges[r][c] + 1) % 3;
+    } else {
+      vEdges[r][c] = (vEdges[r][c] + 1) % 3;
+    }
+    if (!startTime){ startTime = Date.now(); startTimer(); }
+    renderEdges();
+    checkProgress();
+  }
+
+  function pushHistory(){
+    history.push({
+      h: hEdges.map(row => [...row]),
+      v: vEdges.map(row => [...row])
+    });
+    if (history.length > 50) history.shift();
+    updateUndoBtn();
+  }
+
+  function undo(){
+    if (history.length === 0) return;
+    const prev = history.pop();
+    hEdges = prev.h;
+    vEdges = prev.v;
+    undoCount++;
+    renderEdges();
+    updateUndoBtn();
+    setStatus('변을 클릭해서 선·X·미정을 전환하세요', '');
+  }
+
+  function updateUndoBtn(){
+    $undo.disabled = history.length === 0;
+  }
+
+  function clearBoard(){
+    if (solved) return;
+    pushHistory();
+    hEdges = makeH();
+    vEdges = makeV();
+    renderEdges();
+    setStatus('초기화했습니다', '');
+  }
+
+  function showSolution(){
+    if (solved) return;
+    if (!confirm('정답을 보면 게임이 종료됩니다. 계속하시겠습니까?')) return;
+    for (let r = 0; r <= SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        hEdges[r][c] = solution.h[r][c] ? L : X;
+      }
+    }
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c <= SIZE; c++){
+        vEdges[r][c] = solution.v[r][c] ? L : X;
+      }
+    }
+    solved = true;
+    stopTimer();
+    renderEdges();
+    setStatus('정답을 표시했습니다', '');
+  }
+
+  // =========================================================
+  // 검증
+  // =========================================================
+  function countLinesAroundCell(r, c){
+    let n = 0;
+    if (hEdges[r][c] === L) n++;
+    if (hEdges[r+1][c] === L) n++;
+    if (vEdges[r][c] === L) n++;
+    if (vEdges[r][c+1] === L) n++;
+    return n;
+  }
+  function countUndecidedAroundCell(r, c){
+    let n = 0;
+    if (hEdges[r][c] === U) n++;
+    if (hEdges[r+1][c] === U) n++;
+    if (vEdges[r][c] === U) n++;
+    if (vEdges[r][c+1] === U) n++;
+    return n;
+  }
+
+  function pointDegree(r, c){
+    let n = 0;
+    if (c > 0     && hEdges[r][c-1] === L) n++;
+    if (c < SIZE  && hEdges[r][c]   === L) n++;
+    if (r > 0     && vEdges[r-1][c] === L) n++;
+    if (r < SIZE  && vEdges[r][c]   === L) n++;
+    return n;
+  }
+
+  function checkProgress(){
+    let allDecided = true;
+    for (let r = 0; r <= SIZE && allDecided; r++)
+      for (let c = 0; c < SIZE && allDecided; c++)
+        if (hEdges[r][c] === U) allDecided = false;
+    for (let r = 0; r < SIZE && allDecided; r++)
+      for (let c = 0; c <= SIZE && allDecided; c++)
+        if (vEdges[r][c] === U) allDecided = false;
+
+    if (!allDecided){
+      setStatus('변을 클릭해서 선·X·미정을 전환하세요', '');
+      return;
+    }
+
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        if (clues[r][c] === null) continue;
+        if (countLinesAroundCell(r, c) !== clues[r][c]){
+          setStatus('숫자 조건이 맞지 않는 칸이 있습니다', 'err');
+          return;
+        }
+      }
+    }
+
+    for (let r = 0; r <= SIZE; r++){
+      for (let c = 0; c <= SIZE; c++){
+        const d = pointDegree(r, c);
+        if (d !== 0 && d !== 2){
+          setStatus('분기되거나 끊어진 곳이 있습니다', 'err');
+          return;
+        }
+      }
+    }
+
+    if (!isSingleLoop()){
+      setStatus('단일 폐곡선이 아닙니다 (분리된 루프 존재)', 'err');
+      return;
+    }
+
+    solved = true;
+    stopTimer();
+    setStatus('완성! 단일 폐곡선이 만들어졌습니다', 'ok');
+    setTimeout(showWinModal, 600);
+  }
+
+  function isSingleLoop(){
+    const allLines = [];
+    for (let r = 0; r <= SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        if (hEdges[r][c] === L) allLines.push(['h', r, c]);
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c <= SIZE; c++)
+        if (vEdges[r][c] === L) allLines.push(['v', r, c]);
+
+    if (allLines.length === 0) return false;
+
+    const visitedEdges = new Set();
+    function adjLines(r, c){
+      const out = [];
+      if (c > 0     && hEdges[r][c-1] === L) out.push({ edge:'h-' + r + '-' + (c-1), np:[r, c-1] });
+      if (c < SIZE  && hEdges[r][c]   === L) out.push({ edge:'h-' + r + '-' + c,     np:[r, c+1] });
+      if (r > 0     && vEdges[r-1][c] === L) out.push({ edge:'v-' + (r-1) + '-' + c, np:[r-1, c] });
+      if (r < SIZE  && vEdges[r][c]   === L) out.push({ edge:'v-' + r + '-' + c,     np:[r+1, c] });
+      return out;
+    }
+    const startEdge = allLines[0];
+    const startPt = [startEdge[1], startEdge[2]];
+    const queue = [startPt];
+    const visitedPts = new Set([startPt.join(',')]);
+    while (queue.length > 0){
+      const [r, c] = queue.shift();
+      for (const item of adjLines(r, c)){
+        if (visitedEdges.has(item.edge)) continue;
+        visitedEdges.add(item.edge);
+        const k = item.np.join(',');
+        if (!visitedPts.has(k)){
+          visitedPts.add(k);
+          queue.push(item.np);
+        }
+      }
+    }
+    return visitedEdges.size === allLines.length;
+  }
+
+  // =========================================================
+  // 타이머 / UI
+  // =========================================================
+  function startTimer(){
+    stopTimer();
+    timerInterval = setInterval(updateTimer, 250);
+    updateTimer();
+  }
+  function stopTimer(){
+    if (timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+  }
+  function updateTimer(){
+    if (!startTime){ $timer.textContent = '00:00'; return; }
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const m = Math.floor(elapsed / 60);
+    const s = elapsed % 60;
+    $timer.textContent = String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  function setStatus(msg, type){
+    $status.textContent = msg;
+    $status.classList.remove('ok','err');
+    if (type === 'ok') $status.classList.add('ok');
+    else if (type === 'err') $status.classList.add('err');
+  }
+
+  function showToast(msg, ms){
+    if (ms == null) ms = 1800;
+    $toast.textContent = msg;
+    $toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(() => $toast.classList.remove('show'), ms);
+  }
+
+  function showWinModal(){
+    $modalTime.textContent = $timer.textContent;
+    $modalUndos.textContent = undoCount + '회';
+    $modal.classList.add('show');
+  }
+  function closeWinModal(){ $modal.classList.remove('show'); }
+
+  // =========================================================
+  // 새 게임
+  // =========================================================
+  function makeH(){
+    return Array.from({length: SIZE+1}, () => Array(SIZE).fill(U));
+  }
+  function makeV(){
+    return Array.from({length: SIZE}, () => Array(SIZE+1).fill(U));
+  }
+
+  function newGame(){
+    interior = generatePolygon();
+    clues = extractClues(interior);
+    solution = extractSolution(interior);
+    hEdges = makeH();
+    vEdges = makeV();
+    history = [];
+    undoCount = 0;
+    solved = false;
+    startTime = null;
+    stopTimer();
+    $timer.textContent = '00:00';
+    closeWinModal();
+    buildBoard();
+    renderEdges();
+    setStatus('변을 클릭해서 선·X·미정을 전환하세요', '');
+    updateUndoBtn();
+  }
+
+  // 이벤트
+  $undo.addEventListener('click', undo);
+  $clear.addEventListener('click', clearBoard);
+  $solve.addEventListener('click', showSolution);
+  $new.addEventListener('click', newGame);
+  $modalClose.addEventListener('click', closeWinModal);
+  $modalNew.addEventListener('click', newGame);
+  $modal.addEventListener('click', (e) => { if (e.target === $modal) closeWinModal(); });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'z'){ e.preventDefault(); undo(); }
+  });
+
+  newGame();
+})();
+</script>
+
+</body>
+</html>
