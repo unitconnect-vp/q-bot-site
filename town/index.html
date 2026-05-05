@@ -35,30 +35,39 @@ html, body { font-family: 'Pretendard Variable', Pretendard, -apple-system, sans
 .filter-input-clear { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 28px; height: 28px; border: none; background: #f3f4f6; color: #6b7280; border-radius: 50%; cursor: pointer; font-size: 16px; font-weight: 700; display: none; align-items: center; justify-content: center; padding: 0; line-height: 1; }
 .filter-input-clear:hover { background: #e5e7eb; color: #0f172a; }
 .filter-input-clear.show { display: flex; }
+.region-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.region-chip { flex: 0 0 auto; padding: 10px 16px; background: #fff; border: 1.5px solid #e5e7eb; border-radius: 4px; font-size: 14px; font-weight: 700; color: #0f172a; cursor: pointer; transition: all 0.12s; user-select: none; font-family: inherit; }
+.region-chip:hover { border-color: #0f172a; }
+.region-chip.active { background: #3182f6; color: #fff; border-color: #3182f6; }
+.region-chip .count { opacity: 0.65; font-weight: 500; margin-left: 5px; font-size: 12px; }
+.region-chip.active .count { opacity: 0.85; }
 .sido-chips { display: flex; gap: 6px; overflow-x: auto; padding: 2px 0 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
 .sido-chips::-webkit-scrollbar { display: none; }
-.sido-chip { flex-shrink: 0; padding: 7px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; font-size: 13px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; white-space: nowrap; user-select: none; }
+.sido-chip { flex-shrink: 0; padding: 8px 16px; background: #fff; border: 1px solid #e5e7eb; border-radius: 999px; font-size: 14px; font-weight: 600; color: #475569; cursor: pointer; transition: all 0.12s; white-space: nowrap; user-select: none; font-family: inherit; }
 .sido-chip:hover { border-color: #0f172a; color: #0f172a; }
 .sido-chip.active { background: #0f172a; color: #fff; border-color: #0f172a; }
-.sido-chip .count { opacity: 0.6; font-weight: 500; margin-left: 4px; font-size: 11px; }
+.sido-chip .count { opacity: 0.6; font-weight: 500; margin-left: 4px; font-size: 12px; }
 .sido-chip.active .count { opacity: 0.7; }
-.sgg-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 32px; }
-.sgg-card { display: block; padding: 12px 10px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.12s; }
+.sido-chip.hidden { display: none; }
+.sgg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 32px; }
+.sgg-card { display: block; padding: 16px 14px; background: #fff; border: 1px solid #e5e7eb; border-radius: 4px; text-align: left; cursor: pointer; transition: all 0.12s; }
 .sgg-card:hover { border-color: #0f172a; }
 .sgg-card.active { background: #0f172a; border-color: #0f172a; }
 .sgg-card.active .sgg-name, .sgg-card.active .sgg-sido { color: #fff; }
 .sgg-card.active .sgg-sido { opacity: 0.7; }
-.sgg-name { font-size: 14px; font-weight: 700; color: #0f172a; line-height: 1.2; }
-.sgg-sido { font-size: 11px; color: #94a3b8; font-weight: 500; margin-top: 2px; }
-.result-meta { font-size: 12px; color: #94a3b8; margin-bottom: 12px; padding-left: 2px; }
+.sgg-name { font-size: 17px; font-weight: 700; color: #0f172a; line-height: 1.25; letter-spacing: -0.01em; }
+.sgg-sido { font-size: 13px; color: #94a3b8; font-weight: 500; margin-top: 4px; }
+.result-meta { font-size: 13px; color: #64748b; margin-bottom: 14px; padding-left: 2px; font-weight: 500; }
 .empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: 14px; }
 .empty-state b { color: #475569; }
 @media (max-width: 640px) {
-  .sgg-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-  .sgg-card { padding: 10px 10px; }
-  .sgg-name { font-size: 13px; }
+  .sgg-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .sgg-card { padding: 14px 12px; }
+  .sgg-name { font-size: 16px; }
+  .sgg-sido { font-size: 12px; }
   .filter-bar { padding: 10px 0 6px; }
-  .sido-chip { padding: 6px 12px; font-size: 12px; }
+  .sido-chip { padding: 7px 14px; font-size: 13px; }
+  .region-chip { padding: 9px 14px; font-size: 13px; flex: 1 1 calc(50% - 4px); text-align: center; }
 }
 .card-area { min-height: 400px; margin-top: 32px; }
 .card-empty { text-align: center; padding: 64px 24px; background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 4px; color: #64748b; font-size: 14px; }
@@ -131,25 +140,33 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     <input type="search" id="sgg-search" class="filter-input" placeholder="동네 이름 검색 (예: 강남, 마포, 분당)" autocomplete="off">
     <button class="filter-input-clear" id="sgg-clear" aria-label="검색어 지우기">×</button>
   </div>
+  <div class="region-row" id="region-row">
+    <button class="region-chip active" data-region="">전체<span class="count">255</span></button>
+    <button class="region-chip" data-region="capital">수도권<span class="count">82</span></button>
+    <button class="region-chip" data-region="chungcheong">충청권<span class="count">36</span></button>
+    <button class="region-chip" data-region="honam">호남권<span class="count">42</span></button>
+    <button class="region-chip" data-region="yeongnam">영남권<span class="count">75</span></button>
+    <button class="region-chip" data-region="gangwon_jeju">강원·제주<span class="count">20</span></button>
+  </div>
   <div class="sido-chips" id="sido-chips">
-    <button class="sido-chip active" data-sido="">전체<span class="count">255</span></button>
-    <button class="sido-chip" data-sido="서울특별시">서울<span class="count">25</span></button>
-  <button class="sido-chip" data-sido="부산광역시">부산<span class="count">16</span></button>
-  <button class="sido-chip" data-sido="대구광역시">대구<span class="count">9</span></button>
-  <button class="sido-chip" data-sido="인천광역시">인천<span class="count">10</span></button>
-  <button class="sido-chip" data-sido="광주광역시">광주<span class="count">5</span></button>
-  <button class="sido-chip" data-sido="대전광역시">대전<span class="count">5</span></button>
-  <button class="sido-chip" data-sido="울산광역시">울산<span class="count">5</span></button>
-  <button class="sido-chip" data-sido="세종특별자치시">세종<span class="count">1</span></button>
-  <button class="sido-chip" data-sido="경기도">경기<span class="count">47</span></button>
-  <button class="sido-chip" data-sido="충청북도">충북<span class="count">14</span></button>
-  <button class="sido-chip" data-sido="충청남도">충남<span class="count">16</span></button>
-  <button class="sido-chip" data-sido="전라남도">전남<span class="count">22</span></button>
-  <button class="sido-chip" data-sido="경상북도">경북<span class="count">23</span></button>
-  <button class="sido-chip" data-sido="경상남도">경남<span class="count">22</span></button>
-  <button class="sido-chip" data-sido="제주특별자치도">제주<span class="count">2</span></button>
-  <button class="sido-chip" data-sido="강원특별자치도">강원<span class="count">18</span></button>
-  <button class="sido-chip" data-sido="전북특별자치도">전북<span class="count">15</span></button>
+    <button class="sido-chip active" data-sido="" data-region="">전체<span class="count">255</span></button>
+    <button class="sido-chip" data-sido="서울특별시" data-region="capital">서울<span class="count">25</span></button>
+  <button class="sido-chip" data-sido="부산광역시" data-region="yeongnam">부산<span class="count">16</span></button>
+  <button class="sido-chip" data-sido="대구광역시" data-region="yeongnam">대구<span class="count">9</span></button>
+  <button class="sido-chip" data-sido="인천광역시" data-region="capital">인천<span class="count">10</span></button>
+  <button class="sido-chip" data-sido="광주광역시" data-region="honam">광주<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="대전광역시" data-region="chungcheong">대전<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="울산광역시" data-region="yeongnam">울산<span class="count">5</span></button>
+  <button class="sido-chip" data-sido="세종특별자치시" data-region="chungcheong">세종<span class="count">1</span></button>
+  <button class="sido-chip" data-sido="경기도" data-region="capital">경기<span class="count">47</span></button>
+  <button class="sido-chip" data-sido="충청북도" data-region="chungcheong">충북<span class="count">14</span></button>
+  <button class="sido-chip" data-sido="충청남도" data-region="chungcheong">충남<span class="count">16</span></button>
+  <button class="sido-chip" data-sido="전라남도" data-region="honam">전남<span class="count">22</span></button>
+  <button class="sido-chip" data-sido="경상북도" data-region="yeongnam">경북<span class="count">23</span></button>
+  <button class="sido-chip" data-sido="경상남도" data-region="yeongnam">경남<span class="count">22</span></button>
+  <button class="sido-chip" data-sido="제주특별자치도" data-region="gangwon_jeju">제주<span class="count">2</span></button>
+  <button class="sido-chip" data-sido="강원특별자치도" data-region="gangwon_jeju">강원<span class="count">18</span></button>
+  <button class="sido-chip" data-sido="전북특별자치도" data-region="honam">전북<span class="count">15</span></button>
   </div>
 </div>
 
@@ -641,6 +658,7 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 (function() {
   var input = document.getElementById('sgg-search');
   var clearBtn = document.getElementById('sgg-clear');
+  var regionRow = document.getElementById('region-row');
   var chipsWrap = document.getElementById('sido-chips');
   var grid = document.getElementById('sgg-grid');
   var meta = document.getElementById('result-meta');
@@ -648,18 +666,31 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
   var allCards = Array.prototype.slice.call(grid.querySelectorAll('.sgg-card'));
   var totalCount = allCards.length;
   var activeSido = '';
+  var activeRegion = '';
+
+  // 권역 → 시도 매핑
+  var REGION_MAP = {
+    capital: ['서울특별시', '인천광역시', '경기도'],
+    chungcheong: ['대전광역시', '세종특별자치시', '충청북도', '충청남도'],
+    honam: ['광주광역시', '전라남도', '전북특별자치도'],
+    yeongnam: ['부산광역시', '대구광역시', '울산광역시', '경상북도', '경상남도'],
+    gangwon_jeju: ['강원특별자치도', '제주특별자치도']
+  };
 
   function applyFilter() {
     var q = (input.value || '').trim().toLowerCase();
     var visible = 0;
+    var regionSidos = activeRegion ? REGION_MAP[activeRegion] : null;
+
     for (var i = 0; i < allCards.length; i++) {
       var card = allCards[i];
       var sido = card.dataset.sido;
       var name = card.dataset.name.toLowerCase();
       var sidoShort = card.querySelector('.sgg-sido').textContent.toLowerCase();
+      var matchRegion = !regionSidos || regionSidos.indexOf(sido) !== -1;
       var matchSido = !activeSido || sido === activeSido;
       var matchQ = !q || name.indexOf(q) !== -1 || sido.toLowerCase().indexOf(q) !== -1 || sidoShort.indexOf(q) !== -1;
-      if (matchSido && matchQ) {
+      if (matchRegion && matchSido && matchQ) {
         card.style.display = '';
         visible++;
       } else {
@@ -681,15 +712,78 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     clearBtn.classList.toggle('show', q.length > 0);
   }
 
+  // 권역에 따라 시도 칩 동적 표시
+  function updateSidoChips() {
+    var sidoChips = chipsWrap.querySelectorAll('.sido-chip');
+    for (var i = 0; i < sidoChips.length; i++) {
+      var chip = sidoChips[i];
+      var chipRegion = chip.dataset.region;
+      // "전체" 칩(data-region="")은 권역 선택 시 그 권역 합계로, 미선택 시 전국 표시
+      if (!chip.dataset.sido) {
+        // "전체" 칩은 항상 표시
+        chip.classList.remove('hidden');
+        if (activeRegion) {
+          var total = 0;
+          var regionSidos = REGION_MAP[activeRegion];
+          for (var j = 0; j < regionSidos.length; j++) {
+            var sidoChipMatch = chipsWrap.querySelector('[data-sido="' + regionSidos[j] + '"]');
+            if (sidoChipMatch) {
+              var c = sidoChipMatch.querySelector('.count');
+              if (c) total += parseInt(c.textContent, 10) || 0;
+            }
+          }
+          var countEl = chip.querySelector('.count');
+          if (countEl) countEl.textContent = total;
+        } else {
+          var countEl2 = chip.querySelector('.count');
+          if (countEl2) countEl2.textContent = totalCount;
+        }
+        continue;
+      }
+      // 시도 칩: 권역이 선택되면 해당 권역 시도만 표시
+      if (!activeRegion || chipRegion === activeRegion) {
+        chip.classList.remove('hidden');
+      } else {
+        chip.classList.add('hidden');
+        // 숨겨진 칩이 active이면 active 해제
+        if (chip.classList.contains('active')) {
+          chip.classList.remove('active');
+          activeSido = '';
+          var allChip = chipsWrap.querySelector('.sido-chip[data-sido=""]');
+          if (allChip) allChip.classList.add('active');
+        }
+      }
+    }
+  }
+
   input.addEventListener('input', applyFilter);
   clearBtn.addEventListener('click', function() {
     input.value = '';
     applyFilter();
     input.focus();
   });
+
+  // 권역 칩 클릭
+  regionRow.addEventListener('click', function(e) {
+    var chip = e.target.closest('.region-chip');
+    if (!chip) return;
+    var chips = regionRow.querySelectorAll('.region-chip');
+    for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+    chip.classList.add('active');
+    activeRegion = chip.dataset.region || '';
+    // 권역 변경 시 시도 선택 초기화
+    activeSido = '';
+    var sidoChips = chipsWrap.querySelectorAll('.sido-chip');
+    for (var j = 0; j < sidoChips.length; j++) sidoChips[j].classList.remove('active');
+    var allSidoChip = chipsWrap.querySelector('.sido-chip[data-sido=""]');
+    if (allSidoChip) allSidoChip.classList.add('active');
+    updateSidoChips();
+    applyFilter();
+  });
+
   chipsWrap.addEventListener('click', function(e) {
     var chip = e.target.closest('.sido-chip');
-    if (!chip) return;
+    if (!chip || chip.classList.contains('hidden')) return;
     var chips = chipsWrap.querySelectorAll('.sido-chip');
     for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
     chip.classList.add('active');
@@ -708,3 +802,4 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
 
 </body>
 </html>
+
