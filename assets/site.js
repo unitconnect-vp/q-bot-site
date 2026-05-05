@@ -1,5 +1,7 @@
-/* Q-Lens site.js v5.2 (2026-05-05)
- * - 홈 피드: featured / ranking / categories / writers / recent
+/* Q-Lens site.js v5.3 (2026-05-05)
+ * - 홈 피드: featured(최신글) / ranking / categories / writers / recent
+ * - 메인 카드 메타: 작성자/읽는시간 표기 제거 (날짜만)
+ * - hero "이 주의 글" 라벨 제거 → 항상 최신글 1개
  * - 4그룹 팔레트 자동 부여 (g-deep/g-coast/g-marine/g-sunset)
  * - 글 progress bar
  * - 라우터: /authors/, /authors/{id}/, /categories/
@@ -102,12 +104,12 @@
   }
 
   // ============================================
-  // 5. 홈 — 피처드 (이 주의 글)
+  // 5. 홈 — 피처드 (최신글 1편)
   // ============================================
   function renderHomeFeatured(articles, authorsArr) {
     const host = document.getElementById('home-featured');
     if (!host || articles.length === 0) return;
-    const hero = articles.find(a => a.featured) || articles[0];
+    const hero = articles[0];
     const group = authorGroup(hero.author, authorsArr);
     const excerpt = hero.excerpt || '';
 
@@ -117,7 +119,6 @@
         <img src="/articles/${esc(hero.slug)}/thumb.webp" alt="${esc(hero.title)}" loading="eager">
       </a>
       <div>
-        <div class="hero-featured__label">이 주의 글</div>
         <a href="/articles/${esc(hero.slug)}/">
           <h2 class="hero-featured__title">${esc(hero.title)}</h2>
         </a>
@@ -125,10 +126,7 @@
         <div class="hero-featured__meta">
           <span class="cat">${esc(hero.category)}</span>
           <span class="divider">·</span>
-          <span>${esc(hero.author)}</span>
-          <span class="divider">·</span>
           <span>${formatDate(hero.date)}</span>
-          ${hero.read_time ? `<span class="divider">·</span><span>${esc(hero.read_time)}</span>` : ''}
         </div>
       </div>
     `;
@@ -148,7 +146,6 @@
           <div class="rank-item__title">${esc(a.title)}</div>
           <div class="rank-item__meta">
             <span class="cat">${esc(a.category)}</span>
-            ${esc(a.author)}${a.read_time ? ` · ${esc(a.read_time)}` : ''}
           </div>
         </div>
       </a>
@@ -172,7 +169,7 @@
           <div class="card__cat">${esc(a.category)}</div>
           <div class="card__title">${esc(a.title)}</div>
           ${a.excerpt ? `<div class="card__excerpt">${esc(a.excerpt)}</div>` : ''}
-          <div class="card__meta">${esc(a.author)} · ${formatDate(a.date)}</div>
+          <div class="card__meta">${formatDate(a.date)}</div>
         </a>
       `;
     }).join('');
@@ -343,7 +340,7 @@
               <div class="card__cat">${esc(a.category)}</div>
               <div class="card__title">${esc(a.title)}</div>
               ${a.excerpt ? `<div class="card__excerpt">${esc(a.excerpt)}</div>` : ''}
-              <div class="card__meta">${esc(a.author)} · ${formatDate(a.date)}</div>
+              <div class="card__meta">${formatDate(a.date)}</div>
             </a>
           `;
         }).join('')}
