@@ -71,10 +71,7 @@ button { font-family: inherit; cursor: pointer; }
 .site-header {
   position: sticky;
   top: 0;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: saturate(180%) blur(12px);
-  -webkit-backdrop-filter: saturate(180%) blur(12px);
-  border-bottom: 1px solid var(--rule-strong);
+  background: #0a0a0a;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -82,21 +79,11 @@ button { font-family: inherit; cursor: pointer; }
   padding: 0 32px;
   height: 64px;
 }
-.site-header::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: var(--accent);
-  pointer-events: none;
-}
 .site-logo {
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--ink-strong);
+  color: #ffffff;
 }
 .site-logo h1 { font: inherit; display: inline; }
 .site-logo span { color: var(--accent); }
@@ -107,12 +94,13 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.9375rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--ink);
+  color: #ffffff;
 }
 .site-nav a {
   position: relative;
   padding: 8px 16px;
   border-radius: 8px;
+  color: #ffffff;
   transition: color 0.15s, background 0.15s;
 }
 .site-nav a + a::before {
@@ -123,11 +111,11 @@ button { font-family: inherit; cursor: pointer; }
   transform: translateY(-50%);
   width: 1px;
   height: 14px;
-  background: var(--rule);
+  background: rgba(255, 255, 255, 0.2);
 }
 .site-nav a:hover {
-  color: var(--accent);
-  background: rgba(49, 130, 246, 0.08);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* ===== TOOL PAGE WRAP (9개 계산기 본문 박스) ===== */
