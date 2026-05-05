@@ -85,14 +85,14 @@ export default {
       const path = url.pathname;
       const m = req.method;
 
-      if (path === '/api/auth/signup' && m === 'POST')          return signup(req, env, origin);
-      if (path === '/api/auth/login' && m === 'POST')           return login(req, env, origin);
-      if (path === '/api/auth/verify-email' && m === 'GET')     return verifyEmail(req, env);
-      if (path === '/api/auth/google' && m === 'GET')           return googleStart(req, env);
-      if (path === '/api/auth/google/callback' && m === 'GET')  return googleCallback(req, env);
-      if (path === '/api/auth/refresh' && m === 'POST')         return refresh(req, env, origin);
-      if (path === '/api/auth/logout' && m === 'POST')          return logout(req, env, origin);
-      if (path === '/api/me' && m === 'GET')                    return getMe(req, env, origin);
+      if (path === '/auth/signup' && m === 'POST')          return signup(req, env, origin);
+      if (path === '/auth/login' && m === 'POST')           return login(req, env, origin);
+      if (path === '/auth/verify-email' && m === 'GET')     return verifyEmail(req, env);
+      if (path === '/auth/google' && m === 'GET')           return googleStart(req, env);
+      if (path === '/auth/google/callback' && m === 'GET')  return googleCallback(req, env);
+      if (path === '/auth/refresh' && m === 'POST')         return refresh(req, env, origin);
+      if (path === '/auth/logout' && m === 'POST')          return logout(req, env, origin);
+      if (path === '/me' && m === 'GET')                    return getMe(req, env, origin);
 
       return err('Not found', 404, origin);
     } catch (e) {
@@ -137,7 +137,7 @@ async function signup(req, env, origin) {
      VALUES (?, ?, 'email_verify', ?, ?)`
   ).bind(verifyToken, userId, now + EMAIL_VERIFY_TTL, now).run();
 
-  const verifyUrl = `${env.SITE_URL}/api/auth/verify-email?token=${verifyToken}`;
+  const verifyUrl = `${env.API_URL}/auth/verify-email?token=${verifyToken}`;
   try {
     await sendEmail({
       to: email,
@@ -213,7 +213,7 @@ async function googleStart(req, env) {
   const state = generateToken(16);
   const authUrl = buildGoogleAuthUrl(
     env.GOOGLE_CLIENT_ID,
-    `${env.SITE_URL}/api/auth/google/callback`,
+    `${env.API_URL}/auth/google/callback`,
     state
   );
   return new Response(null, {
@@ -243,7 +243,7 @@ async function googleCallback(req, env) {
       code,
       env.GOOGLE_CLIENT_ID,
       env.GOOGLE_CLIENT_SECRET,
-      `${env.SITE_URL}/api/auth/google/callback`
+      `${env.API_URL}/auth/google/callback`
     );
     userinfo = await fetchGoogleUserInfo(tokens.access_token);
   } catch (e) {
