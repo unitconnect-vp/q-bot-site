@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+<!-- /Google Analytics 4 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>2048 — Q-Lens</title>
+<meta name="description" content="같은 숫자 타일을 합쳐 2048에 도달하는 클래식 퍼즐 게임. 방향키와 스와이프로 즐기는 무료 두뇌 게임.">
+<link rel="canonical" href="https://q-bot.kr/play/2048/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="2048 — Q-Lens">
+<meta property="og:description" content="같은 숫자 타일을 합쳐 2048에 도달하는 클래식 퍼즐 게임.">
+<meta property="og:url" content="https://q-bot.kr/play/2048/">
+<meta property="og:site_name" content="Q-Lens">
+<link rel="stylesheet" href="/assets/style.css">
+
+<style>
+:root{
+  --g-bg:#ffffff;
+  --g-ink:#1a1612;
+  --g-muted:#6b7684;
+  --g-line:#e5e8eb;
+  --g-soft:#f7f8fa;
+  --g-accent:#3182f6;
+  --g-accent-strong:#1b64da;
+}
+.game-wrap{
+  max-width:520px;
+  margin:0 auto;
+  padding:32px 16px 60px;
+  font-family:"Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+  color:var(--g-ink);
+}
+.game-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:16px;
+  margin-bottom:20px;
+}
+.game-title h1{
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  margin:0 0 4px;
+}
+.game-title p{
+  font-size:13px;
+  color:var(--g-muted);
+  margin:0;
+  line-height:1.5;
+}
+.score-box{ display:flex; gap:6px; flex-shrink:0; }
+.score{
+  background:var(--g-soft);
+  border-radius:4px;
+  padding:8px 12px;
+  min-width:72px;
+  text-align:center;
+}
+.score-label{
+  font-size:10px;
+  color:var(--g-muted);
+  font-weight:700;
+  letter-spacing:0.05em;
+}
+.score-value{
+  font-size:18px;
+  font-weight:800;
+  color:var(--g-ink);
+  margin-top:2px;
+  font-variant-numeric:tabular-nums;
+}
+.game-controls{ display:flex; gap:8px; margin-bottom:16px; }
+.btn{
+  flex:1;
+  padding:11px 14px;
+  border:1px solid var(--g-line);
+  background:#fff;
+  border-radius:4px;
+  font-size:14px;
+  font-weight:700;
+  color:var(--g-ink);
+  cursor:pointer;
+  font-family:inherit;
+  transition:border-color 0.12s, background 0.12s;
+}
+.btn:hover{ border-color:var(--g-ink); }
+.btn-primary{
+  background:var(--g-accent);
+  border-color:var(--g-accent);
+  color:#fff;
+}
+.btn-primary:hover{ background:var(--g-accent-strong); border-color:var(--g-accent-strong); }
+.btn:disabled{ opacity:0.4; cursor:not-allowed; }
+.btn:disabled:hover{ border-color:var(--g-line); }
+
+.board{
+  position:relative;
+  background:var(--g-soft);
+  border-radius:4px;
+  padding:8px;
+  width:100%;
+  aspect-ratio:1/1;
+  touch-action:none;
+  user-select:none;
+  -webkit-user-select:none;
+}
+.grid{
+  position:absolute;
+  inset:8px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(4,1fr);
+  gap:8px;
+}
+.cell{ background:#eef0f3; border-radius:4px; }
+.tiles{ position:absolute; inset:8px; pointer-events:none; }
+.tile{
+  position:absolute;
+  width:calc((100% - 24px) / 4);
+  height:calc((100% - 24px) / 4);
+  border-radius:4px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  font-size:clamp(28px, 8vw, 44px);
+  letter-spacing:-0.02em;
+  box-sizing:border-box;
+}
+.tile.d3{ font-size:clamp(22px, 6.4vw, 36px); }
+.tile.d4{ font-size:clamp(18px, 5vw, 28px); }
+.tile.d5{ font-size:clamp(14px, 4vw, 22px); }
+.tile.new{ animation:t-pop 0.18s ease-out; }
+.tile.merged{ animation:t-bounce 0.2s ease-out; }
+@keyframes t-pop{
+  0%{ transform:scale(0); }
+  100%{ transform:scale(1); }
+}
+@keyframes t-bounce{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.12); }
+  100%{ transform:scale(1); }
+}
+.t-2{    background:#f7f8fa; color:#6b7684; }
+.t-4{    background:#eef0f3; color:#4e5968; }
+.t-8{    background:#d1d6db; color:#333d4b; }
+.t-16{   background:#b0b8c1; color:#fff; }
+.t-32{   background:#8b95a1; color:#fff; }
+.t-64{   background:#6b7684; color:#fff; }
+.t-128{  background:#4e5968; color:#fff; }
+.t-256{  background:#333d4b; color:#fff; }
+.t-512{  background:#191f28; color:#fff; }
+.t-1024{ background:#3182f6; color:#fff; }
+.t-2048{ background:#1b64da; color:#fff; }
+.t-4096{ background:#0f4dab; color:#fff; }
+.t-8192,.t-16384,.t-32768,.t-65536{ background:#08306b; color:#fff; }
+
+.overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(255,255,255,0.94);
+  border-radius:4px;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  z-index:10;
+  padding:16px;
+}
+.overlay.show{ display:flex; }
+.overlay-msg{
+  font-size:32px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+  color:var(--g-ink);
+  text-align:center;
+}
+.overlay-msg.win{ color:var(--g-accent); }
+.overlay-sub{ font-size:14px; color:var(--g-muted); text-align:center; }
+.overlay-actions{ display:flex; gap:8px; margin-top:8px; }
+.overlay-actions .btn{ flex:none; padding:11px 22px; }
+
+.help{
+  margin-top:24px;
+  padding:16px;
+  background:var(--g-soft);
+  border-radius:4px;
+  font-size:13px;
+  line-height:1.7;
+  color:var(--g-muted);
+}
+.help strong{
+  color:var(--g-ink);
+  display:block;
+  margin-bottom:6px;
+  font-size:14px;
+}
+.help kbd{
+  display:inline-block;
+  padding:1px 6px;
+  background:#fff;
+  border:1px solid var(--g-line);
+  border-radius:3px;
+  font-family:inherit;
+  font-size:12px;
+  font-weight:700;
+  color:var(--g-ink);
+}
+@media (max-width:520px){
+  .game-wrap{ padding-top:24px; }
+  .game-title h1{ font-size:26px; }
+  .score{ min-width:64px; padding:6px 10px; }
+  .score-value{ font-size:16px; }
+  .overlay-msg{ font-size:26px; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/tools/">계산기</a>
+    <a href="/play/" aria-current="page">게임</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
+
+<main class="game-wrap">
+  <div class="game-header">
+    <div class="game-title">
+      <h1>2048</h1>
+      <p>같은 숫자 타일을 합쳐 2048을 만드세요.</p>
+    </div>
+    <div class="score-box">
+      <div class="score">
+        <div class="score-label">점수</div>
+        <div class="score-value" id="score">0</div>
+      </div>
+      <div class="score">
+        <div class="score-label">최고</div>
+        <div class="score-value" id="best">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="game-controls">
+    <button class="btn" id="undoBtn" disabled>되돌리기</button>
+    <button class="btn btn-primary" id="newBtn">새 게임</button>
+  </div>
+
+  <div class="board" id="board" aria-label="2048 게임 보드">
+    <div class="grid" id="grid"></div>
+    <div class="tiles" id="tiles"></div>
+    <div class="overlay" id="overlay" role="dialog" aria-live="polite">
+      <div class="overlay-msg" id="overlayMsg"></div>
+      <div class="overlay-sub" id="overlaySub"></div>
+      <div class="overlay-actions">
+        <button class="btn" id="overlayBtn2" style="display:none;">새 게임</button>
+        <button class="btn btn-primary" id="overlayBtn"></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="help">
+    <strong>조작 방법</strong>
+    데스크톱: <kbd>↑</kbd> <kbd>↓</kbd> <kbd>←</kbd> <kbd>→</kbd> 또는 <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd><br>
+    모바일: 화면을 상하좌우로 스와이프<br>
+    같은 숫자 두 개가 만나면 합쳐지고, 그 합만큼 점수가 올라갑니다.
+  </div>
+</main>
+
+<script>
+(function(){
+  'use strict';
+  const SIZE = 4;
+  const KEY_BEST = 'q-2048-best';
+  const KEY_STATE = 'q-2048-state';
+
+  let board, score, best, history, won, gameOver, continued, lastNew, lastMerged;
+
+  const $score = document.getElementById('score');
+  const $best  = document.getElementById('best');
+  const $grid  = document.getElementById('grid');
+  const $tiles = document.getElementById('tiles');
+  const $board = document.getElementById('board');
+  const $overlay = document.getElementById('overlay');
+  const $oMsg = document.getElementById('overlayMsg');
+  const $oSub = document.getElementById('overlaySub');
+  const $oBtn = document.getElementById('overlayBtn');
+  const $oBtn2 = document.getElementById('overlayBtn2');
+  const $undo = document.getElementById('undoBtn');
+  const $new  = document.getElementById('newBtn');
+
+  for (let i = 0; i < SIZE * SIZE; i++) {
+    const c = document.createElement('div');
+    c.className = 'cell';
+    $grid.appendChild(c);
+  }
+
+  function loadBest(){
+    try { return parseInt(localStorage.getItem(KEY_BEST) || '0', 10) || 0; }
+    catch(e){ return 0; }
+  }
+  function saveBest(v){ try { localStorage.setItem(KEY_BEST, String(v)); } catch(e){} }
+  function loadState(){
+    try { return JSON.parse(localStorage.getItem(KEY_STATE) || 'null'); }
+    catch(e){ return null; }
+  }
+  function saveState(){
+    try {
+      localStorage.setItem(KEY_STATE, JSON.stringify({
+        board:board, score:score, won:won, gameOver:gameOver, continued:continued
+      }));
+    } catch(e){}
+  }
+
+  function emptyBoard(){
+    return Array.from({length:SIZE}, () => Array(SIZE).fill(0));
+  }
+  function emptyCells(){
+    const cells = [];
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        if (board[r][c] === 0) cells.push([r,c]);
+    return cells;
+  }
+  function addRandomTile(){
+    const cells = emptyCells();
+    if (cells.length === 0) return null;
+    const [r,c] = cells[Math.floor(Math.random()*cells.length)];
+    board[r][c] = Math.random() < 0.9 ? 2 : 4;
+    return [r,c];
+  }
+
+  function slideRowLeft(row, rowIdx, mergedAcc){
+    const compact = row.filter(v => v !== 0);
+    const out = [];
+    let gained = 0;
+    let i = 0;
+    while (i < compact.length){
+      if (i+1 < compact.length && compact[i] === compact[i+1]){
+        const sum = compact[i] * 2;
+        out.push(sum);
+        gained += sum;
+        if (mergedAcc) mergedAcc.push([rowIdx, out.length-1]);
+        i += 2;
+      } else {
+        out.push(compact[i]);
+        i++;
+      }
+    }
+    while (out.length < SIZE) out.push(0);
+    return { row:out, gained:gained };
+  }
+  function transpose(g){
+    const out = emptyBoard();
+    for (let r = 0; r < SIZE; r++)
+      for (let c = 0; c < SIZE; c++)
+        out[c][r] = g[r][c];
+    return out;
+  }
+  function reverseRows(g){ return g.map(row => [...row].reverse()); }
+
+  function move(dir){
+    if (gameOver) return false;
+    const prev = { board: board.map(r => [...r]), score: score };
+
+    let work = board.map(r => [...r]);
+    if (dir === 'right'){ work = reverseRows(work); }
+    else if (dir === 'up'){ work = transpose(work); }
+    else if (dir === 'down'){ work = reverseRows(transpose(work)); }
+
+    let totalGained = 0;
+    const mergedInWork = [];
+    for (let r = 0; r < SIZE; r++){
+      const result = slideRowLeft(work[r], r, mergedInWork);
+      work[r] = result.row;
+      totalGained += result.gained;
+    }
+
+    let finalBoard = work;
+    if (dir === 'right'){ finalBoard = reverseRows(finalBoard); }
+    else if (dir === 'up'){ finalBoard = transpose(finalBoard); }
+    else if (dir === 'down'){ finalBoard = transpose(reverseRows(finalBoard)); }
+
+    const mergedSet = new Set();
+    for (const [wr, wc] of mergedInWork){
+      let r = wr, c = wc;
+      if (dir === 'right'){ c = SIZE - 1 - wc; }
+      else if (dir === 'up'){ r = wc; c = wr; }
+      else if (dir === 'down'){ r = SIZE - 1 - wc; c = wr; }
+      mergedSet.add(r + ',' + c);
+    }
+
+    let changed = false;
+    for (let r = 0; r < SIZE && !changed; r++)
+      for (let c = 0; c < SIZE && !changed; c++)
+        if (board[r][c] !== finalBoard[r][c]) changed = true;
+
+    if (!changed) return false;
+
+    history = [prev];
+    board = finalBoard;
+    score += totalGained;
+    if (score > best){ best = score; saveBest(best); }
+
+    lastMerged = mergedSet;
+    lastNew = addRandomTile();
+
+    if (!won && !continued){
+      for (let r = 0; r < SIZE && !won; r++)
+        for (let c = 0; c < SIZE && !won; c++)
+          if (board[r][c] >= 2048) won = true;
+    }
+    if (!canMove()) gameOver = true;
+
+    render();
+    saveState();
+    updateUndo();
+
+    if (gameOver){
+      showOverlay('게임 오버', '최종 점수 ' + score.toLocaleString(), false);
+    } else if (won && !continued){
+      showOverlay('2048 달성!', '계속 플레이해서 더 큰 타일에 도전하거나 새 게임을 시작하세요.', true);
+    }
+    return true;
+  }
+
+  function canMove(){
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        if (board[r][c] === 0) return true;
+        const v = board[r][c];
+        if (r+1 < SIZE && board[r+1][c] === v) return true;
+        if (c+1 < SIZE && board[r][c+1] === v) return true;
+      }
+    }
+    return false;
+  }
+
+  function undo(){
+    if (!history || history.length === 0) return;
+    const p = history.pop();
+    board = p.board.map(r => [...r]);
+    score = p.score;
+    gameOver = false;
+    lastNew = null;
+    lastMerged = new Set();
+    render();
+    saveState();
+    updateUndo();
+    hideOverlay();
+  }
+  function updateUndo(){ $undo.disabled = !history || history.length === 0; }
+
+  function render(){
+    $score.textContent = score.toLocaleString();
+    $best.textContent = best.toLocaleString();
+    $tiles.innerHTML = '';
+    for (let r = 0; r < SIZE; r++){
+      for (let c = 0; c < SIZE; c++){
+        const v = board[r][c];
+        if (v === 0) continue;
+        const tile = document.createElement('div');
+        const digits = String(v).length;
+        const dCls = digits >= 5 ? ' d5' : digits === 4 ? ' d4' : digits === 3 ? ' d3' : '';
+        const tCls = ' t-' + Math.min(v, 65536);
+        let stateCls = '';
+        const key = r + ',' + c;
+        if (lastMerged && lastMerged.has(key)) stateCls = ' merged';
+        else if (lastNew && lastNew[0] === r && lastNew[1] === c) stateCls = ' new';
+        tile.className = ('tile' + tCls + dCls + stateCls).trim();
+        tile.textContent = v.toLocaleString();
+        tile.style.left = 'calc((100% - 24px) / 4 * ' + c + ' + ' + (c * 8) + 'px)';
+        tile.style.top  = 'calc((100% - 24px) / 4 * ' + r + ' + ' + (r * 8) + 'px)';
+        $tiles.appendChild(tile);
+      }
+    }
+  }
+
+  function showOverlay(msg, sub, isWin){
+    $oMsg.textContent = msg;
+    $oMsg.className = 'overlay-msg' + (isWin ? ' win' : '');
+    $oSub.textContent = sub;
+    if (isWin){
+      $oBtn.textContent = '계속하기';
+      $oBtn.onclick = () => { continued = true; hideOverlay(); saveState(); };
+      $oBtn2.style.display = '';
+      $oBtn2.textContent = '새 게임';
+      $oBtn2.onclick = newGame;
+    } else {
+      $oBtn.textContent = '새 게임';
+      $oBtn.onclick = newGame;
+      $oBtn2.style.display = 'none';
+    }
+    $overlay.classList.add('show');
+  }
+  function hideOverlay(){ $overlay.classList.remove('show'); }
+
+  function newGame(){
+    board = emptyBoard();
+    score = 0;
+    history = [];
+    won = false;
+    gameOver = false;
+    continued = false;
+    lastNew = null;
+    lastMerged = new Set();
+    addRandomTile();
+    addRandomTile();
+    render();
+    saveState();
+    updateUndo();
+    hideOverlay();
+  }
+
+  const keyMap = {
+    'ArrowLeft':'left','ArrowRight':'right','ArrowUp':'up','ArrowDown':'down',
+    'a':'left','d':'right','w':'up','s':'down',
+    'A':'left','D':'right','W':'up','S':'down'
+  };
+  window.addEventListener('keydown', (e) => {
+    const dir = keyMap[e.key];
+    if (!dir) return;
+    e.preventDefault();
+    move(dir);
+  });
+
+  let touchStart = null;
+  $board.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    touchStart = { x:e.touches[0].clientX, y:e.touches[0].clientY };
+  }, { passive:true });
+  $board.addEventListener('touchmove', (e) => {
+    if (touchStart) e.preventDefault();
+  }, { passive:false });
+  $board.addEventListener('touchend', (e) => {
+    if (!touchStart) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.x;
+    const dy = t.clientY - touchStart.y;
+    const adx = Math.abs(dx), ady = Math.abs(dy);
+    const TH = 24;
+    if (adx >= TH || ady >= TH){
+      if (adx > ady) move(dx > 0 ? 'right' : 'left');
+      else move(dy > 0 ? 'down' : 'up');
+    }
+    touchStart = null;
+  });
+
+  let mouseStart = null;
+  $board.addEventListener('mousedown', (e) => {
+    mouseStart = { x:e.clientX, y:e.clientY };
+  });
+  window.addEventListener('mouseup', (e) => {
+    if (!mouseStart) return;
+    const dx = e.clientX - mouseStart.x;
+    const dy = e.clientY - mouseStart.y;
+    const adx = Math.abs(dx), ady = Math.abs(dy);
+    const TH = 30;
+    if (adx >= TH || ady >= TH){
+      if (adx > ady) move(dx > 0 ? 'right' : 'left');
+      else move(dy > 0 ? 'down' : 'up');
+    }
+    mouseStart = null;
+  });
+
+  $new.addEventListener('click', newGame);
+  $undo.addEventListener('click', undo);
+
+  best = loadBest();
+  const saved = loadState();
+  if (saved && Array.isArray(saved.board) && saved.board.length === SIZE){
+    board = saved.board;
+    score = saved.score || 0;
+    won = !!saved.won;
+    gameOver = !!saved.gameOver;
+    continued = !!saved.continued;
+    history = [];
+    lastNew = null;
+    lastMerged = new Set();
+    render();
+    updateUndo();
+    if (gameOver){
+      showOverlay('게임 오버', '최종 점수 ' + score.toLocaleString(), false);
+    }
+  } else {
+    newGame();
+  }
+})();
+</script>
+
+</body>
+</html>
