@@ -350,7 +350,7 @@ __DATA_JSON__
     var t = e.sgg_count || 0;
     var by = e.by_type || {};
     if (!t) return rec.name + '의 학교 데이터를 수집 중입니다.';
-    return rec.name + ' 정규 학교는 <b>' + t + '개</b> (초 <b>' + (by['초등학교'] || 0) + '</b> · 중 <b>' + (by['중학교'] || 0) + '</b> · 고 <b>' + (by['고등학교'] || 0) + '</b>). 학원·교습소 데이터는 곧 추가됩니다.';
+    return rec.name + ' 정규 학교는 <b>' + t + '개</b> (초 <b>' + (by['초등학교'] || 0) + '</b> · 중 <b>' + (by['중학교'] || 0) + '</b> · 고 <b>' + (by['고등학교'] || 0) + '</b> · 대 <b>' + ((by['대학교'] || 0) + (by['전문대학'] || 0)) + '</b>). 학원·교습소 데이터는 곧 추가됩니다.';
   }
   function insightPopulation(rec) {
     var p = rec.sections.population || {};
@@ -430,7 +430,7 @@ __DATA_JSON__
   function renderEducation(rec) {
     var e = rec.sections.education || {};
     var by = e.by_type || {};
-    var main = ['초등학교', '중학교', '고등학교', '특수학교'];
+    var main = ['초등학교', '중학교', '고등학교', '특수학교', '대학교', '전문대학'];
     var rows = main.filter(function(k) { return by[k]; }).map(function(k) { return [k, by[k]]; });
     var other = 0;
     Object.keys(by).forEach(function(k) { if (main.indexOf(k) === -1) other += by[k]; });
@@ -548,7 +548,7 @@ __DATA_JSON__
       + '<div class="source">출처: 건강보험심사평가원</div></section>'
       + '<section class="section">'
       + '<div class="section-num">03 — 교육</div><h2>학교 분포</h2>'
-      + '<p class="section-sub">시군구 내 정규 학교.</p>'
+      + '<p class="section-sub">유·초·중·고·특수학교 기준. 대학·전문대 미포함.</p>'
       + renderEducation(rec)
       + '<div class="insight"><div class="insight-tag">Q렌즈의 시각</div><p>' + insightEducation(rec) + '</p></div>'
       + '<div class="source">출처: 교육부 NEIS</div></section>'
