@@ -709,6 +709,50 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
     return '<div class="bar-block">' + bars.join('') + '</div>';
   }
 
+  function renderPopulationTrend(rec) {
+    var p = rec.sections.population || {};
+    var yearly = p.yearly || [];
+    if (!yearly.length) {
+      return '<div class="trend-empty"><b>5년 인구 추이 데이터 수집 중</b><br>다음 데이터 갱신 이후 추이 차트가 표시됩니다.</div>';
+    }
+    if (yearly.length < 2) {
+      return '<div class="trend-empty">' + yearly.length + '개 연도 데이터 — 추이 표시는 2년 이상부터.</div>';
+    }
+    var w = 600, h = 110, pad = 12;
+    var values = yearly.map(function(d) { return d.total; });
+    var minV = Math.min.apply(null, values);
+    var maxV = Math.max.apply(null, values);
+    var range = maxV - minV || 1;
+    var step = yearly.length > 1 ? (w - 2*pad) / (yearly.length - 1) : 0;
+    var points = yearly.map(function(d, i) {
+      var x = pad + i * step;
+      var y = h - pad - ((d.total - minV) / range) * (h - 2*pad);
+      return [x, y, d];
+    });
+    var path = 'M ' + points.map(function(p) { return p[0] + ',' + p[1]; }).join(' L ');
+    var area = path + ' L ' + points[points.length-1][0] + ',' + (h-pad) + ' L ' + points[0][0] + ',' + (h-pad) + ' Z';
+    var svgInner = '<path d="' + area + '" fill="#3182f6" fill-opacity="0.08"/>' +
+                   '<path d="' + path + '" stroke="#3182f6" stroke-width="2" fill="none"/>' +
+                   points.map(function(pt) { return '<circle cx="' + pt[0] + '" cy="' + pt[1] + '" r="3" fill="#3182f6"/>'; }).join('');
+
+    var first = yearly[0].total;
+    var last = yearly[yearly.length-1].total;
+    var pct = first > 0 ? ((last - first) / first) * 100 : 0;
+    var dir = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+    // 인구는 증가가 좋은 신호이므로 색 매핑 일반 라인과 동일하게: up=빨강(상승, 부동산 상승과 동일 톤), down=파랑
+    // 단 의미는 다름 — 인구 감소는 보통 우려 신호라서 회색 처리하는 게 더 정확함.
+    // 결정: 인구는 단순 % 변화만 표기 (색상은 fixed 회색이 안전)
+    var sign = pct >= 0 ? '+' : '';
+    var changeHtml = '<span class="trend-change flat">' + sign + pct.toFixed(1) + '%</span>';
+
+    return '<div class="trend-block">' +
+      '<div class="trend-head"><span class="trend-title">인구 ' + yearly.length + '년 추이</span>' + changeHtml + '</div>' +
+      '<svg class="trend-svg" viewBox="0 0 ' + w + ' ' + h + '" preserveAspectRatio="none">' + svgInner + '</svg>' +
+      '<div class="trend-axis"><span>' + yearly[0].year + '</span><span>' + yearly[yearly.length-1].year + '</span></div>' +
+      '<div class="trend-meta">' + yearly[0].year + '년 ' + fmtNum(first) + '명 → ' + yearly[yearly.length-1].year + '년 ' + fmtNum(last) + '명</div>' +
+      '</div>';
+  }
+
   function buildCard(rec) {
     var t = rec.sections.real_estate_trade || {};
     var r = rec.sections.real_estate_rent || {};
@@ -755,7 +799,8 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
       + '<div class="section-num">04 — 인구</div><h2>누가 살고 있나</h2>'
       + '<p class="section-sub">행정안전부 주민등록인구 — 동네의 골격.</p>'
       + renderPopulation(rec)
-      + '<div class="source">출처: 통계청 KOSIS · 주민등록인구 (DT_1B040A3)</div></section>';
+      + renderPopulationTrend(rec)
+      + '<div class="source">출처: 통계청 KOSIS · 행정안전부 주민등록 (DT_1B040A3)</div></section>';
   }
 
   function selectGu(slugKey, pushState) {
@@ -1154,6 +1199,18 @@ footer a { color: #94a3b8; text-decoration: none; margin: 0 8px; }
         var counts = mb.map(function(d) { return d.count || 0; });
         var avg = counts.reduce(function(a,b){return a+b;}, 0) / counts.length;
         return {raw: avg, display: Math.round(avg) + ' 건'};
+      }, dir: 'high'},
+      {label: '인구 추이 (5년)', get: function(r) {
+        var yearly = (r.sections.population || {}).yearly || [];
+        if (yearly.length < 2) return {raw: null, display: '데이터 부족'};
+        var first = yearly[0].total;
+        var last = yearly[yearly.length-1].total;
+        if (!first) return {raw: null, display: '—'};
+        var pct = ((last - first) / first) * 100;
+        var sign = pct >= 0 ? '+' : '';
+        var cls = Math.abs(pct) < 0.5 ? 'flat' : (pct > 0 ? 'up' : 'down');
+        // 인구 증감의 색상 의미는 부동산과 다름 — flat 톤으로 통일
+        return {raw: pct, display: '<span class="compare-trend-cell flat">' + sign + pct.toFixed(1) + '%</span>', isHtml: true};
       }, dir: 'high'}
     ];
 
