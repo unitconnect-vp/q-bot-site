@@ -126,10 +126,16 @@ button { font-family: inherit; cursor: pointer; }
 }
 
 /* ===== LAYOUT ===== */
-.wrap, main.home-wrap, .home-wrap {
+main.home-wrap, .home-wrap {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
+}
+/* 헤더 ↓ 첫 콘텐츠 호흡 — 사이트 통일 (.wrap 사용 페이지: /town/) */
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px 0;
 }
 
 /* ===== SECTIONS ===== */
