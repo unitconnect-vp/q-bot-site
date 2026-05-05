@@ -131,12 +131,7 @@ main.home-wrap, .home-wrap {
   margin: 0 auto;
   padding: 0 24px;
 }
-/* 헤더 ↓ 첫 콘텐츠 호흡 — 사이트 통일 (.wrap 사용 페이지: /town/) */
-.wrap {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 48px 24px 0;
-}
+
 
 /* ===== SECTIONS ===== */
 .section {
@@ -796,7 +791,6 @@ main.home-wrap, .home-wrap {
   .site-nav { gap: 0; font-size: 0.8125rem; }
   .site-nav a { padding: 6px 10px; }
   main.home-wrap, .home-wrap { padding: 0 16px; }
-  .wrap { padding: 28px 16px 0; }
   .article-wrap { padding: 32px 16px 60px; }
 }
 
@@ -1049,7 +1043,6 @@ main.home-wrap, .home-wrap {
 /* ===== HUB RESPONSIVE ===== */
 @media (max-width: 900px) {
   .feed-wrap { padding: 32px 20px 72px; }
-  .wrap { padding: 32px 20px 0; }
   .page-head__title { font-size: 1.625rem; }
   .feed-recent { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; }
 }
