@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>로그인 처리 중 — Q렌즈</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="/" class="site-logo"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/categories/realestate/">부동산</a>
+    <a href="/categories/stocks/">주식</a>
+    <a href="/play/">게임</a>
+    <a href="/tools/">계산기</a>
+  </nav>
+</header>
+
+<main class="qa-wrap" style="text-align:center;">
+  <div id="loading">
+    <h1 class="qa-title" style="text-align:center;">로그인 처리 중...</h1>
+    <p class="qa-subtitle" style="text-align:center;">잠시만 기다려주세요.</p>
+  </div>
+  <div id="error-block" style="display:none;">
+    <h1 class="qa-title" style="text-align:center;">로그인 실패</h1>
+    <p class="qa-subtitle" style="text-align:center;" id="error-msg"></p>
+    <a href="/auth/login/" class="qa-btn qa-btn--primary" style="display:inline-flex;align-items:center;justify-content:center;text-decoration:none;margin-top:24px;">로그인 페이지로</a>
+  </div>
+</main>
+
+<script src="/assets/auth.js"></script>
+<script>
+(function() {
+  // URL fragment에서 토큰 추출
+  if (window.QLensAuth && QLensAuth.handleOAuthCallback()) {
+    // 성공 → 메인 또는 next 파라미터로 redirect
+    const stored = sessionStorage.getItem('qlens_oauth_next');
+    sessionStorage.removeItem('qlens_oauth_next');
+    window.location.replace(stored || '/');
+  } else {
+    // 실패 — fragment에 access_token 없음
+    document.getElementById('loading').style.display = 'none';
+    const block = document.getElementById('error-block');
+    document.getElementById('error-msg').textContent = '인증 정보를 받지 못했습니다. 다시 시도해주세요.';
+    block.style.display = 'block';
+  }
+})();
+</script>
+</body>
+</html>

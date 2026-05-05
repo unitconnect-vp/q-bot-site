@@ -402,3 +402,14 @@
     });
 })();
 
+
+
+/* === Q렌즈 v2.0 — auth.js 자동 로드 === */
+(function() {
+  // 이미 로드됐는지 확인
+  if (window.QLensAuth) return;
+  var s = document.createElement('script');
+  s.src = '/assets/auth.js';
+  s.async = false;
+  document.head.appendChild(s);
+})();

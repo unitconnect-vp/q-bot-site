@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-04MMSE99PJ');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>마이페이지 — Q렌즈</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://q-bot.kr/mypage/">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+  <a href="/" class="site-logo"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/categories/realestate/">부동산</a>
+    <a href="/categories/stocks/">주식</a>
+    <a href="/play/">게임</a>
+    <a href="/tools/">계산기</a>
+  </nav>
+</header>
+
+<main class="qa-wrap" style="max-width:560px;">
+  <div id="loading" style="text-align:center;color:#888;padding:48px 0;">로딩 중...</div>
+
+  <div id="content" style="display:none;">
+    <h1 class="qa-title">마이페이지</h1>
+    <p class="qa-subtitle"><span id="welcome-name"></span>님, 안녕하세요.</p>
+
+    <div style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
+      <h2 style="font-size:1rem;font-weight:600;margin:0 0 16px 0;color:#1a1a1a;">회원 정보</h2>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+          <span style="color:#888;">닉네임</span>
+          <span id="info-nickname" style="color:#1a1a1a;font-weight:500;"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+          <span style="color:#888;">이메일</span>
+          <span id="info-email" style="color:#1a1a1a;"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+          <span style="color:#888;">로그인 방식</span>
+          <span id="info-method" style="color:#1a1a1a;"></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.9rem;">
+          <span style="color:#888;">가입일</span>
+          <span id="info-joined" style="color:#1a1a1a;"></span>
+        </div>
+      </div>
+    </div>
+
+    <div style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
+      <h2 style="font-size:1rem;font-weight:600;margin:0 0 12px 0;color:#1a1a1a;">게임 기록</h2>
+      <p style="font-size:0.875rem;color:#888;margin:0;">곧 제공됩니다 — 수도쿠·네모네모로직·워들 등의 점수가 여기에 누적됩니다.</p>
+    </div>
+
+    <button class="qa-btn qa-btn--ghost" id="logout-btn" style="width:100%;">로그아웃</button>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div style="text-align:center;padding:32px 24px;color:#888;font-size:0.85rem;">
+    <p>© 2026 Q-Lens · <a href="/" style="color:inherit;">q-bot.kr</a></p>
+    <p style="margin-top:0.5rem;">
+      <a href="/privacy/">개인정보처리방침</a> · <a href="/terms/">이용약관</a> · <a href="/about/">소개</a>
+    </p>
+  </div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(async function() {
+  if (!QLensAuth.isLoggedIn()) {
+    window.location.replace('/auth/login/?next=' + encodeURIComponent('/mypage/'));
+    return;
+  }
+
+  const me = await QLensAuth.getMe();
+  if (!me) {
+    QLensAuth.clearToken();
+    window.location.replace('/auth/login/?next=' + encodeURIComponent('/mypage/'));
+    return;
+  }
+
+  // 사용자 정보 표시
+  document.getElementById('welcome-name').textContent = me.nickname || '회원';
+  document.getElementById('info-nickname').textContent = me.nickname || '';
+  document.getElementById('info-email').textContent = me.email || '';
+  document.getElementById('info-method').textContent = me.oauth_provider === 'google' ? 'Google' : '이메일';
+
+  if (me.created_at) {
+    const d = new Date(me.created_at * 1000);
+    document.getElementById('info-joined').textContent =
+      d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
+  } else {
+    document.getElementById('info-joined').textContent = '-';
+  }
+
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+
+  document.getElementById('logout-btn').addEventListener('click', async function() {
+    if (!confirm('로그아웃하시겠습니까?')) return;
+    await QLensAuth.logout();
+    window.location.replace('/');
+  });
+})();
+</script>
+</body>
+</html>
