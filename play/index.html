@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google Analytics 4 (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-04MMSE99PJ');
+</script>
+<!-- /Google Analytics 4 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>게임 — Q-Lens</title>
+<meta name="description" content="Q-Lens 게임. 수도쿠와 더 많은 퍼즐을 만나보세요.">
+<link rel="canonical" href="https://q-bot.kr/play/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="게임 — Q-Lens">
+<meta property="og:description" content="Q-Lens 게임. 수도쿠와 더 많은 퍼즐을 만나보세요.">
+<meta property="og:url" content="https://q-bot.kr/play/">
+<link rel="stylesheet" href="/assets/style.css">
+
+<style>
+.play-hub {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 56px 24px 80px;
+}
+.play-hub-head {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 4px solid var(--ink-strong);
+  position: relative;
+}
+.play-hub-head::before {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 64px;
+  height: 4px;
+  background: var(--accent);
+}
+.play-hub-head h1 {
+  font-size: 1.875rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 8px;
+}
+.play-hub-head p {
+  color: var(--ink-muted);
+  font-size: 1rem;
+}
+.play-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.play-card {
+  display: block;
+  background: #ffffff;
+  border: 1px solid var(--rule-strong);
+  border-radius: 8px;
+  padding: 28px 24px;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.play-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(49, 130, 246, 0.08);
+}
+.play-card__title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+  color: #0a0a0a;
+}
+.play-card__desc {
+  font-size: 0.9375rem;
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
+.play-card.upcoming {
+  border-style: dashed;
+  pointer-events: none;
+  background: #fafafa;
+}
+.play-card.upcoming .play-card__title {
+  color: var(--ink-soft);
+}
+.play-card__badge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  background: var(--ink-soft);
+  color: #ffffff;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  letter-spacing: 0;
+}
+
+@media (max-width: 480px) {
+  .play-hub { padding: 32px 16px 48px; }
+  .play-hub-head h1 { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-logo" href="/"><h1 style="display:inline;font:inherit;margin:0;padding:0;">Q<span>-</span>Lens</h1></a>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/town/">동네 카드</a>
+    <a href="/tools/">계산기</a>
+    <a href="/play/">게임</a>
+    <a href="/articles/">글</a>
+  </nav>
+</header>
+
+<main class="play-hub">
+  <div class="play-hub-head">
+    <h1>게임</h1>
+    <p>잠깐의 휴식, 길게 가는 집중</p>
+  </div>
+  <div class="play-grid">
+    <a class="play-card" href="/play/sudoku/">
+      <div class="play-card__title">수도쿠</div>
+      <div class="play-card__desc">9×9 클래식. 4단계 난이도, 메모, 힌트, 자동 저장.</div>
+    </a>
+    <div class="play-card upcoming">
+      <span class="play-card__badge">준비 중</span>
+      <div class="play-card__title">네모네모로직</div>
+      <div class="play-card__desc">픽처 크로스워드. 곧 추가됩니다.</div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">Q<span>-</span>Lens</div>
+      <p class="footer-tagline">보이는 것 너머를 묻습니다</p>
+      <div class="footer-social">
+        <a class="footer-social__link" href="https://x.com/heyqbot" target="_blank" rel="noopener" aria-label="X (Twitter)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4 class="footer-col__title">정보</h4>
+      <ul class="footer-col__list">
+        <li><a href="/about/">소개</a></li>
+        <li><a href="/contact/">문의</a></li>
+        <li><a href="/tools/">계산기</a></li>
+        <li><a href="/play/">게임</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+    <p class="footer-legal">
+      <a href="/privacy/">개인정보처리방침</a>
+      <span>·</span>
+      <a href="/terms/">이용약관</a>
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
