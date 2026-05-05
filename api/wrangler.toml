@@ -1,0 +1,29 @@
+name = "qlens-api"
+main = "src/index.js"
+compatibility_date = "2026-05-05"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "qlens-db"
+database_id = "9fee7d6a-47cc-4198-88b9-29c97d16465d"
+
+# 공개 환경변수
+[vars]
+GOOGLE_CLIENT_ID = "1045698164533-1bg1bb03viit2knt41r85q7g92hpg2d7.apps.googleusercontent.com"
+SITE_URL = "https://q-bot.kr"
+
+# === Routes ===
+# 배포 후 Cloudflare 대시보드에서 별도 설정 권장:
+#   Workers & Pages → qlens-api → Settings → Triggers → Routes
+#   Pattern: q-bot.kr/api/*    Zone: q-bot.kr
+#
+# 또는 아래 주석을 풀어서 wrangler deploy 시 자동 등록 (Zone API Token 필요):
+# routes = [
+#   { pattern = "q-bot.kr/api/*", zone_name = "q-bot.kr" }
+# ]
+
+# === Secrets (별도 등록) ===
+# wrangler secret put GOOGLE_CLIENT_SECRET   # Google Cloud Console에서 발급받은 값
+# wrangler secret put JWT_SECRET             # openssl rand -base64 32 로 생성한 값
+# wrangler secret put RESEND_API_KEY         # Resend 가입 후 (옵션 — 없으면 콘솔 로그)
