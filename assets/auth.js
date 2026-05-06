@@ -11,6 +11,11 @@
  *   const me = await QLensAuth.getMe();
  *   await QLensAuth.logout();
  *
+ *   // 게임 기록 (로그인 시에만 저장)
+ *   await QLensAuth.recordGameScore({game_type:'sudoku', difficulty:'medium', completion_time_sec:245, completed:true});
+ *   const r = await QLensAuth.getGameRecords({limit:50, game_type:'sudoku'});
+ *   const s = await QLensAuth.getGameStats();
+ *
  * 자동 동작:
  *   - 헤더 .site-nav 끝에 "로그인" 또는 "마이" 버튼 자동 주입
  *   - access_token 만료 1분 전 자동 refresh 시도
@@ -86,6 +91,29 @@
     return { res, data };
   }
 
+  async function authedPost(path, body) {
+    let token = getToken();
+    if (!token) return { res: { ok: false, status: 401 }, data: null };
+
+    if (tokenExpiringSoon()) {
+      try { token = await refresh(); }
+      catch (e) { return { res: { ok: false, status: 401 }, data: null }; }
+    }
+
+    const res = await fetch(API + path, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(body)
+    });
+    let data = null;
+    try { data = await res.json(); } catch (e) {}
+    return { res, data };
+  }
+
   // ─────── Public API ───────
 
   async function signup({ email, password, nickname }) {
@@ -123,6 +151,44 @@
 
   async function getMe() {
     const { res, data } = await authedGet('/me');
+    if (!res.ok) return null;
+    return data;
+  }
+
+  // ─────── 게임 기록 ───────
+
+  /**
+   * 게임 점수 기록 (로그인 시에만 동작, 미로그인 시 silently false)
+   * @param {Object} p - {game_type, difficulty?, completion_time_sec?, completed?}
+   * @returns {Promise<boolean>} 저장 성공 여부
+   */
+  async function recordGameScore(p) {
+    if (!isLoggedIn()) return false;
+    try {
+      const { res } = await authedPost('/games/records', {
+        game_type: p.game_type,
+        difficulty: p.difficulty || null,
+        completion_time_sec: p.completion_time_sec != null ? p.completion_time_sec : null,
+        completed: !!p.completed
+      });
+      return res.ok;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  async function getGameRecords(opts) {
+    const o = opts || {};
+    const params = new URLSearchParams();
+    params.set('limit', String(o.limit || 50));
+    if (o.game_type) params.set('game_type', o.game_type);
+    const { res, data } = await authedGet('/games/records?' + params.toString());
+    if (!res.ok) return null;
+    return data;
+  }
+
+  async function getGameStats() {
+    const { res, data } = await authedGet('/games/stats');
     if (!res.ok) return null;
     return data;
   }
@@ -186,6 +252,7 @@
     signup, login, logout, getMe, refresh,
     googleLoginStart, isLoggedIn, getToken, clearToken,
     handleOAuthCallback,
+    recordGameScore, getGameRecords, getGameStats,
     _injectNav: injectNavAuthButton
   };
 

@@ -8,6 +8,9 @@
 //   POST /api/auth/refresh          access_token 갱신
 //   POST /api/auth/logout           로그아웃
 //   GET  /api/me                    현재 사용자 정보
+//   POST /api/games/records         게임 점수 기록
+//   GET  /api/games/records         내 게임 기록 조회
+//   GET  /api/games/stats           내 게임 통계
 
 import { hashPassword, verifyPassword, generateToken, hashToken } from './lib/crypto.js';
 import { signJWT, verifyJWT } from './lib/jwt.js';
@@ -93,6 +96,10 @@ export default {
       if (path === '/auth/refresh' && m === 'POST')         return refresh(req, env, origin);
       if (path === '/auth/logout' && m === 'POST')          return logout(req, env, origin);
       if (path === '/me' && m === 'GET')                    return getMe(req, env, origin);
+
+      if (path === '/games/records' && m === 'POST')        return recordGame(req, env, origin);
+      if (path === '/games/records' && m === 'GET')         return listGames(req, env, origin);
+      if (path === '/games/stats' && m === 'GET')           return gameStats(req, env, origin);
 
       return err('Not found', 404, origin);
     } catch (e) {
@@ -387,4 +394,99 @@ async function issueTokens(user, env, origin, req, redirect) {
     200, origin,
     { 'Set-Cookie': refreshCookie }
   );
+}
+
+// ─────── 게임 기록 ───────
+
+const VALID_GAMES = ['sudoku', 'nonogram', '2048', 'wordle', 'slitherlink'];
+const VALID_DIFFICULTIES = ['easy', 'medium', 'hard'];
+
+async function requireUser(req, env) {
+  const auth = req.headers.get('Authorization');
+  if (!auth || !auth.startsWith('Bearer ')) return null;
+  const token = auth.slice(7);
+  const payload = await verifyJWT(token, env.JWT_SECRET);
+  return payload ? payload.sub : null;
+}
+
+async function recordGame(req, env, origin) {
+  const userId = await requireUser(req, env);
+  if (!userId) return err('Unauthorized', 401, origin);
+
+  let body;
+  try { body = await req.json(); } catch { return err('Invalid JSON', 400, origin); }
+
+  const game_type = body && body.game_type;
+  const difficulty = body && body.difficulty != null ? String(body.difficulty) : null;
+  const completion_time_sec = body && body.completion_time_sec != null ? Number(body.completion_time_sec) : null;
+  const completed = !!(body && body.completed);
+
+  if (!game_type || !VALID_GAMES.includes(game_type)) {
+    return err('Invalid game_type', 400, origin);
+  }
+  if (difficulty !== null && !VALID_DIFFICULTIES.includes(difficulty)) {
+    return err('Invalid difficulty', 400, origin);
+  }
+  if (completion_time_sec !== null) {
+    if (!Number.isFinite(completion_time_sec) || completion_time_sec < 0 || completion_time_sec > 86400) {
+      return err('Invalid completion_time_sec', 400, origin);
+    }
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  await env.DB.prepare(
+    `INSERT INTO game_records (user_id, game_type, difficulty, completion_time_sec, completed, played_at)
+     VALUES (?, ?, ?, ?, ?, ?)`
+  ).bind(userId, game_type, difficulty, completion_time_sec, completed ? 1 : 0, now).run();
+
+  return json({ ok: true }, 200, origin);
+}
+
+async function listGames(req, env, origin) {
+  const userId = await requireUser(req, env);
+  if (!userId) return err('Unauthorized', 401, origin);
+
+  const url = new URL(req.url);
+  const limitParam = parseInt(url.searchParams.get('limit') || '50', 10);
+  const limit = Math.min(Math.max(Number.isFinite(limitParam) ? limitParam : 50, 1), 200);
+  const game_type = url.searchParams.get('game_type');
+
+  let q;
+  if (game_type && VALID_GAMES.includes(game_type)) {
+    q = env.DB.prepare(
+      `SELECT id, game_type, difficulty, completion_time_sec, completed, played_at
+       FROM game_records WHERE user_id = ? AND game_type = ?
+       ORDER BY played_at DESC LIMIT ?`
+    ).bind(userId, game_type, limit);
+  } else {
+    q = env.DB.prepare(
+      `SELECT id, game_type, difficulty, completion_time_sec, completed, played_at
+       FROM game_records WHERE user_id = ?
+       ORDER BY played_at DESC LIMIT ?`
+    ).bind(userId, limit);
+  }
+
+  const { results } = await q.all();
+  return json({ records: results || [] }, 200, origin);
+}
+
+async function gameStats(req, env, origin) {
+  const userId = await requireUser(req, env);
+  if (!userId) return err('Unauthorized', 401, origin);
+
+  const { results } = await env.DB.prepare(
+    `SELECT
+       game_type,
+       COUNT(*) as total_plays,
+       SUM(completed) as completions,
+       MIN(CASE WHEN completed = 1 THEN completion_time_sec END) as best_time,
+       AVG(CASE WHEN completed = 1 THEN completion_time_sec END) as avg_time,
+       MAX(played_at) as last_played_at
+     FROM game_records
+     WHERE user_id = ?
+     GROUP BY game_type
+     ORDER BY last_played_at DESC`
+  ).bind(userId).all();
+
+  return json({ stats: results || [] }, 200, origin);
 }
