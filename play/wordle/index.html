@@ -491,29 +491,13 @@
     txt += 'https://q-bot.kr/play/wordle/';
     return txt;
   }
-  function shareToX(){
-    const text = buildShareText();
-    // X(Twitter)는 text에 URL이 들어있으면 자동 카드 생성. 별도 url param 미사용.
-    const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
-  function shareToThreads(){
-    const text = buildShareText();
-    const url = 'https://www.threads.net/intent/post?text=' + encodeURIComponent(text);
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }
+  function shareToX(){ QLensShare.toX(buildShareText()); }
+  function shareToThreads(){ QLensShare.toThreads(buildShareText()); }
   function shareCopyForInstagram(){
-    const text = buildShareText();
-    fallbackCopy(text, '결과를 복사했습니다. 인스타그램 앱에 붙여넣어 공유하세요.');
-  }
-  function fallbackCopy(text, successMsg){
-    const msg = successMsg || '결과가 복사되었습니다';
-    try {
-      navigator.clipboard.writeText(text).then(
-        () => showToast(msg),
-        () => showToast('복사에 실패했습니다')
-      );
-    } catch(e){ showToast('복사 기능을 사용할 수 없습니다'); }
+    QLensShare.copy(buildShareText(), {
+      onSuccess: showToast,
+      onFail: showToast
+    });
   }
 
   // 새 게임 시작 (random idx, 보드 초기화)
@@ -577,6 +561,7 @@
 })();
 </script>
 
+<script src="/assets/share.js"></script>
 <script src="/assets/auth.js"></script>
 </body>
 </html>

@@ -273,6 +273,10 @@
   font-weight: 700;
 }
 .modal-btn:active { background: var(--accent-hover); }
+.share-row { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.share-label { font-size:13px; color:#6b7280; margin-right:4px; }
+.share-btn { border:1px solid #e5e8eb; background:#fff; color:#1a1a1a; padding:6px 14px; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; -webkit-tap-highlight-color:transparent; }
+.share-btn:hover { border-color:var(--accent); color:var(--accent); }
 
 @media (max-width: 480px) {
   .nono-wrap { padding: 12px 4px 24px; }
@@ -340,6 +344,12 @@
     <p id="winMsg">그림이 보이시나요?</p>
     <div class="modal-time" id="winTime">00:00</div>
     <button class="modal-btn" id="winNew">새 게임 시작</button>
+    <div class="share-row" id="shareRow">
+      <span class="share-label">공유</span>
+      <button class="share-btn" id="shareXBtn" type="button">X</button>
+      <button class="share-btn" id="shareThreadsBtn" type="button">Threads</button>
+      <button class="share-btn" id="shareCopyBtn" type="button">복사</button>
+    </div>
   </div>
 </div>
 
@@ -977,6 +987,30 @@
     newGame();
   });
 
+  // ---------- 공유 ----------
+  function buildShareText() {
+    const sec = Math.floor(getElapsed() / 1000);
+    const m = String(Math.floor(sec / 60)).padStart(2, '0');
+    const s = String(sec % 60).padStart(2, '0');
+    const sizeLabel = state.size + '×' + state.size;
+    return 'Q-Lens 네모네모로직 클리어! 🧩\n' +
+           '크기: ' + sizeLabel + '\n' +
+           '시간: ' + m + ':' + s + '\n' +
+           '실수: ' + state.mistakes + '회\n\n' +
+           'https://q-bot.kr/play/nonogram/';
+  }
+  function toastShare(msg) {
+    const $msg = $('winMsg');
+    const orig = $msg.textContent;
+    $msg.textContent = msg;
+    setTimeout(() => { $msg.textContent = orig; }, 2400);
+  }
+  $('shareXBtn').addEventListener('click', () => QLensShare.toX(buildShareText()));
+  $('shareThreadsBtn').addEventListener('click', () => QLensShare.toThreads(buildShareText()));
+  $('shareCopyBtn').addEventListener('click', () => QLensShare.copy(buildShareText(), {
+    onSuccess: toastShare, onFail: toastShare
+  }));
+
   // 드래그 (pointer events 통합)
   const grid = $('grid');
   grid.addEventListener('pointerdown', dragStart);
@@ -1030,6 +1064,7 @@
 })();
 </script>
 
+<script src="/assets/share.js"></script>
 <script src="/assets/auth.js"></script>
 </body>
 </html>

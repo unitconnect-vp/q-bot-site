@@ -259,6 +259,10 @@
   margin-top:16px;
 }
 .modal-actions .btn{ flex:1; }
+.share-row { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.share-label { font-size:13px; color:var(--muted); margin-right:4px; }
+.share-btn { border:1px solid var(--line); background:#fff; color:var(--ink); padding:6px 14px; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; }
+.share-btn:hover { border-color:var(--accent); color:var(--accent); }
 
 @media (max-width:520px){
   .game-title h1{ font-size:24px; }
@@ -327,6 +331,12 @@
     <div class="modal-actions">
       <button class="btn" id="modalCloseBtn">닫기</button>
       <button class="btn btn-primary" id="modalNewBtn">새 게임</button>
+    </div>
+    <div class="share-row" id="shareRow">
+      <span class="share-label">공유</span>
+      <button class="share-btn" id="shareXBtn" type="button">X</button>
+      <button class="share-btn" id="shareThreadsBtn" type="button">Threads</button>
+      <button class="share-btn" id="shareCopyBtn" type="button">복사</button>
     </div>
   </div>
 </div>
@@ -940,6 +950,21 @@
   $modalNew.addEventListener('click', newGame);
   $modal.addEventListener('click', (e) => { if (e.target === $modal) closeWinModal(); });
 
+  // ---------- 공유 ----------
+  function buildShareText(){
+    return 'Q-Lens 슬리더링크 클리어! 🔁\n' +
+           '크기: ' + SIZE + '×' + SIZE + '\n' +
+           '풀이 시간: ' + $timer.textContent + '\n' +
+           '되돌리기: ' + undoCount + '회\n\n' +
+           'https://q-bot.kr/play/slitherlink/';
+  }
+  document.getElementById('shareXBtn').addEventListener('click', () => QLensShare.toX(buildShareText()));
+  document.getElementById('shareThreadsBtn').addEventListener('click', () => QLensShare.toThreads(buildShareText()));
+  document.getElementById('shareCopyBtn').addEventListener('click', () => QLensShare.copy(buildShareText(), {
+    onSuccess: (m) => showToast(m, 2400),
+    onFail: (m) => showToast(m, 2400)
+  }));
+
   window.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.key === 'z'){ e.preventDefault(); undo(); }
   });
@@ -948,6 +973,7 @@
 })();
 </script>
 
+<script src="/assets/share.js"></script>
 <script src="/assets/auth.js"></script>
 </body>
 </html>
