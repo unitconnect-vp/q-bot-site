@@ -154,8 +154,10 @@
   cursor:pointer; font-family:inherit;
 }
 .modal-actions .btn-primary{ background:var(--g-accent); border-color:var(--g-accent); color:#fff; }
-.countdown{ text-align:center; font-size:12px; color:var(--g-muted); margin-top:12px; font-variant-numeric:tabular-nums; }
-.countdown strong{ color:var(--g-ink); }
+.share-row{ display:flex; gap:8px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; }
+.share-label{ font-size:13px; color:var(--g-muted); margin-right:4px; }
+.share-btn{ border:1px solid var(--g-border); background:#fff; color:var(--g-ink); padding:6px 14px; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; }
+.share-btn:hover{ border-color:var(--g-accent); color:var(--g-accent); }
 
 @media (max-width:480px){
   .game-title h1{ font-size:24px; }
@@ -182,13 +184,9 @@
       <p>받침 있는 두 글자 단어를 여섯 번 안에 맞혀 보세요.</p>
     </div>
     <div class="game-actions">
+      <button class="icon-btn" id="newGameBtn">새 게임</button>
       <button class="icon-btn" id="statsBtn">통계</button>
     </div>
-  </div>
-
-  <div class="daily-info">
-    <span id="dailyNum">#1</span>
-    <span id="dailyDate"></span>
   </div>
 
   <div class="board" id="board"></div>
@@ -223,10 +221,13 @@
     <div id="distribution" style="margin-bottom:16px;"></div>
     <div class="modal-actions">
       <button class="btn" id="closeModalBtn">닫기</button>
-      <button class="btn btn-primary" id="shareBtn">결과 공유</button>
+      <button class="btn btn-primary" id="modalNewGameBtn">새 게임</button>
     </div>
-    <div class="countdown" id="countdown" style="display:none;">
-      다음 워들까지 <strong id="countdownTime">--:--:--</strong>
+    <div class="share-row" id="shareRow" style="display:none;">
+      <span class="share-label">공유</span>
+      <button class="share-btn" id="shareXBtn" type="button" aria-label="X에 공유">X</button>
+      <button class="share-btn" id="shareThreadsBtn" type="button" aria-label="Threads에 공유">Threads</button>
+      <button class="share-btn" id="shareCopyBtn" type="button" aria-label="결과 복사 (인스타그램용)">복사</button>
     </div>
   </div>
 </div>
@@ -280,24 +281,14 @@
   ];
   const ANSWERS = RAW_POOL.filter(isValidSixJamo);
 
-  const LAUNCH_DATE = '2026-05-05';
-  function getKSTDateString(){
-    const now = new Date();
-    const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-    const kst = new Date(utcMs + 9 * 3600 * 1000);
-    const y = kst.getFullYear();
-    const m = String(kst.getMonth() + 1).padStart(2, '0');
-    const d = String(kst.getDate()).padStart(2, '0');
-    return y + '-' + m + '-' + d;
+  // 무제한 모드 — 매 게임마다 random 정답 (단, 직전 정답과 같은 단어 회피)
+  function pickRandomIndex(prevIdx){
+    if (ANSWERS.length <= 1) return 0;
+    let idx;
+    do { idx = Math.floor(Math.random() * ANSWERS.length); }
+    while (idx === prevIdx);
+    return idx;
   }
-  function getDailyIndex(){
-    const today = getKSTDateString();
-    const ty = parseInt(today.slice(0,4),10), tm = parseInt(today.slice(5,7),10), td = parseInt(today.slice(8,10),10);
-    const ly = parseInt(LAUNCH_DATE.slice(0,4),10), lm = parseInt(LAUNCH_DATE.slice(5,7),10), ld = parseInt(LAUNCH_DATE.slice(8,10),10);
-    const days = Math.floor((Date.UTC(ty, tm-1, td) - Date.UTC(ly, lm-1, ld)) / 86400000);
-    return days >= 0 ? days % ANSWERS.length : 0;
-  }
-  function getDailyNum(){ return getDailyIndex() + 1; }
 
   function judge(guess, answer){
     const N = answer.length;
@@ -314,17 +305,18 @@
     return result;
   }
 
-  const KEY_DAILY = 'q-wordle-daily', KEY_STATS = 'q-wordle-stats';
-  function loadDaily(){
+  const KEY_CURRENT = 'q-wordle-current', KEY_STATS = 'q-wordle-stats';
+  function loadCurrent(){
     try {
-      const raw = localStorage.getItem(KEY_DAILY);
+      const raw = localStorage.getItem(KEY_CURRENT);
       if (!raw) return null;
       const d = JSON.parse(raw);
-      if (d.date !== getKSTDateString()) return null;
+      if (typeof d.idx !== 'number' || d.idx < 0 || d.idx >= ANSWERS.length) return null;
       return d;
     } catch(e){ return null; }
   }
-  function saveDaily(d){ try { localStorage.setItem(KEY_DAILY, JSON.stringify(d)); } catch(e){} }
+  function saveCurrent(d){ try { localStorage.setItem(KEY_CURRENT, JSON.stringify(d)); } catch(e){} }
+  function clearCurrent(){ try { localStorage.removeItem(KEY_CURRENT); } catch(e){} }
   function loadStats(){
     try { const raw = localStorage.getItem(KEY_STATS); if (raw) return JSON.parse(raw); } catch(e){}
     return { played:0, won:0, currentStreak:0, maxStreak:0, distribution:[0,0,0,0,0,0] };
@@ -345,13 +337,14 @@
   const $dist = document.getElementById('distribution');
   const $answerReveal = document.getElementById('answerReveal');
   const $answerWord = document.getElementById('answerWord');
-  const $countdown = document.getElementById('countdown');
-  const $countdownTime = document.getElementById('countdownTime');
   const $statsBtn = document.getElementById('statsBtn');
-  const $shareBtn = document.getElementById('shareBtn');
+  const $newGameBtn = document.getElementById('newGameBtn');
+  const $modalNewGameBtn = document.getElementById('modalNewGameBtn');
+  const $shareRow = document.getElementById('shareRow');
+  const $shareXBtn = document.getElementById('shareXBtn');
+  const $shareThreadsBtn = document.getElementById('shareThreadsBtn');
+  const $shareCopyBtn = document.getElementById('shareCopyBtn');
   const $closeModal = document.getElementById('closeModalBtn');
-  const $dailyNum = document.getElementById('dailyNum');
-  const $dailyDate = document.getElementById('dailyDate');
 
   function buildBoard(){
     $board.innerHTML = '';
@@ -425,7 +418,7 @@
     const isCorrect = judgeArr.every(j => j === 'correct');
     if (isCorrect){ finished = true; won = true; updateStats(true, guesses.length); if (typeof QLensAuth !== 'undefined') QLensAuth.recordGameScore({ game_type: 'wordle', completed: true }); }
     else if (guesses.length >= MAX_GUESSES){ finished = true; won = false; updateStats(false, 0); if (typeof QLensAuth !== 'undefined') QLensAuth.recordGameScore({ game_type: 'wordle', completed: false }); }
-    saveDaily({ date: getKSTDateString(), idx: dailyIdx, guesses: guesses.map(g => g.word), finished, won });
+    saveCurrent({ idx: dailyIdx, guesses: guesses.map(g => g.word), finished, won });
     if (finished){
       $input.disabled = true; $submit.disabled = true;
       setTimeout(() => openResultModal(), 1200);
@@ -477,39 +470,16 @@
     }
     $dist.innerHTML = distHtml;
     if (finished){
-      $countdown.style.display = '';
-      startCountdown();
-      $shareBtn.style.display = '';
+      $shareRow.style.display = '';
     } else {
-      $countdown.style.display = 'none';
-      $shareBtn.style.display = 'none';
+      $shareRow.style.display = 'none';
     }
     $modal.classList.add('show');
   }
-  function closeModal(){ $modal.classList.remove('show'); stopCountdown(); }
-  let countdownTimer = null;
-  function startCountdown(){
-    function tick(){
-      const now = new Date();
-      const utcMs = now.getTime() + now.getTimezoneOffset() * 60000;
-      const kst = new Date(utcMs + 9 * 3600 * 1000);
-      const next = new Date(Date.UTC(kst.getUTCFullYear(), kst.getUTCMonth(), kst.getUTCDate() + 1));
-      const diffMs = next.getTime() - kst.getTime();
-      if (diffMs <= 0){ $countdownTime.textContent = '00:00:00'; return; }
-      const h = Math.floor(diffMs / 3600000);
-      const m = Math.floor((diffMs % 3600000) / 60000);
-      const s = Math.floor((diffMs % 60000) / 1000);
-      $countdownTime.textContent =
-        String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
-    }
-    tick();
-    countdownTimer = setInterval(tick, 1000);
-  }
-  function stopCountdown(){ if (countdownTimer){ clearInterval(countdownTimer); countdownTimer = null; } }
+  function closeModal(){ $modal.classList.remove('show'); }
   function buildShareText(){
-    const num = getDailyNum();
     const score = won ? guesses.length : 'X';
-    let txt = 'Q-Lens 워들 #' + num + ' ' + score + '/6\n';
+    let txt = 'Q-Lens 한국어 워들 ' + score + '/6\n';
     for (const g of guesses){
       for (const j of g.judge){
         if (j === 'correct') txt += '🟦';
@@ -521,32 +491,56 @@
     txt += 'https://q-bot.kr/play/wordle/';
     return txt;
   }
-  function shareResult(){
+  function shareToX(){
     const text = buildShareText();
-    if (navigator.share){ navigator.share({ text }).catch(() => fallbackCopy(text)); }
-    else { fallbackCopy(text); }
+    // X(Twitter)는 text에 URL이 들어있으면 자동 카드 생성. 별도 url param 미사용.
+    const url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
-  function fallbackCopy(text){
+  function shareToThreads(){
+    const text = buildShareText();
+    const url = 'https://www.threads.net/intent/post?text=' + encodeURIComponent(text);
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }
+  function shareCopyForInstagram(){
+    const text = buildShareText();
+    fallbackCopy(text, '결과를 복사했습니다. 인스타그램 앱에 붙여넣어 공유하세요.');
+  }
+  function fallbackCopy(text, successMsg){
+    const msg = successMsg || '결과가 복사되었습니다';
     try {
       navigator.clipboard.writeText(text).then(
-        () => showToast('결과가 복사되었습니다'),
+        () => showToast(msg),
         () => showToast('복사에 실패했습니다')
       );
     } catch(e){ showToast('복사 기능을 사용할 수 없습니다'); }
   }
 
-  function init(){
-    if (ANSWERS.length === 0){ showToast('단어 풀이 비어있습니다'); return; }
-    dailyIdx = getDailyIndex();
+  // 새 게임 시작 (random idx, 보드 초기화)
+  function startNewGame(){
+    clearCurrent();
+    closeModal();
+    dailyIdx = pickRandomIndex(typeof dailyIdx === 'number' ? dailyIdx : -1);
     answerWord = ANSWERS[dailyIdx];
     answerJamo = decompose(answerWord);
-    stats = loadStats();
     guesses = []; finished = false; won = false;
-    $dailyNum.textContent = '#' + getDailyNum();
-    $dailyDate.textContent = getKSTDateString();
+    $input.disabled = false; $submit.disabled = false;
+    $input.value = '';
     buildBoard();
-    const saved = loadDaily();
-    if (saved && saved.idx === dailyIdx && Array.isArray(saved.guesses)){
+    setTimeout(() => $input.focus(), 100);
+  }
+
+  function init(){
+    if (ANSWERS.length === 0){ showToast('단어 풀이 비어있습니다'); return; }
+    stats = loadStats();
+    const saved = loadCurrent();
+    if (saved && Array.isArray(saved.guesses)){
+      // 진행 중 게임 복원
+      dailyIdx = saved.idx;
+      answerWord = ANSWERS[dailyIdx];
+      answerJamo = decompose(answerWord);
+      guesses = []; finished = false; won = false;
+      buildBoard();
       for (const word of saved.guesses){
         if (!isValidSixJamo(word)) continue;
         const gj = decompose(word);
@@ -556,13 +550,25 @@
       }
       finished = !!saved.finished; won = !!saved.won;
       if (finished){ $input.disabled = true; $submit.disabled = true; }
+    } else {
+      // 새 random 게임
+      dailyIdx = pickRandomIndex(-1);
+      answerWord = ANSWERS[dailyIdx];
+      answerJamo = decompose(answerWord);
+      guesses = []; finished = false; won = false;
+      buildBoard();
     }
+    // 이벤트 등록 (페이지 로드 시 1회)
     $input.addEventListener('input', onInputChange);
     $input.addEventListener('keydown', (e) => { if (e.key === 'Enter'){ e.preventDefault(); submitGuess(); } });
     $submit.addEventListener('click', submitGuess);
     $statsBtn.addEventListener('click', openResultModal);
     $closeModal.addEventListener('click', closeModal);
-    $shareBtn.addEventListener('click', shareResult);
+    $newGameBtn.addEventListener('click', startNewGame);
+    $modalNewGameBtn.addEventListener('click', startNewGame);
+    $shareXBtn.addEventListener('click', shareToX);
+    $shareThreadsBtn.addEventListener('click', shareToThreads);
+    $shareCopyBtn.addEventListener('click', shareCopyForInstagram);
     $modal.addEventListener('click', (e) => { if (e.target === $modal) closeModal(); });
     if (!finished){ setTimeout(() => $input.focus(), 100); }
     else { setTimeout(() => openResultModal(), 400); }
