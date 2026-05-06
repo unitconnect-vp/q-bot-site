@@ -45,12 +45,12 @@
     </div>
     <div id="feed-all" class="feed-recent">
 <!-- PRERENDERED feed-all — JS overrides -->
-            <a href="/articles/seongnam-redev-5/" class="card">
-              <img class="card-thumb" src="/articles/seongnam-redev-5/thumb.webp" alt="성남 재개발 5편 — 사면 안 되는 신호 7개" loading="lazy">
+            <a href="/articles/seongnam-apt-trading-volume-buyer-guide-2026/" class="card">
+              <img class="card-thumb" src="/articles/seongnam-apt-trading-volume-buyer-guide-2026/thumb.webp" alt="성남시 거래 활발 아파트 9곳 — 단지별 이유와 확인할 점" loading="lazy">
               <div class="card-body">
-                <p class="card-cat">사회·이슈</p>
-                <p class="card-title">성남 재개발 5편 — 사면 안 되는 신호 7개</p>
-                <p class="card-meta">편집팀 · 2026-05-05 · 약 5분</p>
+                <p class="card-cat">부동산</p>
+                <p class="card-title">성남시 거래 활발 아파트 9곳 — 단지별 이유와 확인할 점</p>
+                <p class="card-meta">Q렌즈 · 2026-05-06 · 약 5분</p>
               </div>
             </a>
             <a href="/articles/seongnam-redev-4/" class="card">
@@ -82,6 +82,14 @@
               <div class="card-body">
                 <p class="card-cat">사회·이슈</p>
                 <p class="card-title">성남 재개발 1편 — 지금 살 만한가? 사업 단계로 보는 진입 타이밍</p>
+                <p class="card-meta">편집팀 · 2026-05-05 · 약 5분</p>
+              </div>
+            </a>
+            <a href="/articles/seongnam-redev-5/" class="card">
+              <img class="card-thumb" src="/articles/seongnam-redev-5/thumb.webp" alt="성남 재개발 5편 — 진입 보류 신호 체크리스트" loading="lazy">
+              <div class="card-body">
+                <p class="card-cat">사회·이슈</p>
+                <p class="card-title">성남 재개발 5편 — 진입 보류 신호 체크리스트</p>
                 <p class="card-meta">편집팀 · 2026-05-05 · 약 5분</p>
               </div>
             </a>
@@ -190,10 +198,10 @@
               </div>
             </a>
             <a href="/articles/bok-supply-shock-rate-dilemma-2026-04/" class="card">
-              <img class="card-thumb" src="/articles/bok-supply-shock-rate-dilemma-2026-04/thumb.webp" alt="한은 &#39;공급충격&#39; 경고, 인상도 인하도 막힌 7연속 동결의 구조" loading="lazy">
+              <img class="card-thumb" src="/articles/bok-supply-shock-rate-dilemma-2026-04/thumb.webp" alt="한은 &#x27;공급충격&#x27; 경고, 인상도 인하도 막힌 7연속 동결의 구조" loading="lazy">
               <div class="card-body">
                 <p class="card-cat">경제·정책</p>
-                <p class="card-title">한은 &#39;공급충격&#39; 경고, 인상도 인하도 막힌 7연속 동결의 구조</p>
+                <p class="card-title">한은 &#x27;공급충격&#x27; 경고, 인상도 인하도 막힌 7연속 동결의 구조</p>
                 <p class="card-meta">Harper · 2026-04-18 · 약 9분</p>
               </div>
             </a>
@@ -222,10 +230,10 @@
               </div>
             </a>
             <a href="/articles/nps-rebalancing-suspension/" class="card">
-              <img class="card-thumb" src="/articles/nps-rebalancing-suspension/thumb.webp" alt="국민연금이 &#39;안 팔기로&#39; 결정한 날, 리밸런싱을 유예한 연기금의 선택" loading="lazy">
+              <img class="card-thumb" src="/articles/nps-rebalancing-suspension/thumb.webp" alt="국민연금이 &#x27;안 팔기로&#x27; 결정한 날, 리밸런싱을 유예한 연기금의 선택" loading="lazy">
               <div class="card-body">
                 <p class="card-cat">경제·정책</p>
-                <p class="card-title">국민연금이 &#39;안 팔기로&#39; 결정한 날, 리밸런싱을 유예한 연기금의 선택</p>
+                <p class="card-title">국민연금이 &#x27;안 팔기로&#x27; 결정한 날, 리밸런싱을 유예한 연기금의 선택</p>
                 <p class="card-meta">Harper · 2026-04-17 · 약 9분</p>
               </div>
             </a>
@@ -253,6 +261,7 @@
                 <p class="card-meta">Kai · 2026-04-15 · 약 8분</p>
               </div>
             </a>
+      
       </div>
 
 </main>
@@ -300,30 +309,39 @@
 </footer>
 
   <script>
-    fetch('/articles/articles.json')
-      .then(r => r.json())
-      .then(articles => {
-        const sorted = articles.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const el = document.getElementById('feed-all');
+    // 글 목록 — articles.json을 단일 출처로 삼아 발행일 desc 정렬 후
+    // 전체 카드를 재렌더링한다. prerender는 SEO·초기 페인트용이며
+    // JS가 실행되면 완전히 교체된다. (+= 누적으로 오늘 글이 끝에
+    // 중복 추가되던 버그 수정 — 2026-05-06)
+    function escHtml(s) {
+      return String(s == null ? '' : s)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+    }
+    fetch('/articles/articles.json', { cache: 'no-store' })
+      .then(function(r){ return r.json(); })
+      .then(function(articles){
+        var sorted = articles.slice().sort(function(a, b){
+          return (b.date || '').localeCompare(a.date || '');
+        });
+        var el = document.getElementById('feed-all');
+        if (!el) return;
         if (sorted.length === 0) {
-          document.getElementById('feed-empty').style.display = 'block';
+          el.innerHTML = '<p class="feed-empty">아직 발행된 글이 없습니다.</p>';
           return;
         }
-        sorted.forEach(a => {
-          el.innerHTML += `
-            <a href="/articles/${a.slug}/" class="card">
-              <img class="card-thumb" src="/articles/${a.slug}/thumb.webp" alt="${a.title}" loading="lazy">
-              <div class="card-body">
-                <p class="card-cat">${a.category}</p>
-                <p class="card-title">${a.title}</p>
-                <p class="card-meta">${a.author} · ${a.date} · ${a.read_time}</p>
-              </div>
-            </a>`;
-        });
+        el.innerHTML = sorted.map(function(a){
+          return '<a href="/articles/' + escHtml(a.slug) + '/" class="card">' +
+                   '<img class="card-thumb" src="/articles/' + escHtml(a.slug) + '/thumb.webp" alt="' + escHtml(a.title) + '" loading="lazy">' +
+                   '<div class="card-body">' +
+                     '<p class="card-cat">' + escHtml(a.category) + '</p>' +
+                     '<p class="card-title">' + escHtml(a.title) + '</p>' +
+                     '<p class="card-meta">' + escHtml(a.author) + ' · ' + escHtml(a.date) + ' · ' + escHtml(a.read_time || '') + '</p>' +
+                   '</div>' +
+                 '</a>';
+        }).join('');
       })
-      .catch(() => {
-        document.getElementById('feed-empty').style.display = 'block';
-      });
+      .catch(function(){ /* prerender fallback 유지 */ });
   </script>
 
 <script src="/assets/auth.js"></script>

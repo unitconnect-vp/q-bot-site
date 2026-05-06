@@ -242,6 +242,7 @@ python3 .github/scripts/verify_footers.py    # exit 0 + 누출 0건이어야 함
 - 2026-05-06 commit `f4a277c` — 86페이지 일괄 fix. publisher v5.4가 옛 footer를 박아 발행한 흔적이 articles 26 + categories 13 + tools 12 + authors 14 + play 5 + 기타에 남아있었음.
 - 2026-05-06 카테고리 통합 commit — 89페이지 nav/footer 일괄 갱신(`.github/scripts/batch_nav_footer_v6.py`). 부동산·주식 분리 메뉴 제거, footer '바로가기' 3링크로 축소. 같은 패턴 회귀 시 해당 스크립트 재사용 가능.
 - 2026-05-06 site-header 통일 commit — 89페이지 site-logo 표준화(`.github/scripts/unify_site_header.py`). 4가지 변종(h1 유무·속성 순서) → 단일(`<a class="site-logo" href="/">Q<span>-</span>Lens</a>`). article 28페이지의 h1 중복 해소. 회귀 시 재사용 가능.
+- 2026-05-06 글 목록 정렬 fix commit — `articles/index.html` 인라인 JS의 `+=` 누적 버그로 오늘 발행 글이 prerender 뒤에 중복 append되던 현상 수정(`=` 교체 + `cache:'no-store'`). prerender도 articles.json 기준으로 재생성(`.github/scripts/regen_articles_prerender.py`). 새 글 추가 후 발행일 desc 정렬 회귀 시 해당 스크립트 재실행.
 
 ### 6-6. GitHub Contents API로 단일 파일 commit (publisher 내부 패턴)
 
