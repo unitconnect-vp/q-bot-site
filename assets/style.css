@@ -1207,3 +1207,148 @@ main.home-wrap, .home-wrap {
 .nav-auth-btn {
   font-weight: 500;
 }
+
+/* ===== home intro chips (메인 정체성 영역) ===== */
+.home-intro {
+  padding: 40px 0 32px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.home-intro__tag {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-strong);
+  letter-spacing: -0.02em;
+  margin: 0 0 16px;
+}
+.home-intro__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  border: 1px solid var(--rule-strong);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink-strong);
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.chip--cta {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+.chip--cta:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #ffffff;
+}
+@media (max-width: 480px) {
+  .home-intro { padding: 28px 0 24px; }
+  .home-intro__tag { font-size: 1.0625rem; margin-bottom: 14px; }
+  .chip { padding: 7px 12px; font-size: 0.875rem; }
+}
+
+/* ===== home games section ===== */
+.home-games {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+.game-card {
+  display: block;
+  background: #ffffff;
+  border: 1px solid var(--rule-strong);
+  border-radius: 8px;
+  padding: 22px 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.game-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(49, 130, 246, 0.08);
+}
+.game-card__title {
+  font-size: 1.0625rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  color: var(--ink-strong);
+}
+.game-card__desc {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+/* ===== home auth (회원가입/환영) ===== */
+.home-auth {
+  background: var(--accent-soft);
+  border: 1px solid #d6e6ff;
+  border-radius: 8px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.home-auth__title {
+  font-size: 1.125rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink-strong);
+  margin: 0;
+}
+.home-auth__desc {
+  font-size: 0.9375rem;
+  color: var(--ink-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+.home-auth__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+.home-auth__btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.home-auth__btn--primary {
+  background: var(--accent);
+  color: #ffffff;
+  border: 1px solid var(--accent);
+}
+.home-auth__btn--primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+.home-auth__btn--ghost {
+  background: #ffffff;
+  color: var(--ink-strong);
+  border: 1px solid var(--rule-strong);
+}
+.home-auth__btn--ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+@media (max-width: 480px) {
+  .home-auth { padding: 24px 20px; }
+}

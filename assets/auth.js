@@ -256,11 +256,16 @@
     _injectNav: injectNavAuthButton
   };
 
-  // ─────── 자동 nav 주입 ───────
+  // ─────── 자동 nav 주입 + ready 이벤트 ───────
+
+  function _ready() {
+    injectNavAuthButton();
+    try { window.dispatchEvent(new Event('qlens:auth-ready')); } catch (e) {}
+  }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', injectNavAuthButton);
+    document.addEventListener('DOMContentLoaded', _ready);
   } else {
-    injectNavAuthButton();
+    _ready();
   }
 })();

@@ -81,7 +81,9 @@
       renderHomeFeatured(sorted, authorsArr);
       renderHomeRanking(sorted, authorsArr);
       renderHomeRecent(sorted, authorsArr);
+      renderHomeGames();
       renderHomeTools();
+      renderHomeAuth();
     }).catch(handleError);
   } else if (authorList) {
     loadData().then(([articles, authorsArr]) => {
@@ -204,6 +206,27 @@
   }
 
   // ============================================
+  // 9.4. 홈 — 게임 (5종)
+  // ============================================
+  function renderHomeGames() {
+    const host = document.getElementById('home-games');
+    if (!host) return;
+    const games = [
+      { slug: 'sudoku',      name: '수도쿠',         desc: '9×9 클래식. 4단계 난이도, 메모, 힌트, 자동 저장.' },
+      { slug: 'nonogram',    name: '네모네모로직',    desc: '픽처 크로스워드. 5×5, 10×10, 15×15, 20×20.' },
+      { slug: '2048',        name: '2048',          desc: '같은 숫자 타일을 합쳐 2048에 도달. 키보드와 스와이프로 즐기는 클래식.' },
+      { slug: 'wordle',      name: '한국어 워들',     desc: '하루 한 단어. 받침 있는 두 글자, 자모 단위로 채점하는 일일 챌린지.' },
+      { slug: 'slitherlink', name: '슬리더링크',      desc: '5×5 격자. 점을 이어 단일 폐곡선 만드는 일본식 논리 퍼즐.' }
+    ];
+    host.innerHTML = games.map(g => `
+      <a href="/play/${esc(g.slug)}/" class="game-card">
+        <div class="game-card__title">${esc(g.name)}</div>
+        <p class="game-card__desc">${esc(g.desc)}</p>
+      </a>
+    `).join('');
+  }
+
+  // ============================================
   // 9.5. 홈 — 계산기 (외부 도구 4개)
   // ============================================
   function renderHomeTools() {
@@ -217,13 +240,80 @@
       { slug: 'compound-calculator',   name: '복리 투자',      desc: '매월 적립식 투자의 복리 수익을 시각화합니다.' }
     ];
     host.innerHTML = tools.map(t => `
-      <a href="${TOOLS_BASE}/${t.slug}/" target="_blank" rel="noopener" class="card card--text">
+      <a href="${TOOLS_BASE}/${t.slug}/" class="card card--text">
         <div class="card__cat">계산기</div>
         <div class="card__title">${esc(t.name)}</div>
         <div class="card__excerpt">${esc(t.desc)}</div>
         <div class="card__meta">qlens-tools</div>
       </a>
     `).join('');
+  }
+
+  // ============================================
+  // 9.6. 홈 — 회원가입/환영 영역
+  // ============================================
+  function renderHomeAuth() {
+    const host = document.getElementById('home-auth');
+    if (!host) return;
+
+    function update() {
+      const loggedIn = !!(window.QLensAuth && QLensAuth.isLoggedIn());
+      // chip CTA 동기화
+      const cta = document.querySelector('[data-auth-cta]');
+      if (cta) {
+        if (loggedIn) {
+          cta.href = '/mypage/';
+          cta.textContent = '마이 →';
+        } else {
+          cta.href = '/auth/signup/';
+          cta.textContent = '회원가입 →';
+        }
+      }
+      // 미로그인 → prerender 카드 유지
+      if (!loggedIn) return;
+
+      // 로그인 → 환영 카드로 교체
+      host.innerHTML =
+        '<h3 class="home-auth__title" id="home-auth-title">환영합니다.</h3>' +
+        '<p class="home-auth__desc" id="home-auth-desc">최근 기록을 불러오는 중…</p>' +
+        '<div class="home-auth__actions">' +
+          '<a class="home-auth__btn home-auth__btn--primary" href="/mypage/">마이페이지 →</a>' +
+          '<a class="home-auth__btn home-auth__btn--ghost" href="/play/">게임하러 가기</a>' +
+        '</div>';
+
+      const titleEl = document.getElementById('home-auth-title');
+      const descEl = document.getElementById('home-auth-desc');
+      Promise.all([
+        QLensAuth.getMe ? QLensAuth.getMe() : Promise.resolve(null),
+        QLensAuth.getGameStats ? QLensAuth.getGameStats() : Promise.resolve(null)
+      ]).then(function (results) {
+        const me = results[0];
+        const stats = results[1];
+        if (titleEl && me && me.nickname) {
+          titleEl.textContent = me.nickname + '님, 환영합니다.';
+        }
+        if (descEl) {
+          if (stats && stats.stats && stats.stats.length > 0) {
+            const labels = { sudoku: '수도쿠', nonogram: '네모네모로직', '2048': '2048', wordle: '한국어 워들', slitherlink: '슬리더링크' };
+            const top = stats.stats.slice().sort(function (a, b) { return (b.total_plays || 0) - (a.total_plays || 0); })[0];
+            const label = labels[top.game_type] || top.game_type;
+            descEl.textContent = label + ' ' + (top.total_plays || 0) + '회 · 마이페이지에서 전체 통계를 확인하세요.';
+          } else {
+            descEl.textContent = '아직 기록이 없습니다. 첫 한 판을 시작해보세요.';
+          }
+        }
+      }).catch(function () {
+        if (descEl) descEl.textContent = '마이페이지에서 전체 통계를 확인하세요.';
+      });
+    }
+
+    if (window.QLensAuth) {
+      update();
+    } else {
+      window.addEventListener('qlens:auth-ready', update, { once: true });
+      // 안전망: 1.5초 후에도 안 오면 미로그인 가정으로 1회 실행
+      setTimeout(update, 1500);
+    }
   }
 
   // ============================================

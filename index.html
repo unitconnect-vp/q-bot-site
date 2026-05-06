@@ -61,6 +61,17 @@
     </nav>
 </header>
 <main class="home-wrap" id="qlens-home">
+<!-- ================= INTRO CHIPS ================= -->
+<section class="home-intro" id="home-intro">
+<p class="home-intro__tag">오늘의 부동산·주식, 그리고 한 판.</p>
+<nav class="home-intro__chips" aria-label="주요 메뉴">
+<a class="chip" href="/categories/realestate/">부동산</a>
+<a class="chip" href="/categories/stocks/">주식</a>
+<a class="chip" href="/play/">게임</a>
+<a class="chip" href="/tools/">계산기</a>
+<a class="chip chip--cta" href="/auth/signup/" data-auth-cta>회원가입 →</a>
+</nav>
+</section>
 <!-- ================= HERO FEATURED ================= -->
 <section class="hero-featured" id="home-featured">
 <!-- renderHomeFeatured() -->
@@ -168,12 +179,59 @@
 
 <section class="section">
 <div class="section-head">
+<h2>게임</h2>
+<p>잠깐의 휴식, 길게 가는 집중</p>
+</div>
+<div class="home-games" id="home-games">
+<a href="/play/sudoku/" class="game-card">
+<div class="game-card__title">수도쿠</div>
+<p class="game-card__desc">9×9 클래식. 4단계 난이도, 메모, 힌트, 자동 저장.</p>
+</a>
+<a href="/play/nonogram/" class="game-card">
+<div class="game-card__title">네모네모로직</div>
+<p class="game-card__desc">픽처 크로스워드. 5×5, 10×10, 15×15, 20×20.</p>
+</a>
+<a href="/play/2048/" class="game-card">
+<div class="game-card__title">2048</div>
+<p class="game-card__desc">같은 숫자 타일을 합쳐 2048에 도달. 키보드와 스와이프로 즐기는 클래식.</p>
+</a>
+<a href="/play/wordle/" class="game-card">
+<div class="game-card__title">한국어 워들</div>
+<p class="game-card__desc">하루 한 단어. 받침 있는 두 글자, 자모 단위로 채점하는 일일 챌린지.</p>
+</a>
+<a href="/play/slitherlink/" class="game-card">
+<div class="game-card__title">슬리더링크</div>
+<p class="game-card__desc">5×5 격자. 점을 이어 단일 폐곡선 만드는 일본식 논리 퍼즐.</p>
+</a>
+</div>
+<div class="section-more-wrap">
+<a class="section-more-btn" href="/play/">더보기</a>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head">
+<h2>회원</h2>
+<p>로그인하면 게임 기록·통계가 마이페이지에 저장됩니다</p>
+</div>
+<div class="home-auth" id="home-auth">
+<h3 class="home-auth__title">기록을 남기고, 다음 판으로 이어가세요.</h3>
+<p class="home-auth__desc">로그인하면 5종 게임의 플레이 기록과 최고 시간이 마이페이지에 저장됩니다.</p>
+<div class="home-auth__actions">
+<a class="home-auth__btn home-auth__btn--primary" href="/auth/signup/">회원가입</a>
+<a class="home-auth__btn home-auth__btn--ghost" href="/auth/login/">로그인</a>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-head">
 <h2>계산기</h2>
 <p>글의 숫자를 내 상황에 바로 대입해 보는 도구</p>
 </div>
 <div class="card-grid" id="home-tools"></div>
 <div class="section-more-wrap">
-<a class="section-more-btn" href="/tools/" rel="noopener" target="_blank">더보기</a>
+<a class="section-more-btn" href="/tools/">더보기</a>
 </div>
 </section>
 </main>
@@ -208,6 +266,7 @@
 <ul class="footer-col__list">
 <li><a href="/about/">소개</a></li>
 <li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
 <li><a href="/tools/">계산기</a></li>
 </ul>
 </div>
