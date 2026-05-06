@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """
-Q렌즈 nav/footer 일괄 갱신 (v6.0 — 카테고리 통합 후속).
+Q렌즈 nav/footer 일괄 갱신 스크립트.
 
 배경:
 - VP 결정(2026-05-06): 글 카테고리 폐기, 상단 메뉴 부동산+주식 → 글 통합.
-- 새 nav: 홈 · 글 · 게임 · 계산기
-- footer 카테고리 컬럼 → '바로가기' 컬럼(글·게임·계산기 3링크)으로 축소
+- VP 결정(2026-05-06, 게시판): nav 5번째 항목 '게시판' 추가, footer 바로가기에 '게시판' 추가.
+- 새 nav: 홈 · 글 · 게임 · 계산기 · 게시판
+- 새 footer 바로가기: 글 · 게임 · 계산기 · 게시판
+
+이력:
+- v6.0 (2026-05-06): 카테고리 통합 → 4항목 nav · 바로가기 3링크
+- v6.1 (2026-05-06): 게시판 추가 → 5항목 nav · 바로가기 4링크 (현재)
 
 대상:
 - 저장소 내 모든 공개 *.html (api·node_modules·palettes-fresh·.git 제외)
@@ -21,21 +26,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 EXCLUDE_DIRS = {'.git', 'api', 'node_modules', 'palettes-fresh'}
 
-# 새 표준 nav (header 내부)
+# 새 표준 nav (header 내부) — 5항목
 NEW_NAV = '''<nav class="site-nav">
       <a href="/">홈</a>
       <a href="/articles/">글</a>
       <a href="/play/">게임</a>
       <a href="/tools/">계산기</a>
+      <a href="/board/">게시판</a>
     </nav>'''
 
-# 새 표준 footer 카테고리(→바로가기) 컬럼
+# 새 표준 footer "바로가기" 컬럼 — 4링크
 NEW_FOOTER_COL = '''<div class="footer-col">
 <h4 class="footer-col__title">바로가기</h4>
 <ul class="footer-col__list">
 <li><a href="/articles/">글</a></li>
 <li><a href="/play/">게임</a></li>
 <li><a href="/tools/">계산기</a></li>
+<li><a href="/board/">게시판</a></li>
 </ul>
 </div>'''
 
@@ -45,10 +52,10 @@ NAV_RE = re.compile(
     re.DOTALL,
 )
 
-# footer "카테고리" col block — h4 카테고리 + 그 아래 ul
+# footer "바로가기" col block — h4 바로가기 + 그 아래 ul
 FOOTER_COL_RE = re.compile(
     r'<div class="footer-col">\s*'
-    r'<h4 class="footer-col__title">카테고리</h4>\s*'
+    r'<h4 class="footer-col__title">바로가기</h4>\s*'
     r'<ul class="footer-col__list">.*?</ul>\s*'
     r'</div>',
     re.DOTALL,
@@ -126,7 +133,7 @@ def main():
 
     if untouched and dry_run:
         print()
-        print("Untouched (no site-nav or footer-col category block):")
+        print("Untouched (no site-nav or footer-col 바로가기 block):")
         for p in untouched:
             print(f"  {p.relative_to(ROOT)}")
 

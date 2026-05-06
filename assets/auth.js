@@ -114,6 +114,30 @@
     return { res, data };
   }
 
+  async function authedSend(method, path, body) {
+    let token = getToken();
+    if (!token) return { res: { ok: false, status: 401 }, data: null };
+
+    if (tokenExpiringSoon()) {
+      try { token = await refresh(); }
+      catch (e) { return { res: { ok: false, status: 401 }, data: null }; }
+    }
+
+    const init = {
+      method,
+      credentials: 'include',
+      headers: { 'Authorization': `Bearer ${token}` }
+    };
+    if (body !== undefined) {
+      init.headers['Content-Type'] = 'application/json';
+      init.body = JSON.stringify(body);
+    }
+    const res = await fetch(API + path, init);
+    let data = null;
+    try { data = await res.json(); } catch (e) {}
+    return { res, data };
+  }
+
   // ─────── Public API ───────
 
   async function signup({ email, password, nickname }) {
@@ -193,6 +217,40 @@
     return data;
   }
 
+  // ─────── 게시판 ───────
+
+  async function listPosts(opts) {
+    const o = opts || {};
+    const params = new URLSearchParams();
+    params.set('limit', String(o.limit || 20));
+    params.set('offset', String(o.offset || 0));
+    const { res, data } = await authedGet('/posts?' + params.toString());
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  async function getPost(id) {
+    const { res, data } = await authedGet('/posts/' + encodeURIComponent(id));
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  async function createPost(payload) {
+    const { res, data } = await authedPost('/posts', {
+      title: payload.title,
+      body: payload.body,
+    });
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  async function updatePost(id, patch) {
+    const { res, data } = await authedSend('PATCH', '/posts/' + encodeURIComponent(id), patch);
+    return { ok: res.ok, status: res.status, data };
+  }
+
+  async function deletePost(id) {
+    const { res, data } = await authedSend('DELETE', '/posts/' + encodeURIComponent(id));
+    return { ok: res.ok, status: res.status, data };
+  }
+
   function googleLoginStart() {
     window.location.href = API + '/auth/google';
   }
@@ -253,6 +311,7 @@
     googleLoginStart, isLoggedIn, getToken, clearToken,
     handleOAuthCallback,
     recordGameScore, getGameRecords, getGameStats,
+    listPosts, getPost, createPost, updatePost, deletePost,
     _injectNav: injectNavAuthButton
   };
 

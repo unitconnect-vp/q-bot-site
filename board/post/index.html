@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-04MMSE99PJ');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글 — 게시판 — Q렌즈</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://q-bot.kr/board/post/">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">글</a>
+      <a href="/play/">게임</a>
+      <a href="/tools/">계산기</a>
+      <a href="/board/">게시판</a>
+    </nav>
+</header>
+
+<main class="qa-wrap" style="max-width:720px;">
+<div id="loading" style="text-align:center;color:#888;padding:48px 0;">불러오는 중…</div>
+
+<div id="error" style="display:none;color:#e54848;padding:24px;border:1px solid #ffd0d0;border-radius:4px;background:#fff5f5;font-size:0.9rem;text-align:center;"></div>
+
+<article id="post" style="display:none;">
+<header style="border-bottom:1px solid #f3f4f6;padding-bottom:20px;margin-bottom:24px;">
+<h1 id="post-title" style="font-size:1.5rem;font-weight:700;line-height:1.4;margin:0 0 12px 0;color:#1a1a1a;"></h1>
+<p style="font-size:0.875rem;color:#6b7280;margin:0;">
+<span id="post-nickname" style="font-weight:500;color:#1a1a1a;"></span>
+<span style="color:#d1d5db;margin:0 6px;">·</span>
+<span id="post-date"></span>
+<span id="post-updated" style="color:#9ca3af;"></span>
+</p>
+</header>
+
+<div id="post-body" style="font-size:1rem;line-height:1.8;color:#1a1a1a;white-space:pre-wrap;word-wrap:break-word;"></div>
+
+<div id="owner-actions" style="display:none;margin-top:40px;padding-top:24px;border-top:1px solid #f3f4f6;gap:8px;">
+<button id="edit-btn" class="qa-btn qa-btn--ghost" style="width:auto;padding:0 20px;height:40px;font-size:0.9rem;">수정</button>
+<button id="delete-btn" class="qa-btn qa-btn--ghost" style="width:auto;padding:0 20px;height:40px;font-size:0.9rem;color:#e54848;">삭제</button>
+</div>
+
+<div style="margin-top:32px;padding-top:24px;border-top:1px solid #f3f4f6;">
+<a href="/board/" style="color:#3182f6;text-decoration:none;font-size:0.9rem;font-weight:500;">← 목록으로</a>
+</div>
+</article>
+
+<div id="edit-form-wrap" style="display:none;">
+<h1 class="qa-title">글 수정</h1>
+<form id="edit-form" class="qa-form" novalidate>
+<div class="qa-field">
+<label class="qa-label" for="edit-title">제목</label>
+<input class="qa-input" type="text" id="edit-title" name="title" required minlength="2" maxlength="80">
+</div>
+<div class="qa-field">
+<label class="qa-label" for="edit-body">본문</label>
+<textarea class="qa-input" id="edit-body" name="body" required minlength="5" maxlength="5000" style="height:auto;min-height:280px;padding:14px 16px;line-height:1.7;resize:vertical;"></textarea>
+</div>
+<p class="qa-error" id="edit-error" role="alert"></p>
+<div style="display:flex;gap:12px;">
+<button type="button" id="edit-cancel" class="qa-btn qa-btn--ghost" style="flex:1;">취소</button>
+<button type="submit" id="edit-submit" class="qa-btn qa-btn--primary" style="flex:2;">저장</button>
+</div>
+</form>
+</div>
+</main>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+<li><a href="/board/">게시판</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(async function() {
+  const params = new URLSearchParams(window.location.search);
+  const id = parseInt(params.get('id') || '', 10);
+  const selfUrl = '/board/post/?id=' + (id || '');
+
+  if (!QLensAuth.isLoggedIn()) {
+    window.location.replace('/auth/login/?next=' + encodeURIComponent(selfUrl));
+    return;
+  }
+
+  const $loading = document.getElementById('loading');
+  const $error = document.getElementById('error');
+  const $post = document.getElementById('post');
+  const $editWrap = document.getElementById('edit-form-wrap');
+
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fmtDate(sec) {
+    if (!sec) return '';
+    const d = new Date(sec * 1000);
+    return d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0') +
+           ' ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+  }
+
+  if (!Number.isFinite(id) || id <= 0) {
+    $loading.style.display = 'none';
+    $error.textContent = '잘못된 주소입니다.';
+    $error.style.display = 'block';
+    return;
+  }
+
+  let currentPost = null;
+
+  function renderPost(p) {
+    document.getElementById('post-title').textContent = p.title;
+    document.getElementById('post-nickname').textContent = p.nickname || '익명';
+    document.getElementById('post-date').textContent = fmtDate(p.created_at);
+    if (p.updated_at && p.updated_at > p.created_at + 60) {
+      document.getElementById('post-updated').textContent = ' (수정 ' + fmtDate(p.updated_at) + ')';
+    } else {
+      document.getElementById('post-updated').textContent = '';
+    }
+    document.getElementById('post-body').textContent = p.body;
+
+    const $owner = document.getElementById('owner-actions');
+    if (p.is_owner) {
+      $owner.style.display = 'flex';
+    } else {
+      $owner.style.display = 'none';
+    }
+  }
+
+  async function loadPost() {
+    const r = await QLensAuth.getPost(id);
+    if (r.status === 401) {
+      QLensAuth.clearToken();
+      window.location.replace('/auth/login/?next=' + encodeURIComponent(selfUrl));
+      return;
+    }
+    $loading.style.display = 'none';
+    if (r.status === 404) {
+      $error.textContent = '삭제되었거나 없는 글입니다.';
+      $error.style.display = 'block';
+      return;
+    }
+    if (!r.ok || !r.data) {
+      $error.textContent = '글을 불러오지 못했습니다.';
+      $error.style.display = 'block';
+      return;
+    }
+    currentPost = r.data;
+    renderPost(currentPost);
+    $post.style.display = 'block';
+  }
+
+  document.getElementById('edit-btn').addEventListener('click', function() {
+    if (!currentPost) return;
+    document.getElementById('edit-title').value = currentPost.title;
+    document.getElementById('edit-body').value = currentPost.body;
+    document.getElementById('edit-error').textContent = '';
+    $post.style.display = 'none';
+    $editWrap.style.display = 'block';
+    window.scrollTo(0, 0);
+  });
+
+  document.getElementById('edit-cancel').addEventListener('click', function() {
+    $editWrap.style.display = 'none';
+    $post.style.display = 'block';
+  });
+
+  document.getElementById('edit-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const $err = document.getElementById('edit-error');
+    const $sub = document.getElementById('edit-submit');
+    $err.textContent = '';
+    const title = document.getElementById('edit-title').value.trim();
+    const body = document.getElementById('edit-body').value;
+    if (title.length < 2 || title.length > 80) { $err.textContent = '제목은 2~80자여야 합니다.'; return; }
+    if (body.length < 5 || body.length > 5000) { $err.textContent = '본문은 5~5000자여야 합니다.'; return; }
+
+    $sub.disabled = true;
+    $sub.textContent = '저장 중…';
+    const r = await QLensAuth.updatePost(id, { title, body });
+    if (r.status === 401) {
+      QLensAuth.clearToken();
+      window.location.replace('/auth/login/?next=' + encodeURIComponent(selfUrl));
+      return;
+    }
+    if (!r.ok) {
+      $err.textContent = (r.data && r.data.error) || '저장에 실패했습니다.';
+      $sub.disabled = false;
+      $sub.textContent = '저장';
+      return;
+    }
+    $editWrap.style.display = 'none';
+    $post.style.display = 'block';
+    await loadPost();
+  });
+
+  document.getElementById('delete-btn').addEventListener('click', async function() {
+    if (!confirm('정말 삭제하시겠습니까?')) return;
+    const $btn = this;
+    $btn.disabled = true;
+    $btn.textContent = '삭제 중…';
+    const r = await QLensAuth.deletePost(id);
+    if (r.status === 401) {
+      QLensAuth.clearToken();
+      window.location.replace('/auth/login/?next=' + encodeURIComponent(selfUrl));
+      return;
+    }
+    if (!r.ok) {
+      alert((r.data && r.data.error) || '삭제에 실패했습니다.');
+      $btn.disabled = false;
+      $btn.textContent = '삭제';
+      return;
+    }
+    window.location.replace('/board/');
+  });
+
+  loadPost();
+})();
+</script>
+</body>
+</html>

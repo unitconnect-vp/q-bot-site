@@ -16,6 +16,7 @@ import { hashPassword, verifyPassword, generateToken, hashToken } from './lib/cr
 import { signJWT, verifyJWT } from './lib/jwt.js';
 import { buildGoogleAuthUrl, exchangeCodeForToken, fetchGoogleUserInfo } from './lib/google.js';
 import { sendEmail, emailVerifyTemplate } from './lib/email.js';
+import { listPosts, createPost, getPost, updatePost, deletePost } from './handlers/posts.js';
 
 const ACCESS_TOKEN_TTL = 900;                   // 15분
 const REFRESH_TOKEN_TTL = 30 * 24 * 3600;       // 30일
@@ -33,7 +34,7 @@ function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.has(origin) ? origin : 'https://q-bot.kr';
   return {
     'Access-Control-Allow-Origin': allowed,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',
     'Vary': 'Origin'
@@ -100,6 +101,16 @@ export default {
       if (path === '/games/records' && m === 'POST')        return recordGame(req, env, origin);
       if (path === '/games/records' && m === 'GET')         return listGames(req, env, origin);
       if (path === '/games/stats' && m === 'GET')           return gameStats(req, env, origin);
+
+      if (path === '/posts' && m === 'GET')                 return listPosts(req, env, origin, json, err);
+      if (path === '/posts' && m === 'POST')                return createPost(req, env, origin, json, err);
+      const postIdMatch = path.match(/^\/posts\/(\d+)$/);
+      if (postIdMatch) {
+        const postId = parseInt(postIdMatch[1], 10);
+        if (m === 'GET')    return getPost(req, env, origin, json, err, postId);
+        if (m === 'PATCH')  return updatePost(req, env, origin, json, err, postId);
+        if (m === 'DELETE') return deletePost(req, env, origin, json, err, postId);
+      }
 
       return err('Not found', 404, origin);
     } catch (e) {

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-04MMSE99PJ');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>글 쓰기 — 게시판 — Q렌즈</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://q-bot.kr/board/write/">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">글</a>
+      <a href="/play/">게임</a>
+      <a href="/tools/">계산기</a>
+      <a href="/board/">게시판</a>
+    </nav>
+</header>
+
+<main class="qa-wrap" style="max-width:720px;">
+<h1 class="qa-title">글 쓰기</h1>
+<p class="qa-subtitle">투자·매수 추천, 매물 추천은 자본시장법·공인중개사법에 따라 금지됩니다.</p>
+
+<form id="write-form" class="qa-form" novalidate>
+<div class="qa-field">
+<label class="qa-label" for="title">제목 <span style="color:#9ca3af;font-weight:400;">(2~80자)</span></label>
+<input class="qa-input" type="text" id="title" name="title" required minlength="2" maxlength="80" autocomplete="off">
+</div>
+<div class="qa-field">
+<label class="qa-label" for="body">본문 <span style="color:#9ca3af;font-weight:400;">(5~5000자)</span></label>
+<textarea class="qa-input" id="body" name="body" required minlength="5" maxlength="5000" style="height:auto;min-height:280px;padding:14px 16px;line-height:1.7;resize:vertical;"></textarea>
+</div>
+<p class="qa-error" id="error" role="alert"></p>
+<div style="display:flex;gap:12px;">
+<a class="qa-btn qa-btn--ghost" href="/board/" style="text-decoration:none;flex:1;">취소</a>
+<button class="qa-btn qa-btn--primary" type="submit" id="submit-btn" style="flex:2;">등록</button>
+</div>
+</form>
+</main>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+<li><a href="/board/">게시판</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(function() {
+  if (!QLensAuth.isLoggedIn()) {
+    window.location.replace('/auth/login/?next=' + encodeURIComponent('/board/write/'));
+    return;
+  }
+
+  const $form = document.getElementById('write-form');
+  const $title = document.getElementById('title');
+  const $body = document.getElementById('body');
+  const $error = document.getElementById('error');
+  const $btn = document.getElementById('submit-btn');
+
+  $form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    $error.textContent = '';
+    const title = $title.value.trim();
+    const body = $body.value;
+
+    if (title.length < 2 || title.length > 80) {
+      $error.textContent = '제목은 2~80자여야 합니다.';
+      return;
+    }
+    if (body.length < 5 || body.length > 5000) {
+      $error.textContent = '본문은 5~5000자여야 합니다.';
+      return;
+    }
+
+    $btn.disabled = true;
+    $btn.textContent = '등록 중…';
+    try {
+      const r = await QLensAuth.createPost({ title, body });
+      if (r.status === 401) {
+        QLensAuth.clearToken();
+        window.location.replace('/auth/login/?next=' + encodeURIComponent('/board/write/'));
+        return;
+      }
+      if (!r.ok) {
+        $error.textContent = (r.data && r.data.error) || '등록에 실패했습니다.';
+        $btn.disabled = false;
+        $btn.textContent = '등록';
+        return;
+      }
+      const id = r.data && r.data.id;
+      window.location.replace('/board/post/?id=' + encodeURIComponent(id));
+    } catch (err) {
+      $error.textContent = '네트워크 오류가 발생했습니다.';
+      $btn.disabled = false;
+      $btn.textContent = '등록';
+    }
+  });
+})();
+</script>
+</body>
+</html>

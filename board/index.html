@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-04MMSE99PJ');</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>게시판 — Q렌즈</title>
+<meta name="description" content="Q렌즈 회원 커뮤니티. 부동산·주식·생활 이야기를 나누는 게시판입니다.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://q-bot.kr/board/">
+<link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">글</a>
+      <a href="/play/">게임</a>
+      <a href="/tools/">계산기</a>
+      <a href="/board/">게시판</a>
+    </nav>
+</header>
+
+<main class="feed-wrap">
+<div class="page-head">
+<span class="page-head__label">게시판</span>
+<h1 class="page-head__title">전체 글</h1>
+<p class="page-head__desc">회원이 자유롭게 남기는 글입니다. 투자·매수 추천, 매물 추천은 자본시장법·공인중개사법에 따라 금지됩니다.</p>
+</div>
+
+<div style="display:flex;justify-content:flex-end;margin-bottom:24px;">
+<a id="write-btn" class="qa-btn qa-btn--primary" href="/board/write/" style="display:inline-flex;align-items:center;text-decoration:none;width:auto;">글 쓰기</a>
+</div>
+
+<div id="loading" style="text-align:center;color:#888;padding:48px 0;">불러오는 중…</div>
+
+<div id="empty" style="display:none;text-align:center;color:#888;padding:64px 0;line-height:1.7;">
+아직 글이 없습니다.<br>
+<a href="/board/write/" style="color:#3182f6;text-decoration:none;font-weight:600;">첫 글을 남겨주세요 →</a>
+</div>
+
+<div id="error" style="display:none;color:#e54848;padding:24px;border:1px solid #ffd0d0;border-radius:4px;background:#fff5f5;font-size:0.9rem;"></div>
+
+<ul id="board-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;"></ul>
+
+<div id="loadmore-wrap" style="display:none;text-align:center;margin-top:32px;">
+<button id="loadmore-btn" class="qa-btn qa-btn--ghost" style="width:auto;padding:0 32px;">더 보기</button>
+</div>
+</main>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+<li><a href="/board/">게시판</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(async function() {
+  if (!QLensAuth.isLoggedIn()) {
+    window.location.replace('/auth/login/?next=' + encodeURIComponent('/board/'));
+    return;
+  }
+
+  const PAGE_SIZE = 20;
+  let offset = 0;
+  let total = 0;
+
+  const $loading = document.getElementById('loading');
+  const $empty = document.getElementById('empty');
+  const $error = document.getElementById('error');
+  const $list = document.getElementById('board-list');
+  const $loadmoreWrap = document.getElementById('loadmore-wrap');
+  const $loadmoreBtn = document.getElementById('loadmore-btn');
+
+  function escHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+  function fmtDate(sec) {
+    if (!sec) return '';
+    const d = new Date(sec * 1000);
+    const y = d.getFullYear();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    const hh = String(d.getHours()).padStart(2,'0');
+    const mm = String(d.getMinutes()).padStart(2,'0');
+    return y + '.' + m + '.' + day + ' ' + hh + ':' + mm;
+  }
+
+  function renderItems(posts) {
+    const itemHtml = posts.map(p => (
+      '<li style="border-bottom:1px solid #f3f4f6;padding:18px 0;">' +
+        '<a href="/board/post/?id=' + encodeURIComponent(p.id) + '" style="text-decoration:none;color:inherit;display:block;">' +
+          '<div style="font-size:1.0625rem;font-weight:600;color:#1a1a1a;line-height:1.4;margin-bottom:6px;">' + escHtml(p.title) + '</div>' +
+          (p.excerpt ? '<div style="font-size:0.875rem;color:#6b7280;line-height:1.6;margin-bottom:8px;">' + escHtml(p.excerpt) + '</div>' : '') +
+          '<div style="font-size:0.8125rem;color:#9ca3af;">' + escHtml(p.nickname || '익명') + ' · ' + escHtml(fmtDate(p.created_at)) + '</div>' +
+        '</a>' +
+      '</li>'
+    )).join('');
+    $list.insertAdjacentHTML('beforeend', itemHtml);
+  }
+
+  async function loadPage() {
+    $error.style.display = 'none';
+    const r = await QLensAuth.listPosts({ limit: PAGE_SIZE, offset });
+    if (r.status === 401) {
+      QLensAuth.clearToken();
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/board/'));
+      return;
+    }
+    if (!r.ok || !r.data) {
+      $loading.style.display = 'none';
+      $error.textContent = '목록을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+      $error.style.display = 'block';
+      return;
+    }
+    total = r.data.total || 0;
+    const posts = r.data.posts || [];
+
+    $loading.style.display = 'none';
+
+    if (offset === 0 && posts.length === 0) {
+      $empty.style.display = 'block';
+      return;
+    }
+
+    renderItems(posts);
+    offset += posts.length;
+    $loadmoreWrap.style.display = offset < total ? 'block' : 'none';
+  }
+
+  $loadmoreBtn.addEventListener('click', loadPage);
+  loadPage();
+})();
+</script>
+</body>
+</html>
