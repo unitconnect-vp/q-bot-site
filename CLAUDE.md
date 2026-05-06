@@ -61,6 +61,8 @@ grep -n "키워드" qlens-master-guide-v4_2.md
 - D1 마이그레이션: `.github/workflows/migrate-d1.yml` 수동 트리거
 - Cloudflare cache purge: `cf-purge.yml` (사용자 노출 파일 변경 시 자동)
 
+**발행 머지 정책 (VP 영구 지시, 2026-05-06)**: PO는 feature 브랜치(`claude/*`) 작업 완료 후 **main에 직접 머지·푸시**한다. PR 우회. 검토·수정은 발행 후 별도 commit으로 처리. 머지 전 `verify_footers.py` exit 0 + §9-9 평가어 검증은 필수.
+
 ---
 
 ## 4. 자격증명 처리 원칙
