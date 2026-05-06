@@ -205,6 +205,20 @@ npx wrangler d1 execute qlens-db --remote --command "DELETE FROM users WHERE ema
 
 **단일 출처**: 메인 `index.html`의 `<header class="site-header">…</header>` 및 `<footer class="site-footer">…</footer>` 블록.
 
+**표준 site-header 마크업** (2026-05-06 통일 완료. h1 wrapper 없음 — article body의 h1과 중복 회피):
+```html
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+  <a href="/">홈</a>
+  <a href="/articles/">글</a>
+  <a href="/play/">게임</a>
+  <a href="/tools/">계산기</a>
+</nav>
+</header>
+```
+(style.css `.site-logo`가 직접 폰트·색을 지정하므로 h1 wrapper 없이도 시각 동일.)
+
 **대상 디렉토리**:
 ```
 articles/*/index.html      categories/*/index.html
@@ -227,6 +241,7 @@ python3 .github/scripts/verify_footers.py    # exit 0 + 누출 0건이어야 함
 **과거 사례**:
 - 2026-05-06 commit `f4a277c` — 86페이지 일괄 fix. publisher v5.4가 옛 footer를 박아 발행한 흔적이 articles 26 + categories 13 + tools 12 + authors 14 + play 5 + 기타에 남아있었음.
 - 2026-05-06 카테고리 통합 commit — 89페이지 nav/footer 일괄 갱신(`.github/scripts/batch_nav_footer_v6.py`). 부동산·주식 분리 메뉴 제거, footer '바로가기' 3링크로 축소. 같은 패턴 회귀 시 해당 스크립트 재사용 가능.
+- 2026-05-06 site-header 통일 commit — 89페이지 site-logo 표준화(`.github/scripts/unify_site_header.py`). 4가지 변종(h1 유무·속성 순서) → 단일(`<a class="site-logo" href="/">Q<span>-</span>Lens</a>`). article 28페이지의 h1 중복 해소. 회귀 시 재사용 가능.
 
 ### 6-6. GitHub Contents API로 단일 파일 commit (publisher 내부 패턴)
 
