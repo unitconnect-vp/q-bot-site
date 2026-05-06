@@ -15,7 +15,7 @@ export async function sendEmail({ to, subject, html, env }) {
     },
     body: JSON.stringify({
       // ⚠️ from 도메인은 Resend에서 도메인 인증 후 사용 가능. 인증 전에는 onboarding@resend.dev 사용.
-      from: 'Q렌즈 <noreply@q-bot.kr>',
+      from: 'Q렌즈 <noreply@send.q-bot.kr>',
       to,
       subject,
       html
