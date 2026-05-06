@@ -2,7 +2,7 @@
 
 > 이 파일은 **저장소 루트**(`unitconnect-vp/q-bot-site/CLAUDE.md`)에 둡니다.
 > Claude Code는 세션 시작 시 이 파일을 자동으로 컨텍스트에 로드합니다.
-> 마지막 갱신: 2026-05-06 (footer 표준 단일 출처 + 일괄 처리 원칙 보강)
+> 마지막 갱신: 2026-05-06 (글 카테고리 통합 — 부동산·주식 → '글' 단일 메뉴, footer '바로가기' 3링크)
 
 ---
 
@@ -37,7 +37,8 @@ grep -n "키워드" qlens-master-guide-v4_2.md
 - **Q렌즈 v2.0**: 부동산·주식 정보 + 캐주얼 게임 + 회원 커뮤니티(Phase 2)
 - **태그라인**: `오늘의 부동산·주식, 그리고 한 판`
 - **3축**: 수익화 · 체류 · 반복방문
-- **nav**: 홈 · 부동산 · 주식 · 게임 · 계산기
+- **nav**: 홈 · 글 · 게임 · 계산기 (2026-05-06 통합. 부동산·주식 분리 메뉴 폐기)
+- **footer 바로가기 컬럼**: 글(/articles/) · 게임(/play/) · 계산기(/tools/) 3링크
 
 ---
 
@@ -87,35 +88,35 @@ grep -n "키워드" qlens-master-guide-v4_2.md
 
 ### 5-1. 즉시 처리 가능 (PO 단독, VP 추가 결정 불필요)
 
-#### ▶ 트랙 E — Publisher v5.8 작성
+#### ▶ 트랙 E — Publisher v6.0 작성 (2026-05-06 갱신)
 
-**현재**: `qlens_gh_publisher.py` v5.4 (main) + v5.5 backup. v5.7 changelog만 작성됨.
-**다음 발행 전 v5.8 필수.**
+**현재**: `qlens_gh_publisher.py` v5.4 (VP 로컬, repo 미포함) + v5.5 backup. v5.7 changelog만 작성됨.
+**다음 발행 전 v6.0 필수.** v5.8 계획은 카테고리 통합 결정으로 무효화됨.
 
 추가할 기능:
-1. 새 nav 자동 주입 (홈·부동산·주식·게임·계산기)
+1. **새 nav 자동 주입** (4항목): `홈 · 글(/articles/) · 게임(/play/) · 계산기(/tools/)`
 2. 새 tagline 자동 주입 (`오늘의 부동산·주식, 그리고 한 판`)
-3. `archived: true` 카테고리 발행 차단 (카테고리 검증 시 `data/categories.json` 조회)
+3. ~~`archived: true` 카테고리 발행 차단~~ → 카테고리 통합으로 발행 차단 로직 의미 약화. `briefing.category`는 데이터 메타로 유지하되 사용자 노출 안 함.
 4. `author` 필드 표준화 — `"Q렌즈"` 또는 omit. 일반 명사 author 금지 규칙은 v4.1에서 무효화됨.
-5. 본문 hero 메타 줄에서 작성자명 제거 (카테고리·날짜만 표시)
-6. **표준 footer 단일 출처 주입** — 메인 `index.html`의 `<footer class="site-footer">` 블록을 그대로 차용. 옛 8개 카테고리(industry/corporate/bonds/leadership/method/career/ai/sports) 박지 않음. 템플릿은 `articles/_template.html` 참조.
-7. **footer 검증 자동 실행** — 발행 직후 `python3 .github/scripts/verify_footers.py` 호출. archived 누출 1건이라도 발견 시 발행 차단(exit 1).
+5. 본문 hero 메타 줄에서 작성자명·카테고리 라벨 모두 제거 (날짜·읽기시간만 표시)
+6. **표준 footer 단일 출처 주입** — 메인 `index.html`의 `<footer class="site-footer">` 블록을 그대로 차용. footer 카테고리 컬럼 → '바로가기' 컬럼(글·게임·계산기 3링크)으로 변경됨. 옛 8개 카테고리, /categories/* 링크 일체 박지 않음. 템플릿은 `articles/_template.html` 참조 (이미 신 표준으로 갱신됨).
+7. **footer 검증 자동 실행** — 발행 직후 `python3 .github/scripts/verify_footers.py` 호출. v6.0부터 `/categories/*` 링크 1건이라도 footer에 들어가면 발행 차단(exit 1).
 
 작업 단계:
 ```bash
 cp qlens_gh_publisher.py qlens_gh_publisher_v5_4_backup.py
-# 편집 → v5.8
-python -c "import qlens_gh_publisher; print(qlens_gh_publisher.VERSION)"  # "5.8" 확인
+# 편집 → v6.0
+python -c "import qlens_gh_publisher; print(qlens_gh_publisher.VERSION)"  # "6.0" 확인
 # 더미 briefing으로 dry-run (실제 commit 없이 HTML만 출력)
 ```
 
 산출물 검증 체크포인트:
-- nav HTML이 `홈·부동산·주식·게임·계산기` 5항목인가
+- nav HTML이 `홈·글·게임·계산기` 4항목인가 (부동산·주식 분리 항목 없음)
 - footer tagline이 `오늘의 부동산·주식, 그리고 한 판`인가
-- `category="industry"` 같은 archived 카테고리에 발행 시 즉시 중단되는가
 - author 미지정 시 hero 메타 줄에 작성자명이 안 나오는가
-- **footer 카테고리 컬럼이 메인 `index.html`과 글자 단위로 동일한가** (8항목: 부동산/주식·투자/게임/계산기/경제·정책/사회·이슈/데이터·리서치/전체 보기→)
-- **`verify_footers.py` exit 0인가** (archived 누출 0건)
+- **footer '바로가기' 컬럼이 메인 `index.html`과 글자 단위로 동일한가** (3항목: 글/게임/계산기. h4 제목은 `바로가기`)
+- footer·hero·본문 어디에도 `/categories/*` 링크가 없는가
+- **`verify_footers.py` exit 0인가** (`/categories/*` 누출 0건)
 
 #### ▶ 트랙 C Phase 4 — 게임-회원 통합 후속
 
@@ -157,7 +158,7 @@ python -c "import qlens_gh_publisher; print(qlens_gh_publisher.VERSION)"  # "5.8
 briefing = {
     "slug":       "apt-price-2026-q1",   # 영문 소문자·하이픈만
     "title":      "20~45자 제목",
-    "category":   "realestate",          # realestate/stocks 메인, economy/data/society visible archive
+    "category":   "realestate",          # 데이터 메타로만 보존(사용자 노출 X). v6.0부터 nav/footer/hero에 카테고리 링크 미노출.
     "author":     "Q렌즈",                # v4.1 표준 또는 omit
     "date":       "2026-05-15",
     "read_time":  "약 8분",
@@ -223,7 +224,9 @@ python3 .github/scripts/verify_footers.py    # exit 0 + 누출 0건이어야 함
 # 5. _template.html도 같이 갱신 (다음 발행 회귀 방지)
 ```
 
-**과거 사례**: 2026-05-06 commit `f4a277c` — 86페이지 일괄 fix. publisher v5.4가 옛 footer를 박아 발행한 흔적이 articles 26 + categories 13 + tools 12 + authors 14 + play 5 + 기타에 남아있었음.
+**과거 사례**:
+- 2026-05-06 commit `f4a277c` — 86페이지 일괄 fix. publisher v5.4가 옛 footer를 박아 발행한 흔적이 articles 26 + categories 13 + tools 12 + authors 14 + play 5 + 기타에 남아있었음.
+- 2026-05-06 카테고리 통합 commit — 89페이지 nav/footer 일괄 갱신(`.github/scripts/batch_nav_footer_v6.py`). 부동산·주식 분리 메뉴 제거, footer '바로가기' 3링크로 축소. 같은 패턴 회귀 시 해당 스크립트 재사용 가능.
 
 ### 6-6. GitHub Contents API로 단일 파일 commit (publisher 내부 패턴)
 
@@ -281,7 +284,7 @@ font-family: 'Pretendard Variable', sans-serif;
 q-bot-site/
 ├── CLAUDE.md                         # 이 파일
 ├── qlens-master-guide-v4_2.md        # 단일 마스터 가이드
-├── qlens_gh_publisher.py             # v5.4 (트랙 E에서 v5.8로 갱신 예정)
+├── qlens_gh_publisher.py             # VP 로컬 (repo 미포함). v5.4 → 트랙 E v6.0 갱신 예정
 ├── index.html                        # 메인
 ├── articles/                         # 글 본문 + index.html 목록
 │   ├── _template.html                # publisher 템플릿 (footer 단일 출처 동기화 필수)
@@ -290,9 +293,9 @@ q-bot-site/
 ├── play/                             # 게임 5종 + 허브 index.html
 ├── auth/                             # signup, login, callback, verified
 ├── mypage/
-├── categories/{id}/                  # 카테고리 페이지
+├── categories/{id}/                  # 옛 카테고리 페이지 (v6.0 통합 후 사용자 nav에서 미노출. 인바운드 링크 보존 차원에서 유지)
 ├── data/
-│   └── categories.json               # archived/featured 필드 적용 완료
+│   └── categories.json               # 데이터 메타로만 보존 (사용자 노출 안 함)
 ├── assets/
 │   ├── style.css
 │   ├── site.js                       # archived !== true 필터 헬퍼 적용
@@ -311,7 +314,8 @@ q-bot-site/
     │   └── cf-purge.yml              # 자동 cache purge
     └── scripts/
         ├── publish_scheduled.py      # 예약 발행 후처리 (noindex 제거 등)
-        └── verify_footers.py         # footer 일관성 검증 (archived 누출 차단)
+        ├── verify_footers.py         # footer 일관성 검증 (v6.0: /categories/* 누출 차단)
+        └── batch_nav_footer_v6.py    # nav/footer 일괄 패치 스크립트 (회귀 시 재사용)
 ```
 
 ---
@@ -356,7 +360,7 @@ python3 .github/scripts/verify_footers.py --quiet
 
 ## 12. 알려진 이슈·주의사항
 
-- **publisher v5.4 footer 결함**: 옛 8개 카테고리(industry/corporate/bonds/leadership/method/career/ai/sports)를 footer에 박아 발행. 86페이지 일괄 fix 후속 발생(commit f4a277c, 2026-05-06). v5.8에서 표준 footer 단일 출처 주입 + `verify_footers.py` 자동 호출 채택해야 회귀 차단됨. 그 전까지 publisher가 새 글 발행하면 옛 footer가 다시 박힐 수 있으므로 발행 직후 매번 `python3 .github/scripts/verify_footers.py` 실행.
+- **publisher v5.4 footer 결함**: 옛 8개 카테고리(industry/corporate/bonds/leadership/method/career/ai/sports)를 footer에 박아 발행. 86페이지 일괄 fix 후속 발생(commit f4a277c, 2026-05-06). v6.0에서 새 표준 footer(바로가기 3링크) 단일 출처 주입 + `verify_footers.py` 자동 호출 채택해야 회귀 차단됨. 그 전까지 publisher가 새 글 발행하면 옛 5항목 nav·옛 footer가 다시 박힐 수 있으므로 **발행 직후 매번** `python3 .github/scripts/verify_footers.py` 실행 + 필요 시 `python3 .github/scripts/batch_nav_footer_v6.py` 재실행.
 - **publisher orphan cleanup**: v5.2부터 `_find_container_bounds()`/`_sweep_orphans_after_container()`/`_verify_no_orphans()` 자체 self-heal. 수동 청소 불필요.
 - **Python 모듈 캐시**: 같은 세션에서 publisher 재로드 시 `sys.modules`에서 `"qlens"` 포함 키 제거 후 import.
 - **Cloudflare DNS**: proxied=False (회색 구름) 의도적. GitHub Pages 직접 IP 사용. 변경 금지.
