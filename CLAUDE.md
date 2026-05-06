@@ -2,7 +2,7 @@
 
 > 이 파일은 **저장소 루트**(`unitconnect-vp/q-bot-site/CLAUDE.md`)에 둡니다.
 > Claude Code는 세션 시작 시 이 파일을 자동으로 컨텍스트에 로드합니다.
-> 마지막 갱신: 2026-05-06
+> 마지막 갱신: 2026-05-06 (footer 표준 단일 출처 + 일괄 처리 원칙 보강)
 
 ---
 
@@ -96,6 +96,8 @@ grep -n "키워드" qlens-master-guide-v4_2.md
 3. `archived: true` 카테고리 발행 차단 (카테고리 검증 시 `data/categories.json` 조회)
 4. `author` 필드 표준화 — `"Q렌즈"` 또는 omit. 일반 명사 author 금지 규칙은 v4.1에서 무효화됨.
 5. 본문 hero 메타 줄에서 작성자명 제거 (카테고리·날짜만 표시)
+6. **표준 footer 단일 출처 주입** — 메인 `index.html`의 `<footer class="site-footer">` 블록을 그대로 차용. 옛 8개 카테고리(industry/corporate/bonds/leadership/method/career/ai/sports) 박지 않음. 템플릿은 `articles/_template.html` 참조.
+7. **footer 검증 자동 실행** — 발행 직후 `python3 .github/scripts/verify_footers.py` 호출. archived 누출 1건이라도 발견 시 발행 차단(exit 1).
 
 작업 단계:
 ```bash
@@ -110,6 +112,8 @@ python -c "import qlens_gh_publisher; print(qlens_gh_publisher.VERSION)"  # "5.8
 - footer tagline이 `오늘의 부동산·주식, 그리고 한 판`인가
 - `category="industry"` 같은 archived 카테고리에 발행 시 즉시 중단되는가
 - author 미지정 시 hero 메타 줄에 작성자명이 안 나오는가
+- **footer 카테고리 컬럼이 메인 `index.html`과 글자 단위로 동일한가** (8항목: 부동산/주식·투자/게임/계산기/경제·정책/사회·이슈/데이터·리서치/전체 보기→)
+- **`verify_footers.py` exit 0인가** (archived 누출 0건)
 
 #### ▶ 트랙 C Phase 4 — 게임-회원 통합 후속
 
@@ -192,7 +196,34 @@ npx wrangler d1 execute qlens-db --remote --command "SELECT count(*) FROM users;
 npx wrangler d1 execute qlens-db --remote --command "DELETE FROM users WHERE email LIKE '%test%';"
 ```
 
-### 6-5. GitHub Contents API로 단일 파일 commit (publisher 내부 패턴)
+### 6-5. footer/nav 일괄 변경 (사이트 전역)
+
+**핵심 원칙**: 허브 페이지(`index.html`, `tools/index.html` 등)만 손대면 publisher가 발행한 80여 페이지가 옛 마크업으로 남는다. 반드시 모든 발행물을 같이 처리한다.
+
+**단일 출처**: 메인 `index.html`의 `<header class="site-header">…</header>` 및 `<footer class="site-footer">…</footer>` 블록.
+
+**대상 디렉토리**:
+```
+articles/*/index.html      categories/*/index.html
+tools/*/index.html          authors/*/index.html
+play/*/index.html           auth/{signup,login,callback,verified}/index.html
+mypage/index.html           {about,contact,privacy,terms}/index.html
+articles/_template.html     test-*.html
+```
+
+**작업 패턴**:
+```bash
+# 1. 메인 index.html에서 표준 마크업 확정
+# 2. 일괄 교체 스크립트 (정규식: <footer class="site-footer">.*?</footer>)
+# 3. footer 없는 페이지(play 게임·auth/callback)는 </main> 직후 삽입
+# 4. 검증
+python3 .github/scripts/verify_footers.py    # exit 0 + 누출 0건이어야 함
+# 5. _template.html도 같이 갱신 (다음 발행 회귀 방지)
+```
+
+**과거 사례**: 2026-05-06 commit `f4a277c` — 86페이지 일괄 fix. publisher v5.4가 옛 footer를 박아 발행한 흔적이 articles 26 + categories 13 + tools 12 + authors 14 + play 5 + 기타에 남아있었음.
+
+### 6-6. GitHub Contents API로 단일 파일 commit (publisher 내부 패턴)
 
 ```python
 # 기존 파일을 PUT으로 갱신할 때는 반드시 SHA 먼저 GET
@@ -222,6 +253,7 @@ requests.put(url, headers=headers, json=payload)
 | 8 | 투자·매수 추천, 매물 추천 금지 (자본시장법·공인중개사법) | §9-9 |
 | 9 | 페르소나 폐기 — `author = "Q렌즈"` 또는 omit. 옛 author 표기는 보존. | v4.1 |
 | 10 | meta_desc 130~140자 — `len()`로 반드시 검증 | §10-2 |
+| 11 | **사이트 전역 마크업 변경(footer/nav/header) 시 허브뿐 아니라 모든 발행물 일괄 처리.** publisher가 옛 마크업을 박아 발행한 잔존 페이지 검증 필수 (`verify_footers.py`) | 2026-05-06 commit f4a277c 회고 |
 
 ---
 
@@ -250,6 +282,7 @@ q-bot-site/
 ├── qlens_gh_publisher.py             # v5.4 (트랙 E에서 v5.8로 갱신 예정)
 ├── index.html                        # 메인
 ├── articles/                         # 글 본문 + index.html 목록
+│   ├── _template.html                # publisher 템플릿 (footer 단일 출처 동기화 필수)
 │   └── _drafts/{slug}/               # 예약 발행 (publish_at.txt + meta.json + index.html + thumb.webp)
 ├── tools/                            # 계산기 12종 + 허브 index.html
 ├── play/                             # 게임 5종 + 허브 index.html
@@ -275,7 +308,8 @@ q-bot-site/
     │   ├── migrate-d1.yml            # 수동 트리거
     │   └── cf-purge.yml              # 자동 cache purge
     └── scripts/
-        └── publish_drafts.py
+        ├── publish_scheduled.py      # 예약 발행 후처리 (noindex 제거 등)
+        └── verify_footers.py         # footer 일관성 검증 (archived 누출 차단)
 ```
 
 ---
@@ -296,7 +330,10 @@ grep -A 30 "다음 작업 큐" qlens-master-guide-v4_2.md
 # 4. 현재 publisher 버전 확인
 grep "VERSION" qlens_gh_publisher.py
 
-# 5. VP가 지시한 작업 확인 후 §5 작업 큐 우선순위로 착수
+# 5. footer 일관성 빠른 점검 (publisher 회귀 감지)
+python3 .github/scripts/verify_footers.py --quiet
+
+# 6. VP가 지시한 작업 확인 후 §5 작업 큐 우선순위로 착수
 ```
 
 ---
@@ -317,6 +354,7 @@ grep "VERSION" qlens_gh_publisher.py
 
 ## 12. 알려진 이슈·주의사항
 
+- **publisher v5.4 footer 결함**: 옛 8개 카테고리(industry/corporate/bonds/leadership/method/career/ai/sports)를 footer에 박아 발행. 86페이지 일괄 fix 후속 발생(commit f4a277c, 2026-05-06). v5.8에서 표준 footer 단일 출처 주입 + `verify_footers.py` 자동 호출 채택해야 회귀 차단됨. 그 전까지 publisher가 새 글 발행하면 옛 footer가 다시 박힐 수 있으므로 발행 직후 매번 `python3 .github/scripts/verify_footers.py` 실행.
 - **publisher orphan cleanup**: v5.2부터 `_find_container_bounds()`/`_sweep_orphans_after_container()`/`_verify_no_orphans()` 자체 self-heal. 수동 청소 불필요.
 - **Python 모듈 캐시**: 같은 세션에서 publisher 재로드 시 `sys.modules`에서 `"qlens"` 포함 키 제거 후 import.
 - **Cloudflare DNS**: proxied=False (회색 구름) 의도적. GitHub Pages 직접 IP 사용. 변경 금지.
