@@ -399,7 +399,7 @@ async function issueTokens(user, env, origin, req, redirect) {
 // ─────── 게임 기록 ───────
 
 const VALID_GAMES = ['sudoku', 'nonogram', '2048', 'wordle', 'slitherlink'];
-const VALID_DIFFICULTIES = ['easy', 'medium', 'hard'];
+const VALID_DIFFICULTIES = ['easy', 'medium', 'hard', 'expert'];
 
 async function requireUser(req, env) {
   const auth = req.headers.get('Authorization');

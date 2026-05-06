@@ -423,8 +423,8 @@
     renderRow(guesses.length - 1, guessJamo, judgeArr);
     $input.value = '';
     const isCorrect = judgeArr.every(j => j === 'correct');
-    if (isCorrect){ finished = true; won = true; updateStats(true, guesses.length); }
-    else if (guesses.length >= MAX_GUESSES){ finished = true; won = false; updateStats(false, 0); }
+    if (isCorrect){ finished = true; won = true; updateStats(true, guesses.length); if (typeof QLensAuth !== 'undefined') QLensAuth.recordGameScore({ game_type: 'wordle', completed: true }); }
+    else if (guesses.length >= MAX_GUESSES){ finished = true; won = false; updateStats(false, 0); if (typeof QLensAuth !== 'undefined') QLensAuth.recordGameScore({ game_type: 'wordle', completed: false }); }
     saveDaily({ date: getKSTDateString(), idx: dailyIdx, guesses: guesses.map(g => g.word), finished, won });
     if (finished){
       $input.disabled = true; $submit.disabled = true;

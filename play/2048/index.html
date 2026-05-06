@@ -426,6 +426,10 @@
       for (let r = 0; r < SIZE && !won; r++)
         for (let c = 0; c < SIZE && !won; c++)
           if (board[r][c] >= 2048) won = true;
+      // [트랙 C] 첫 2048 달성 시 1회만 기록
+      if (won && typeof QLensAuth !== 'undefined') {
+        QLensAuth.recordGameScore({ game_type: '2048', completed: true });
+      }
     }
     if (!canMove()) gameOver = true;
 

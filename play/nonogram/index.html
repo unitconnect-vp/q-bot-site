@@ -881,6 +881,14 @@
     state.finished = true;
     stopTimer();
     showWin();
+    // [트랙 C] 게임 기록
+    if (typeof QLensAuth !== 'undefined') {
+      QLensAuth.recordGameScore({
+        game_type: 'nonogram',
+        completion_time_sec: Math.floor(getElapsed() / 1000),
+        completed: true
+      });
+    }
     return true;
   }
 

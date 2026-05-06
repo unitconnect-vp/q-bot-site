@@ -677,6 +677,15 @@
     state.finished = true;
     stopTimer();
     showWin();
+    // [트랙 C] 게임 기록 (로그인 시에만 D1 저장)
+    if (typeof QLensAuth !== 'undefined') {
+      QLensAuth.recordGameScore({
+        game_type: 'sudoku',
+        difficulty: state.diff,
+        completion_time_sec: Math.floor(getElapsed() / 1000),
+        completed: true
+      });
+    }
     return true;
   }
 

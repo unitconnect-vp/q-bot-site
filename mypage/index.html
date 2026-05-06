@@ -51,9 +51,14 @@
       </div>
     </div>
 
-    <div style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
-      <h2 style="font-size:1rem;font-weight:600;margin:0 0 12px 0;color:#1a1a1a;">게임 기록</h2>
-      <p style="font-size:0.875rem;color:#888;margin:0;">곧 제공됩니다 — 수도쿠·네모네모로직·워들 등의 점수가 여기에 누적됩니다.</p>
+    <div id="game-stats-section" style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
+      <h2 style="font-size:1rem;font-weight:600;margin:0 0 16px 0;color:#1a1a1a;">게임 기록</h2>
+      <div id="game-stats-loading" style="font-size:0.875rem;color:#888;">불러오는 중…</div>
+      <div id="game-stats-empty" style="font-size:0.875rem;color:#888;display:none;line-height:1.6;">
+        아직 기록이 없습니다.
+        <a href="/play/" style="color:#3182f6;text-decoration:none;font-weight:600;">게임하러 가기 →</a>
+      </div>
+      <div id="game-stats-grid" style="display:none;gap:12px;"></div>
     </div>
 
     <button class="qa-btn qa-btn--ghost" id="logout-btn" style="width:100%;">로그아웃</button>
@@ -100,6 +105,50 @@
 
   document.getElementById('loading').style.display = 'none';
   document.getElementById('content').style.display = 'block';
+
+  // ─────── 게임 기록 통계 렌더 ───────
+  const GAME_LABELS = {
+    sudoku: '수도쿠',
+    nonogram: '네모네모로직',
+    '2048': '2048',
+    wordle: '한국어 워들',
+    slitherlink: '슬리더링크'
+  };
+  function fmtTime(sec) {
+    if (sec == null) return '—';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }
+  (async function renderGameStats() {
+    const data = await QLensAuth.getGameStats();
+    const loading = document.getElementById('game-stats-loading');
+    const empty = document.getElementById('game-stats-empty');
+    const grid = document.getElementById('game-stats-grid');
+    loading.style.display = 'none';
+
+    if (!data || !data.stats || data.stats.length === 0) {
+      empty.style.display = 'block';
+      return;
+    }
+    grid.style.display = 'grid';
+    grid.style.gridTemplateColumns = 'repeat(auto-fill, minmax(150px, 1fr))';
+
+    for (const s of data.stats) {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:#fff;border:1px solid #e5e8eb;border-radius:4px;padding:14px;';
+      const completions = s.completions || 0;
+      const bestRow = s.best_time != null
+        ? '<div style="display:flex;justify-content:space-between;font-size:0.8125rem;color:#3182f6;font-weight:600;"><span>최고 시간</span><span>' + fmtTime(s.best_time) + '</span></div>'
+        : '';
+      card.innerHTML =
+        '<div style="font-size:0.875rem;font-weight:600;color:#1a1a1a;margin-bottom:8px;">' + (GAME_LABELS[s.game_type] || s.game_type) + '</div>' +
+        '<div style="display:flex;justify-content:space-between;font-size:0.8125rem;color:#666;margin-bottom:4px;"><span>플레이</span><span>' + s.total_plays + '회</span></div>' +
+        '<div style="display:flex;justify-content:space-between;font-size:0.8125rem;color:#666;margin-bottom:' + (bestRow ? '4px' : '0') + ';"><span>완료</span><span>' + completions + '회</span></div>' +
+        bestRow;
+      grid.appendChild(card);
+    }
+  })();
 
   document.getElementById('logout-btn').addEventListener('click', async function() {
     if (!confirm('로그아웃하시겠습니까?')) return;

@@ -807,9 +807,18 @@
       return;
     }
 
+    const _elapsedSec = startTime ? Math.floor((Date.now() - startTime) / 1000) : null;
     solved = true;
     stopTimer();
     setStatus('완성! 단일 폐곡선이 만들어졌습니다', 'ok');
+    // [트랙 C] 게임 기록
+    if (typeof QLensAuth !== 'undefined') {
+      QLensAuth.recordGameScore({
+        game_type: 'slitherlink',
+        completion_time_sec: _elapsedSec,
+        completed: true
+      });
+    }
     setTimeout(showWinModal, 600);
   }
 
