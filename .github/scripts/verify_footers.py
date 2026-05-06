@@ -3,8 +3,10 @@
 Q렌즈 footer 일관성 검증 스크립트.
 
 용도:
-- 모든 공개 페이지의 footer 블록을 검사해 archived 카테고리 누출과
-  footer-tagline 누락을 보고한다.
+- 모든 공개 페이지의 footer 블록을 검사해
+  (1) /categories/* 링크 누출 — v6.0 카테고리 통합 후 footer에 남으면 안 됨
+  (2) footer-tagline 누락
+  을 보고한다.
 - publisher 발행 직후 / CI / 수동 점검에서 사용.
 - 누출 발견 시 exit(1).
 
@@ -13,22 +15,16 @@ Q렌즈 footer 일관성 검증 스크립트.
   python3 .github/scripts/verify_footers.py --quiet   # 누출 없으면 침묵
 
 배경:
-  publisher v5.4가 옛 8개 카테고리(archived 포함)를 footer에 박아 발행해
-  86페이지 일괄 fix 후속이 발생함(commit f4a277c, 2026-05-06).
-  v5.8에서 표준 footer 단일 출처 주입 채택 후에도 회귀 방지용으로 유지.
+  - publisher v5.4가 옛 8개 카테고리(archived 포함)를 footer에 박아 발행해
+    86페이지 일괄 fix 후속이 발생함(commit f4a277c, 2026-05-06).
+  - 2026-05-06 VP 결정으로 글 카테고리 통합. footer는 글·게임·계산기 3링크.
+    /categories/* 링크가 footer에 남으면 통합 회귀로 간주(FAIL).
 """
 import re
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-
-# data/categories.json에서 archived:true인 카테고리 ID
-ARCHIVED_CATEGORIES = {
-    'industry', 'corporate', 'bonds',
-    'leadership', 'method', 'career',
-    'ai', 'sports',
-}
 
 # footer 검증 제외 (비공개 디자인 시안·CI 산출물·서드파티 등)
 EXCLUDE_DIRS = {'.git', 'api', 'node_modules', 'palettes-fresh'}
@@ -37,9 +33,8 @@ FOOTER_BLOCK_RE = re.compile(
     r'<footer\b[^>]*class="[^"]*site-footer[^"]*"[^>]*>(.*?)</footer>',
     re.DOTALL,
 )
-ARCHIVED_LINK_RE = re.compile(
-    r'/categories/(' + '|'.join(ARCHIVED_CATEGORIES) + r')/'
-)
+# v6.0: 글 카테고리 통합 후 footer에 /categories/* 링크 일체 금지
+CATEGORY_LINK_RE = re.compile(r'/categories/[^"\'>\s]*')
 TAGLINE_RE = re.compile(r'class="footer-tagline"')
 
 
@@ -75,9 +70,9 @@ def main():
             continue
 
         footer_html = m.group(1)
-        archived_hits = ARCHIVED_LINK_RE.findall(footer_html)
-        if archived_hits:
-            leaks.append((path, len(archived_hits), sorted(set(archived_hits))))
+        category_hits = CATEGORY_LINK_RE.findall(footer_html)
+        if category_hits:
+            leaks.append((path, len(category_hits), sorted(set(category_hits))))
 
         if not TAGLINE_RE.search(footer_html):
             missing_tagline.append(path)
@@ -88,13 +83,13 @@ def main():
         return 0
 
     print(f"Footer audit — {pages_checked} pages checked")
-    print(f"  archived leaks       : {len(leaks)}")
+    print(f"  category link leaks  : {len(leaks)}")
     print(f"  missing tagline      : {len(missing_tagline)}")
     print(f"  missing footer block : {len(missing_footer)}")
     print()
 
     if leaks:
-        print("ARCHIVED CATEGORY LEAKS in footer:")
+        print("CATEGORY LINK LEAKS in footer (v6.0 통합 후 금지):")
         for path, count, cats in leaks:
             rel = path.relative_to(ROOT)
             print(f"  {rel}  ({count} links: {', '.join(cats)})")
@@ -113,8 +108,8 @@ def main():
         print()
 
     if leaks:
-        print("FAIL — archived 카테고리 footer 누출. publisher v5.4의 옛 footer가")
-        print("       박혀 있을 가능성. 표준 footer로 재발행 또는 일괄 패치 필요.")
+        print("FAIL — footer에 /categories/* 링크 누출. v6.0 카테고리 통합 후")
+        print("       footer는 글·게임·계산기 3링크만 허용. 일괄 패치 필요.")
         return 1
 
     if missing_tagline or missing_footer:
