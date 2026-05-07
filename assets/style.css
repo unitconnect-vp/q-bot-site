@@ -1,14 +1,13 @@
 /* ============================================================
- * Q-Lens Stylesheet v5.4 (2026-05-05) — 가독성 개편
+ * Q-Lens Stylesheet v6.0 (2026-05-07) — 컬러 재설계 (Editorial Warm)
+ *   - 배경: 순백 → 따뜻한 오프화이트 #fbfaf6 (종이 질감)
+ *   - 헤더: 검정 → 흰색 + 하단 보더 (모던 매체 표준 톤)
+ *   - 푸터: 순흑 → 따뜻한 다크 네이비 #14172a
+ *   - accent: Toss 블루 #3182f6 → 에디토리얼 인디고 #1e3a8a
+ *   - 잉크: 순흑 → 따뜻한 슬레이트 #1a1d29 (가독성·고급감 향상)
+ * v5.4 (2026-05-05) — 가독성 개편
  *   - body font-size 16px → 17px, line-height 1.6 → 1.75
- *   - 회색 토큰 제거: --ink-muted/--ink-soft를 슬레이트 검정으로
- *   - footer 회색 → 밝은 톤(d1d5db)으로 가독성 강화
- * Q-Lens Stylesheet v5.0 (2026-04-18)
- * - 전면 흰색 배경 (토스피드 스타일)
- * - Pretendard 단일 폰트
- * - 4그룹 썸네일 팔레트 (Deep/Coast/Marine/Sunset)
- * - 4px 굵은 섹션 구분선 + 블루 포인트
- * - Claude 기본 팔레트 완전 제거
+ * v5.0 (2026-04-18) — Pretendard 단일 폰트, Claude 기본 팔레트 제거
  * ============================================================ */
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
@@ -19,10 +18,10 @@ body {
   font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
     system-ui, Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
     'Noto Sans KR', 'Malgun Gothic', sans-serif;
-  background: #ffffff;
-  color: #0a0a0a;
-  font-size: 17px;          /* v5.4 가독성 개편 — 기본 16px → 17px */
-  line-height: 1.75;        /* v5.4 가독성 개편 — 1.6 → 1.75 */
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 17px;
+  line-height: 1.75;
   letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,34 +30,51 @@ a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 button { font-family: inherit; cursor: pointer; }
 
-/* ===== DESIGN TOKENS ===== */
+/* ===== DESIGN TOKENS — v6.0 Editorial Warm ===== */
 :root {
-  --paper: #ffffff;
-  --ink: #0a0a0a;
-  --ink-strong: #000000;
-  --ink-muted: #1f2937;  /* v5.4: 회색 #6b7280 → 슬레이트 검정. 위계는 폰트 크기/굵기로 */
-  --ink-soft:  #374151;  /* v5.4: 회색 #9ca3af → 다크 슬레이트 */
-  --rule: #f3f4f6;
-  --rule-strong: #e5e7eb;
-  --accent: #3182f6;
-  --accent-hover: #1b64da;
-  --accent-soft: #eff6ff;
-  --footer-bg: #0a0a0a;
-  --footer-ink: #ffffff;
+  /* 배경 — 따뜻한 오프화이트 (종이 질감) */
+  --paper:        #fbfaf6;   /* 본문 배경 */
+  --paper-elev:   #ffffff;   /* 카드·인풋 등 떠 있는 표면 */
+  --paper-warm:   #f4f0e6;   /* 따뜻한 강조 패널 (인용·콜아웃) */
+  --paper-cool:   #f3f5fa;   /* 시원한 강조 패널 (블루 계열 콜아웃) */
+  --paper-blue:   #eef2fb;   /* accent-soft 대안 */
 
-  /* 아티클 본문 (레거시 호환용) */
-  --art-paper: #ffffff;
-  --art-ink: #0a0a0a;
-  --art-muted: #1f2937;  /* v5.4 */
-  --art-rule: #e5e7eb;
-  --art-accent: #3182f6;
+  /* 잉크 — 따뜻한 슬레이트 (순흑 회피) */
+  --ink:          #1a1d29;   /* 본문 */
+  --ink-strong:   #0d1018;   /* 헤딩·강조 */
+  --ink-muted:    #3f4655;   /* 보조 텍스트 */
+  --ink-soft:     #5b6473;   /* 메타·tertiary */
+
+  /* 디바이더 — 따뜻한 그레이 */
+  --rule:         #ece8da;
+  --rule-strong:  #d8d3c2;
+
+  /* Accent — 에디토리얼 인디고 (Toss 블루 #3182f6 대체) */
+  --accent:       #1e3a8a;   /* primary */
+  --accent-hover: #15296b;
+  --accent-soft:  #eef2ff;
+
+  /* 헤더 — 흰색 + 하단 보더 (모던 매체 표준) */
+  --header-bg:     #ffffff;
+  --header-ink:    #1a1d29;
+  --header-border: #e8e3d1;
+
+  /* 푸터 — 따뜻한 다크 네이비 (순흑 회피) */
+  --footer-bg:    #14172a;
+  --footer-ink:   #f4f2ea;
+  --footer-muted: #b8bcc8;
+  --footer-soft:  #8a91a3;
+  --footer-rule:  #2a2f44;
+
+  /* 아티클 본문 (레거시 호환) */
+  --art-paper:    #ffffff;
+  --art-ink:      #1a1d29;
+  --art-muted:    #3f4655;
+  --art-rule:     #d8d3c2;
+  --art-accent:   #1e3a8a;
 
   /* 하위 호환 */
-  --paper-cool: #ffffff;
-  --paper-warm: #f9fafb;
-  --paper-blue: #eff6ff;
-  --paper-900: #0a0a0a;
-  --header-bg: #ffffff;
+  --paper-900:    #14172a;
 }
 
 /* ===== 4-GROUP THUMBNAIL PALETTES ===== */
@@ -67,23 +83,26 @@ button { font-family: inherit; cursor: pointer; }
 .g-marine { --pv-bg: #1e1b4b; --pv-accent: #a78bfa; --pv-muted: #c4b5fd; }
 .g-sunset { --pv-bg: #451a03; --pv-accent: #fb923c; --pv-muted: #fdba74; }
 
-/* ===== HEADER ===== */
+/* ===== HEADER — v6.0 라이트 톤 (모던 매체 표준) ===== */
 .site-header {
   position: sticky;
   top: 0;
-  background: #0a0a0a;
+  background: var(--header-bg);
+  border-bottom: 1px solid var(--header-border);
   z-index: 100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
   height: 64px;
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
 }
 .site-logo {
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: #ffffff;
+  color: var(--header-ink);
 }
 .site-logo h1 { font: inherit; display: inline; }
 .site-logo span { color: var(--accent); }
@@ -94,13 +113,13 @@ button { font-family: inherit; cursor: pointer; }
   font-size: 0.9375rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #ffffff;
+  color: var(--header-ink);
 }
 .site-nav a {
   position: relative;
   padding: 8px 16px;
   border-radius: 8px;
-  color: #ffffff;
+  color: var(--header-ink);
   transition: color 0.15s, background 0.15s;
 }
 .site-nav a + a::before {
@@ -111,11 +130,11 @@ button { font-family: inherit; cursor: pointer; }
   transform: translateY(-50%);
   width: 1px;
   height: 14px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--rule-strong);
 }
 .site-nav a:hover {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
+  color: var(--accent);
+  background: var(--accent-soft);
 }
 
 /* ===== TOOL PAGE WRAP (9개 계산기 본문 박스) ===== */
@@ -200,13 +219,13 @@ main.home-wrap, .home-wrap {
   padding: 10px 22px;
   font-size: 0.8125rem;
   font-weight: 700;
-  color: #1f2937;
-  background: #f3f4f6;
-  border: 1px solid #e5e7eb;
+  color: var(--ink-strong);
+  background: var(--paper-elev);
+  border: 1px solid var(--rule-strong);
   border-radius: 8px;
   text-decoration: none;
   letter-spacing: -0.02em;
-  transition: background 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .section-more-btn::after {
   content: "→";
@@ -215,9 +234,10 @@ main.home-wrap, .home-wrap {
   transition: transform 0.15s;
 }
 .section-more-btn:hover {
-  background: #e5e7eb;
-  border-color: #d1d5db;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.08);
 }
 .section-more-btn:hover::after {
   transform: translateX(3px);
@@ -710,7 +730,7 @@ main.home-wrap, .home-wrap {
 .footer-logo span { color: var(--accent); }
 .footer-tagline {
   font-size: 0.9375rem;
-  color: #d1d5db;  /* v5.4: footer 가독성 */
+  color: var(--footer-muted);
   margin-bottom: 20px;
   letter-spacing: -0.02em;
 }
@@ -719,23 +739,23 @@ main.home-wrap, .home-wrap {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #d1d5db;  /* v5.4: footer 가독성 */
+  color: var(--footer-muted);
   margin-bottom: 12px;
 }
 .footer-col a, .footer-nav a {
   display: block;
   font-size: 0.875rem;
-  color: #e5e7eb;
+  color: var(--footer-ink);
   padding: 4px 0;
   letter-spacing: -0.02em;
   transition: color 0.15s;
 }
-.footer-col a:hover, .footer-nav a:hover { color: var(--accent); }
+.footer-col a:hover, .footer-nav a:hover { color: #93b8ff; }
 .footer-bottom {
   grid-column: 1 / -1;
   margin-top: 40px;
   padding-top: 24px;
-  border-top: 1px solid #1f2937;
+  border-top: 1px solid var(--footer-rule);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -744,23 +764,23 @@ main.home-wrap, .home-wrap {
 }
 .footer-copy {
   font-size: 0.8125rem;
-  color: #d1d5db;  /* v5.4: footer 가독성 */
+  color: var(--footer-muted);
   margin: 0;
 }
 .footer-legal {
   font-size: 0.8125rem;
-  color: #d1d5db;  /* v5.4: footer 가독성 */
+  color: var(--footer-muted);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 8px;
 }
 .footer-legal a {
-  color: #d1d5db;  /* v5.4: footer 가독성 */
+  color: var(--footer-muted);
   transition: color 0.15s;
 }
-.footer-legal a:hover { color: var(--accent); }
-.footer-legal span { color: #6b7280;  /* v5.4: footer 구분점 약간 진하게 */ }
+.footer-legal a:hover { color: #93b8ff; }
+.footer-legal span { color: var(--footer-soft); }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1100px) {
@@ -1059,14 +1079,14 @@ main.home-wrap, .home-wrap {
    ========================================= */
 .footer-legal .footer-version,
 .footer-nav .footer-version {
-  color: #d1d5db;  /* v5.4: footer 버전 가독성 */
+  color: var(--footer-muted);
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.01em;
   transition: color 0.15s;
 }
 .footer-legal .footer-version:hover,
 .footer-nav .footer-version:hover {
-  color: var(--accent, #3182f6);
+  color: #93b8ff;
 }
 
 
@@ -1118,7 +1138,7 @@ main.home-wrap, .home-wrap {
 }
 .qa-input:focus {
   outline: none;
-  border-color: #3182f6;
+  border-color: var(--accent);
 }
 .qa-input:disabled {
   background: #f5f5f5;
@@ -1141,11 +1161,11 @@ main.home-wrap, .home-wrap {
   cursor: not-allowed;
 }
 .qa-btn--primary {
-  background: #3182f6;
+  background: var(--accent);
   color: #fff;
 }
 .qa-btn--primary:hover:not(:disabled) {
-  background: #1c70eb;
+  background: var(--accent-hover);
 }
 .qa-btn--ghost {
   background: #fff;
@@ -1180,9 +1200,9 @@ main.home-wrap, .home-wrap {
   margin: 0;
 }
 .qa-success {
-  background: #f0f7ff;
-  border: 1px solid #c5dcff;
-  color: #1c70eb;
+  background: var(--accent-soft);
+  border: 1px solid #c5d0f4;
+  color: var(--accent);
   padding: 20px;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -1195,7 +1215,7 @@ main.home-wrap, .home-wrap {
   margin-top: 24px;
 }
 .qa-link a {
-  color: #3182f6;
+  color: var(--accent);
   font-weight: 500;
   text-decoration: none;
 }
@@ -1276,7 +1296,7 @@ main.home-wrap, .home-wrap {
 .game-card:hover {
   border-color: var(--accent);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(49, 130, 246, 0.08);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.10);
 }
 .game-card__title {
   font-size: 1.0625rem;
@@ -1295,7 +1315,7 @@ main.home-wrap, .home-wrap {
 /* ===== home auth (회원가입/환영) ===== */
 .home-auth {
   background: var(--accent-soft);
-  border: 1px solid #d6e6ff;
+  border: 1px solid #d3dcf3;
   border-radius: 8px;
   padding: 32px 28px;
   display: flex;
