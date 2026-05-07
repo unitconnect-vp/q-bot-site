@@ -1,13 +1,13 @@
 /* ============================================================
- * Q-Lens Stylesheet v6.0 (2026-05-07) — 컬러 재설계 (Editorial Warm)
- *   - 배경: 순백 → 따뜻한 오프화이트 #fbfaf6 (종이 질감)
- *   - 헤더: 검정 → 흰색 + 하단 보더 (모던 매체 표준 톤)
- *   - 푸터: 순흑 → 따뜻한 다크 네이비 #14172a
- *   - accent: Toss 블루 #3182f6 → 에디토리얼 인디고 #1e3a8a
- *   - 잉크: 순흑 → 따뜻한 슬레이트 #1a1d29 (가독성·고급감 향상)
- * v5.4 (2026-05-05) — 가독성 개편
- *   - body font-size 16px → 17px, line-height 1.6 → 1.75
- * v5.0 (2026-04-18) — Pretendard 단일 폰트, Claude 기본 팔레트 제거
+ * Q-Lens Stylesheet v6.1 (2026-05-07) — 라이트 톤 구조 정리
+ *   - 썸네일 4그룹 팔레트(Deep/Coast/Marine/Sunset) 단일 톤 통합
+ *   - 섹션 구분선: 4px 검정 → 1px 미묘 + 2px accent 헤어라인
+ *   - 카드/hero/게임카드 hover elevation + subtle shadow
+ *   - CTA chip·primary 버튼 shadow 강화로 시선 유도
+ * v6.0 (2026-05-07) — 컬러 재설계 (Editorial Warm)
+ *   - 배경 #fbfaf6, 헤더 흰색, 푸터 다크 네이비, accent 인디고 #1e3a8a
+ * v5.4 (2026-05-05) — 가독성 개편 (font 17px / line-height 1.75)
+ * v5.0 (2026-04-18) — Pretendard, Claude 기본 팔레트 제거
  * ============================================================ */
 
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
@@ -77,11 +77,15 @@ button { font-family: inherit; cursor: pointer; }
   --paper-900:    #14172a;
 }
 
-/* ===== 4-GROUP THUMBNAIL PALETTES ===== */
-.g-deep { --pv-bg: #0f172a; --pv-accent: #60a5fa; --pv-muted: #94a3b8; }
-.g-coast { --pv-bg: #134e4a; --pv-accent: #2dd4bf; --pv-muted: #99f6e4; }
-.g-marine { --pv-bg: #1e1b4b; --pv-accent: #a78bfa; --pv-muted: #c4b5fd; }
-.g-sunset { --pv-bg: #451a03; --pv-accent: #fb923c; --pv-muted: #fdba74; }
+/* ===== THUMBNAIL PLACEHOLDER PALETTE — v6.1 통합 (단일 톤) ===== */
+/* 기존 4그룹(g-deep/coast/marine/sunset)은 어두운 다크 톤. 새 라이트 테마와
+ * 충돌하므로 모두 한 가지 따뜻한 페이퍼 톤 + 인디고 accent로 통일.
+ * (실제 .webp 썸네일 이미지는 별도 재생성 작업 필요. 본 토큰은 placeholder 전용) */
+.g-deep, .g-coast, .g-marine, .g-sunset {
+  --pv-bg: #f4f0e6;
+  --pv-accent: var(--accent);
+  --pv-muted: var(--ink-soft);
+}
 
 /* ===== HEADER — v6.0 라이트 톤 (모던 매체 표준) ===== */
 .site-header {
@@ -152,19 +156,19 @@ main.home-wrap, .home-wrap {
 }
 
 
-/* ===== SECTIONS ===== */
+/* ===== SECTIONS — v6.1 라이트 톤 (4px 검정 → 1px 미묘) ===== */
 .section {
-  padding: 88px 0;
-  border-top: 4px solid var(--ink-strong);
+  padding: 96px 0 72px;
+  border-top: 1px solid var(--rule-strong);
   position: relative;
 }
 .section::before {
   content: '';
   position: absolute;
-  top: -4px;
+  top: -1px;
   left: 0;
-  width: 64px;
-  height: 4px;
+  width: 48px;
+  height: 2px;
   background: var(--accent);
 }
 .section:first-of-type {
@@ -256,10 +260,11 @@ main.home-wrap, .home-wrap {
 }
 .hero-featured__thumb {
   aspect-ratio: 1/1;
-  background: var(--pv-bg, #0f172a);
-  border-radius: 4px;
+  background: var(--pv-bg, #f4f0e6);
+  border-radius: 12px;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 16px 40px rgba(20, 23, 42, 0.10), 0 4px 12px rgba(20, 23, 42, 0.06);
 }
 .hero-featured__thumb img {
   width: 100%;
@@ -373,16 +378,21 @@ main.home-wrap, .home-wrap {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
-.card:hover { transform: translateY(-2px); }
+.card:hover { transform: translateY(-3px); }
 .card__thumb {
   aspect-ratio: 4/3;
-  background: var(--pv-bg, #0f172a);
-  border-radius: 4px;
+  background: var(--pv-bg, #f4f0e6);
+  border-radius: 8px;
   overflow: hidden;
   margin-bottom: 14px;
   position: relative;
+  box-shadow: 0 1px 2px rgba(20, 23, 42, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+.card:hover .card__thumb {
+  box-shadow: 0 12px 28px rgba(20, 23, 42, 0.12), 0 4px 8px rgba(20, 23, 42, 0.06);
 }
 .card__thumb img {
   width: 100%;
@@ -464,7 +474,7 @@ main.home-wrap, .home-wrap {
 }
 .writer {
   padding: 20px 0;
-  border-top: 3px solid var(--ink-strong);
+  border-top: 1px solid var(--rule-strong);
   position: relative;
   cursor: pointer;
   transition: transform 0.2s;
@@ -473,11 +483,11 @@ main.home-wrap, .home-wrap {
 .writer::before {
   content: '';
   position: absolute;
-  top: -3px;
+  top: -1px;
   left: 0;
-  width: 36px;
-  height: 3px;
-  background: var(--pv-accent, var(--accent));
+  width: 28px;
+  height: 2px;
+  background: var(--accent);
 }
 .writer__name {
   font-size: 1.25rem;
@@ -962,7 +972,7 @@ main.home-wrap, .home-wrap {
 }
 
 .page-head {
-  border-top: 4px solid var(--ink-strong);
+  border-top: 1px solid var(--rule-strong);
   padding: 32px 0 36px;
   margin-bottom: 32px;
   position: relative;
@@ -970,10 +980,10 @@ main.home-wrap, .home-wrap {
 .page-head::before {
   content: '';
   position: absolute;
-  top: -4px;
+  top: -1px;
   left: 0;
-  width: 48px;
-  height: 4px;
+  width: 40px;
+  height: 2px;
   background: var(--accent);
 }
 .page-head__label {
@@ -1018,16 +1028,21 @@ main.home-wrap, .home-wrap {
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease;
 }
-.feed-recent .card:hover { transform: translateY(-2px); }
+.feed-recent .card:hover { transform: translateY(-3px); }
 .card-thumb {
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  background: var(--pv-bg, #0f172a);
-  border-radius: 4px;
+  background: var(--pv-bg, #f4f0e6);
+  border-radius: 8px;
   margin-bottom: 14px;
+  box-shadow: 0 1px 2px rgba(20, 23, 42, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+.feed-recent .card:hover .card-thumb {
+  box-shadow: 0 12px 28px rgba(20, 23, 42, 0.12), 0 4px 8px rgba(20, 23, 42, 0.06);
 }
 .card-body {
   display: flex;
@@ -1248,28 +1263,36 @@ main.home-wrap, .home-wrap {
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 8px 14px;
+  padding: 9px 16px;
   border: 1px solid var(--rule-strong);
   border-radius: 999px;
   font-size: 0.9375rem;
   font-weight: 600;
   color: var(--ink-strong);
   text-decoration: none;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  background: var(--paper-elev);
+  transition: border-color 0.15s, color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .chip:hover {
   border-color: var(--accent);
   color: var(--accent);
+  transform: translateY(-1px);
 }
 .chip--cta {
+  padding: 11px 22px;
+  font-size: 0.9375rem;
+  font-weight: 700;
   background: var(--accent);
   border-color: var(--accent);
   color: #ffffff;
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.25);
 }
 .chip--cta:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
   color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(30, 58, 138, 0.32);
 }
 @media (max-width: 480px) {
   .home-intro { padding: 28px 0 24px; }
@@ -1285,18 +1308,19 @@ main.home-wrap, .home-wrap {
 }
 .game-card {
   display: block;
-  background: #ffffff;
+  background: var(--paper-elev);
   border: 1px solid var(--rule-strong);
-  border-radius: 8px;
-  padding: 22px 20px;
+  border-radius: 12px;
+  padding: 24px 22px;
   text-decoration: none;
   color: inherit;
+  box-shadow: 0 1px 2px rgba(20, 23, 42, 0.04);
   transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
 .game-card:hover {
   border-color: var(--accent);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.10);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(30, 58, 138, 0.14), 0 4px 10px rgba(20, 23, 42, 0.06);
 }
 .game-card__title {
   font-size: 1.0625rem;
@@ -1316,11 +1340,12 @@ main.home-wrap, .home-wrap {
 .home-auth {
   background: var(--accent-soft);
   border: 1px solid #d3dcf3;
-  border-radius: 8px;
-  padding: 32px 28px;
+  border-radius: 12px;
+  padding: 36px 32px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  box-shadow: 0 1px 2px rgba(30, 58, 138, 0.04);
 }
 .home-auth__title {
   font-size: 1.125rem;
@@ -1355,10 +1380,12 @@ main.home-wrap, .home-wrap {
   background: var(--accent);
   color: #ffffff;
   border: 1px solid var(--accent);
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.20);
 }
 .home-auth__btn--primary:hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
+  box-shadow: 0 6px 16px rgba(30, 58, 138, 0.28);
 }
 .home-auth__btn--ghost {
   background: #ffffff;
