@@ -23,19 +23,10 @@
 
 <style>
 .nono-wrap {
-  --base-width: 560px;
-  --zoom: 1;
   margin: 0 auto;
   padding: 24px 16px 48px;
-  max-width: calc(var(--base-width) * var(--zoom));
-  transition: max-width 0.2s ease;
+  max-width: 1200px;
 }
-.nono-wrap.size-5  { --base-width: 480px; }
-.nono-wrap.size-10 { --base-width: 560px; }
-.nono-wrap.size-15 { --base-width: 660px; }
-.nono-wrap.size-20 { --base-width: 760px; }
-.nono-wrap.size-30 { --base-width: 880px; }
-.nono-wrap.size-35 { --base-width: 1000px; }
 .nono-head {
   display: flex;
   align-items: baseline;
@@ -93,16 +84,18 @@
 
 .board-wrap {
   position: relative;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
   margin-bottom: 16px;
 }
 .nono-grid {
   --N: 10;
   --CLUE: 4;
+  --CELL: 28px;
   display: grid;
-  grid-template-columns: repeat(calc(var(--N) + var(--CLUE)), 1fr);
-  grid-template-rows: repeat(calc(var(--N) + var(--CLUE)), 1fr);
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  grid-template-columns: repeat(calc(var(--N) + var(--CLUE)), var(--CELL));
+  grid-template-rows: repeat(calc(var(--N) + var(--CLUE)), var(--CELL));
+  width: max-content;
   border: 2.5px solid #0a0a0a;
   background: #ffffff;
   user-select: none;
@@ -122,7 +115,7 @@
   justify-content: flex-end;
   align-items: center;
   padding: 4px 0;
-  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  font-size: clamp(8px, calc(var(--CELL) * 0.45), 13px);
   font-weight: 700;
   color: var(--ink-muted);
   border-bottom: 2.5px solid #0a0a0a;
@@ -138,13 +131,14 @@
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
-  gap: 6px;
-  padding: 0 6px;
-  font-size: clamp(0.5rem, 1.5vw, 0.875rem);
+  gap: 4px;
+  padding: 0 4px;
+  font-size: clamp(8px, calc(var(--CELL) * 0.45), 13px);
   font-weight: 700;
   color: var(--ink-muted);
   border-right: 2.5px solid #0a0a0a;
   font-variant-numeric: tabular-nums;
+  overflow: hidden;
 }
 .row-clue.thick-bottom { border-bottom: 2px solid #0a0a0a; }
 .row-clue.complete { color: #d1d5db; }
@@ -226,7 +220,6 @@
 .action-btn .icon { font-size: 1.25rem; line-height: 1; }
 .action-btn.disabled { opacity: 0.4; pointer-events: none; }
 
-.board-wrap { overflow-x: auto; overflow-y: hidden; }
 
 .login-cta {
   margin-top: 20px;
@@ -334,7 +327,6 @@ main.nono-wrap:-webkit-full-screen {
   .actions { gap: 3px; }
   .action-btn { font-size: 0.6875rem; padding: 8px 2px; }
   .action-btn .icon { font-size: 1.05rem; }
-  .row-clue { gap: 4px; padding: 0 4px; }
   .input-hint { font-size: 0.6875rem; }
 }
 </style>
@@ -368,13 +360,6 @@ main.nono-wrap:-webkit-full-screen {
     <button class="size-tab" data-size="35">35×35</button>
   </div>
 
-  <div class="board-wrap">
-    <div class="nono-grid" id="grid"></div>
-    <div class="loading-overlay hidden" id="loading">새 판을 만드는 중…</div>
-  </div>
-
-  <p class="input-hint">셀 클릭 한 번: 채움 → 두 번: X 표시 → 세 번: 해제 · 우클릭: X 빠르게</p>
-
   <div class="actions actions-primary">
     <button class="action-btn" id="btn-undo"><span class="icon">↶</span><span>되돌리기</span></button>
     <button class="action-btn" id="btn-redo"><span class="icon">↷</span><span>다시</span></button>
@@ -386,6 +371,13 @@ main.nono-wrap:-webkit-full-screen {
   <div class="actions actions-secondary">
     <button class="action-btn" id="btn-hint"><span class="icon">💡</span><span>힌트</span></button>
     <button class="action-btn" id="btn-reset"><span class="icon">⌫</span><span>전체 지우기</span></button>
+  </div>
+
+  <p class="input-hint">셀 클릭 한 번: 채움 → 두 번: X 표시 → 세 번: 해제 · 우클릭: X 빠르게</p>
+
+  <div class="board-wrap">
+    <div class="nono-grid" id="grid"></div>
+    <div class="loading-overlay hidden" id="loading">새 판을 만드는 중…</div>
   </div>
 
   <div class="login-cta hidden" id="loginCta">
@@ -813,6 +805,7 @@ main.nono-wrap:-webkit-full-screen {
     history: [],
     redo: [],
     zoom: 1,
+    clueDim: 4,
     startTime: 0,
     elapsedBeforePause: 0,
     timerId: null,
@@ -823,7 +816,16 @@ main.nono-wrap:-webkit-full-screen {
   const STORAGE_KEY = 'qlens-nonogram-v2';
   const STORAGE_KEY_LEGACY = 'qlens-nonogram-v1';
   const ZOOM_KEY = 'qlens-nonogram-zoom';
-  const ZOOM_MIN = 0.6, ZOOM_MAX = 1.6, ZOOM_STEP = 0.1;
+  const ZOOM_STEP = 0.15;
+  // 사이즈별 기본 셀 픽셀 크기 (zoom=1 기준)
+  const CELL_BASE = { 5: 44, 10: 30, 15: 26, 20: 24, 30: 22, 35: 20 };
+  const CELL_MIN = 14;
+  const CELL_MAX = 60;
+
+  function computeCellPx() {
+    const base = CELL_BASE[state.size] || 24;
+    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.round(base * state.zoom)));
+  }
 
   // ---------- 저장/로드 ----------
   function save() {
@@ -931,16 +933,13 @@ main.nono-wrap:-webkit-full-screen {
     const grid = $('grid');
     const n = state.size;
 
-    // 사이즈에 따른 wrap max-width 동기화
-    const wrap = document.querySelector('.nono-wrap');
-    wrap.classList.remove('size-5', 'size-10', 'size-15', 'size-20', 'size-30', 'size-35');
-    wrap.classList.add(`size-${n}`);
-
     const maxRowClues = Math.max(...state.rowClues.map(c => c.length));
     const maxColClues = Math.max(...state.colClues.map(c => c.length));
     const clue = Math.max(maxRowClues, maxColClues, 2);
+    state.clueDim = clue;
     grid.style.setProperty('--N', n);
     grid.style.setProperty('--CLUE', clue);
+    applyZoom();
     grid.innerHTML = '';
 
     // 코너
@@ -1174,11 +1173,12 @@ main.nono-wrap:-webkit-full-screen {
 
   // ---------- 줌 / 전체화면 ----------
   function applyZoom() {
-    const wrap = document.querySelector('.nono-wrap');
-    if (wrap) wrap.style.setProperty('--zoom', state.zoom.toFixed(2));
+    const grid = $('grid');
+    if (!grid || !state.size) return;
+    grid.style.setProperty('--CELL', computeCellPx() + 'px');
   }
   function setZoom(z) {
-    state.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, +z.toFixed(2)));
+    state.zoom = Math.max(0.1, Math.min(10, +z.toFixed(2)));
     applyZoom();
     try { localStorage.setItem(ZOOM_KEY, String(state.zoom)); } catch (e) {}
   }
@@ -1240,10 +1240,11 @@ main.nono-wrap:-webkit-full-screen {
     if (undoBtn) undoBtn.classList.toggle('disabled', state.history.length === 0);
     const redoBtn = $('btn-redo');
     if (redoBtn) redoBtn.classList.toggle('disabled', state.redo.length === 0);
+    const cellNow = computeCellPx();
     const zoomInBtn = $('btn-zoom-in');
-    if (zoomInBtn) zoomInBtn.classList.toggle('disabled', state.zoom >= ZOOM_MAX - 1e-6);
+    if (zoomInBtn) zoomInBtn.classList.toggle('disabled', cellNow >= CELL_MAX);
     const zoomOutBtn = $('btn-zoom-out');
-    if (zoomOutBtn) zoomOutBtn.classList.toggle('disabled', state.zoom <= ZOOM_MIN + 1e-6);
+    if (zoomOutBtn) zoomOutBtn.classList.toggle('disabled', cellNow <= CELL_MIN);
   }
 
   // ---------- 바인딩 ----------
@@ -1352,7 +1353,7 @@ main.nono-wrap:-webkit-full-screen {
   // 저장된 줌 복원
   try {
     const z = parseFloat(localStorage.getItem(ZOOM_KEY));
-    if (!isNaN(z)) state.zoom = Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, z));
+    if (!isNaN(z)) state.zoom = Math.max(0.1, Math.min(10, z));
   } catch (e) {}
   applyZoom();
 
