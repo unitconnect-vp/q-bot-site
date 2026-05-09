@@ -656,10 +656,9 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function genStar(n) {
-    // 5점 별 — 수직 바운딩박스(top point ↔ lower points)에 맞춰 그리드 사용
     const cx = (n - 1) / 2;
     const rOut = n * 0.553;
-    const cy = rOut;  // top point at row ~0
+    const cy = rOut;
     const rIn = rOut * 0.42;
     const points = [];
     for (let i = 0; i < 10; i++) {
@@ -680,7 +679,6 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function genTriangle(n) {
-    // 위로 향한 정삼각형 (점=위 1픽셀, 밑변=아래 n픽셀)
     const cx = n / 2;
     return _gen(n, (r, c) => {
       const halfW = (r + 1) * 0.5;
@@ -689,7 +687,6 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function genArrow(n) {
-    // 위쪽 삼각형 + 아래쪽 사각 막대 (위로 향한 화살표)
     const tipRows = Math.floor(n * 0.55);
     const stemW = Math.max(4, Math.round(n / 4.5));
     const stemStart = Math.floor((n - stemW) / 2);
@@ -718,13 +715,10 @@ main.nono-wrap:-webkit-full-screen {
     return _gen(n, (r, c) => {
       const dx = c - cx, dy = r - cy;
       const d2 = dx * dx + dy * dy;
-      // 외곽 테두리
       if (d2 <= rOut * rOut && d2 >= rIn * rIn) return true;
-      // 눈
       const dxL = c - eyeXL, dxR = c - eyeXR, dyE = r - eyeY;
       if (dxL * dxL + dyE * dyE <= eyeR * eyeR) return true;
       if (dxR * dxR + dyE * dyE <= eyeR * eyeR) return true;
-      // 입 (아래쪽 반원, 두께 있음)
       if (r > cy + n / 14) {
         const dist = Math.sqrt(d2);
         if (dist <= mouthRO && dist >= mouthRI) return true;
@@ -763,7 +757,6 @@ main.nono-wrap:-webkit-full-screen {
   function generatePuzzle(size, lastName) {
     const list = PICTURES[size];
     if (!list || list.length === 0) return null;
-    // 마지막에 푼 그림은 가능하면 반복 안 되게
     const order = shuffle([...Array(list.length).keys()]);
     if (list.length > 1 && lastName) {
       order.sort((a, b) => {
@@ -780,11 +773,9 @@ main.nono-wrap:-webkit-full-screen {
       for (let c = 0; c < size; c++) {
         colClues.push(clueFromLine(pat.map(r => r[c])));
       }
-      // 큰 사이즈는 line enumerate 폭발 방지 — solver 검증 건너뜀
       if (size >= 30) {
         return { pat, rowClues, colClues, name: pic.name };
       }
-      // 라인 솔버 안전장치 (작은 사이즈는 유일해 검증)
       const solved = solve(rowClues, colClues, size);
       if (solved && isFull(solved)) {
         return { pat, rowClues, colClues, name: pic.name };
@@ -810,13 +801,12 @@ main.nono-wrap:-webkit-full-screen {
     timerId: null,
     finished: false,
     generating: false,
-    drag: null            // { target, lastR, lastC, axis: null|'h'|'v', startR, startC }
+    drag: null
   };
   const STORAGE_KEY = 'qlens-nonogram-v2';
   const STORAGE_KEY_LEGACY = 'qlens-nonogram-v1';
   const ZOOM_KEY = 'qlens-nonogram-zoom';
   const ZOOM_STEP = 0.15;
-  // 사이즈별 기본 셀 픽셀 크기 (zoom=1 기준)
   const CELL_BASE = { 5: 44, 10: 30, 15: 26, 20: 24, 30: 22, 35: 20 };
   const CELL_MIN = 14;
   const CELL_MAX = 60;
@@ -852,7 +842,6 @@ main.nono-wrap:-webkit-full-screen {
       return d;
     } catch (e) { return null; }
   }
-  // v1 잔존 키 정리 (필드 호환 안 되는 구버전)
   try { localStorage.removeItem(STORAGE_KEY_LEGACY); } catch (e) {}
 
   // ---------- 새 게임 ----------
@@ -864,7 +853,6 @@ main.nono-wrap:-webkit-full-screen {
     setTimeout(() => {
       const r = generatePuzzle(state.size, state.currentPicName);
       if (!r) {
-        // 매우 드문 케이스 — 다시 시도
         state.generating = false;
         $('loading').classList.add('hidden');
         return newGame(state.size);
@@ -941,12 +929,10 @@ main.nono-wrap:-webkit-full-screen {
     applyZoom();
     grid.innerHTML = '';
 
-    // 코너
     const corner = document.createElement('div');
     corner.className = 'nono-corner';
     grid.appendChild(corner);
 
-    // 컬럼 단서
     for (let c = 0; c < n; c++) {
       const div = document.createElement('div');
       div.className = 'col-clue';
@@ -960,7 +946,6 @@ main.nono-wrap:-webkit-full-screen {
       grid.appendChild(div);
     }
 
-    // 행 단서 + 셀
     for (let r = 0; r < n; r++) {
       const rowClue = document.createElement('div');
       rowClue.className = 'row-clue';
@@ -986,7 +971,6 @@ main.nono-wrap:-webkit-full-screen {
 
   // ---------- 입력 ----------
   function applyCell(r, c, target, opts) {
-    // target: 0 / 1 / -1
     if (state.finished || state.generating) return false;
     if (state.user[r][c] === target) return false;
     state.history.push({ r, c, prev: state.user[r][c] });
@@ -996,7 +980,6 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function decideTarget(r, c) {
-    // 한 번 클릭: empty → filled → X → empty 사이클
     const cur = state.user[r][c];
     if (cur === 0) return 1;
     if (cur === 1) return -1;
@@ -1020,19 +1003,39 @@ main.nono-wrap:-webkit-full-screen {
     const target = decideTarget(r, c);
     state.drag = {
       startR: r, startC: c,
+      startX: t.clientX,
+      startY: t.clientY,
+      initialScrollY: window.scrollY,
       target,
       lastR: r, lastC: c,
-      axis: null
+      axis: null,
+      committed: false  // 셀 드로우 확정 전
     };
-    if (applyCell(r, c, target)) {
-      render();
-    }
-    e.preventDefault();
+    // 의도 판단 전까지 preventDefault 안 함 — 스크롤 가능 유지
   }
 
   function dragMove(e) {
     if (!state.drag) return;
     const t = e.touches ? e.touches[0] : e;
+
+    if (!state.drag.committed) {
+      const dx = Math.abs(t.clientX - state.drag.startX);
+      const dy = Math.abs(t.clientY - state.drag.startY);
+      if (Math.max(dx, dy) < 6) return; // 아직 의도 불명확
+
+      if (dy > dx * 1.5) {
+        // 세로 스크롤 의도 → 페이지 직접 스크롤, 드로우 안 함
+        window.scrollTo(0, state.drag.initialScrollY + state.drag.startY - t.clientY);
+        return;
+      }
+      // 가로 or 대각선 → 셀 드로우 확정
+      state.drag.committed = true;
+      if (applyCell(state.drag.startR, state.drag.startC, state.drag.target)) {
+        render();
+      }
+    }
+
+    e.preventDefault();
     const pos = getCellFromPoint(t.clientX, t.clientY);
     if (!pos) return;
     const [r, c] = pos;
@@ -1055,11 +1058,20 @@ main.nono-wrap:-webkit-full-screen {
     if (applyCell(useR, useC, state.drag.target)) {
       render();
     }
-    e.preventDefault();
   }
 
   function dragEnd() {
     if (!state.drag) return;
+    if (!state.drag.committed) {
+      // 이동 없이 손을 딷다 = 탭 → 셀 한 칸 적용
+      if (applyCell(state.drag.startR, state.drag.startC, state.drag.target)) {
+        render();
+      }
+      state.drag = null;
+      checkWin();
+      save();
+      return;
+    }
     state.drag = null;
     checkWin();
     save();
@@ -1075,7 +1087,6 @@ main.nono-wrap:-webkit-full-screen {
     const cur = state.user[r][c];
     const target = cur === -1 ? 0 : -1;
     if (applyCell(r, c, target)) {
-      // 우클릭은 드래그가 아니므로 dragEnd가 안 호출됨 → 여기서 즉시 마무리
       state.drag = null;
       render();
       checkWin();
@@ -1117,7 +1128,6 @@ main.nono-wrap:-webkit-full-screen {
 
   function hint() {
     if (state.finished || state.generating) return;
-    // 정답이 채움인데 사용자가 채움 안 한 셀 무작위 1개
     const candidates = [];
     for (let r = 0; r < state.size; r++) {
       for (let c = 0; c < state.size; c++) {
@@ -1137,7 +1147,6 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function checkWin() {
-    // 양방향 일치 검사 — 채움 셀이 정답과 정확히 일치해야 완료
     for (let r = 0; r < state.size; r++) {
       for (let c = 0; c < state.size; c++) {
         const correct = state.pat[r][c] === 1;
@@ -1148,7 +1157,6 @@ main.nono-wrap:-webkit-full-screen {
     state.finished = true;
     stopTimer();
     showWin();
-    // [트랙 C] 게임 기록
     if (typeof QLensAuth !== 'undefined') {
       QLensAuth.recordGameScore({
         game_type: 'nonogram',
@@ -1207,7 +1215,6 @@ main.nono-wrap:-webkit-full-screen {
   function render() {
     const grid = $('grid');
     const n = state.size;
-    // 셀 갱신
     for (let r = 0; r < n; r++) {
       for (let c = 0; c < n; c++) {
         const cell = grid.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
@@ -1217,7 +1224,6 @@ main.nono-wrap:-webkit-full-screen {
         cell.classList.toggle('x', v === -1);
       }
     }
-    // 단서 완성 표시
     for (let r = 0; r < n; r++) {
       const userClues = clueFromLine(state.user[r].map(v => v === 1 ? 1 : 0));
       const ans = state.rowClues[r];
@@ -1277,7 +1283,6 @@ main.nono-wrap:-webkit-full-screen {
     newGame();
   });
 
-  // 전체화면 미지원 시 버튼 숨김
   if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) {
     const fsBtn = $('btn-fullscreen');
     if (fsBtn) fsBtn.style.display = 'none';
@@ -1310,7 +1315,6 @@ main.nono-wrap:-webkit-full-screen {
     onSuccess: toastShare, onFail: toastShare
   }));
 
-  // 드래그 (pointer events 통합)
   const grid = $('grid');
   grid.addEventListener('pointerdown', dragStart);
   grid.addEventListener('pointermove', dragMove);
@@ -1318,7 +1322,6 @@ main.nono-wrap:-webkit-full-screen {
   document.addEventListener('pointercancel', dragEnd);
   grid.addEventListener('contextmenu', rightClick);
 
-  // 키보드 단축키
   document.addEventListener('keydown', e => {
     if (state.generating) return;
     if (!$('winModal').classList.contains('hidden')) {
@@ -1337,7 +1340,6 @@ main.nono-wrap:-webkit-full-screen {
     else if (e.key === '-' || e.key === '_') { zoomOut(); e.preventDefault(); }
   });
 
-  // 가시성
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) {
       stopTimer();
@@ -1349,7 +1351,6 @@ main.nono-wrap:-webkit-full-screen {
   });
 
   // ---------- 초기화 ----------
-  // 저장된 줌 복원
   try {
     const z = parseFloat(localStorage.getItem(ZOOM_KEY));
     if (!isNaN(z)) state.zoom = Math.max(0.1, Math.min(10, z));
@@ -1361,7 +1362,6 @@ main.nono-wrap:-webkit-full-screen {
     && saved.user.some(row => row.some(v => v !== 0));
   if (hasProgress) {
     loadGame(saved);
-    // size 탭 동기화
     document.querySelectorAll('.size-tab').forEach(t =>
       t.classList.toggle('active', +t.dataset.size === state.size)
     );
@@ -1369,7 +1369,6 @@ main.nono-wrap:-webkit-full-screen {
     newGame(10);
   }
 
-  // 로그인 CTA 표시 (auth.js 비동기 토큰 검사 대기)
   refreshLoginCta();
   setTimeout(refreshLoginCta, 100);
   setTimeout(refreshLoginCta, 500);
