@@ -28,6 +28,8 @@
   try {
     if (navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
     if (localStorage.getItem('qlens_no_track') === '1') return;
+    // 관리자 본인 트래픽 차단 (마이페이지에서 me.is_admin 시 셋. 서버측에서도 한 번 더 거름)
+    if (localStorage.getItem('qlens_admin') === '1') return;
   } catch (e) { /* private mode 등은 그대로 진행 */ }
 
   var host = location.hostname || '';

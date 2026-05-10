@@ -35,7 +35,7 @@ function corsHeaders(origin) {
   const allowed = ALLOWED_ORIGINS.has(origin) ? origin : 'https://q-bot.kr';
   return {
     'Access-Control-Allow-Origin': allowed,
-    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',
     'Vary': 'Origin'
@@ -105,6 +105,9 @@ export default {
 
       if (path === '/track' && m === 'POST')                return trackPageview(req, env, origin);
       if (path === '/admin/analytics' && m === 'GET')       return adminAnalytics(req, env, origin);
+      if (path === '/admin/admins' && m === 'GET')          return listAdmins(req, env, origin);
+      if (path === '/admin/admins' && m === 'POST')         return addAdmin(req, env, origin);
+      if (path === '/admin/admins' && m === 'DELETE')       return removeAdmin(req, env, origin);
 
       return err('Not found', 404, origin);
     } catch (e) {
@@ -348,8 +351,7 @@ async function getMe(req, env, origin) {
   ).bind(payload.sub).first();
   if (!user) return err('User not found', 404, origin);
 
-  const allow = (env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  user.is_admin = !!(user.email && allow.includes(user.email.toLowerCase()));
+  user.is_admin = isAdminUser(user, env);
   return json(user, 200, origin);
 }
 
@@ -556,12 +558,20 @@ async function trackPageview(req, env, origin) {
   const now = Math.floor(Date.now() / 1000);
 
   // 로그인 사용자라면 user_id도 같이 적재 (옵션 — Authorization 헤더가 있을 때만)
+  // 관리자 본인 트래픽은 통계에서 제외 (운영자의 페이지 점검이 PV/UV에 잡히지 않도록)
   let userId = null;
   const auth = req.headers.get('Authorization');
   if (auth && auth.startsWith('Bearer ')) {
     try {
       const payload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
-      if (payload && payload.sub) userId = payload.sub;
+      if (payload && payload.sub) {
+        const u = await env.DB.prepare('SELECT id, email, role FROM users WHERE id = ?').bind(payload.sub).first();
+        if (u && isAdminUser(u, env)) {
+          // 관리자: INSERT 생략하고 정상 응답
+          return new Response(null, { status: 204, headers: corsHeaders(origin) });
+        }
+        if (u) userId = u.id;
+      }
     } catch {}
   }
 
@@ -574,19 +584,30 @@ async function trackPageview(req, env, origin) {
   return new Response(null, { status: 204, headers: corsHeaders(origin) });
 }
 
+function adminEmailSet(env) {
+  return new Set(
+    (env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+  );
+}
+
+// 관리자 판정: users.role === 'admin' 또는 email이 ADMIN_EMAILS env에 등재.
+// env 등재는 부트스트랩(VP 잠금 방지) 용도, role은 런타임에 추가/제거.
+function isAdminUser(user, env) {
+  if (!user) return false;
+  if (user.role === 'admin') return true;
+  if (user.email && adminEmailSet(env).has(user.email.toLowerCase())) return true;
+  return false;
+}
+
 async function requireAdmin(req, env) {
   const auth = req.headers.get('Authorization');
   if (!auth || !auth.startsWith('Bearer ')) return null;
   const payload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
   if (!payload || !payload.sub) return null;
 
-  const allow = (env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-  if (allow.length === 0) return null;
-
-  const user = await env.DB.prepare('SELECT id, email FROM users WHERE id = ?').bind(payload.sub).first();
-  if (!user || !user.email) return null;
-  if (!allow.includes(user.email.toLowerCase())) return null;
-  return user;
+  const user = await env.DB.prepare('SELECT id, email, role FROM users WHERE id = ?').bind(payload.sub).first();
+  if (!user) return null;
+  return isAdminUser(user, env) ? user : null;
 }
 
 async function adminAnalytics(req, env, origin) {
@@ -655,4 +676,93 @@ async function adminAnalytics(req, env, origin) {
     top_paths: topPaths.results || [],
     top_referrers: topReferrers.results || []
   }, 200, origin);
+}
+
+// ─────── 관리자 계정 관리 ───────
+//
+// 권한 모델:
+//   - ADMIN_EMAILS env에 등재된 이메일은 '부트스트랩 관리자' (제거 불가, 기본 1명 = VP)
+//   - users.role='admin'으로 승격된 사용자는 '런타임 관리자' (제거 가능)
+//   - 자기 자신은 제거할 수 없음 (실수 방지)
+
+async function listAdmins(req, env, origin) {
+  const me = await requireAdmin(req, env);
+  if (!me) return err('Forbidden', 403, origin);
+
+  // role='admin'인 사용자 + ADMIN_EMAILS env 부트스트랩
+  const { results: roleAdmins } = await env.DB.prepare(
+    `SELECT id, email, nickname, role, created_at FROM users WHERE role = 'admin' ORDER BY created_at`
+  ).all();
+  const roleEmails = new Set((roleAdmins || []).map(u => (u.email || '').toLowerCase()));
+
+  const envAdmins = [];
+  for (const e of adminEmailSet(env)) {
+    if (roleEmails.has(e)) continue; // 중복 제거
+    const u = await env.DB.prepare('SELECT id, email, nickname FROM users WHERE LOWER(email) = ?').bind(e).first();
+    envAdmins.push({
+      id: u ? u.id : null,
+      email: e,
+      nickname: u ? u.nickname : null,
+      source: 'env',
+      removable: false
+    });
+  }
+
+  const dbAdmins = (roleAdmins || []).map(u => ({
+    id: u.id,
+    email: u.email,
+    nickname: u.nickname,
+    source: 'db',
+    removable: u.id !== me.id // 자기 자신 제외
+  }));
+
+  return json({ admins: [...envAdmins, ...dbAdmins], me_id: me.id }, 200, origin);
+}
+
+async function addAdmin(req, env, origin) {
+  const me = await requireAdmin(req, env);
+  if (!me) return err('Forbidden', 403, origin);
+
+  let body;
+  try { body = await req.json(); } catch { return err('Invalid JSON', 400, origin); }
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+  if (!isValidEmail(email)) return err('유효하지 않은 이메일 주소입니다.', 400, origin);
+
+  const user = await env.DB.prepare(
+    'SELECT id, email, role FROM users WHERE LOWER(email) = ?'
+  ).bind(email).first();
+  if (!user) {
+    return err('해당 이메일로 가입한 사용자가 없습니다. 먼저 회원가입이 필요합니다.', 404, origin);
+  }
+  if (user.role === 'admin') {
+    return err('이미 관리자입니다.', 409, origin);
+  }
+
+  await env.DB.prepare("UPDATE users SET role = 'admin' WHERE id = ?").bind(user.id).run();
+  return json({ ok: true, id: user.id, email: user.email }, 200, origin);
+}
+
+async function removeAdmin(req, env, origin) {
+  const me = await requireAdmin(req, env);
+  if (!me) return err('Forbidden', 403, origin);
+
+  const url = new URL(req.url);
+  const idParam = url.searchParams.get('id');
+  const id = idParam ? parseInt(idParam, 10) : NaN;
+  if (!Number.isFinite(id) || id <= 0) return err('Invalid id', 400, origin);
+
+  if (id === me.id) return err('자기 자신은 제거할 수 없습니다.', 400, origin);
+
+  const user = await env.DB.prepare('SELECT id, email, role FROM users WHERE id = ?').bind(id).first();
+  if (!user) return err('사용자를 찾을 수 없습니다.', 404, origin);
+
+  if (adminEmailSet(env).has((user.email || '').toLowerCase())) {
+    return err('부트스트랩 관리자(ADMIN_EMAILS)는 제거할 수 없습니다.', 400, origin);
+  }
+  if (user.role !== 'admin') {
+    return err('해당 사용자는 관리자가 아닙니다.', 400, origin);
+  }
+
+  await env.DB.prepare("UPDATE users SET role = 'member' WHERE id = ?").bind(user.id).run();
+  return json({ ok: true }, 200, origin);
 }
