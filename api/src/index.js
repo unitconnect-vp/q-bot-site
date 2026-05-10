@@ -11,6 +11,8 @@
 //   POST /api/games/records         게임 점수 기록
 //   GET  /api/games/records         내 게임 기록 조회
 //   GET  /api/games/stats           내 게임 통계
+//   POST /api/track                 페이지뷰 1건 기록 (공개·익명)
+//   GET  /api/admin/analytics       방문자 통계 (관리자 이메일 화이트리스트)
 
 import { hashPassword, verifyPassword, generateToken, hashToken } from './lib/crypto.js';
 import { signJWT, verifyJWT } from './lib/jwt.js';
@@ -100,6 +102,9 @@ export default {
       if (path === '/games/records' && m === 'POST')        return recordGame(req, env, origin);
       if (path === '/games/records' && m === 'GET')         return listGames(req, env, origin);
       if (path === '/games/stats' && m === 'GET')           return gameStats(req, env, origin);
+
+      if (path === '/track' && m === 'POST')                return trackPageview(req, env, origin);
+      if (path === '/admin/analytics' && m === 'GET')       return adminAnalytics(req, env, origin);
 
       return err('Not found', 404, origin);
     } catch (e) {
@@ -489,4 +494,162 @@ async function gameStats(req, env, origin) {
   ).bind(userId).all();
 
   return json({ stats: results || [] }, 200, origin);
+}
+
+// ─────── 방문자 분석 ───────
+
+const BOT_UA_RE = /(bot|crawl|spider|slurp|bingpreview|facebookexternalhit|headlesschrome|lighthouse|gtmetrix|pingdom|uptime|monitor|axios|curl|wget|python-requests|node-fetch|okhttp|java\/)/i;
+const PATH_MAX_LEN = 256;
+const REFERRER_HOST_MAX_LEN = 128;
+const SITE_HOST = 'q-bot.kr';
+
+function dateKR(unixSec) {
+  // KST = UTC+9. 절단으로 'YYYY-MM-DD' 만들기.
+  const ms = (unixSec + 9 * 3600) * 1000;
+  return new Date(ms).toISOString().slice(0, 10);
+}
+
+function normalizePath(p) {
+  if (typeof p !== 'string') return null;
+  if (!p.startsWith('/')) return null;
+  // 쿼리·해시 제거 (이미 클라이언트에서 떼지만 방어적으로)
+  const cut = p.split(/[?#]/)[0];
+  if (cut.length > PATH_MAX_LEN) return null;
+  // 제어문자 차단
+  if (/[\x00-\x1f]/.test(cut)) return null;
+  return cut;
+}
+
+function extractReferrerHost(ref) {
+  if (typeof ref !== 'string' || !ref) return null;
+  try {
+    const u = new URL(ref);
+    if (!u.hostname || u.hostname === SITE_HOST) return null;
+    return u.hostname.slice(0, REFERRER_HOST_MAX_LEN);
+  } catch {
+    return null;
+  }
+}
+
+async function trackPageview(req, env, origin) {
+  const ua = (req.headers.get('User-Agent') || '').slice(0, 255);
+  if (!ua || BOT_UA_RE.test(ua)) {
+    // 봇·빈 UA는 조용히 무시 (성공 응답으로 처리해 재시도·로그 노이즈 방지)
+    return new Response(null, { status: 204, headers: corsHeaders(origin) });
+  }
+
+  let body;
+  try { body = await req.json(); } catch { return err('Invalid JSON', 400, origin); }
+
+  const path = normalizePath(body && body.path);
+  if (!path) return err('Invalid path', 400, origin);
+
+  const referrerHost = extractReferrerHost(body && body.referrer);
+  const visitorId = typeof body.visitor_id === 'string' && body.visitor_id.length <= 64 ? body.visitor_id : null;
+  const sessionId = typeof body.session_id === 'string' && body.session_id.length <= 64 ? body.session_id : null;
+  if (!visitorId || !sessionId) return err('Missing visitor/session id', 400, origin);
+
+  const country = (req.headers.get('CF-IPCountry') || '').slice(0, 8) || null;
+  const now = Math.floor(Date.now() / 1000);
+
+  // 로그인 사용자라면 user_id도 같이 적재 (옵션 — Authorization 헤더가 있을 때만)
+  let userId = null;
+  const auth = req.headers.get('Authorization');
+  if (auth && auth.startsWith('Bearer ')) {
+    try {
+      const payload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+      if (payload && payload.sub) userId = payload.sub;
+    } catch {}
+  }
+
+  await env.DB.prepare(
+    `INSERT INTO pageviews
+       (path, referrer_host, user_agent, country, visitor_id, session_id, user_id, date_kr, viewed_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(path, referrerHost, ua, country, visitorId, sessionId, userId, dateKR(now), now).run();
+
+  return new Response(null, { status: 204, headers: corsHeaders(origin) });
+}
+
+async function requireAdmin(req, env) {
+  const auth = req.headers.get('Authorization');
+  if (!auth || !auth.startsWith('Bearer ')) return null;
+  const payload = await verifyJWT(auth.slice(7), env.JWT_SECRET);
+  if (!payload || !payload.sub) return null;
+
+  const allow = (env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  if (allow.length === 0) return null;
+
+  const user = await env.DB.prepare('SELECT id, email FROM users WHERE id = ?').bind(payload.sub).first();
+  if (!user || !user.email) return null;
+  if (!allow.includes(user.email.toLowerCase())) return null;
+  return user;
+}
+
+async function adminAnalytics(req, env, origin) {
+  const admin = await requireAdmin(req, env);
+  if (!admin) return err('Forbidden', 403, origin);
+
+  const url = new URL(req.url);
+  const rangeParam = (url.searchParams.get('range') || '7d').toLowerCase();
+  const days = rangeParam === '30d' ? 30 : rangeParam === '90d' ? 90 : rangeParam === '1d' ? 1 : 7;
+
+  const now = Math.floor(Date.now() / 1000);
+  const fromUnix = now - days * 86400;
+  const fromDate = dateKR(fromUnix);
+
+  // 1) 일별 PV·UV
+  const daily = await env.DB.prepare(
+    `SELECT date_kr,
+            COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv,
+            COUNT(DISTINCT session_id) as sessions
+     FROM pageviews
+     WHERE date_kr >= ?
+     GROUP BY date_kr
+     ORDER BY date_kr DESC`
+  ).bind(fromDate).all();
+
+  // 2) 인기 페이지 Top 30
+  const topPaths = await env.DB.prepare(
+    `SELECT path,
+            COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv
+     FROM pageviews
+     WHERE date_kr >= ?
+     GROUP BY path
+     ORDER BY pv DESC
+     LIMIT 30`
+  ).bind(fromDate).all();
+
+  // 3) 외부 유입 referrer Top 20
+  const topReferrers = await env.DB.prepare(
+    `SELECT referrer_host,
+            COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv
+     FROM pageviews
+     WHERE date_kr >= ? AND referrer_host IS NOT NULL
+     GROUP BY referrer_host
+     ORDER BY pv DESC
+     LIMIT 20`
+  ).bind(fromDate).all();
+
+  // 4) 합산
+  const totals = await env.DB.prepare(
+    `SELECT COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv,
+            COUNT(DISTINCT session_id) as sessions,
+            SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as logged_in_pv
+     FROM pageviews
+     WHERE date_kr >= ?`
+  ).bind(fromDate).first();
+
+  return json({
+    range_days: days,
+    from_date: fromDate,
+    totals: totals || { pv: 0, uv: 0, sessions: 0, logged_in_pv: 0 },
+    daily: daily.results || [],
+    top_paths: topPaths.results || [],
+    top_referrers: topReferrers.results || []
+  }, 200, origin);
 }

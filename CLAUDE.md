@@ -2,7 +2,7 @@
 
 > 이 파일은 **저장소 루트**(`unitconnect-vp/q-bot-site/CLAUDE.md`)에 둡니다.
 > Claude Code는 세션 시작 시 이 파일을 자동으로 컨텍스트에 로드합니다.
-> 마지막 갱신: 2026-05-06 (글 카테고리 통합 — 부동산·주식 → '글' 단일 메뉴, footer '바로가기' 3링크)
+> 마지막 갱신: 2026-05-10 (자체 방문자 분석 추가 — D1 pageviews 테이블 + /admin/analytics/ 대시보드 + ADMIN_EMAILS 화이트리스트)
 
 ---
 
@@ -63,6 +63,13 @@ grep -n "키워드" qlens-master-guide-v4_2.md
 - Cloudflare cache purge: `cf-purge.yml` (사용자 노출 파일 변경 시 자동)
 
 **발행 머지 정책 (VP 영구 지시, 2026-05-06)**: PO는 feature 브랜치(`claude/*`) 작업 완료 후 **main에 직접 머지·푸시**한다. PR 우회. 검토·수정은 발행 후 별도 commit으로 처리. 머지 전 `verify_footers.py` exit 0 + §9-9 평가어 검증은 필수.
+
+**방문자 분석 (2026-05-10 추가)**:
+- 트래커: `assets/analytics.js` — 모든 공개 HTML `</head>` 직전에 `<script src="/assets/analytics.js" defer>` 박힘. publisher 회귀로 누락된 페이지가 생기면 `python3 .github/scripts/inject_analytics.py` 재실행.
+- 백엔드: D1 `pageviews` 테이블(migration `0002_pageviews.sql`) + Worker `POST /track` (공개·익명) + `GET /admin/analytics?range=1d|7d|30d|90d` (관리자 전용).
+- 관리자 권한: `wrangler.toml` `[vars] ADMIN_EMAILS = "vp@example.com"` 콤마 구분. 빈 값이면 모든 요청 403. 변경은 wrangler deploy 후 즉시 반영.
+- 대시보드: `/admin/analytics/` (noindex). 로그인 필요 + 이메일이 ADMIN_EMAILS에 있어야 데이터 조회 가능.
+- 마이그레이션 적용 필요: `cd api && npx wrangler d1 execute qlens-db --remote --file=migrations/0002_pageviews.sql` 또는 `migrate-d1.yml` 수동 트리거.
 
 ---
 
