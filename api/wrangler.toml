@@ -14,8 +14,8 @@ GOOGLE_CLIENT_ID = "1045698164533-1bg1bb03viit2knt41r85q7g92hpg2d7.apps.googleus
 SITE_URL = "https://q-bot.kr"
 API_URL = "https://api.q-bot.kr"
 # 관리자 대시보드(/admin/analytics) 접근 허용 이메일. 콤마 구분.
-# 배포 후 실제 VP 이메일로 교체 필요. 빈 값이면 모든 요청이 403.
-ADMIN_EMAILS = ""
+# 빈 값이면 모든 요청이 403.
+ADMIN_EMAILS = "heyqbot@gmail.com"
 
 # === Routes ===
 # 배포 후 Cloudflare 대시보드에서 별도 설정 권장:
