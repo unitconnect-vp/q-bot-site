@@ -643,7 +643,6 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   function genHeart(n) {
-    // (x²+y²-1)³ - x²y³ ≤ 0 (y is up)
     const cx = (n - 1) / 2, cy = (n - 1) / 2;
     const sx = n / 2.6;
     const sy = n / 2.4;
@@ -806,14 +805,21 @@ main.nono-wrap:-webkit-full-screen {
   const STORAGE_KEY = 'qlens-nonogram-v2';
   const STORAGE_KEY_LEGACY = 'qlens-nonogram-v1';
   const ZOOM_KEY = 'qlens-nonogram-zoom';
-  const ZOOM_STEP = 0.15;
-  const CELL_BASE = { 5: 44, 10: 30, 15: 26, 20: 24, 30: 22, 35: 20 };
-  const CELL_MIN = 14;
+  const ZOOM_STEP = 0.25;
+  const CELL_MIN = 12;
   const CELL_MAX = 60;
 
+  // 현재 board-wrap 너비 기준으로 "땙 맞는" 셀 크기 계산
+  function computeFitCellPx() {
+    if (!state.size) return 28;
+    const total = state.size + (state.clueDim || 4);
+    const bw = document.querySelector('.board-wrap');
+    const avail = bw ? bw.clientWidth - 4 : window.innerWidth - 40;
+    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.floor(avail / total)));
+  }
+
   function computeCellPx() {
-    const base = CELL_BASE[state.size] || 24;
-    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.round(base * state.zoom)));
+    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.round(computeFitCellPx() * state.zoom)));
   }
 
   // ---------- 저장/로드 ----------
@@ -995,23 +1001,24 @@ main.nono-wrap:-webkit-full-screen {
 
   function dragStart(e) {
     if (state.finished || state.generating) return;
-    if (e.button !== undefined && e.button !== 0) return;  // 좌클릭만 사이클
+    if (e.button !== undefined && e.button !== 0) return;
     const t = e.touches ? e.touches[0] : e;
     const pos = getCellFromPoint(t.clientX, t.clientY);
     if (!pos) return;
     const [r, c] = pos;
     const target = decideTarget(r, c);
+    const bw = document.querySelector('.board-wrap');
     state.drag = {
       startR: r, startC: c,
       startX: t.clientX,
       startY: t.clientY,
       initialScrollY: window.scrollY,
+      initialBoardScrollX: bw ? bw.scrollLeft : 0,
       target,
       lastR: r, lastC: c,
       axis: null,
-      committed: false  // 셀 드로우 확정 전
+      committed: false
     };
-    // 의도 판단 전까지 preventDefault 안 함 — 스크롤 가능 유지
   }
 
   function dragMove(e) {
@@ -1019,13 +1026,21 @@ main.nono-wrap:-webkit-full-screen {
     const t = e.touches ? e.touches[0] : e;
 
     if (!state.drag.committed) {
-      const dx = Math.abs(t.clientX - state.drag.startX);
-      const dy = Math.abs(t.clientY - state.drag.startY);
-      if (Math.max(dx, dy) < 6) return; // 아직 의도 불명확
+      const dx = t.clientX - state.drag.startX;
+      const dy = t.clientY - state.drag.startY;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+      if (Math.max(absDx, absDy) < 6) return;
 
-      if (dy > dx * 1.5) {
+      if (absDy > absDx * 1.5) {
         // 세로 스크롤 의도 → 페이지 직접 스크롤, 드로우 안 함
-        window.scrollTo(0, state.drag.initialScrollY + state.drag.startY - t.clientY);
+        window.scrollTo(0, state.drag.initialScrollY - dy);
+        return;
+      }
+      // 가로 방향이고 보드가 넘칠 때 → board-wrap 가로 스크롤
+      const bw2 = document.querySelector('.board-wrap');
+      if (bw2 && absDx > absDy && bw2.scrollWidth > bw2.clientWidth + 2) {
+        bw2.scrollLeft = Math.max(0, state.drag.initialBoardScrollX - dx);
         return;
       }
       // 가로 or 대각선 → 셀 드로우 확정
@@ -1041,7 +1056,6 @@ main.nono-wrap:-webkit-full-screen {
     const [r, c] = pos;
     if (r === state.drag.lastR && c === state.drag.lastC) return;
 
-    // 첫 이동 시 axis 결정 (수평/수직 잠금)
     if (state.drag.axis === null) {
       if (r === state.drag.startR && c !== state.drag.startC) state.drag.axis = 'h';
       else if (c === state.drag.startC && r !== state.drag.startR) state.drag.axis = 'v';
@@ -1063,7 +1077,6 @@ main.nono-wrap:-webkit-full-screen {
   function dragEnd() {
     if (!state.drag) return;
     if (!state.drag.committed) {
-      // 이동 없이 손을 딷다 = 탭 → 셀 한 칸 적용
       if (applyCell(state.drag.startR, state.drag.startC, state.drag.target)) {
         render();
       }
@@ -1131,9 +1144,7 @@ main.nono-wrap:-webkit-full-screen {
     const candidates = [];
     for (let r = 0; r < state.size; r++) {
       for (let c = 0; c < state.size; c++) {
-        if (state.pat[r][c] === 1 && state.user[r][c] !== 1) {
-          candidates.push([r, c]);
-        }
+        if (state.pat[r][c] === 1 && state.user[r][c] !== 1) candidates.push([r, c]);
       }
     }
     if (candidates.length === 0) return;
@@ -1171,9 +1182,7 @@ main.nono-wrap:-webkit-full-screen {
     $('winTime').textContent = fmtTime(getElapsed());
     const picName = state.currentPicName || '';
     const sizeLabel = `${state.size}×${state.size}`;
-    $('winMsg').textContent = picName
-      ? `"${picName}" · ${sizeLabel}`
-      : sizeLabel;
+    $('winMsg').textContent = picName ? `"${picName}" · ${sizeLabel}` : sizeLabel;
     $('winModal').classList.remove('hidden');
     save();
   }
@@ -1187,6 +1196,7 @@ main.nono-wrap:-webkit-full-screen {
   function setZoom(z) {
     state.zoom = Math.max(0.1, Math.min(10, +z.toFixed(2)));
     applyZoom();
+    render();
     try { localStorage.setItem(ZOOM_KEY, String(state.zoom)); } catch (e) {}
   }
   function zoomIn()  { setZoom(state.zoom + ZOOM_STEP); }
@@ -1203,7 +1213,6 @@ main.nono-wrap:-webkit-full-screen {
     }
   }
 
-  // ---------- 로그인 CTA ----------
   function refreshLoginCta() {
     const cta = $('loginCta');
     if (!cta) return;
@@ -1227,8 +1236,7 @@ main.nono-wrap:-webkit-full-screen {
     for (let r = 0; r < n; r++) {
       const userClues = clueFromLine(state.user[r].map(v => v === 1 ? 1 : 0));
       const ans = state.rowClues[r];
-      const same = userClues.length === ans.length
-                && userClues.every((v, i) => v === ans[i]);
+      const same = userClues.length === ans.length && userClues.every((v, i) => v === ans[i]);
       const rowClue = grid.querySelector(`.row-clue[data-row="${r}"]`);
       if (rowClue) rowClue.classList.toggle('complete', same);
     }
@@ -1236,8 +1244,7 @@ main.nono-wrap:-webkit-full-screen {
       const col = state.user.map(row => row[c] === 1 ? 1 : 0);
       const userClues = clueFromLine(col);
       const ans = state.colClues[c];
-      const same = userClues.length === ans.length
-                && userClues.every((v, i) => v === ans[i]);
+      const same = userClues.length === ans.length && userClues.every((v, i) => v === ans[i]);
       const colClue = grid.querySelector(`.col-clue[data-col="${c}"]`);
       if (colClue) colClue.classList.toggle('complete', same);
     }
@@ -1277,8 +1284,7 @@ main.nono-wrap:-webkit-full-screen {
   $('btn-zoom-out').addEventListener('click', zoomOut);
   $('btn-fullscreen').addEventListener('click', toggleFullscreen);
   $('btn-new').addEventListener('click', () => {
-    const inProgress = !state.finished
-      && state.user.some(row => row.some(v => v !== 0));
+    const inProgress = !state.finished && state.user.some(row => row.some(v => v !== 0));
     if (inProgress && !confirm('새 게임을 시작하시겠습니까? 진행 중인 판은 사라집니다.')) return;
     newGame();
   });
@@ -1297,11 +1303,7 @@ main.nono-wrap:-webkit-full-screen {
     const sec = Math.floor(getElapsed() / 1000);
     const m = String(Math.floor(sec / 60)).padStart(2, '0');
     const s = String(sec % 60).padStart(2, '0');
-    const sizeLabel = state.size + '×' + state.size;
-    return 'Q-Lens 네모네모로직 클리어! 🧩\n' +
-           '크기: ' + sizeLabel + '\n' +
-           '시간: ' + m + ':' + s + '\n\n' +
-           'https://q-bot.kr/play/nonogram/';
+    return 'Q-Lens 네모네모로직 클리어! 🧩\n크기: ' + state.size + '×' + state.size + '\n시간: ' + m + ':' + s + '\n\nhttps://q-bot.kr/play/nonogram/';
   }
   function toastShare(msg) {
     const $msg = $('winMsg');
@@ -1322,6 +1324,9 @@ main.nono-wrap:-webkit-full-screen {
   document.addEventListener('pointercancel', dragEnd);
   grid.addEventListener('contextmenu', rightClick);
 
+  // 창 크기 변경 시 셀 크기 재계산 (화면 기준 fit 방식)
+  window.addEventListener('resize', () => { applyZoom(); render(); });
+
   document.addEventListener('keydown', e => {
     if (state.generating) return;
     if (!$('winModal').classList.contains('hidden')) {
@@ -1341,13 +1346,8 @@ main.nono-wrap:-webkit-full-screen {
   });
 
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) {
-      stopTimer();
-      save();
-    } else if (!state.finished && !state.generating) {
-      state.startTime = Date.now();
-      startTimer();
-    }
+    if (document.hidden) { stopTimer(); save(); }
+    else if (!state.finished && !state.generating) { state.startTime = Date.now(); startTimer(); }
   });
 
   // ---------- 초기화 ----------
@@ -1358,8 +1358,7 @@ main.nono-wrap:-webkit-full-screen {
   applyZoom();
 
   const saved = load();
-  const hasProgress = saved && saved.user
-    && saved.user.some(row => row.some(v => v !== 0));
+  const hasProgress = saved && saved.user && saved.user.some(row => row.some(v => v !== 0));
   if (hasProgress) {
     loadGame(saved);
     document.querySelectorAll('.size-tab').forEach(t =>
