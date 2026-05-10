@@ -25,12 +25,12 @@
   .ana-section { margin-bottom: 40px; }
   .ana-section h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 16px; color: #1a1a1a; }
   .ana-chart {
-    height: 280px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px;
-    padding: 16px; display: flex; align-items: flex-end; gap: 8px; overflow-x: auto;
+    height: 420px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px;
+    padding: 20px 16px 16px; display: flex; align-items: flex-end; gap: 8px; overflow-x: auto;
   }
-  .ana-bar-col { display: flex; flex-direction: column; align-items: center; min-width: 36px; height: 100%; gap: 6px; }
-  .ana-bar-stack { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 1px; border-radius: 2px 2px 0 0; }
+  .ana-bar-col { display: flex; flex-direction: column; align-items: center; min-width: 40px; gap: 8px; }
+  .ana-bar-stack { width: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 1px; border-radius: 3px 3px 0 0; }
   .ana-bar-uv { background: #93b8f4; width: 100%; min-height: 1px; }
   .ana-bar-label { font-size: 0.875rem; color: #6b7280; white-space: nowrap; }
   .ana-bar-num { font-size: 0.875rem; color: #1a1a1a; font-weight: 600; }
@@ -212,14 +212,15 @@
     const rows = daily.slice().reverse();
     const max = Math.max.apply(null, rows.map(r => r.pv || 0)) || 1;
 
+    // 막대 영역 max 320px. col 안의 num(1.4em)·label(1.4em)·gap·padding 합과 chart 420px 사이 충분한 여유.
     chart.innerHTML = rows.map(r => {
-      const pvH = Math.round(((r.pv || 0) / max) * 200);
-      const uvH = Math.round(((r.uv || 0) / max) * 200);
+      const pvH = Math.round(((r.pv || 0) / max) * 320);
+      const uvH = Math.round(((r.uv || 0) / max) * 320);
       const md = (r.date_kr || '').slice(5);
       return (
         '<div class="ana-bar-col" title="' + r.date_kr + ' · PV ' + r.pv + ' / UV ' + r.uv + '">' +
           '<span class="ana-bar-num">' + (r.pv || 0) + '</span>' +
-          '<div class="ana-bar-stack" style="height:215px;">' +
+          '<div class="ana-bar-stack" style="height:' + Math.max(pvH, uvH, 1) + 'px;">' +
             '<div class="ana-bar-uv" style="height:' + uvH + 'px;"></div>' +
             '<div class="ana-bar-pv" style="height:' + pvH + 'px;"></div>' +
           '</div>' +
