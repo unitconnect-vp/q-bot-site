@@ -347,6 +347,9 @@ async function getMe(req, env, origin) {
     'SELECT id, email, nickname, role, oauth_provider, created_at FROM users WHERE id = ?'
   ).bind(payload.sub).first();
   if (!user) return err('User not found', 404, origin);
+
+  const allow = (env.ADMIN_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
+  user.is_admin = !!(user.email && allow.includes(user.email.toLowerCase()));
   return json(user, 200, origin);
 }
 

@@ -51,6 +51,14 @@
       </div>
     </div>
 
+    <a id="admin-card" href="/admin/analytics/" style="display:none;background:#1a1a1a;border-radius:4px;padding:18px 20px;margin-bottom:24px;text-decoration:none;color:#fff;align-items:center;justify-content:space-between;">
+      <span>
+        <span style="display:block;font-size:0.75rem;color:#93b8f4;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;margin-bottom:4px;">관리자</span>
+        <span style="display:block;font-size:1rem;font-weight:600;">방문자 분석 대시보드</span>
+      </span>
+      <span style="font-size:1.25rem;color:#3182f6;">→</span>
+    </a>
+
     <div id="game-stats-section" style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
       <h2 style="font-size:1rem;font-weight:600;margin:0 0 16px 0;color:#1a1a1a;">게임 기록</h2>
       <div id="game-stats-loading" style="font-size:0.875rem;color:#888;">불러오는 중…</div>
@@ -135,6 +143,10 @@
       d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
   } else {
     document.getElementById('info-joined').textContent = '-';
+  }
+
+  if (me.is_admin) {
+    document.getElementById('admin-card').style.display = 'flex';
   }
 
   document.getElementById('loading').style.display = 'none';
