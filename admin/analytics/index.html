@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>방문자 분석 — Q렌즈 관리자</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://q-bot.kr/admin/analytics/">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .ana-wrap { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+  .ana-h1 { font-size: 1.5rem; font-weight: 700; margin: 0 0 4px; color: #1a1a1a; }
+  .ana-sub { font-size: 0.875rem; color: #6b7280; margin: 0 0 24px; }
+  .ana-controls { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .ana-btn {
+    padding: 8px 14px; border: 1px solid #e5e8eb; background: #fff; color: #1a1a1a;
+    border-radius: 4px; font-size: 0.875rem; cursor: pointer;
+  }
+  .ana-btn.is-active { background: #3182f6; border-color: #3182f6; color: #fff; }
+  .ana-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 24px; }
+  .ana-card { background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 4px; padding: 16px; }
+  .ana-card-label { font-size: 0.8125rem; color: #6b7280; margin: 0 0 6px; }
+  .ana-card-value { font-size: 1.5rem; font-weight: 700; color: #1a1a1a; margin: 0; line-height: 1.2; }
+  .ana-card-sub { font-size: 0.75rem; color: #9ca3af; margin: 4px 0 0; }
+  .ana-section { margin-bottom: 32px; }
+  .ana-section h2 { font-size: 1rem; font-weight: 600; margin: 0 0 12px; color: #1a1a1a; }
+  .ana-chart {
+    height: 220px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 4px;
+    padding: 12px; display: flex; align-items: flex-end; gap: 6px; overflow-x: auto;
+  }
+  .ana-bar-col { display: flex; flex-direction: column; align-items: center; min-width: 28px; height: 100%; gap: 4px; }
+  .ana-bar-stack { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 1px; border-radius: 2px 2px 0 0; }
+  .ana-bar-uv { background: #93b8f4; width: 100%; min-height: 1px; }
+  .ana-bar-label { font-size: 0.6875rem; color: #6b7280; white-space: nowrap; }
+  .ana-bar-num { font-size: 0.6875rem; color: #1a1a1a; font-weight: 600; }
+  .ana-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .ana-table th, .ana-table td { padding: 8px 10px; border-bottom: 1px solid #e5e8eb; text-align: left; }
+  .ana-table th { font-weight: 600; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ana-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .ana-table a { color: #1a1a1a; text-decoration: none; }
+  .ana-table a:hover { text-decoration: underline; }
+  .ana-empty { font-size: 0.875rem; color: #9ca3af; padding: 16px; text-align: center; }
+  .ana-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; padding: 12px 16px; border-radius: 4px; font-size: 0.875rem; }
+  .ana-legend { display: flex; gap: 16px; font-size: 0.75rem; color: #6b7280; margin-bottom: 8px; }
+  .ana-legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 2px; vertical-align: middle; margin-right: 4px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+  <a href="/">홈</a>
+  <a href="/articles/">글</a>
+  <a href="/play/">게임</a>
+  <a href="/tools/">계산기</a>
+</nav>
+</header>
+
+<main class="ana-wrap">
+  <h1 class="ana-h1">방문자 분석</h1>
+  <p class="ana-sub">자체 D1 카운터 기준. 봇·프리렌더 트래픽은 제외됩니다.</p>
+
+  <div id="loading" class="ana-empty">불러오는 중…</div>
+  <div id="error" class="ana-error" style="display:none;"></div>
+
+  <div id="content" style="display:none;">
+    <div class="ana-controls" id="range-controls">
+      <button class="ana-btn" data-range="1d">오늘</button>
+      <button class="ana-btn is-active" data-range="7d">7일</button>
+      <button class="ana-btn" data-range="30d">30일</button>
+      <button class="ana-btn" data-range="90d">90일</button>
+    </div>
+
+    <section class="ana-section">
+      <div class="ana-totals" id="totals"></div>
+    </section>
+
+    <section class="ana-section">
+      <h2>일별 추이</h2>
+      <div class="ana-legend">
+        <span><span class="ana-legend-dot" style="background:#3182f6;"></span>PV (페이지뷰)</span>
+        <span><span class="ana-legend-dot" style="background:#93b8f4;"></span>UV (순방문자)</span>
+      </div>
+      <div class="ana-chart" id="chart"></div>
+    </section>
+
+    <section class="ana-section">
+      <h2>인기 페이지</h2>
+      <table class="ana-table" id="paths-table">
+        <thead><tr><th>경로</th><th class="num">PV</th><th class="num">UV</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="ana-section">
+      <h2>외부 유입</h2>
+      <table class="ana-table" id="referrers-table">
+        <thead><tr><th>유입처</th><th class="num">PV</th><th class="num">UV</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </div>
+</main>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const API = 'https://api.q-bot.kr';
+  const $ = (sel) => document.querySelector(sel);
+  const fmtNum = (n) => (n == null ? '0' : Number(n).toLocaleString('ko-KR'));
+
+  function showError(msg) {
+    $('#loading').style.display = 'none';
+    const box = $('#error');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  async function fetchAnalytics(range) {
+    const token = QLensAuth.getToken && QLensAuth.getToken();
+    if (!token) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/analytics/'));
+      return null;
+    }
+    const r = await fetch(API + '/admin/analytics?range=' + encodeURIComponent(range), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (r.status === 401) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/analytics/'));
+      return null;
+    }
+    if (r.status === 403) {
+      showError('접근 권한이 없습니다. 관리자 이메일 화이트리스트(ADMIN_EMAILS)를 확인하세요.');
+      return null;
+    }
+    if (!r.ok) {
+      showError('분석 데이터 조회 실패 (HTTP ' + r.status + ')');
+      return null;
+    }
+    return r.json();
+  }
+
+  function renderTotals(t, days) {
+    const items = [
+      { label: 'PV', value: fmtNum(t.pv), sub: days + '일 누적' },
+      { label: 'UV', value: fmtNum(t.uv), sub: '순방문자' },
+      { label: '세션', value: fmtNum(t.sessions), sub: '30분 idle 기준' },
+      { label: '로그인 PV', value: fmtNum(t.logged_in_pv), sub: '회원 기여' }
+    ];
+    $('#totals').innerHTML = items.map(i =>
+      '<div class="ana-card">' +
+        '<p class="ana-card-label">' + i.label + '</p>' +
+        '<p class="ana-card-value">' + i.value + '</p>' +
+        '<p class="ana-card-sub">' + i.sub + '</p>' +
+      '</div>'
+    ).join('');
+  }
+
+  function renderChart(daily) {
+    const chart = $('#chart');
+    if (!daily || daily.length === 0) {
+      chart.innerHTML = '<p class="ana-empty" style="margin:auto;">데이터 없음</p>';
+      return;
+    }
+    // 오래된 → 최신 순으로 표시
+    const rows = daily.slice().reverse();
+    const max = Math.max.apply(null, rows.map(r => r.pv || 0)) || 1;
+
+    chart.innerHTML = rows.map(r => {
+      const pvH = Math.round(((r.pv || 0) / max) * 160);
+      const uvH = Math.round(((r.uv || 0) / max) * 160);
+      const md = (r.date_kr || '').slice(5);
+      return (
+        '<div class="ana-bar-col" title="' + r.date_kr + ' · PV ' + r.pv + ' / UV ' + r.uv + '">' +
+          '<span class="ana-bar-num">' + (r.pv || 0) + '</span>' +
+          '<div class="ana-bar-stack" style="height:170px;">' +
+            '<div class="ana-bar-uv" style="height:' + uvH + 'px;"></div>' +
+            '<div class="ana-bar-pv" style="height:' + pvH + 'px;"></div>' +
+          '</div>' +
+          '<span class="ana-bar-label">' + md + '</span>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function renderPathsTable(rows) {
+    const tbody = $('#paths-table tbody');
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="ana-empty">데이터 없음</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r => {
+      const safePath = escapeHtml(r.path);
+      return '<tr>' +
+        '<td><a href="' + safePath + '" target="_blank" rel="noopener">' + safePath + '</a></td>' +
+        '<td class="num">' + fmtNum(r.pv) + '</td>' +
+        '<td class="num">' + fmtNum(r.uv) + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function renderReferrersTable(rows) {
+    const tbody = $('#referrers-table tbody');
+    if (!rows || rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="3" class="ana-empty">외부 유입 없음</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(r =>
+      '<tr>' +
+        '<td>' + escapeHtml(r.referrer_host) + '</td>' +
+        '<td class="num">' + fmtNum(r.pv) + '</td>' +
+        '<td class="num">' + fmtNum(r.uv) + '</td>' +
+      '</tr>'
+    ).join('');
+  }
+
+  async function load(range) {
+    $('#loading').style.display = 'block';
+    $('#content').style.display = 'none';
+    $('#error').style.display = 'none';
+
+    const data = await fetchAnalytics(range);
+    if (!data) return;
+
+    renderTotals(data.totals || {}, data.range_days);
+    renderChart(data.daily || []);
+    renderPathsTable(data.top_paths || []);
+    renderReferrersTable(data.top_referrers || []);
+
+    $('#loading').style.display = 'none';
+    $('#content').style.display = 'block';
+  }
+
+  function bindControls() {
+    document.querySelectorAll('#range-controls .ana-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('#range-controls .ana-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        load(btn.dataset.range);
+      });
+    });
+  }
+
+  async function ensureToken() {
+    if (!window.QLensAuth) return false;
+    if (QLensAuth.isLoggedIn()) return true;
+    // refresh_token 쿠키가 있으면 access_token 재발급 시도
+    try { await QLensAuth.refresh(); return QLensAuth.isLoggedIn(); }
+    catch (e) { return false; }
+  }
+
+  (async function init() {
+    const ok = await ensureToken();
+    if (!ok) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/analytics/'));
+      return;
+    }
+    bindControls();
+    await load('7d');
+  })();
+})();
+</script>
+</body>
+</html>
