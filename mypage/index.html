@@ -147,6 +147,9 @@
 
   if (me.is_admin) {
     document.getElementById('admin-card').style.display = 'flex';
+    try { localStorage.setItem('qlens_admin', '1'); } catch (e) {}
+  } else {
+    try { localStorage.removeItem('qlens_admin'); } catch (e) {}
   }
 
   document.getElementById('loading').style.display = 'none';

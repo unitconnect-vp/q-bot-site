@@ -109,6 +109,26 @@
         <tbody></tbody>
       </table>
     </section>
+
+    <section class="ana-section">
+      <h2>관리자 계정 관리</h2>
+      <p style="font-size:0.9375rem;color:#6b7280;margin:0 0 16px;">
+        관리자는 이 대시보드에 접근할 수 있고, 본인의 페이지 방문은 통계에서 제외됩니다.
+      </p>
+      <table class="ana-table" id="admins-table" style="margin-bottom:20px;">
+        <thead><tr><th>이메일</th><th>닉네임</th><th>출처</th><th class="num">작업</th></tr></thead>
+        <tbody></tbody>
+      </table>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+        <input type="email" id="admin-email-input" placeholder="추가할 관리자 이메일"
+               style="flex:1;min-width:220px;padding:12px 14px;border:1px solid #e5e8eb;border-radius:6px;font-size:1rem;">
+        <button class="ana-btn is-active" id="admin-add-btn" style="padding:12px 22px;">관리자 추가</button>
+      </div>
+      <p style="font-size:0.875rem;color:#9ca3af;margin:10px 0 0;">
+        * 가입한 사용자만 관리자로 지정할 수 있습니다. 본인은 제거할 수 없습니다.
+      </p>
+      <div id="admin-msg" style="margin-top:12px;font-size:0.9375rem;"></div>
+    </section>
   </div>
 </main>
 
@@ -288,6 +308,7 @@
     renderChart(data.daily || []);
     renderPathsTable(data.top_paths || []);
     renderReferrersTable(data.top_referrers || []);
+    loadAdmins();
 
     $('#loading').style.display = 'none';
     $('#content').style.display = 'block';
@@ -301,6 +322,96 @@
         load(btn.dataset.range);
       });
     });
+    $('#admin-add-btn').addEventListener('click', addAdmin);
+    $('#admin-email-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter') addAdmin();
+    });
+  }
+
+  function setAdminMsg(text, kind) {
+    const box = $('#admin-msg');
+    box.textContent = text || '';
+    box.style.color = kind === 'error' ? '#c53030' : kind === 'ok' ? '#2f855a' : '#6b7280';
+  }
+
+  async function fetchAdmins() {
+    const token = QLensAuth.getToken();
+    const r = await fetch(API + '/admin/admins', {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (!r.ok) return null;
+    return r.json();
+  }
+
+  function renderAdminsTable(data) {
+    const tbody = $('#admins-table tbody');
+    const rows = (data && data.admins) || [];
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="ana-empty">관리자 없음</td></tr>';
+      return;
+    }
+    tbody.innerHTML = rows.map(a => {
+      const sourceLabel = a.source === 'env'
+        ? '<span style="background:#1a1a1a;color:#fff;font-size:0.75rem;padding:2px 8px;border-radius:3px;">기본</span>'
+        : '<span style="background:#3182f6;color:#fff;font-size:0.75rem;padding:2px 8px;border-radius:3px;">DB</span>';
+      const action = a.removable
+        ? '<button class="admin-remove-btn" data-id="' + a.id + '" data-email="' + escapeHtml(a.email) + '" style="padding:6px 12px;border:1px solid #e5e8eb;background:#fff;border-radius:4px;font-size:0.875rem;cursor:pointer;">제거</button>'
+        : (a.id === data.me_id
+            ? '<span style="font-size:0.875rem;color:#9ca3af;">본인</span>'
+            : '<span style="font-size:0.875rem;color:#9ca3af;">고정</span>');
+      return '<tr>' +
+        '<td>' + escapeHtml(a.email) + '</td>' +
+        '<td>' + escapeHtml(a.nickname || '—') + '</td>' +
+        '<td>' + sourceLabel + '</td>' +
+        '<td class="num">' + action + '</td>' +
+      '</tr>';
+    }).join('');
+    document.querySelectorAll('.admin-remove-btn').forEach(btn => {
+      btn.addEventListener('click', () => removeAdmin(btn.dataset.id, btn.dataset.email));
+    });
+  }
+
+  async function loadAdmins() {
+    const data = await fetchAdmins();
+    renderAdminsTable(data);
+  }
+
+  async function addAdmin() {
+    const input = $('#admin-email-input');
+    const email = input.value.trim();
+    if (!email) return;
+    setAdminMsg('처리 중…', 'info');
+    const token = QLensAuth.getToken();
+    const r = await fetch(API + '/admin/admins', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok) {
+      setAdminMsg(email + ' 을(를) 관리자로 지정했습니다.', 'ok');
+      input.value = '';
+      loadAdmins();
+    } else {
+      setAdminMsg(data.error || '추가 실패 (HTTP ' + r.status + ')', 'error');
+    }
+  }
+
+  async function removeAdmin(id, email) {
+    if (!confirm(email + ' 의 관리자 권한을 제거하시겠습니까?')) return;
+    setAdminMsg('처리 중…', 'info');
+    const token = QLensAuth.getToken();
+    const r = await fetch(API + '/admin/admins?id=' + encodeURIComponent(id), {
+      method: 'DELETE',
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok) {
+      setAdminMsg(email + ' 의 관리자 권한을 제거했습니다.', 'ok');
+      loadAdmins();
+    } else {
+      setAdminMsg(data.error || '제거 실패 (HTTP ' + r.status + ')', 'error');
+    }
   }
 
   async function ensureToken() {
