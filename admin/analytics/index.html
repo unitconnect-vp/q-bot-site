@@ -25,15 +25,24 @@
   .ana-section { margin-bottom: 40px; }
   .ana-section h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 16px; color: #1a1a1a; }
   .ana-chart {
-    height: 420px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px;
-    padding: 20px 16px 16px; display: flex; align-items: flex-end; gap: 8px; overflow-x: auto;
+    height: 360px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px;
+    padding: 20px 16px 14px; display: grid; grid-auto-flow: column;
+    grid-auto-columns: minmax(40px, 1fr); align-items: end; gap: 8px;
+    overflow-x: auto; overflow-y: hidden;
   }
-  .ana-bar-col { display: flex; flex-direction: column; align-items: center; min-width: 40px; gap: 8px; }
-  .ana-bar-stack { width: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
-  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 1px; border-radius: 3px 3px 0 0; }
-  .ana-bar-uv { background: #93b8f4; width: 100%; min-height: 1px; }
+  .ana-bar-col {
+    height: 100%; min-width: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .ana-bar-stack {
+    flex: 1; width: 100%; max-width: 64px; min-width: 16px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    min-height: 0;
+  }
+  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; }
+  .ana-bar-uv { background: #93b8f4; width: 100%; }
   .ana-bar-label { font-size: 0.875rem; color: #6b7280; white-space: nowrap; }
-  .ana-bar-num { font-size: 0.875rem; color: #1a1a1a; font-weight: 600; }
+  .ana-bar-num { font-size: 0.875rem; color: #1a1a1a; font-weight: 600; min-height: 1.2em; }
   .ana-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
   .ana-table th, .ana-table td { padding: 12px 14px; border-bottom: 1px solid #e5e8eb; text-align: left; }
   .ana-table th { font-weight: 600; color: #6b7280; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; }
@@ -212,17 +221,17 @@
     const rows = daily.slice().reverse();
     const max = Math.max.apply(null, rows.map(r => r.pv || 0)) || 1;
 
-    // 막대 영역 max 320px. col 안의 num(1.4em)·label(1.4em)·gap·padding 합과 chart 420px 사이 충분한 여유.
+    // 막대 높이는 stack(flex:1) 내부 % 기반. chart는 grid로 N개 컬럼 균등 분배.
     chart.innerHTML = rows.map(r => {
-      const pvH = Math.round(((r.pv || 0) / max) * 320);
-      const uvH = Math.round(((r.uv || 0) / max) * 320);
+      const pvPct = max > 0 ? ((r.pv || 0) / max) * 100 : 0;
+      const uvPct = max > 0 ? ((r.uv || 0) / max) * 100 : 0;
       const md = (r.date_kr || '').slice(5);
       return (
         '<div class="ana-bar-col" title="' + r.date_kr + ' · PV ' + r.pv + ' / UV ' + r.uv + '">' +
           '<span class="ana-bar-num">' + (r.pv || 0) + '</span>' +
-          '<div class="ana-bar-stack" style="height:' + Math.max(pvH, uvH, 1) + 'px;">' +
-            '<div class="ana-bar-uv" style="height:' + uvH + 'px;"></div>' +
-            '<div class="ana-bar-pv" style="height:' + pvH + 'px;"></div>' +
+          '<div class="ana-bar-stack">' +
+            '<div class="ana-bar-uv" style="height:' + uvPct + '%;"></div>' +
+            '<div class="ana-bar-pv" style="height:' + pvPct + '%;"></div>' +
           '</div>' +
           '<span class="ana-bar-label">' + md + '</span>' +
         '</div>'
