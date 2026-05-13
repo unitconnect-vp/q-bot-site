@@ -13,6 +13,7 @@
 //   GET  /api/games/stats           내 게임 통계
 //   POST /api/track                 페이지뷰 1건 기록 (공개·익명)
 //   GET  /api/admin/analytics       방문자 통계 (관리자 이메일 화이트리스트)
+//   GET  /api/admin/users           가입자 명단 (관리자 전용, 페이지네이션+검색)
 
 import { hashPassword, verifyPassword, generateToken, hashToken } from './lib/crypto.js';
 import { signJWT, verifyJWT } from './lib/jwt.js';
@@ -105,6 +106,7 @@ export default {
 
       if (path === '/track' && m === 'POST')                return trackPageview(req, env, origin);
       if (path === '/admin/analytics' && m === 'GET')       return adminAnalytics(req, env, origin);
+      if (path === '/admin/users' && m === 'GET')           return listUsers(req, env, origin);
       if (path === '/admin/admins' && m === 'GET')          return listAdmins(req, env, origin);
       if (path === '/admin/admins' && m === 'POST')         return addAdmin(req, env, origin);
       if (path === '/admin/admins' && m === 'DELETE')       return removeAdmin(req, env, origin);
@@ -675,6 +677,74 @@ async function adminAnalytics(req, env, origin) {
     daily: daily.results || [],
     top_paths: topPaths.results || [],
     top_referrers: topReferrers.results || []
+  }, 200, origin);
+}
+
+// ─────── 가입자 명단 ───────
+//
+// GET /admin/users?q=검색어&page=1&limit=50
+//   - q: 이메일 또는 닉네임 부분 일치 (대소문자 무시)
+//   - page: 1 이상, limit: 1~200 (기본 50)
+//   - 관리자 전용 (requireAdmin)
+
+async function listUsers(req, env, origin) {
+  const admin = await requireAdmin(req, env);
+  if (!admin) return err('Forbidden', 403, origin);
+
+  const url = new URL(req.url);
+  const q = (url.searchParams.get('q') || '').trim();
+  const pageRaw = parseInt(url.searchParams.get('page') || '1', 10);
+  const limitRaw = parseInt(url.searchParams.get('limit') || '50', 10);
+  const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 1;
+  const limit = Number.isFinite(limitRaw) && limitRaw > 0 ? Math.min(limitRaw, 200) : 50;
+  const offset = (page - 1) * limit;
+
+  const adminEmails = adminEmailSet(env);
+
+  let totalRow, rows;
+  if (q) {
+    const like = '%' + q.toLowerCase() + '%';
+    totalRow = await env.DB.prepare(
+      `SELECT COUNT(*) as n FROM users
+       WHERE LOWER(email) LIKE ? OR LOWER(nickname) LIKE ?`
+    ).bind(like, like).first();
+    const res = await env.DB.prepare(
+      `SELECT id, email, nickname, role, oauth_provider, email_verified, created_at, last_login_at
+       FROM users
+       WHERE LOWER(email) LIKE ? OR LOWER(nickname) LIKE ?
+       ORDER BY created_at DESC
+       LIMIT ? OFFSET ?`
+    ).bind(like, like, limit, offset).all();
+    rows = res.results || [];
+  } else {
+    totalRow = await env.DB.prepare('SELECT COUNT(*) as n FROM users').first();
+    const res = await env.DB.prepare(
+      `SELECT id, email, nickname, role, oauth_provider, email_verified, created_at, last_login_at
+       FROM users
+       ORDER BY created_at DESC
+       LIMIT ? OFFSET ?`
+    ).bind(limit, offset).all();
+    rows = res.results || [];
+  }
+
+  const users = rows.map(u => ({
+    id: u.id,
+    email: u.email,
+    nickname: u.nickname,
+    role: u.role || 'member',
+    oauth_provider: u.oauth_provider,
+    email_verified: !!u.email_verified,
+    created_at: u.created_at,
+    last_login_at: u.last_login_at,
+    is_admin: u.role === 'admin' || (u.email && adminEmails.has(u.email.toLowerCase()))
+  }));
+
+  return json({
+    users,
+    total: (totalRow && totalRow.n) || 0,
+    page,
+    limit,
+    q
   }, 200, origin);
 }
 

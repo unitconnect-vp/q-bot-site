@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가입자 명단 — Q렌즈 관리자</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="canonical" href="https://q-bot.kr/admin/subscribers/">
+<link rel="stylesheet" href="/assets/style.css">
+<script src="/assets/analytics.js" defer></script>
+<style>
+  .sub-wrap { max-width: 1200px; margin: 0 auto; padding: 32px 16px 64px; font-size: 16px; }
+  .sub-h1 { font-size: 2rem; font-weight: 700; margin: 0 0 6px; color: #1a1a1a; letter-spacing: -0.01em; }
+  .sub-sub { font-size: 1rem; color: #6b7280; margin: 0 0 28px; }
+  .sub-toolbar { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+  .sub-search { flex: 1; min-width: 240px; padding: 12px 14px; border: 1px solid #e5e8eb; border-radius: 6px; font-size: 1rem; }
+  .sub-btn {
+    padding: 12px 22px; border: 1px solid #e5e8eb; background: #fff; color: #1a1a1a;
+    border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer;
+  }
+  .sub-btn.is-active { background: #3182f6; border-color: #3182f6; color: #fff; }
+  .sub-summary { font-size: 0.9375rem; color: #6b7280; margin: 0 0 14px; }
+  .sub-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .sub-table th, .sub-table td { padding: 12px 14px; border-bottom: 1px solid #e5e8eb; text-align: left; vertical-align: middle; }
+  .sub-table th { font-weight: 600; color: #6b7280; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; background: #f9fafb; }
+  .sub-table td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .sub-table tbody tr:hover { background: #f9fafb; }
+  .sub-tag {
+    display: inline-block; font-size: 0.75rem; padding: 2px 8px; border-radius: 3px;
+    font-weight: 500; line-height: 1.4;
+  }
+  .sub-tag--admin { background: #1a1a1a; color: #fff; }
+  .sub-tag--google { background: #fff; color: #1a1a1a; border: 1px solid #e5e8eb; }
+  .sub-tag--email { background: #fff; color: #6b7280; border: 1px solid #e5e8eb; }
+  .sub-tag--verified { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+  .sub-tag--unverified { background: #fff7ed; color: #b45309; border: 1px solid #fed7aa; }
+  .sub-pager { display: flex; gap: 8px; justify-content: center; align-items: center; margin-top: 24px; flex-wrap: wrap; }
+  .sub-pager .sub-btn { padding: 8px 16px; font-size: 0.9375rem; }
+  .sub-pager .sub-pager-info { font-size: 0.9375rem; color: #6b7280; padding: 0 12px; }
+  .sub-empty { font-size: 1rem; color: #9ca3af; padding: 40px; text-align: center; }
+  .sub-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; padding: 14px 18px; border-radius: 6px; font-size: 1rem; }
+  .sub-cell-email { word-break: break-all; }
+  .sub-cell-nickname { word-break: break-word; max-width: 200px; }
+  .sub-back { display: inline-block; margin-bottom: 16px; font-size: 0.9375rem; color: #6b7280; text-decoration: none; }
+  .sub-back:hover { color: #3182f6; }
+  @media (max-width: 720px) {
+    .sub-table th, .sub-table td { padding: 10px 8px; font-size: 0.875rem; }
+    .sub-table th { font-size: 0.75rem; }
+    .sub-cell-nickname { max-width: 120px; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+<a class="site-logo" href="/">Q<span>-</span>Lens</a>
+<nav class="site-nav">
+  <a href="/">홈</a>
+  <a href="/articles/">글</a>
+  <a href="/play/">게임</a>
+  <a href="/tools/">계산기</a>
+</nav>
+</header>
+
+<main class="sub-wrap">
+  <a href="/admin/analytics/" class="sub-back">← 방문자 분석</a>
+  <h1 class="sub-h1">가입자 명단</h1>
+  <p class="sub-sub">D1 users 테이블 기준. 최신 가입순으로 정렬됩니다.</p>
+
+  <div id="loading" class="sub-empty">불러오는 중…</div>
+  <div id="error" class="sub-error" style="display:none;"></div>
+
+  <div id="content" style="display:none;">
+    <div class="sub-toolbar">
+      <input type="text" class="sub-search" id="search-input"
+             placeholder="이메일 또는 닉네임 검색" autocomplete="off">
+      <button class="sub-btn is-active" id="search-btn">검색</button>
+      <button class="sub-btn" id="reset-btn">초기화</button>
+    </div>
+
+    <p class="sub-summary" id="summary"></p>
+
+    <table class="sub-table">
+      <thead>
+        <tr>
+          <th>이메일</th>
+          <th>닉네임</th>
+          <th>역할</th>
+          <th>로그인 방식</th>
+          <th>이메일 인증</th>
+          <th>가입일</th>
+          <th>최근 로그인</th>
+        </tr>
+      </thead>
+      <tbody id="users-tbody"></tbody>
+    </table>
+
+    <div class="sub-pager" id="pager"></div>
+  </div>
+</main>
+
+<footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+<script src="/assets/auth.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const API = 'https://api.q-bot.kr';
+  const PAGE_SIZE = 50;
+  const $ = (sel) => document.querySelector(sel);
+  const fmtNum = (n) => (n == null ? '0' : Number(n).toLocaleString('ko-KR'));
+
+  let state = { q: '', page: 1, total: 0 };
+
+  function showError(msg) {
+    $('#loading').style.display = 'none';
+    $('#content').style.display = 'none';
+    const box = $('#error');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  function fmtDate(unix) {
+    if (!unix) return '—';
+    const d = new Date(unix * 1000);
+    const yy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return yy + '.' + mm + '.' + dd;
+  }
+
+  function fmtRelative(unix) {
+    if (!unix) return '—';
+    const now = Math.floor(Date.now() / 1000);
+    const diff = now - unix;
+    if (diff < 60) return '방금';
+    if (diff < 3600) return Math.floor(diff / 60) + '분 전';
+    if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
+    if (diff < 86400 * 7) return Math.floor(diff / 86400) + '일 전';
+    return fmtDate(unix);
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  async function fetchUsers(q, page) {
+    const token = QLensAuth.getToken && QLensAuth.getToken();
+    if (!token) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/subscribers/'));
+      return null;
+    }
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    params.set('page', String(page));
+    params.set('limit', String(PAGE_SIZE));
+    const r = await fetch(API + '/admin/users?' + params.toString(), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (r.status === 401) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/subscribers/'));
+      return null;
+    }
+    if (r.status === 403) {
+      showError('접근 권한이 없습니다. 관리자만 가입자 명단을 볼 수 있습니다.');
+      return null;
+    }
+    if (!r.ok) {
+      showError('가입자 명단 조회 실패 (HTTP ' + r.status + ')');
+      return null;
+    }
+    return r.json();
+  }
+
+  function renderRows(users) {
+    const tbody = $('#users-tbody');
+    if (!users || users.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="sub-empty">조회 결과가 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = users.map(u => {
+      const role = u.is_admin
+        ? '<span class="sub-tag sub-tag--admin">관리자</span>'
+        : '<span style="color:#9ca3af;font-size:0.875rem;">회원</span>';
+      const method = u.oauth_provider === 'google'
+        ? '<span class="sub-tag sub-tag--google">Google</span>'
+        : '<span class="sub-tag sub-tag--email">이메일</span>';
+      const verified = u.email_verified
+        ? '<span class="sub-tag sub-tag--verified">인증</span>'
+        : '<span class="sub-tag sub-tag--unverified">미인증</span>';
+      return '<tr>' +
+        '<td class="sub-cell-email">' + escapeHtml(u.email) + '</td>' +
+        '<td class="sub-cell-nickname">' + escapeHtml(u.nickname || '—') + '</td>' +
+        '<td>' + role + '</td>' +
+        '<td>' + method + '</td>' +
+        '<td>' + verified + '</td>' +
+        '<td>' + fmtDate(u.created_at) + '</td>' +
+        '<td>' + fmtRelative(u.last_login_at) + '</td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  function renderSummary(data) {
+    const total = data.total || 0;
+    const page = data.page || 1;
+    const from = total === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
+    const to = Math.min(total, page * PAGE_SIZE);
+    const qPart = data.q ? ' · 검색어 "' + escapeHtml(data.q) + '"' : '';
+    $('#summary').innerHTML =
+      '전체 ' + fmtNum(total) + '명' + qPart +
+      (total > 0 ? ' · ' + fmtNum(from) + '–' + fmtNum(to) + ' 표시' : '');
+  }
+
+  function renderPager(total, page) {
+    const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+    const pager = $('#pager');
+    if (totalPages <= 1) {
+      pager.innerHTML = '';
+      return;
+    }
+    const prev = '<button class="sub-btn" id="prev-btn"' + (page <= 1 ? ' disabled style="opacity:0.4;cursor:not-allowed;"' : '') + '>← 이전</button>';
+    const info = '<span class="sub-pager-info">' + page + ' / ' + totalPages + ' 페이지</span>';
+    const next = '<button class="sub-btn" id="next-btn"' + (page >= totalPages ? ' disabled style="opacity:0.4;cursor:not-allowed;"' : '') + '>다음 →</button>';
+    pager.innerHTML = prev + info + next;
+    const prevBtn = $('#prev-btn');
+    const nextBtn = $('#next-btn');
+    if (prevBtn && page > 1) prevBtn.addEventListener('click', () => load(state.q, page - 1));
+    if (nextBtn && page < totalPages) nextBtn.addEventListener('click', () => load(state.q, page + 1));
+  }
+
+  async function load(q, page) {
+    $('#loading').style.display = 'block';
+    $('#content').style.display = 'none';
+    $('#error').style.display = 'none';
+
+    const data = await fetchUsers(q, page);
+    if (!data) return;
+
+    state.q = data.q || '';
+    state.page = data.page || 1;
+    state.total = data.total || 0;
+
+    renderSummary(data);
+    renderRows(data.users || []);
+    renderPager(state.total, state.page);
+
+    $('#loading').style.display = 'none';
+    $('#content').style.display = 'block';
+  }
+
+  function doSearch() {
+    const q = $('#search-input').value.trim();
+    load(q, 1);
+  }
+
+  function bindControls() {
+    $('#search-btn').addEventListener('click', doSearch);
+    $('#reset-btn').addEventListener('click', () => {
+      $('#search-input').value = '';
+      load('', 1);
+    });
+    $('#search-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') doSearch();
+    });
+  }
+
+  async function ensureToken() {
+    if (!window.QLensAuth) return false;
+    if (QLensAuth.isLoggedIn()) return true;
+    try { await QLensAuth.refresh(); return QLensAuth.isLoggedIn(); }
+    catch (e) { return false; }
+  }
+
+  (async function init() {
+    const ok = await ensureToken();
+    if (!ok) {
+      window.location.replace('/auth/login/?next=' + encodeURIComponent('/admin/subscribers/'));
+      return;
+    }
+    bindControls();
+    await load('', 1);
+  })();
+})();
+</script>
+</body>
+</html>

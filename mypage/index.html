@@ -51,13 +51,22 @@
       </div>
     </div>
 
-    <a id="admin-card" href="/admin/analytics/" style="display:none;background:#1a1a1a;border-radius:4px;padding:18px 20px;margin-bottom:24px;text-decoration:none;color:#fff;align-items:center;justify-content:space-between;">
-      <span>
-        <span style="display:block;font-size:0.75rem;color:#93b8f4;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;margin-bottom:4px;">관리자</span>
-        <span style="display:block;font-size:1rem;font-weight:600;">방문자 분석 대시보드</span>
-      </span>
-      <span style="font-size:1.25rem;color:#3182f6;">→</span>
-    </a>
+    <div id="admin-card" style="display:none;flex-direction:column;gap:10px;margin-bottom:24px;">
+      <a href="/admin/analytics/" style="background:#1a1a1a;border-radius:4px;padding:18px 20px;text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:space-between;">
+        <span>
+          <span style="display:block;font-size:0.75rem;color:#93b8f4;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;margin-bottom:4px;">관리자</span>
+          <span style="display:block;font-size:1rem;font-weight:600;">방문자 분석 대시보드</span>
+        </span>
+        <span style="font-size:1.25rem;color:#3182f6;">→</span>
+      </a>
+      <a href="/admin/subscribers/" style="background:#1a1a1a;border-radius:4px;padding:18px 20px;text-decoration:none;color:#fff;display:flex;align-items:center;justify-content:space-between;">
+        <span>
+          <span style="display:block;font-size:0.75rem;color:#93b8f4;letter-spacing:0.04em;text-transform:uppercase;font-weight:600;margin-bottom:4px;">관리자</span>
+          <span style="display:block;font-size:1rem;font-weight:600;">가입자 명단</span>
+        </span>
+        <span style="font-size:1.25rem;color:#3182f6;">→</span>
+      </a>
+    </div>
 
     <div id="game-stats-section" style="background:#f9fafb;border:1px solid #e5e8eb;border-radius:4px;padding:24px;margin-bottom:24px;">
       <h2 style="font-size:1rem;font-weight:600;margin:0 0 16px 0;color:#1a1a1a;">게임 기록</h2>
@@ -149,6 +158,7 @@
     document.getElementById('admin-card').style.display = 'flex';
     try { localStorage.setItem('qlens_admin', '1'); } catch (e) {}
   } else {
+    document.getElementById('admin-card').style.display = 'none';
     try { localStorage.removeItem('qlens_admin'); } catch (e) {}
   }
 
