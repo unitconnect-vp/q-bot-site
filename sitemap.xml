@@ -43,6 +43,18 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://q-bot.kr/articles/claude-code-dashboard-platform-guide-2026/</loc>
+    <lastmod>2026-05-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://q-bot.kr/articles/claude-code-pricing-pro-max-api-2026/</loc>
     <lastmod>2026-05-13</lastmod>
     <changefreq>monthly</changefreq>

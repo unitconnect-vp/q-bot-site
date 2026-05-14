@@ -1,5 +1,21 @@
 [
   {
+    "slug": "claude-code-agent-sdk-guide-2026",
+    "title": "클로드 코드 API 사용법 — Agent SDK로 직접 박는 길",
+    "category": "AI·테크",
+    "author": "Q렌즈",
+    "date": "2026-05-14",
+    "read_time": "약 8분"
+  },
+  {
+    "slug": "claude-code-dashboard-platform-guide-2026",
+    "title": "클로드 코드 대시보드 사용법 — Console에서 키·사용량·티어 보기",
+    "category": "AI·테크",
+    "author": "Q렌즈",
+    "date": "2026-05-14",
+    "read_time": "약 7분"
+  },
+  {
     "slug": "claude-code-pricing-pro-max-api-2026",
     "title": "클로드 코드 결제 — Pro·Max·API 어디까지 쓰면 어느 게 싼가",
     "category": "AI·테크",

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- Google Analytics 4 (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-04MMSE99PJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-04MMSE99PJ');
+  </script>
+  <!-- /Google Analytics 4 -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>클로드 코드 API 사용법 — Agent SDK로 직접 박는 길 | Q렌즈</title>
+  <meta name="description" content="클로드 코드는 CLI 외에 Python·TypeScript Agent SDK로도 돌아간다. query() 한 함수에서 시작해 allowed_tools 권한, 훅, 세션, MCP, 서브에이전트까지. CI 자동화에 들어가는 정확한 경로 정리.">
+  <meta name="keywords" content="클로드 코드, Claude Code, Claude Agent SDK, 클로드 API 사용법, ANTHROPIC_API_KEY, query 함수, Python SDK, TypeScript SDK, 클로드 코드 자동화, CI/CD 에이전트">
+  <link rel="canonical" href="https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="클로드 코드 API 사용법 — Agent SDK로 직접 박는 길">
+  <meta property="og:description" content="클로드 코드는 CLI 외에 Python·TypeScript Agent SDK로도 돌아간다. query() 한 함수에서 시작해 allowed_tools 권한, 훅, 세션, MCP, 서브에이전트까지. CI 자동화에 들어가는 정확한 경로 정리.">
+  <meta property="og:image" content="https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/thumb.webp">
+  <meta property="og:url" content="https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/">
+  <meta property="og:site_name" content="Q렌즈">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@heyqbot">
+  <meta name="twitter:title" content="클로드 코드 API 사용법 — Agent SDK로 직접 박는 길">
+  <meta name="twitter:description" content="클로드 코드는 CLI 외에 Python·TypeScript Agent SDK로도 돌아간다. query() 한 함수에서 시작해 allowed_tools 권한, 훅, 세션, MCP, 서브에이전트까지. CI 자동화에 들어가는 정확한 경로 정리.">
+  <meta name="twitter:image" content="https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/thumb.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/style.css">
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1015415940515156" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "클로드 코드 API 사용법 — Agent SDK로 직접 박는 길",
+    "description": "클로드 코드는 CLI 외에 Python·TypeScript Agent SDK로도 돌아간다. query() 한 함수에서 시작해 allowed_tools 권한, 훅, 세션, MCP, 서브에이전트까지. CI 자동화에 들어가는 정확한 경로 정리.",
+    "author": { "@type": "Organization", "name": "Q렌즈" },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Q렌즈",
+      "url": "https://q-bot.kr"
+    },
+    "datePublished": "2026-05-14",
+    "url": "https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/",
+    "image": "https://q-bot.kr/articles/claude-code-agent-sdk-guide-2026/thumb.webp"
+  }
+  </script>
+<script src="/assets/analytics.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <a class="site-logo" href="/">Q<span>-</span>Lens</a>
+    <nav class="site-nav">
+      <a href="/">홈</a>
+      <a href="/articles/">글</a>
+      <a href="/play/">게임</a>
+      <a href="/tools/">계산기</a>
+    </nav>
+  </header>
+
+  <main class="article-wrap">
+    <div class="ql-progress-bar"></div>
+
+<div class="ql-wrap" style="background:#ffffff!important;">
+
+<div class="ql-hero">
+  <div style="display:flex!important;flex-wrap:wrap!important;align-items:center!important;gap:0.4rem 0.6rem!important;font-size:0.85rem!important;color:#6b7280!important;margin-bottom:1.2rem!important;">
+    <span style="font-weight:700!important;color:#3182f6!important;">AI·테크</span>
+    <span style="color:#c9bfb0!important;">·</span>
+    <span>2026.05.14</span>
+    <span style="color:#c9bfb0!important;">·</span>
+    <span>약 8분</span>
+  </div>
+  <h1 class="ql-title">클로드 코드 API 사용법 — Agent SDK로 직접 박는 길</h1>
+  <div class="ql-subtitle">
+    같은 도구·같은 루프·같은 컨텍스트 관리를 라이브러리로 노출한 것이 Agent SDK다.<br>
+    터미널에서 손으로 치는 대신 코드에서 부른다.
+  </div>
+</div>
+
+<div class="ql-stat-row">
+  <div class="ql-stat-cell">
+    <span class="ql-stat-num">2개</span>
+    <span class="ql-stat-label">공식 언어<br>Python·TypeScript</span>
+  </div>
+  <div class="ql-stat-cell">
+    <span class="ql-stat-num">10여 종</span>
+    <span class="ql-stat-label">기본 제공 도구<br>설치 직후 사용</span>
+  </div>
+  <div class="ql-stat-cell">
+    <span class="ql-stat-num">0줄</span>
+    <span class="ql-stat-label">직접 짤 툴 루프<br>SDK가 처리</span>
+  </div>
+</div>
+
+<div class="ql-body">
+
+<p>클로드 코드(Claude Code)를 가장 많이 쓰는 입구는 터미널 CLI(<code>claude</code>)다. 하지만 CLI만 있는 게 아니다. 같은 엔진을 Python·TypeScript 라이브러리로 부르는 길이 따로 있다. Claude Agent SDK다.</p>
+
+<p>이 글은 Agent SDK를 처음 박는 사람을 위한 한 페이지 정리다. 설치 한 줄, 인증 한 줄, 호출 한 함수에서 시작해 도구 권한·훅·세션·MCP·서브에이전트까지 차례로 짚는다. 결제 경로를 먼저 정해야 한다면 <a href="/articles/claude-code-pricing-pro-max-api-2026/">Pro·Max·API 비교 글</a>이 앞 순서다.</p>
+
+<h2>1. CLI vs SDK — 같은 엔진, 두 입구</h2>
+
+<p>Anthropic 공식 문서는 두 입구의 관계를 이렇게 설명한다. CLI와 Agent SDK는 같은 기능을 다른 인터페이스로 노출한 것이다. CLI는 사람이 손으로 치는 대화형 환경에 최적화돼 있고, SDK는 코드에서 호출하는 자동화·통합 환경에 최적화돼 있다. 둘 사이의 작업 흐름은 직접 번역된다.</p>
+
+<p>실무에서는 다음 표가 거의 그대로 들어맞는다.</p>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;width:100%;border:1px solid #e5e8eb;border-radius:6px;margin:1.4rem 0;overflow:hidden;font-size:0.92rem;">
+  <div style="padding:0.85rem 1rem;background:#eff6ff;font-weight:700;color:#0f172a;border-right:1px solid #e5e8eb;">상황</div>
+  <div style="padding:0.85rem 1rem;background:#eff6ff;font-weight:700;color:#0f172a;">권장 입구</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">개발 중 인터랙티브 작업</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">CLI</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">CI/CD 파이프라인</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">SDK</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">자사 서비스 안에 박는 커스텀 에이전트</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">SDK</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">한 번 돌리는 일회성 작업</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">CLI</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">상시 운영되는 자동화</div>
+  <div style="padding:0.85rem 1rem;border-top:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">SDK</div>
+</div>
+
+<p>한 가지 더 짚고 가야 할 차이가 있다. Anthropic Client SDK라는 라이브러리가 따로 존재한다. 이건 메시지 API에 직접 붙는 SDK다. Agent SDK와 헷갈리지 말아야 한다. Client SDK는 툴 호출이 들어오면 그 실행을 사용자가 직접 짜야 한다. Agent SDK는 그 루프를 Claude가 알아서 돌린다. Read·Write·Bash 같은 도구는 라이브러리 안에서 이미 구현돼 있다.</p>
+
+<div class="ql-pullquote">Client SDK는 메시지 API에 직접 붙는 것, Agent SDK는 Claude Code의 도구·루프·컨텍스트 관리를 라이브러리로 노출한 것. 이름이 비슷해서 혼동되지만 다른 물건이다.</div>
+
+<h2>2. 두 줄 설치 — Python·TypeScript</h2>
+
+<p>설치는 한 줄이다. 패키지 매니저만 다르다.</p>
+
+<div style="display:flex;flex-direction:column;gap:0.9rem;margin:1.6rem 0;">
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1.3rem 1.5rem;background:#fafbfc;">
+    <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:1.05rem;">TypeScript</div>
+      <div style="font-size:0.85rem;color:#ffffff;background:#3182f6;padding:0.15rem 0.6rem;border-radius:4px;font-weight:700;">npm</div>
+    </div>
+    <div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.9rem;color:#1a1a1a;background:#f1f5f9;padding:0.75rem 1rem;border-radius:4px;line-height:1.6;">npm install @anthropic-ai/claude-agent-sdk</div>
+    <div style="font-size:0.88rem;color:#6b7280;margin-top:0.6rem;line-height:1.7;">TypeScript SDK는 플랫폼별 Claude Code 네이티브 바이너리를 옵션 의존성으로 함께 가져온다. 별도로 CLI를 깔지 않아도 된다.</div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1.3rem 1.5rem;background:#fafbfc;">
+    <div style="display:flex;align-items:center;gap:0.7rem;margin-bottom:0.6rem;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:1.05rem;">Python</div>
+      <div style="font-size:0.85rem;color:#ffffff;background:#3182f6;padding:0.15rem 0.6rem;border-radius:4px;font-weight:700;">pip</div>
+    </div>
+    <div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.9rem;color:#1a1a1a;background:#f1f5f9;padding:0.75rem 1rem;border-radius:4px;line-height:1.6;">pip install claude-agent-sdk</div>
+    <div style="font-size:0.88rem;color:#6b7280;margin-top:0.6rem;line-height:1.7;">Python SDK는 비동기(asyncio) 기반. <code>async for</code>로 메시지 스트림을 받는 패턴이 표준이다.</div>
+  </div>
+</div>
+
+<h2>3. 인증 — ANTHROPIC_API_KEY 한 줄</h2>
+
+<p>인증은 환경변수 한 줄로 끝난다. API 키는 <a href="https://platform.claude.com/" target="_blank" rel="noopener">platform.claude.com</a>(Claude Console)에서 발급받는다. 콘솔에서 무엇이 보이는지는 <a href="/articles/claude-code-dashboard-platform-guide-2026/">대시보드 사용법 글</a>에서 별도로 다룬다.</p>
+
+<div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.9rem;color:#1a1a1a;background:#f1f5f9;padding:0.85rem 1.1rem;border-radius:4px;line-height:1.7;margin:1.2rem 0;">export ANTHROPIC_API_KEY=sk-ant-...</div>
+
+<p>키 하나만 있으면 SDK가 알아서 인증한다. 클라우드 환경에서 돌릴 때는 사이드 옵션이 두 가지 있다. AWS Bedrock(<code>CLAUDE_CODE_USE_BEDROCK=1</code>), Google Vertex AI(<code>CLAUDE_CODE_USE_VERTEX=1</code>), Azure Foundry(<code>CLAUDE_CODE_USE_FOUNDRY=1</code>)로 각각 가입돼 있다면 환경변수 하나만 더 켜면 그쪽 자격증명을 따라간다. 1인 개발자는 거의 쓸 일이 없고, 회사가 이미 그쪽 클라우드 결제 계정을 가지고 있을 때 의미가 생긴다.</p>
+
+<div class="ql-inline-note"><strong>구독자 주의:</strong> 2026년 6월 15일부터 Pro/Max 구독자가 Agent SDK 또는 <code>claude -p</code> 헤드리스 모드를 쓰면 인터랙티브 한도와 별도로 새로 신설되는 월간 Agent SDK 크레딧에서 차감된다. CLI 대화형 사용분과 합산되지 않는 별도 통장이라고 보면 된다.</div>
+
+<h2>4. 첫 호출 — query() 안에서 일어나는 일</h2>
+
+<p>Agent SDK의 진입점은 <code>query()</code> 함수 하나다. 프롬프트와 옵션을 넘기면 비동기 이터레이터를 돌려준다. 그 이터레이터에서 메시지가 흘러나오는 동안 Claude가 도구를 호출하고 결과를 받고 다음 행동을 결정한다 — 그 루프를 SDK가 내부에서 굴린다.</p>
+
+<div style="display:flex;flex-direction:column;gap:0.9rem;margin:1.4rem 0;">
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1.3rem 1.5rem;background:#fafbfc;">
+    <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;margin-bottom:0.6rem;">Python — 디렉토리 파일 나열 에이전트</div>
+    <div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.85rem;color:#1a1a1a;background:#f1f5f9;padding:0.85rem 1rem;border-radius:4px;line-height:1.65;white-space:pre;overflow-x:auto;">import asyncio
+from claude_agent_sdk import query, ClaudeAgentOptions
+
+async def main():
+    async for message in query(
+        prompt="What files are in this directory?",
+        options=ClaudeAgentOptions(allowed_tools=["Bash", "Glob"]),
+    ):
+        if hasattr(message, "result"):
+            print(message.result)
+
+asyncio.run(main())</div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1.3rem 1.5rem;background:#fafbfc;">
+    <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;margin-bottom:0.6rem;">TypeScript — 같은 작업</div>
+    <div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.85rem;color:#1a1a1a;background:#f1f5f9;padding:0.85rem 1rem;border-radius:4px;line-height:1.65;white-space:pre;overflow-x:auto;">import { query } from "@anthropic-ai/claude-agent-sdk";
+
+for await (const message of query({
+  prompt: "What files are in this directory?",
+  options: { allowedTools: ["Bash", "Glob"] }
+})) {
+  if ("result" in message) console.log(message.result);
+}</div>
+  </div>
+</div>
+
+<p>두 언어 모두 같은 모양을 띤다. 프롬프트 한 줄, 허용 도구 목록 하나. <code>result</code> 필드가 있는 메시지가 최종 응답이고, 그 전 메시지들은 도구 호출·결과 같은 중간 단계다. 디버깅할 때는 모든 메시지를 찍어보면 SDK 내부에서 무슨 일이 벌어지는지 그대로 보인다.</p>
+
+<h2>5. 도구 권한 — allowed_tools와 permission_mode</h2>
+
+<p>Agent SDK가 기본으로 제공하는 도구는 10여 종이다. 각자 분명한 책임이 있고 권한 범위가 갈린다.</p>
+
+<div style="display:grid;grid-template-columns:1.1fr 1fr 1fr;width:100%;border:1px solid #e5e8eb;border-radius:6px;margin:1.4rem 0;overflow:hidden;font-size:0.9rem;">
+  <div style="padding:0.8rem 1rem;background:#eff6ff;font-weight:700;color:#0f172a;border-right:1px solid #e5e8eb;">도구</div>
+  <div style="padding:0.8rem 1rem;background:#eff6ff;font-weight:700;color:#0f172a;border-right:1px solid #e5e8eb;">하는 일</div>
+  <div style="padding:0.8rem 1rem;background:#eff6ff;font-weight:700;color:#0f172a;">위험도</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">Read·Glob·Grep</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">읽기 전용 — 파일·검색</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;color:#3182f6;font-weight:700;">낮음</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">Write·Edit</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">파일 생성·수정</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;color:#b45309;font-weight:700;">중간</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">Bash·Monitor</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">쉘 실행·백그라운드 모니터링</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;color:#dc2626;font-weight:700;">높음</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">WebSearch·WebFetch</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">웹 검색·페이지 본문 가져오기</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;color:#b45309;font-weight:700;">중간</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;font-weight:700;">AskUserQuestion</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;border-right:1px solid #e5e8eb;color:#1a1a1a;">사용자 객관식 질문</div>
+  <div style="padding:0.8rem 1rem;border-top:1px solid #e5e8eb;color:#3182f6;font-weight:700;">낮음</div>
+</div>
+
+<p>권한 제어는 두 축으로 한다. <code>allowed_tools</code>는 화이트리스트 — 여기 들어간 도구만 사용 가능. <code>permission_mode</code>는 사용 방식 — <code>acceptEdits</code>를 켜면 파일 수정에 사용자 확인 없이 진행하고, 기본 모드는 매번 확인을 요구한다. 코드 리뷰 같은 읽기 전용 작업은 <code>allowed_tools=["Read","Glob","Grep"]</code>만 주면 다른 위험한 행동을 아예 봉쇄할 수 있다.</p>
+
+<h2>6. 훅 — 도구 호출 전후에 코드 끼우기</h2>
+
+<p>훅(Hooks)은 에이전트의 생애 주기 안 특정 시점에 사용자 코드를 끼워 넣는 메커니즘이다. 검증·로깅·차단·변환 — 어떤 용도로도 쓸 수 있다. 주요 훅은 다음과 같다.</p>
+
+<div style="display:flex;flex-direction:column;gap:0.7rem;margin:1.4rem 0;">
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1rem 1.3rem;background:#fafbfc;">
+    <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;font-family:'SFMono-Regular',Consolas,monospace;">PreToolUse</div>
+      <div style="font-size:0.9rem;color:#1a1a1a;line-height:1.7;">도구가 실행되기 직전. 인자 검증, 사전 차단, 외부 승인 절차 트리거.</div>
+    </div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1rem 1.3rem;background:#fafbfc;">
+    <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;font-family:'SFMono-Regular',Consolas,monospace;">PostToolUse</div>
+      <div style="font-size:0.9rem;color:#1a1a1a;line-height:1.7;">도구 실행 직후. 감사 로그 기록, 결과 변환, 다음 도구에 넘기기 전 후처리.</div>
+    </div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1rem 1.3rem;background:#fafbfc;">
+    <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;font-family:'SFMono-Regular',Consolas,monospace;">UserPromptSubmit</div>
+      <div style="font-size:0.9rem;color:#1a1a1a;line-height:1.7;">사용자 입력이 모델에 들어가기 전. 민감 정보 마스킹, 정책 문구 주입.</div>
+    </div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1rem 1.3rem;background:#fafbfc;">
+    <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;font-family:'SFMono-Regular',Consolas,monospace;">SessionStart·SessionEnd</div>
+      <div style="font-size:0.9rem;color:#1a1a1a;line-height:1.7;">세션 시작·종료 시점. 환경 준비, 임시 자원 정리.</div>
+    </div>
+  </div>
+  <div style="border:1px solid #e5e8eb;border-radius:8px;padding:1rem 1.3rem;background:#fafbfc;">
+    <div style="display:flex;align-items:baseline;gap:0.8rem;flex-wrap:wrap;">
+      <div style="font-weight:800;color:#1a1a1a;font-size:0.95rem;font-family:'SFMono-Regular',Consolas,monospace;">Stop</div>
+      <div style="font-size:0.9rem;color:#1a1a1a;line-height:1.7;">에이전트 종료 직전. 결과 검증 후 강제 재실행 같은 컨트롤.</div>
+    </div>
+  </div>
+</div>
+
+<p>훅의 가장 흔한 용도는 감사(audit). 모든 파일 수정이 별도 로그 파일에 추적되도록 <code>PostToolUse</code>에 <code>Edit|Write</code> 매처를 걸어두면 누가 무엇을 언제 바꿨는지 코드 한 줄 없이 기록된다. 보안·규정 요구가 있는 환경에서 SDK를 들이밀 때 첫 번째로 짓는 안전장치다.</p>
+
+<h2>7. MCP·서브에이전트 — 외부 시스템과 분업</h2>
+
+<p>SDK는 단독으로 닫혀 있지 않다. 두 가지 확장 경로가 있다.</p>
+
+<p><strong>MCP(Model Context Protocol)</strong>는 외부 시스템을 도구로 붙이는 표준이다. 데이터베이스, 브라우저, Slack, Jira, 자체 사내 API — 무엇이든 MCP 서버로 노출하면 에이전트가 그걸 호출할 수 있다. 옵션의 <code>mcp_servers</code>(Python) 또는 <code>mcpServers</code>(TypeScript)에 등록만 하면 끝. Playwright MCP를 박으면 에이전트가 브라우저를 직접 조작하고, Google Drive MCP를 박으면 디자인 문서를 읽어 코드로 번역한다.</p>
+
+<p><strong>서브에이전트(Subagents)</strong>는 큰 작업을 작은 전문 에이전트들로 나누는 메커니즘이다. 메인 에이전트가 코드 리뷰어 서브에이전트에 분석을 위임하고, 보안 검토 서브에이전트에 별도로 보안 리뷰를 시키고, 결과를 받아 종합하는 식이다. 각 서브에이전트는 자체 시스템 프롬프트·자체 도구 권한·자체 컨텍스트를 가진다. 메인 에이전트의 컨텍스트가 잡다한 정보로 채워지는 걸 막는 효과가 가장 크다.</p>
+
+<div class="ql-pullquote">서브에이전트는 단순 분업이 아니다 — 메인 에이전트의 컨텍스트를 잡다한 정보로부터 보호하는 장치에 가깝다.</div>
+
+<h2>8. 세션 — 컨텍스트를 다음 실행에 넘기기</h2>
+
+<p>SDK는 세션을 JSONL 파일로 저장한다. 첫 호출에서 받은 <code>session_id</code>를 다음 호출의 <code>resume</code> 옵션에 넣으면 그 컨텍스트를 통째로 이어받는다. 인증 모듈을 한 번 읽힌 다음, 같은 컨텍스트에서 "그걸 호출하는 모든 곳을 찾아라"라고 시키면 "그것"이 인증 모듈이라는 것을 알고 있다.</p>
+
+<p>여기에서 한 단계 더 나가면 포크(fork)다. 같은 세션에서 두 가지 다른 접근을 동시에 시도해 결과를 비교하는 패턴. 같은 컨텍스트를 두 갈래로 갈라 한쪽은 보수적인 리팩토링, 다른 한쪽은 적극적인 재설계를 시키고 결과를 합쳐서 선택지로 만든다. CI에서 PR 두 개를 동시에 만드는 워크플로가 이 위에 올라간다.</p>
+
+<h2>9. CLI 헤드리스 모드 — 파이프와 조합</h2>
+
+<p>SDK까지 갈 필요 없이 CLI의 <code>-p</code> 옵션만으로도 자동화의 절반은 끝난다. <code>claude -p "..."</code>는 인터랙티브 모드가 아닌 헤드리스 모드로 한 번 실행하고 결과를 stdout으로 뱉는다. 파이프·스크립트와 조합되는 순간 다음 같은 한 줄짜리 자동화가 만들어진다.</p>
+
+<div style="font-family:'SFMono-Regular',Consolas,monospace;font-size:0.85rem;color:#1a1a1a;background:#f1f5f9;padding:0.85rem 1.1rem;border-radius:4px;line-height:1.7;margin:1.2rem 0;white-space:pre;overflow-x:auto;"># 최근 로그 200줄을 분석해서 이상 징후 보고
+tail -200 app.log | claude -p "이상한 패턴이 있으면 Slack으로 알려"
+
+# CI에서 새 문자열 자동 번역 PR
+claude -p "새로 추가된 영문 문자열을 한국어로 번역하고 PR을 올려"
+
+# 보안 리뷰만 받기
+git diff main --name-only | claude -p "이 파일들에서 보안 이슈를 찾아"</div>
+
+<p>SDK는 이런 한 줄 자동화를 코드 안에 더 정교하게 박을 때 의미가 생긴다. 결과 메시지를 파싱해서 분기, 도구 권한을 상황별로 다르게 부여, 훅으로 외부 시스템 연동, 세션을 다음 단계로 이어가기 — CLI <code>-p</code>가 닿지 못하는 모든 영역이 SDK다.</p>
+
+<div id="ql-related-links" style="margin:2.5rem 0;padding:1.5rem;background:#ffffff;border:1px solid #e5e7eb;border-left:3px solid #3182f6;border-radius:4px;">
+  <p style="font-size:0.78rem;font-weight:700;color:#1f2937;letter-spacing:0.08em;margin:0 0 0.75rem 0;text-transform:uppercase;">관련 자료</p>
+  <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.65rem 0;border-bottom:1px solid #f3f4f6;">
+    <span style="font-size:0.72rem;font-weight:700;color:#1f2937;letter-spacing:0.05em;flex-shrink:0;min-width:48px;">함께 읽는 글</span>
+    <a href="/articles/claude-code-pricing-pro-max-api-2026/" style="font-size:0.95rem;color:#1a1612;text-decoration:none;line-height:1.5;">클로드 코드 결제 — Pro·Max·API 어디까지 쓰면 어느 게 싼가 <span style="color:#3182f6;">→</span></a>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.65rem 0;border-bottom:1px solid #f3f4f6;">
+    <span style="font-size:0.72rem;font-weight:700;color:#1f2937;letter-spacing:0.05em;flex-shrink:0;min-width:48px;">함께 읽는 글</span>
+    <a href="/articles/claude-code-dashboard-platform-guide-2026/" style="font-size:0.95rem;color:#1a1612;text-decoration:none;line-height:1.5;">클로드 코드 대시보드 사용법 — Console에서 키·사용량·티어 보기 <span style="color:#3182f6;">→</span></a>
+  </div>
+  <div style="display:flex;align-items:baseline;gap:0.75rem;padding:0.65rem 0;">
+    <span style="font-size:0.72rem;font-weight:700;color:#1f2937;letter-spacing:0.05em;flex-shrink:0;min-width:48px;">함께 읽는 글</span>
+    <a href="/articles/claude-chat-code-cowork-guide/" style="font-size:0.95rem;color:#1a1612;text-decoration:none;line-height:1.5;">클로드 채팅·코드·코워크, 언제 어떤 것을 써야 할까 <span style="color:#3182f6;">→</span></a>
+  </div>
+</div>
+
+<div class="ql-conclusion">
+  <h2>Q렌즈의 시각</h2>
+  <p>Agent SDK의 진짜 의미는 "코드에서 부른다"가 아니라 "Claude Code의 안전장치들이 그대로 따라온다"에 가깝다. 권한 화이트리스트, 훅, 세션 분리, 서브에이전트의 컨텍스트 격리 — 이건 한 줄 LLM API 호출을 자동화하는 데 굳이 필요하지 않은 장치들이다. 한 작업이 여러 도구를 자율적으로 부르고, 한 번에 끝나지 않고, 결과를 누군가 책임져야 할 때 필요해진다.</p>
+  <p>그래서 SDK를 박을 때 결정해야 할 것은 라이브러리 선택이 아니라 운영 모델이다. 권한을 어디까지 줄 것인가, 훅으로 무엇을 기록할 것인가, 세션을 얼마나 오래 살릴 것인가. 이걸 정하지 않은 채 <code>query()</code>를 호출하면 SDK는 그냥 CLI를 라이브러리로 호출하는 도구가 된다. 그 위에 안전장치가 있어야 SDK가 SDK다워진다.</p>
+  <p>한 가지 더. 2026년 6월 15일부터 구독 플랜에서 Agent SDK와 <code>claude -p</code>가 별도 크레딧으로 분리된다. CLI 대화형 사용분이 자동화 사용분을 잠식하지 않게 됐다는 뜻이지만, 동시에 "구독만 사면 무제한"이 아니라는 의미이기도 하다. 자동화 비중이 큰 팀이라면 분리 이후 첫 한 달 사용량을 보고 결제 경로를 다시 점검하는 게 안전하다.</p>
+</div>
+
+<div class="ql-inline-note"><strong>출처:</strong> Claude Agent SDK 공식 문서 — <a href="https://code.claude.com/docs/en/agent-sdk/overview" target="_blank" rel="noopener">code.claude.com/docs/en/agent-sdk/overview</a> (2026.05 조회) · Claude Code 공식 문서 — <a href="https://code.claude.com/docs/en/overview" target="_blank" rel="noopener">code.claude.com/docs/en/overview</a> (2026.05 조회) · Agent SDK 크레딧 분리 공지 — <a href="https://support.claude.com/en/articles/15036540-use-the-claude-agent-sdk-with-your-claude-plan" target="_blank" rel="noopener">support.claude.com</a> (2026.06.15 발효 예정).</div>
+
+</div>
+</div>
+
+  </main>
+
+  <footer class="site-footer">
+<div class="footer-inner">
+<div class="footer-brand">
+<div class="footer-logo">Q<span>-</span>Lens</div>
+<p class="footer-tagline">오늘의 부동산·주식, 그리고 한 판</p>
+<div class="footer-social">
+<a aria-label="X (Twitter)" class="footer-social__link" href="https://x.com/heyqbot" rel="noopener" target="_blank">
+<svg aria-hidden="true" fill="currentColor" height="20" viewbox="0 0 24 24" width="20">
+<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+</svg>
+</a>
+</div>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">바로가기</h4>
+<ul class="footer-col__list">
+<li><a href="/articles/">글</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+<div class="footer-col">
+<h4 class="footer-col__title">정보</h4>
+<ul class="footer-col__list">
+<li><a href="/about/">소개</a></li>
+<li><a href="/contact/">문의</a></li>
+<li><a href="/play/">게임</a></li>
+<li><a href="/tools/">계산기</a></li>
+</ul>
+</div>
+</div>
+<div class="footer-bottom">
+<p class="footer-copy">© 2026 Q-Lens. All rights reserved.</p>
+<p class="footer-legal">
+<a href="/privacy/">개인정보처리방침</a>
+<span>·</span>
+<a href="/terms/">이용약관</a>
+<span>·</span>
+<a href="https://github.com/unitconnect-vp/q-bot-site/blob/main/CHANGELOG.md" target="_blank" rel="noopener" class="footer-version">v5.1</a>
+</p>
+</div>
+</footer>
+
+  <script src="/assets/site.js"></script>
+
+</body>
+</html>
