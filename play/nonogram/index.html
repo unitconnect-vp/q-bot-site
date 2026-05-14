@@ -167,6 +167,25 @@
 .cell.thick-right { border-right: 2px solid #0a0a0a; }
 .cell.thick-bottom { border-bottom: 2px solid #0a0a0a; }
 
+/* 행/열 호버 하이라이트 (마우스 전용) */
+.cell.hl-row, .cell.hl-col { background: #eaf3ff; }
+.cell.hl-row.hl-col { background: #d6e8ff; }
+.cell.filled.hl-row, .cell.filled.hl-col, .cell.filled.hl-row.hl-col { background: #0a0a0a; }
+.col-clue.hl, .row-clue.hl { color: #0a0a0a; background: #eaf3ff; }
+.col-clue.hl.complete, .row-clue.hl.complete { color: #d1d5db; }
+
+/* 모드 토글 버튼 활성 상태 */
+.action-btn.mode-active {
+  background: #0a0a0a;
+  color: #ffffff;
+  border-color: #0a0a0a;
+}
+.action-btn.mode-active .icon { color: #ffffff; }
+.action-btn.mode-cross.mode-active {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
 .loading-overlay {
   position: absolute;
   inset: 0;
@@ -199,7 +218,7 @@
   margin-bottom: 4px;
 }
 .actions.actions-secondary {
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
 }
 .action-btn {
   display: flex;
@@ -369,11 +388,13 @@ main.nono-wrap:-webkit-full-screen {
     <button class="action-btn" id="btn-new"><span class="icon">＋</span><span>새 게임</span></button>
   </div>
   <div class="actions actions-secondary">
+    <button class="action-btn mode-active" id="btn-mode-fill" type="button" aria-pressed="true"><span class="icon">■</span><span>채움</span></button>
+    <button class="action-btn mode-cross" id="btn-mode-cross" type="button" aria-pressed="false"><span class="icon">✕</span><span>X 표시</span></button>
     <button class="action-btn" id="btn-hint"><span class="icon">💡</span><span>힌트</span></button>
     <button class="action-btn" id="btn-reset"><span class="icon">⌫</span><span>전체 지우기</span></button>
   </div>
 
-  <p class="input-hint">셀 클릭 한 번: 채움 → 두 번: X 표시 → 세 번: 해제 · 우클릭: X 빠르게</p>
+  <p class="input-hint">탭/드래그로 칠하기. 모드 버튼으로 채움 ↔ X 전환. PC는 우클릭/드래그가 X.</p>
 
   <div class="board-wrap">
     <div class="nono-grid" id="grid"></div>
@@ -801,11 +822,15 @@ main.nono-wrap:-webkit-full-screen {
     timerId: null,
     finished: false,
     generating: false,
-    drag: null
+    drag: null,
+    mode: 'fill',
+    hoverR: null,
+    hoverC: null
   };
   const STORAGE_KEY = 'qlens-nonogram-v2';
   const STORAGE_KEY_LEGACY = 'qlens-nonogram-v1';
   const ZOOM_KEY = 'qlens-nonogram-zoom';
+  const MODE_KEY = 'qlens-nonogram-mode';
   const ZOOM_STEP = 0.25;
   const CELL_MIN = 12;
   const CELL_MAX = 60;
@@ -986,11 +1011,11 @@ main.nono-wrap:-webkit-full-screen {
     return true;
   }
 
-  function decideTarget(r, c) {
+  // mode: 'fill' → 채움 토글, 'cross' → X 토글
+  function decideTarget(r, c, mode) {
     const cur = state.user[r][c];
-    if (cur === 0) return 1;
-    if (cur === 1) return -1;
-    return 0;
+    if (mode === 'cross') return cur === -1 ? 0 : -1;
+    return cur === 1 ? 0 : 1;
   }
 
   // ---------- 드래그 ----------
@@ -1002,12 +1027,18 @@ main.nono-wrap:-webkit-full-screen {
 
   function dragStart(e) {
     if (state.finished || state.generating) return;
-    if (e.button !== undefined && e.button !== 0) return;
+    // 좌버튼(0) 또는 우버튼(2)만 받음. 가운데/그 외 무시.
+    if (e.button !== undefined && e.button !== 0 && e.button !== 2) return;
+    // 모드 결정: 마우스 우클릭이면 항상 cross, 마우스 좌클릭이면 항상 fill,
+    // 터치/펜은 사용자가 설정한 state.mode를 따른다.
+    let dragMode;
+    if (e.pointerType === 'mouse') dragMode = (e.button === 2) ? 'cross' : 'fill';
+    else dragMode = state.mode;
     const t = e.touches ? e.touches[0] : e;
     const pos = getCellFromPoint(t.clientX, t.clientY);
     if (!pos) return;
     const [r, c] = pos;
-    const target = decideTarget(r, c);
+    const target = decideTarget(r, c, dragMode);
     const bw = document.querySelector('.board-wrap');
     state.drag = {
       startR: r, startC: c,
@@ -1015,15 +1046,29 @@ main.nono-wrap:-webkit-full-screen {
       startY: t.clientY,
       initialScrollY: window.scrollY,
       initialBoardScrollX: bw ? bw.scrollLeft : 0,
+      mode: dragMode,
       target,
       lastR: r, lastC: c,
       axis: null,
-      committed: false
+      committed: false,
+      pointerType: e.pointerType || 'mouse',
+      button: e.button
     };
   }
 
   function dragMove(e) {
-    if (!state.drag) return;
+    // 드래그 중이 아니면 마우스 호버 하이라이트만 갱신
+    if (!state.drag) {
+      if ((e.pointerType || 'mouse') === 'mouse') {
+        const el = document.elementFromPoint(e.clientX, e.clientY);
+        if (el && el.classList.contains('cell')) {
+          setHover(+el.dataset.r, +el.dataset.c);
+        } else {
+          setHover(null, null);
+        }
+      }
+      return;
+    }
     const t = e.touches ? e.touches[0] : e;
 
     if (!state.drag.committed) {
@@ -1091,20 +1136,11 @@ main.nono-wrap:-webkit-full-screen {
     save();
   }
 
-  // 우클릭 (데스크탑) — X 토글
-  function rightClick(e) {
-    if (state.finished || state.generating) return;
-    const el = e.target.closest('.cell');
-    if (!el) return;
-    e.preventDefault();
-    const r = +el.dataset.r, c = +el.dataset.c;
-    const cur = state.user[r][c];
-    const target = cur === -1 ? 0 : -1;
-    if (applyCell(r, c, target)) {
-      state.drag = null;
-      render();
-      checkWin();
-      save();
+  // 우클릭(데스크탑)에서 브라우저 컨텍스트 메뉴만 차단.
+  // 실제 X 토글은 pointerdown→pointerup 경로에서 처리됨.
+  function suppressContextMenu(e) {
+    if (e.target.closest('.cell, .col-clue, .row-clue, .nono-corner')) {
+      e.preventDefault();
     }
   }
 
@@ -1214,6 +1250,52 @@ main.nono-wrap:-webkit-full-screen {
     }
   }
 
+  // ---------- 호버 하이라이트 ----------
+  function setHover(r, c) {
+    if (state.hoverR === r && state.hoverC === c) return;
+    state.hoverR = r;
+    state.hoverC = c;
+    applyHoverHighlight();
+  }
+
+  function applyHoverHighlight() {
+    const grid = $('grid');
+    if (!grid) return;
+    const prev = grid.querySelectorAll('.hl-row, .hl-col, .col-clue.hl, .row-clue.hl');
+    prev.forEach(el => {
+      el.classList.remove('hl-row', 'hl-col', 'hl');
+    });
+    const r = state.hoverR, c = state.hoverC;
+    if (r === null || c === null) return;
+    const n = state.size;
+    for (let i = 0; i < n; i++) {
+      const rowCell = grid.querySelector(`.cell[data-r="${r}"][data-c="${i}"]`);
+      if (rowCell) rowCell.classList.add('hl-row');
+      const colCell = grid.querySelector(`.cell[data-r="${i}"][data-c="${c}"]`);
+      if (colCell) colCell.classList.add('hl-col');
+    }
+    const rowClue = grid.querySelector(`.row-clue[data-row="${r}"]`);
+    if (rowClue) rowClue.classList.add('hl');
+    const colClue = grid.querySelector(`.col-clue[data-col="${c}"]`);
+    if (colClue) colClue.classList.add('hl');
+  }
+
+  // ---------- 입력 모드 ----------
+  function setMode(m) {
+    state.mode = (m === 'cross') ? 'cross' : 'fill';
+    const fillBtn = $('btn-mode-fill');
+    const crossBtn = $('btn-mode-cross');
+    if (fillBtn) {
+      fillBtn.classList.toggle('mode-active', state.mode === 'fill');
+      fillBtn.setAttribute('aria-pressed', state.mode === 'fill' ? 'true' : 'false');
+    }
+    if (crossBtn) {
+      crossBtn.classList.toggle('mode-active', state.mode === 'cross');
+      crossBtn.setAttribute('aria-pressed', state.mode === 'cross' ? 'true' : 'false');
+    }
+    try { localStorage.setItem(MODE_KEY, state.mode); } catch (e) {}
+  }
+
   function refreshLoginCta() {
     const cta = $('loginCta');
     if (!cta) return;
@@ -1258,6 +1340,7 @@ main.nono-wrap:-webkit-full-screen {
     if (zoomInBtn) zoomInBtn.classList.toggle('disabled', cellNow >= CELL_MAX);
     const zoomOutBtn = $('btn-zoom-out');
     if (zoomOutBtn) zoomOutBtn.classList.toggle('disabled', cellNow <= CELL_MIN);
+    applyHoverHighlight();
   }
 
   // ---------- 바인딩 ----------
@@ -1281,6 +1364,8 @@ main.nono-wrap:-webkit-full-screen {
   $('btn-redo').addEventListener('click', redoAction);
   $('btn-reset').addEventListener('click', reset);
   $('btn-hint').addEventListener('click', hint);
+  $('btn-mode-fill').addEventListener('click', () => setMode('fill'));
+  $('btn-mode-cross').addEventListener('click', () => setMode('cross'));
   $('btn-zoom-in').addEventListener('click', zoomIn);
   $('btn-zoom-out').addEventListener('click', zoomOut);
   $('btn-fullscreen').addEventListener('click', toggleFullscreen);
@@ -1321,9 +1406,10 @@ main.nono-wrap:-webkit-full-screen {
   const grid = $('grid');
   grid.addEventListener('pointerdown', dragStart);
   grid.addEventListener('pointermove', dragMove);
+  grid.addEventListener('pointerleave', () => { if (!state.drag) setHover(null, null); });
   document.addEventListener('pointerup', dragEnd);
   document.addEventListener('pointercancel', dragEnd);
-  grid.addEventListener('contextmenu', rightClick);
+  grid.addEventListener('contextmenu', suppressContextMenu);
 
   // 창 크기 변경 시 셀 크기 재계산 (화면 기준 fit 방식)
   window.addEventListener('resize', () => { applyZoom(); render(); });
@@ -1339,6 +1425,7 @@ main.nono-wrap:-webkit-full-screen {
       return;
     }
     if (e.key === 'h' || e.key === 'H') { hint(); e.preventDefault(); }
+    else if (e.key === 'x' || e.key === 'X') { setMode(state.mode === 'cross' ? 'fill' : 'cross'); e.preventDefault(); }
     else if (e.key === 'z' && (e.ctrlKey || e.metaKey) && e.shiftKey) { redoAction(); e.preventDefault(); }
     else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { undo(); e.preventDefault(); }
     else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { redoAction(); e.preventDefault(); }
@@ -1356,6 +1443,11 @@ main.nono-wrap:-webkit-full-screen {
     const z = parseFloat(localStorage.getItem(ZOOM_KEY));
     if (!isNaN(z)) state.zoom = Math.max(0.1, Math.min(10, z));
   } catch (e) {}
+  try {
+    const m = localStorage.getItem(MODE_KEY);
+    if (m === 'cross' || m === 'fill') state.mode = m;
+  } catch (e) {}
+  setMode(state.mode);
   applyZoom();
 
   const saved = load();
