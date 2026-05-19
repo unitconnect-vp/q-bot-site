@@ -95,6 +95,25 @@
     .ana-hbar-row { grid-template-columns: 110px 1fr 80px; }
   }
 
+  /* 가입자 목록 */
+  .users-toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .users-toolbar input[type="search"], .users-toolbar select {
+    padding: 10px 14px; border: 1px solid #e5e8eb; border-radius: 6px;
+    font-size: 0.9375rem; background: #fff; color: #1a1a1a;
+  }
+  .users-toolbar input[type="search"] { flex: 1; min-width: 200px; }
+  .users-table-wrap { overflow-x: auto; border: 1px solid #e5e8eb; border-radius: 8px; }
+  .users-table-wrap .ana-table { font-size: 0.875rem; }
+  .users-table-wrap .ana-table th, .users-table-wrap .ana-table td { white-space: nowrap; }
+  .users-pager { display: flex; gap: 14px; align-items: center; justify-content: center; margin-top: 16px; }
+  .users-pager .ana-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .user-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.6875rem; font-weight: 600; margin-right: 4px; }
+  .user-badge.admin { background: #fef3c7; color: #92400e; }
+  .user-badge.unverified { background: #fee2e2; color: #991b1b; }
+  .user-badge.verified { background: #dcfce7; color: #166534; }
+  .user-badge.google { background: #dbeafe; color: #1e40af; }
+  .user-badge.email { background: #f3f4f6; color: #4b5563; }
+
   .ana-empty { font-size: 0.9375rem; color: #9ca3af; padding: 20px; text-align: center; }
   .ana-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; padding: 14px 18px; border-radius: 6px; font-size: 1rem; }
   .ana-meta { font-size: 0.8125rem; color: #9ca3af; margin: 0 0 18px; }
@@ -204,6 +223,53 @@
       <div class="ana-totals" id="users-totals"></div>
       <h3 style="font-size:1rem;font-weight:600;margin:20px 0 8px;">가입 일별 추이</h3>
       <div class="ana-chart" id="signup-chart" style="height:180px;"></div>
+    </section>
+
+    <!-- 7-2. 가입자 목록 -->
+    <section class="ana-section">
+      <h2>가입자 목록 <span class="ana-pill" id="users-list-total">·</span></h2>
+      <p class="ana-section-desc">이메일·닉네임으로 검색하거나 필터로 좁힐 수 있어요. 페이지당 50명.</p>
+
+      <div class="users-toolbar">
+        <input type="search" id="users-search" placeholder="이메일·닉네임 검색"
+               autocomplete="off" spellcheck="false">
+        <select id="users-filter">
+          <option value="all">전체</option>
+          <option value="verified">이메일 인증 완료</option>
+          <option value="unverified">이메일 미인증</option>
+          <option value="google">Google 가입</option>
+          <option value="email">이메일 가입</option>
+          <option value="admin">관리자만</option>
+        </select>
+        <select id="users-sort">
+          <option value="recent">최근 가입순</option>
+          <option value="oldest">오래된 가입순</option>
+          <option value="login">최근 로그인순</option>
+        </select>
+      </div>
+
+      <div class="users-table-wrap">
+        <table class="ana-table" id="users-table">
+          <thead>
+            <tr>
+              <th>이메일</th>
+              <th>닉네임</th>
+              <th>방식</th>
+              <th>가입일</th>
+              <th>최근 로그인</th>
+              <th class="num">게임</th>
+              <th>상태</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="users-pager">
+        <button class="ana-btn" id="users-prev">이전</button>
+        <span id="users-page-info" style="font-size:0.9375rem;color:#6b7280;"></span>
+        <button class="ana-btn" id="users-next">다음</button>
+      </div>
     </section>
 
     <!-- 8. 관리자 -->
@@ -679,6 +745,7 @@
     renderReferrersTable(data);
     renderUsers(data);
     loadAdmins();
+    loadUsersList();
 
     $('#loading').style.display = 'none';
     $('#content').style.display = 'block';
@@ -696,6 +763,117 @@
     $('#admin-email-input').addEventListener('keydown', e => {
       if (e.key === 'Enter') addAdmin();
     });
+    bindUsersControls();
+  }
+
+  // ─── 가입자 목록 ───
+  const usersState = { page: 1, q: '', filter: 'all', sort: 'recent', totalPages: 1 };
+  let usersSearchTimer = null;
+
+  function bindUsersControls() {
+    $('#users-search').addEventListener('input', e => {
+      clearTimeout(usersSearchTimer);
+      usersSearchTimer = setTimeout(() => {
+        usersState.q = e.target.value.trim();
+        usersState.page = 1;
+        loadUsersList();
+      }, 300);
+    });
+    $('#users-filter').addEventListener('change', e => {
+      usersState.filter = e.target.value;
+      usersState.page = 1;
+      loadUsersList();
+    });
+    $('#users-sort').addEventListener('change', e => {
+      usersState.sort = e.target.value;
+      usersState.page = 1;
+      loadUsersList();
+    });
+    $('#users-prev').addEventListener('click', () => {
+      if (usersState.page > 1) { usersState.page--; loadUsersList(); }
+    });
+    $('#users-next').addEventListener('click', () => {
+      if (usersState.page < usersState.totalPages) { usersState.page++; loadUsersList(); }
+    });
+  }
+
+  function fmtDate(unix) {
+    if (!unix) return '—';
+    const d = new Date(unix * 1000);
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return y + '-' + m + '-' + day;
+  }
+
+  function fmtRelative(unix) {
+    if (!unix) return '—';
+    const diff = Math.floor(Date.now() / 1000) - unix;
+    if (diff < 60) return '방금';
+    if (diff < 3600) return Math.floor(diff / 60) + '분 전';
+    if (diff < 86400) return Math.floor(diff / 3600) + '시간 전';
+    if (diff < 86400 * 30) return Math.floor(diff / 86400) + '일 전';
+    return fmtDate(unix);
+  }
+
+  async function loadUsersList() {
+    const token = QLensAuth.getToken();
+    if (!token) return;
+    const tbody = $('#users-table tbody');
+    tbody.innerHTML = '<tr><td colspan="7" class="ana-empty">불러오는 중…</td></tr>';
+
+    const params = new URLSearchParams({
+      page: String(usersState.page),
+      page_size: '50',
+      q: usersState.q || '',
+      filter: usersState.filter,
+      sort: usersState.sort
+    });
+    const r = await fetch(API + '/admin/users?' + params.toString(), {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    if (!r.ok) {
+      tbody.innerHTML = '<tr><td colspan="7" class="ana-empty">불러오기 실패 (HTTP ' + r.status + ')</td></tr>';
+      return;
+    }
+    const data = await r.json();
+    usersState.totalPages = data.total_pages || 1;
+    $('#users-list-total').textContent = '총 ' + fmtNum(data.total) + '명';
+
+    const rows = data.users || [];
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="ana-empty">조건에 맞는 회원이 없습니다.</td></tr>';
+    } else {
+      tbody.innerHTML = rows.map(u => {
+        const methodBadge = u.oauth_provider === 'google'
+          ? '<span class="user-badge google">Google</span>'
+          : '<span class="user-badge email">이메일</span>';
+        const adminBadge = u.is_admin ? '<span class="user-badge admin">관리자</span>' : '';
+        const verifiedBadge = u.email_verified
+          ? '<span class="user-badge verified">인증</span>'
+          : '<span class="user-badge unverified">미인증</span>';
+        const plays = Number(u.plays || 0);
+        const completed = Number(u.completed_plays || 0);
+        const playsCell = plays === 0
+          ? '<span style="color:#9ca3af;">—</span>'
+          : (fmtNum(completed) + '/' + fmtNum(plays));
+        return '<tr>' +
+          '<td>' + escapeHtml(u.email) + '</td>' +
+          '<td>' + escapeHtml(u.nickname || '—') + '</td>' +
+          '<td>' + methodBadge + '</td>' +
+          '<td>' + fmtDate(u.created_at) + '</td>' +
+          '<td title="' + (u.last_login_at ? fmtDate(u.last_login_at) : '—') + '">' +
+            fmtRelative(u.last_login_at) +
+          '</td>' +
+          '<td class="num">' + playsCell + '</td>' +
+          '<td>' + verifiedBadge + adminBadge + '</td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    $('#users-page-info').textContent = usersState.page + ' / ' + usersState.totalPages + ' 페이지';
+    $('#users-prev').disabled = usersState.page <= 1;
+    $('#users-next').disabled = usersState.page >= usersState.totalPages;
   }
 
   // ─── 관리자 관리 (기존 그대로) ───

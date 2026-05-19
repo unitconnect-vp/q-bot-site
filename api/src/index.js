@@ -108,6 +108,7 @@ export default {
       if (path === '/admin/admins' && m === 'GET')          return listAdmins(req, env, origin);
       if (path === '/admin/admins' && m === 'POST')         return addAdmin(req, env, origin);
       if (path === '/admin/admins' && m === 'DELETE')       return removeAdmin(req, env, origin);
+      if (path === '/admin/users' && m === 'GET')           return listUsers(req, env, origin);
 
       return err('Not found', 404, origin);
     } catch (e) {
@@ -910,4 +911,83 @@ async function removeAdmin(req, env, origin) {
 
   await env.DB.prepare("UPDATE users SET role = 'member' WHERE id = ?").bind(user.id).run();
   return json({ ok: true }, 200, origin);
+}
+
+// ─────── 가입자 목록 ───────
+// GET /admin/users?q=검색어&filter=all|verified|unverified|google|email|admin&sort=recent|oldest|login&page=1&page_size=50
+
+async function listUsers(req, env, origin) {
+  const me = await requireAdmin(req, env);
+  if (!me) return err('Forbidden', 403, origin);
+
+  const url = new URL(req.url);
+  const q = (url.searchParams.get('q') || '').trim().toLowerCase();
+  const filter = (url.searchParams.get('filter') || 'all').toLowerCase();
+  const sort = (url.searchParams.get('sort') || 'recent').toLowerCase();
+  const page = Math.max(parseInt(url.searchParams.get('page') || '1', 10) || 1, 1);
+  const pageSizeRaw = parseInt(url.searchParams.get('page_size') || '50', 10) || 50;
+  const pageSize = Math.min(Math.max(pageSizeRaw, 1), 200);
+  const offset = (page - 1) * pageSize;
+
+  const wheres = [];
+  const params = [];
+
+  if (q) {
+    wheres.push('(LOWER(email) LIKE ? OR LOWER(nickname) LIKE ?)');
+    params.push('%' + q + '%', '%' + q + '%');
+  }
+  if (filter === 'verified')         wheres.push('email_verified = 1');
+  else if (filter === 'unverified')  wheres.push('email_verified = 0');
+  else if (filter === 'google')      wheres.push("oauth_provider = 'google'");
+  else if (filter === 'email')       wheres.push('oauth_provider IS NULL');
+  else if (filter === 'admin')       wheres.push("role = 'admin'");
+
+  const whereSql = wheres.length ? 'WHERE ' + wheres.join(' AND ') : '';
+
+  let orderSql;
+  if (sort === 'oldest')      orderSql = 'ORDER BY created_at ASC';
+  else if (sort === 'login')  orderSql = 'ORDER BY (last_login_at IS NULL) ASC, last_login_at DESC';
+  else                        orderSql = 'ORDER BY created_at DESC';
+
+  // 총 개수
+  const countRow = await env.DB.prepare(
+    'SELECT COUNT(*) as cnt FROM users ' + whereSql
+  ).bind(...params).first();
+  const total = (countRow && countRow.cnt) || 0;
+
+  // 목록
+  const listSql =
+    `SELECT id, email, nickname, role, oauth_provider, email_verified,
+            created_at, last_login_at
+       FROM users ` + whereSql + ' ' + orderSql + ' LIMIT ? OFFSET ?';
+  const { results } = await env.DB.prepare(listSql).bind(...params, pageSize, offset).all();
+
+  // 게임 기록 수 (서브쿼리 1회로 합산)
+  let usersOut = results || [];
+  if (usersOut.length > 0) {
+    const ids = usersOut.map(u => u.id);
+    const placeholders = ids.map(() => '?').join(',');
+    const { results: gameRows } = await env.DB.prepare(
+      `SELECT user_id, COUNT(*) as plays, SUM(completed) as completed_plays
+         FROM game_records WHERE user_id IN (${placeholders}) GROUP BY user_id`
+    ).bind(...ids).all();
+    const gameMap = new Map((gameRows || []).map(g => [g.user_id, g]));
+    usersOut = usersOut.map(u => {
+      const g = gameMap.get(u.id);
+      return {
+        ...u,
+        plays: g ? g.plays : 0,
+        completed_plays: g ? g.completed_plays : 0,
+        is_admin: u.role === 'admin' || adminEmailSet(env).has((u.email || '').toLowerCase())
+      };
+    });
+  }
+
+  return json({
+    users: usersOut,
+    total,
+    page,
+    page_size: pageSize,
+    total_pages: Math.max(Math.ceil(total / pageSize), 1)
+  }, 200, origin);
 }
