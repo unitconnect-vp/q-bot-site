@@ -8,51 +8,97 @@
 <link rel="canonical" href="https://q-bot.kr/admin/analytics/">
 <link rel="stylesheet" href="/assets/style.css">
 <style>
-  .ana-wrap { max-width: 1040px; margin: 0 auto; padding: 32px 16px 64px; font-size: 16px; }
-  .ana-h1 { font-size: 2rem; font-weight: 700; margin: 0 0 6px; color: #1a1a1a; letter-spacing: -0.01em; }
-  .ana-sub { font-size: 1rem; color: #6b7280; margin: 0 0 28px; }
+  .ana-wrap { max-width: 1080px; margin: 0 auto; padding: 32px 16px 64px; font-size: 16px; color: #1a1a1a; }
+  .ana-h1 { font-size: 2rem; font-weight: 700; margin: 0 0 6px; letter-spacing: -0.01em; }
+  .ana-sub { font-size: 1rem; color: #6b7280; margin: 0 0 24px; }
+  .ana-headline {
+    background: #eff6ff; border: 1px solid #dbeafe; color: #1a1a1a;
+    padding: 16px 20px; border-radius: 8px; margin: 0 0 28px;
+    font-size: 1rem; line-height: 1.55;
+  }
+  .ana-headline strong { color: #3182f6; font-weight: 700; }
+
+  /* 범위 선택 */
   .ana-controls { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
   .ana-btn {
     padding: 12px 22px; border: 1px solid #e5e8eb; background: #fff; color: #1a1a1a;
     border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
   }
+  .ana-btn:hover { background: #f9fafb; }
   .ana-btn.is-active { background: #3182f6; border-color: #3182f6; color: #fff; }
-  .ana-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 32px; }
-  .ana-card { background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px; padding: 22px; }
-  .ana-card-label { font-size: 1rem; color: #6b7280; margin: 0 0 10px; font-weight: 500; }
-  .ana-card-value { font-size: 2.25rem; font-weight: 700; color: #1a1a1a; margin: 0; line-height: 1.1; letter-spacing: -0.01em; }
-  .ana-card-sub { font-size: 0.875rem; color: #9ca3af; margin: 8px 0 0; }
+  .ana-btn.is-active:hover { background: #2272e6; }
+
+  /* KPI 카드 */
+  .ana-totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 32px; }
+  .ana-card { background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 8px; padding: 20px; }
+  .ana-card-label { font-size: 0.9375rem; color: #6b7280; margin: 0 0 8px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .ana-card-help { font-size: 0.75rem; color: #9ca3af; cursor: help; border: 1px solid #d1d5db; border-radius: 50%; width: 14px; height: 14px; display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-weight: 600; }
+  .ana-card-value { font-size: 2rem; font-weight: 700; margin: 0; line-height: 1.1; letter-spacing: -0.01em; }
+  .ana-card-delta { font-size: 0.875rem; margin: 8px 0 0; font-weight: 500; }
+  .ana-card-delta.up { color: #15803d; }
+  .ana-card-delta.down { color: #b91c1c; }
+  .ana-card-delta.flat { color: #9ca3af; }
+  .ana-card-sub { font-size: 0.8125rem; color: #9ca3af; margin: 4px 0 0; }
+
+  /* 섹션 */
   .ana-section { margin-bottom: 40px; }
-  .ana-section h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 16px; color: #1a1a1a; }
+  .ana-section h2 { font-size: 1.25rem; font-weight: 700; margin: 0 0 6px; }
+  .ana-section .ana-section-desc { font-size: 0.875rem; color: #6b7280; margin: 0 0 16px; }
+
+  /* 차트 */
   .ana-chart {
-    height: 360px; background: #f9fafb; border: 1px solid #e5e8eb; border-radius: 6px;
+    height: 280px; background: #fff; border: 1px solid #e5e8eb; border-radius: 8px;
     padding: 20px 16px 14px; display: grid; grid-auto-flow: column;
-    grid-auto-columns: minmax(40px, 1fr); align-items: end; gap: 8px;
+    grid-auto-columns: minmax(28px, 1fr); align-items: end; gap: 6px;
     overflow-x: auto; overflow-y: hidden;
   }
-  .ana-bar-col {
-    height: 100%; min-width: 0;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
+  .ana-bar-col { height: 100%; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  .ana-bar-stack { flex: 1; width: 100%; max-width: 56px; min-width: 12px; display: flex; flex-direction: column; justify-content: flex-end; min-height: 0; position: relative; }
+  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; transition: opacity 0.15s; }
+  .ana-bar-col:hover .ana-bar-pv { opacity: 0.8; }
+  .ana-bar-uv-marker {
+    position: absolute; left: 0; right: 0;
+    border-top: 2px dashed #1e40af; pointer-events: none;
   }
-  .ana-bar-stack {
-    flex: 1; width: 100%; max-width: 64px; min-width: 16px;
-    display: flex; flex-direction: column; justify-content: flex-end;
-    min-height: 0;
-  }
-  .ana-bar-pv { background: #3182f6; width: 100%; min-height: 2px; border-radius: 3px 3px 0 0; }
-  .ana-bar-uv { background: #93b8f4; width: 100%; }
-  .ana-bar-label { font-size: 0.875rem; color: #6b7280; white-space: nowrap; }
-  .ana-bar-num { font-size: 0.875rem; color: #1a1a1a; font-weight: 600; min-height: 1.2em; }
-  .ana-table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-  .ana-table th, .ana-table td { padding: 12px 14px; border-bottom: 1px solid #e5e8eb; text-align: left; }
-  .ana-table th { font-weight: 600; color: #6b7280; font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.04em; }
+  .ana-bar-label { font-size: 0.75rem; color: #6b7280; white-space: nowrap; }
+  .ana-bar-num { font-size: 0.75rem; color: #1a1a1a; font-weight: 600; min-height: 1.1em; }
+  .ana-legend { display: flex; gap: 18px; font-size: 0.875rem; color: #6b7280; margin-bottom: 10px; flex-wrap: wrap; }
+  .ana-legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: middle; margin-right: 6px; background: #3182f6; }
+  .ana-legend-line { display: inline-block; width: 14px; height: 0; border-top: 2px dashed #1e40af; vertical-align: middle; margin-right: 6px; }
+
+  /* 표 */
+  .ana-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+  .ana-table th, .ana-table td { padding: 11px 14px; border-bottom: 1px solid #e5e8eb; text-align: left; }
+  .ana-table th { font-weight: 600; color: #6b7280; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; background: #f9fafb; }
   .ana-table td.num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 500; }
   .ana-table a { color: #1a1a1a; text-decoration: none; }
   .ana-table a:hover { text-decoration: underline; color: #3182f6; }
-  .ana-empty { font-size: 1rem; color: #9ca3af; padding: 24px; text-align: center; }
+  .ana-table tr:hover td { background: #f9fafb; }
+
+  /* 가로 막대 (breakdown) */
+  .ana-hbar-list { display: flex; flex-direction: column; gap: 8px; }
+  .ana-hbar-row {
+    display: grid; grid-template-columns: 140px 1fr 90px;
+    gap: 12px; align-items: center; font-size: 0.9375rem;
+  }
+  .ana-hbar-label { color: #1a1a1a; font-weight: 500; }
+  .ana-hbar-track { position: relative; height: 22px; background: #f3f4f6; border-radius: 4px; overflow: hidden; }
+  .ana-hbar-fill { position: absolute; left: 0; top: 0; bottom: 0; background: #3182f6; border-radius: 4px; transition: width 0.3s; }
+  .ana-hbar-value { font-variant-numeric: tabular-nums; color: #1a1a1a; text-align: right; font-weight: 500; }
+  .ana-hbar-pct { color: #6b7280; font-size: 0.8125rem; margin-left: 6px; }
+
+  /* 2단 그리드 */
+  .ana-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  @media (max-width: 720px) {
+    .ana-grid-2 { grid-template-columns: 1fr; gap: 24px; }
+    .ana-hbar-row { grid-template-columns: 110px 1fr 80px; }
+  }
+
+  .ana-empty { font-size: 0.9375rem; color: #9ca3af; padding: 20px; text-align: center; }
   .ana-error { background: #fff5f5; border: 1px solid #fed7d7; color: #c53030; padding: 14px 18px; border-radius: 6px; font-size: 1rem; }
-  .ana-legend { display: flex; gap: 20px; font-size: 0.9375rem; color: #6b7280; margin-bottom: 12px; }
-  .ana-legend-dot { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+  .ana-meta { font-size: 0.8125rem; color: #9ca3af; margin: 0 0 18px; }
+  .ana-pill { display: inline-block; padding: 2px 8px; background: #f3f4f6; border-radius: 999px; font-size: 0.75rem; color: #6b7280; margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -68,7 +114,7 @@
 
 <main class="ana-wrap">
   <h1 class="ana-h1">방문자 분석</h1>
-  <p class="ana-sub">자체 D1 카운터 기준. 봇·프리렌더 트래픽은 제외됩니다.</p>
+  <p class="ana-sub">자체 D1 카운터 기준. 봇·프리렌더·관리자 본인 트래픽은 제외됩니다. (KST 기준)</p>
 
   <div id="loading" class="ana-empty">불러오는 중…</div>
   <div id="error" class="ana-error" style="display:none;"></div>
@@ -76,45 +122,94 @@
   <div id="content" style="display:none;">
     <div class="ana-controls" id="range-controls">
       <button class="ana-btn" data-range="1d">오늘</button>
-      <button class="ana-btn is-active" data-range="7d">7일</button>
-      <button class="ana-btn" data-range="30d">30일</button>
-      <button class="ana-btn" data-range="90d">90일</button>
+      <button class="ana-btn is-active" data-range="7d">지난 7일</button>
+      <button class="ana-btn" data-range="30d">지난 30일</button>
+      <button class="ana-btn" data-range="90d">지난 90일</button>
     </div>
 
+    <p class="ana-meta" id="meta-info"></p>
+
+    <div class="ana-headline" id="headline"></div>
+
+    <!-- 1. KPI 카드 -->
     <section class="ana-section">
       <div class="ana-totals" id="totals"></div>
     </section>
 
+    <!-- 2. 일별/시간대별 추이 -->
     <section class="ana-section">
-      <h2>일별 추이</h2>
+      <h2 id="chart-title">일별 추이</h2>
+      <p class="ana-section-desc" id="chart-desc">막대 = 페이지뷰(PV) · 점선 = 순방문자(UV)</p>
       <div class="ana-legend">
-        <span><span class="ana-legend-dot" style="background:#3182f6;"></span>PV (페이지뷰)</span>
-        <span><span class="ana-legend-dot" style="background:#93b8f4;"></span>UV (순방문자)</span>
+        <span><span class="ana-legend-dot"></span>PV (페이지뷰)</span>
+        <span><span class="ana-legend-line"></span>UV (순방문자)</span>
       </div>
       <div class="ana-chart" id="chart"></div>
     </section>
 
+    <!-- 3. 카테고리·디바이스 (2단) -->
+    <div class="ana-grid-2">
+      <section class="ana-section">
+        <h2>섹션별 인기</h2>
+        <p class="ana-section-desc">어느 코너가 가장 많이 읽혔는지</p>
+        <div id="categories-bars" class="ana-hbar-list"></div>
+      </section>
+
+      <section class="ana-section">
+        <h2>디바이스</h2>
+        <p class="ana-section-desc">모바일/데스크탑/태블릿 비율</p>
+        <div id="devices-bars" class="ana-hbar-list"></div>
+      </section>
+    </div>
+
+    <!-- 4. 신규/재방문 + 이탈률 + 국가 (2단) -->
+    <div class="ana-grid-2">
+      <section class="ana-section">
+        <h2>방문자 구성</h2>
+        <p class="ana-section-desc">신규 vs 재방문 · 이탈률</p>
+        <div id="visitor-mix" class="ana-hbar-list"></div>
+      </section>
+
+      <section class="ana-section">
+        <h2>국가 Top 10</h2>
+        <p class="ana-section-desc">CF 접속 국가 코드 기준</p>
+        <div id="countries-bars" class="ana-hbar-list"></div>
+      </section>
+    </div>
+
+    <!-- 5. 인기 페이지 -->
     <section class="ana-section">
-      <h2>인기 페이지</h2>
+      <h2>인기 페이지 <span class="ana-pill">Top 30</span></h2>
+      <p class="ana-section-desc">PV 기준 정렬. 클릭하면 새 탭에서 열립니다.</p>
       <table class="ana-table" id="paths-table">
-        <thead><tr><th>경로</th><th class="num">PV</th><th class="num">UV</th></tr></thead>
+        <thead><tr><th>경로</th><th class="num">PV</th><th class="num">UV</th><th class="num">비중</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
 
+    <!-- 6. 외부 유입 -->
     <section class="ana-section">
       <h2>외부 유입</h2>
+      <p class="ana-section-desc">검색·SNS·외부 링크 등 q-bot.kr 외부에서 들어온 트래픽</p>
       <table class="ana-table" id="referrers-table">
-        <thead><tr><th>유입처</th><th class="num">PV</th><th class="num">UV</th></tr></thead>
+        <thead><tr><th>유입처</th><th class="num">PV</th><th class="num">UV</th><th class="num">비중</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
 
+    <!-- 7. 가입자 현황 -->
     <section class="ana-section">
-      <h2>관리자 계정 관리</h2>
-      <p style="font-size:0.9375rem;color:#6b7280;margin:0 0 16px;">
-        관리자는 이 대시보드에 접근할 수 있고, 본인의 페이지 방문은 통계에서 제외됩니다.
-      </p>
+      <h2>가입자 현황</h2>
+      <p class="ana-section-desc">선택한 기간 동안의 신규 가입과 누적 회원</p>
+      <div class="ana-totals" id="users-totals"></div>
+      <h3 style="font-size:1rem;font-weight:600;margin:20px 0 8px;">가입 일별 추이</h3>
+      <div class="ana-chart" id="signup-chart" style="height:180px;"></div>
+    </section>
+
+    <!-- 8. 관리자 -->
+    <section class="ana-section">
+      <h2>관리자 계정</h2>
+      <p class="ana-section-desc">관리자는 이 대시보드에 접근할 수 있고, 본인의 페이지 방문은 통계에서 제외됩니다.</p>
       <table class="ana-table" id="admins-table" style="margin-bottom:20px;">
         <thead><tr><th>이메일</th><th>닉네임</th><th>출처</th><th class="num">작업</th></tr></thead>
         <tbody></tbody>
@@ -184,11 +279,58 @@
   const $ = (sel) => document.querySelector(sel);
   const fmtNum = (n) => (n == null ? '0' : Number(n).toLocaleString('ko-KR'));
 
+  // ─── 카테고리/디바이스/국가 라벨 ───
+  const CATEGORY_LABELS = {
+    home: '홈',
+    articles: '글',
+    play: '게임',
+    tools: '계산기',
+    account: '계정',
+    admin: '관리자',
+    etc: '기타'
+  };
+  const DEVICE_LABELS = {
+    mobile: '모바일',
+    desktop: '데스크탑',
+    tablet: '태블릿'
+  };
+  const COUNTRY_LABELS = {
+    KR: '🇰🇷 한국', US: '🇺🇸 미국', JP: '🇯🇵 일본', CN: '🇨🇳 중국', TW: '🇹🇼 대만',
+    VN: '🇻🇳 베트남', TH: '🇹🇭 태국', SG: '🇸🇬 싱가포르', HK: '🇭🇰 홍콩', PH: '🇵🇭 필리핀',
+    DE: '🇩🇪 독일', FR: '🇫🇷 프랑스', GB: '🇬🇧 영국', CA: '🇨🇦 캐나다', AU: '🇦🇺 호주',
+    IN: '🇮🇳 인도', RU: '🇷🇺 러시아', BR: '🇧🇷 브라질', ID: '🇮🇩 인도네시아', MY: '🇲🇾 말레이시아'
+  };
+
   function showError(msg) {
     $('#loading').style.display = 'none';
     const box = $('#error');
     box.textContent = msg;
     box.style.display = 'block';
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function deltaHtml(cur, prev) {
+    cur = Number(cur || 0); prev = Number(prev || 0);
+    if (prev === 0 && cur === 0) return '<span class="ana-card-delta flat">이전 기간 데이터 없음</span>';
+    if (prev === 0) return '<span class="ana-card-delta up">신규 ▲</span>';
+    const diff = cur - prev;
+    const pct = ((diff / prev) * 100);
+    const cls = diff > 0 ? 'up' : diff < 0 ? 'down' : 'flat';
+    const arrow = diff > 0 ? '▲' : diff < 0 ? '▼' : '–';
+    const sign = diff > 0 ? '+' : '';
+    return '<span class="ana-card-delta ' + cls + '">' +
+      arrow + ' ' + sign + pct.toFixed(1) + '% (' + sign + fmtNum(diff) + ')' +
+    '</span>';
+  }
+
+  function rangeLabel(days) {
+    if (days === 1) return '오늘';
+    return '지난 ' + days + '일';
   }
 
   async function fetchAnalytics(range) {
@@ -215,87 +357,308 @@
     return r.json();
   }
 
-  function renderTotals(t, days) {
+  // ─── 메타 / 헤드라인 ───
+  function renderMeta(data) {
+    const today = new Date();
+    const todayStr = today.toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric', weekday:'short' });
+    $('#meta-info').textContent =
+      '기간: ' + data.from_date + ' ~ 오늘 (' + rangeLabel(data.range_days) + ') · ' +
+      '조회 시각 ' + todayStr;
+  }
+
+  function renderHeadline(data) {
+    const t = data.totals || {};
+    const pv = Number(t.pv || 0);
+    const uv = Number(t.uv || 0);
+    const nr = data.new_returning || {};
+    const newUv = Number(nr.new_uv || 0);
+    const bounce = data.bounce || {};
+    const totalSessions = Number(bounce.total_sessions || 0);
+    const singlePvSessions = Number(bounce.single_pv_sessions || 0);
+    const bounceRate = totalSessions > 0 ? ((singlePvSessions / totalSessions) * 100).toFixed(1) : '0';
+    const users = data.users || {};
+
+    const parts = [];
+    parts.push(rangeLabel(data.range_days) + '간 ');
+    parts.push('<strong>' + fmtNum(uv) + '명</strong>이 ');
+    parts.push('<strong>' + fmtNum(pv) + '회</strong> 방문했어요.');
+    if (uv > 0) {
+      const newPct = ((newUv / uv) * 100).toFixed(0);
+      parts.push(' 그중 신규 방문자는 <strong>' + fmtNum(newUv) + '명</strong> (' + newPct + '%), ');
+    }
+    parts.push('이탈률은 <strong>' + bounceRate + '%</strong>예요.');
+    if (Number(users.new_in_range) > 0) {
+      parts.push(' 신규 가입은 <strong>' + fmtNum(users.new_in_range) + '명</strong>.');
+    }
+
+    $('#headline').innerHTML = parts.join('');
+  }
+
+  // ─── KPI 카드 ───
+  function renderTotals(data) {
+    const t = data.totals || {};
+    const p = data.prev_totals || {};
+    const days = data.range_days;
+    const periodLabel = rangeLabel(days);
+
     const items = [
-      { label: 'PV', value: fmtNum(t.pv), sub: days + '일 누적' },
-      { label: 'UV', value: fmtNum(t.uv), sub: '순방문자' },
-      { label: '세션', value: fmtNum(t.sessions), sub: '30분 idle 기준' },
-      { label: '로그인 PV', value: fmtNum(t.logged_in_pv), sub: '회원 기여' }
+      { label: '페이지뷰 (PV)', help: '페이지가 열린 총 횟수. 같은 사람이 여러 번 보면 모두 카운트.',
+        value: fmtNum(t.pv), delta: deltaHtml(t.pv, p.pv), sub: periodLabel + ' 누적' },
+      { label: '순방문자 (UV)', help: '브라우저 쿠키 기준 고유 방문자 수.',
+        value: fmtNum(t.uv), delta: deltaHtml(t.uv, p.uv), sub: '쿠키 기반 익명 식별' },
+      { label: '세션',         help: '한 번의 방문(30분 이상 비활동 시 새 세션).',
+        value: fmtNum(t.sessions), delta: deltaHtml(t.sessions, p.sessions), sub: '30분 idle 기준' },
+      { label: '로그인 PV',    help: '로그인한 회원의 페이지뷰 — 회원 기여도 추적.',
+        value: fmtNum(t.logged_in_pv), delta: deltaHtml(t.logged_in_pv, p.logged_in_pv), sub: '회원 기여' }
     ];
     $('#totals').innerHTML = items.map(i =>
       '<div class="ana-card">' +
-        '<p class="ana-card-label">' + i.label + '</p>' +
+        '<p class="ana-card-label">' + escapeHtml(i.label) +
+          '<span class="ana-card-help" title="' + escapeHtml(i.help) + '">?</span>' +
+        '</p>' +
         '<p class="ana-card-value">' + i.value + '</p>' +
-        '<p class="ana-card-sub">' + i.sub + '</p>' +
+        i.delta +
+        '<p class="ana-card-sub">' + escapeHtml(i.sub) + '</p>' +
       '</div>'
     ).join('');
   }
 
-  function renderChart(daily) {
+  // ─── 일별/시간대별 차트 ───
+  function renderChart(data) {
     const chart = $('#chart');
-    if (!daily || daily.length === 0) {
+    const days = data.range_days;
+    const isHourly = days === 1;
+
+    if (isHourly) {
+      $('#chart-title').textContent = '시간대별 추이 (오늘, KST)';
+      $('#chart-desc').textContent = '0시~23시. 막대 = PV, 점선 = UV';
+    } else {
+      $('#chart-title').textContent = '일별 추이';
+      $('#chart-desc').textContent = '날짜순(왼쪽이 오래된 날). 막대 = PV, 점선 = UV';
+    }
+
+    const rows = isHourly
+      ? (data.hourly || [])
+      : (data.daily || []).slice().reverse();
+
+    if (!rows || rows.length === 0) {
       chart.innerHTML = '<p class="ana-empty" style="margin:auto;">데이터 없음</p>';
       return;
     }
-    // 오래된 → 최신 순으로 표시
-    const rows = daily.slice().reverse();
-    const max = Math.max.apply(null, rows.map(r => r.pv || 0)) || 1;
 
-    // 막대 높이는 stack(flex:1) 내부 % 기반. chart는 grid로 N개 컬럼 균등 분배.
+    const maxPv = Math.max.apply(null, rows.map(r => r.pv || 0)) || 1;
+
     chart.innerHTML = rows.map(r => {
-      const pvPct = max > 0 ? ((r.pv || 0) / max) * 100 : 0;
-      const uvPct = max > 0 ? ((r.uv || 0) / max) * 100 : 0;
-      const md = (r.date_kr || '').slice(5);
+      const pv = r.pv || 0;
+      const uv = r.uv || 0;
+      const pvPct = maxPv > 0 ? (pv / maxPv) * 100 : 0;
+      // UV 점선 위치: PV 바 안에서의 비율
+      const uvOnPv = pv > 0 ? (uv / pv) * 100 : 0;
+
+      let label, title;
+      if (isHourly) {
+        label = (r.hour < 10 ? '0' + r.hour : r.hour) + '시';
+        title = label + ' · PV ' + pv + ' / UV ' + uv;
+      } else {
+        const md = (r.date_kr || '').slice(5);
+        label = md;
+        title = (r.date_kr || '') + ' · PV ' + pv + ' / UV ' + uv;
+      }
+
+      // UV marker는 PV 바 height 안에서의 위치 (bottom 기준)
+      const uvMarkerBottom = (pvPct * (uv / Math.max(pv, 1)));
+
       return (
-        '<div class="ana-bar-col" title="' + r.date_kr + ' · PV ' + r.pv + ' / UV ' + r.uv + '">' +
-          '<span class="ana-bar-num">' + (r.pv || 0) + '</span>' +
+        '<div class="ana-bar-col" title="' + escapeHtml(title) + '">' +
+          '<span class="ana-bar-num">' + (pv > 0 ? pv : '') + '</span>' +
           '<div class="ana-bar-stack">' +
-            '<div class="ana-bar-uv" style="height:' + uvPct + '%;"></div>' +
             '<div class="ana-bar-pv" style="height:' + pvPct + '%;"></div>' +
+            (uv > 0 && pv > 0
+              ? '<div class="ana-bar-uv-marker" style="bottom:' + uvMarkerBottom + '%;"></div>'
+              : '') +
           '</div>' +
-          '<span class="ana-bar-label">' + md + '</span>' +
+          '<span class="ana-bar-label">' + escapeHtml(label) + '</span>' +
         '</div>'
       );
     }).join('');
   }
 
-  function escapeHtml(s) {
-    return String(s == null ? '' : s)
-      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  // ─── 가로 막대 (breakdown 공용) ───
+  function renderHbar(elId, rows, labelFn, valueKey, totalForPct, emptyMsg) {
+    const el = $(elId);
+    if (!rows || rows.length === 0) {
+      el.innerHTML = '<p class="ana-empty">' + (emptyMsg || '데이터 없음') + '</p>';
+      return;
+    }
+    const max = Math.max.apply(null, rows.map(r => r[valueKey] || 0)) || 1;
+    el.innerHTML = rows.map(r => {
+      const v = r[valueKey] || 0;
+      const widthPct = (v / max) * 100;
+      const sharePct = totalForPct > 0 ? ((v / totalForPct) * 100).toFixed(1) : null;
+      return (
+        '<div class="ana-hbar-row">' +
+          '<div class="ana-hbar-label">' + labelFn(r) + '</div>' +
+          '<div class="ana-hbar-track">' +
+            '<div class="ana-hbar-fill" style="width:' + widthPct + '%;"></div>' +
+          '</div>' +
+          '<div class="ana-hbar-value">' + fmtNum(v) +
+            (sharePct !== null ? '<span class="ana-hbar-pct">' + sharePct + '%</span>' : '') +
+          '</div>' +
+        '</div>'
+      );
+    }).join('');
   }
 
-  function renderPathsTable(rows) {
+  function renderCategories(data) {
+    const rows = (data.categories || []).slice();
+    const totalPv = Number((data.totals && data.totals.pv) || 0);
+    renderHbar('#categories-bars', rows,
+      (r) => escapeHtml(CATEGORY_LABELS[r.category] || r.category),
+      'pv', totalPv);
+  }
+
+  function renderDevices(data) {
+    const rows = (data.devices || []).slice();
+    const totalPv = Number((data.totals && data.totals.pv) || 0);
+    renderHbar('#devices-bars', rows,
+      (r) => escapeHtml(DEVICE_LABELS[r.device] || r.device),
+      'pv', totalPv);
+  }
+
+  function renderCountries(data) {
+    const rows = (data.countries || []).slice();
+    const totalPv = Number((data.totals && data.totals.pv) || 0);
+    renderHbar('#countries-bars', rows,
+      (r) => COUNTRY_LABELS[r.country] || escapeHtml(r.country),
+      'pv', totalPv, '국가 데이터 없음');
+  }
+
+  function renderVisitorMix(data) {
+    const nr = data.new_returning || {};
+    const newUv = Number(nr.new_uv || 0);
+    const ret   = Number(nr.returning_uv || 0);
+    const total = newUv + ret;
+    const bounce = data.bounce || {};
+    const totalSessions = Number(bounce.total_sessions || 0);
+    const singlePv      = Number(bounce.single_pv_sessions || 0);
+    const bounceRate    = totalSessions > 0 ? (singlePv / totalSessions * 100) : 0;
+    const nonBounce     = totalSessions - singlePv;
+
+    const rows = [
+      { label: '신규 방문자', value: newUv, total: total },
+      { label: '재방문자',   value: ret,   total: total },
+      { label: '이탈 세션 (1PV)', value: singlePv,  total: totalSessions },
+      { label: '추가 탐색 세션',  value: nonBounce, total: totalSessions }
+    ];
+
+    const el = $('#visitor-mix');
+    if (total === 0 && totalSessions === 0) {
+      el.innerHTML = '<p class="ana-empty">데이터 없음</p>';
+      return;
+    }
+    const max = Math.max.apply(null, rows.map(r => r.value)) || 1;
+    el.innerHTML = rows.map(r => {
+      const widthPct = (r.value / max) * 100;
+      const sharePct = r.total > 0 ? ((r.value / r.total) * 100).toFixed(1) : '0';
+      return (
+        '<div class="ana-hbar-row">' +
+          '<div class="ana-hbar-label">' + escapeHtml(r.label) + '</div>' +
+          '<div class="ana-hbar-track">' +
+            '<div class="ana-hbar-fill" style="width:' + widthPct + '%;"></div>' +
+          '</div>' +
+          '<div class="ana-hbar-value">' + fmtNum(r.value) +
+            '<span class="ana-hbar-pct">' + sharePct + '%</span>' +
+          '</div>' +
+        '</div>'
+      );
+    }).join('') +
+    '<p style="font-size:0.8125rem;color:#9ca3af;margin:6px 0 0;">' +
+      '이탈률 = 한 페이지만 보고 나간 세션 비율 (' + bounceRate.toFixed(1) + '%)' +
+    '</p>';
+  }
+
+  // ─── 인기 페이지 / 외부 유입 ───
+  function renderPathsTable(data) {
     const tbody = $('#paths-table tbody');
-    if (!rows || rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="ana-empty">데이터 없음</td></tr>';
+    const rows = data.top_paths || [];
+    const totalPv = Number((data.totals && data.totals.pv) || 0);
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="ana-empty">데이터 없음</td></tr>';
       return;
     }
     tbody.innerHTML = rows.map(r => {
       const safePath = escapeHtml(r.path);
+      const share = totalPv > 0 ? ((r.pv / totalPv) * 100).toFixed(1) + '%' : '–';
       return '<tr>' +
         '<td><a href="' + safePath + '" target="_blank" rel="noopener">' + safePath + '</a></td>' +
         '<td class="num">' + fmtNum(r.pv) + '</td>' +
         '<td class="num">' + fmtNum(r.uv) + '</td>' +
+        '<td class="num">' + share + '</td>' +
       '</tr>';
     }).join('');
   }
 
-  function renderReferrersTable(rows) {
+  function renderReferrersTable(data) {
     const tbody = $('#referrers-table tbody');
-    if (!rows || rows.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="3" class="ana-empty">외부 유입 없음</td></tr>';
+    const rows = data.top_referrers || [];
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" class="ana-empty">외부 유입 없음</td></tr>';
       return;
     }
-    tbody.innerHTML = rows.map(r =>
-      '<tr>' +
+    const totalRefPv = rows.reduce((a, r) => a + Number(r.pv || 0), 0);
+    tbody.innerHTML = rows.map(r => {
+      const share = totalRefPv > 0 ? ((r.pv / totalRefPv) * 100).toFixed(1) + '%' : '–';
+      return '<tr>' +
         '<td>' + escapeHtml(r.referrer_host) + '</td>' +
         '<td class="num">' + fmtNum(r.pv) + '</td>' +
         '<td class="num">' + fmtNum(r.uv) + '</td>' +
-      '</tr>'
-    ).join('');
+        '<td class="num">' + share + '</td>' +
+      '</tr>';
+    }).join('');
   }
 
+  // ─── 가입자 현황 ───
+  function renderUsers(data) {
+    const u = data.users || {};
+    const items = [
+      { label: '누적 회원', value: fmtNum(u.total), sub: '전체 가입자', delta: '' },
+      { label: '신규 가입', value: fmtNum(u.new_in_range), sub: rangeLabel(data.range_days), delta: deltaHtml(u.new_in_range, u.prev_new) },
+      { label: '이메일 인증', value: fmtNum(u.verified), sub: u.total > 0 ? ((u.verified / u.total) * 100).toFixed(0) + '% 인증 완료' : '–', delta: '' },
+      { label: 'Google 가입', value: fmtNum(u.google), sub: u.total > 0 ? ((u.google / u.total) * 100).toFixed(0) + '% OAuth 사용' : '–', delta: '' }
+    ];
+    $('#users-totals').innerHTML = items.map(i =>
+      '<div class="ana-card">' +
+        '<p class="ana-card-label">' + escapeHtml(i.label) + '</p>' +
+        '<p class="ana-card-value">' + i.value + '</p>' +
+        (i.delta || '') +
+        '<p class="ana-card-sub">' + escapeHtml(i.sub) + '</p>' +
+      '</div>'
+    ).join('');
+
+    // 가입 일별 차트
+    const chart = $('#signup-chart');
+    const rows = (u.daily || []).slice().reverse();
+    if (rows.length === 0) {
+      chart.innerHTML = '<p class="ana-empty" style="margin:auto;">' + rangeLabel(data.range_days) + ' 신규 가입 없음</p>';
+      return;
+    }
+    const max = Math.max.apply(null, rows.map(r => r.signups || 0)) || 1;
+    chart.innerHTML = rows.map(r => {
+      const pct = (r.signups / max) * 100;
+      const md = (r.date_kr || '').slice(5);
+      return (
+        '<div class="ana-bar-col" title="' + escapeHtml(r.date_kr + ' · ' + r.signups + '명 가입') + '">' +
+          '<span class="ana-bar-num">' + (r.signups > 0 ? r.signups : '') + '</span>' +
+          '<div class="ana-bar-stack">' +
+            '<div class="ana-bar-pv" style="height:' + pct + '%;"></div>' +
+          '</div>' +
+          '<span class="ana-bar-label">' + escapeHtml(md) + '</span>' +
+        '</div>'
+      );
+    }).join('');
+  }
+
+  // ─── 로드 ───
   async function load(range) {
     $('#loading').style.display = 'block';
     $('#content').style.display = 'none';
@@ -304,10 +667,17 @@
     const data = await fetchAnalytics(range);
     if (!data) return;
 
-    renderTotals(data.totals || {}, data.range_days);
-    renderChart(data.daily || []);
-    renderPathsTable(data.top_paths || []);
-    renderReferrersTable(data.top_referrers || []);
+    renderMeta(data);
+    renderHeadline(data);
+    renderTotals(data);
+    renderChart(data);
+    renderCategories(data);
+    renderDevices(data);
+    renderCountries(data);
+    renderVisitorMix(data);
+    renderPathsTable(data);
+    renderReferrersTable(data);
+    renderUsers(data);
     loadAdmins();
 
     $('#loading').style.display = 'none';
@@ -328,6 +698,7 @@
     });
   }
 
+  // ─── 관리자 관리 (기존 그대로) ───
   function setAdminMsg(text, kind) {
     const box = $('#admin-msg');
     box.textContent = text || '';
@@ -417,7 +788,6 @@
   async function ensureToken() {
     if (!window.QLensAuth) return false;
     if (QLensAuth.isLoggedIn()) return true;
-    // refresh_token 쿠키가 있으면 access_token 재발급 시도
     try { await QLensAuth.refresh(); return QLensAuth.isLoggedIn(); }
     catch (e) { return false; }
   }
