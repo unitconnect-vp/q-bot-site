@@ -620,7 +620,9 @@ async function adminAnalytics(req, env, origin) {
 
   const now = Math.floor(Date.now() / 1000);
   const fromUnix = now - days * 86400;
+  const prevFromUnix = now - 2 * days * 86400;
   const fromDate = dateKR(fromUnix);
+  const prevFromDate = dateKR(prevFromUnix);
 
   // 1) 일별 PV·UV
   const daily = await env.DB.prepare(
@@ -658,7 +660,7 @@ async function adminAnalytics(req, env, origin) {
      LIMIT 20`
   ).bind(fromDate).all();
 
-  // 4) 합산
+  // 4) 합산 (현재 기간)
   const totals = await env.DB.prepare(
     `SELECT COUNT(*) as pv,
             COUNT(DISTINCT visitor_id) as uv,
@@ -668,13 +670,156 @@ async function adminAnalytics(req, env, origin) {
      WHERE date_kr >= ?`
   ).bind(fromDate).first();
 
+  // 4-2) 합산 (직전 동일 기간 — 비교용)
+  const prevTotals = await env.DB.prepare(
+    `SELECT COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv,
+            COUNT(DISTINCT session_id) as sessions,
+            SUM(CASE WHEN user_id IS NOT NULL THEN 1 ELSE 0 END) as logged_in_pv
+     FROM pageviews
+     WHERE date_kr >= ? AND date_kr < ?`
+  ).bind(prevFromDate, fromDate).first();
+
+  // 5) 디바이스 (UA 기반 거친 분류)
+  const devices = await env.DB.prepare(
+    `SELECT
+       CASE
+         WHEN user_agent LIKE '%iPad%' OR user_agent LIKE '%Tablet%' THEN 'tablet'
+         WHEN user_agent LIKE '%Mobile%' OR user_agent LIKE '%Android%' OR user_agent LIKE '%iPhone%' THEN 'mobile'
+         ELSE 'desktop'
+       END as device,
+       COUNT(*) as pv,
+       COUNT(DISTINCT visitor_id) as uv
+     FROM pageviews
+     WHERE date_kr >= ?
+     GROUP BY device
+     ORDER BY pv DESC`
+  ).bind(fromDate).all();
+
+  // 6) 국가 Top 10
+  const countries = await env.DB.prepare(
+    `SELECT country,
+            COUNT(*) as pv,
+            COUNT(DISTINCT visitor_id) as uv
+     FROM pageviews
+     WHERE date_kr >= ? AND country IS NOT NULL AND country != ''
+     GROUP BY country
+     ORDER BY pv DESC
+     LIMIT 10`
+  ).bind(fromDate).all();
+
+  // 7) 카테고리별 (path prefix)
+  const categories = await env.DB.prepare(
+    `SELECT
+       CASE
+         WHEN path = '/' THEN 'home'
+         WHEN path LIKE '/articles/%' OR path = '/articles' THEN 'articles'
+         WHEN path LIKE '/play/%'    OR path = '/play'     THEN 'play'
+         WHEN path LIKE '/tools/%'   OR path = '/tools'    THEN 'tools'
+         WHEN path LIKE '/auth/%'    OR path LIKE '/mypage%' THEN 'account'
+         WHEN path LIKE '/admin/%'                          THEN 'admin'
+         ELSE 'etc'
+       END as category,
+       COUNT(*) as pv,
+       COUNT(DISTINCT visitor_id) as uv
+     FROM pageviews
+     WHERE date_kr >= ?
+     GROUP BY category
+     ORDER BY pv DESC`
+  ).bind(fromDate).all();
+
+  // 8) 신규 vs 재방문 (visitor 첫 등장일 기준)
+  //    new_uv = 첫 viewed_at이 fromUnix 이후인 방문자
+  //    returning_uv = 첫 viewed_at이 fromUnix 이전인 방문자
+  const newReturning = await env.DB.prepare(
+    `SELECT
+       SUM(CASE WHEN first_seen >= ? THEN 1 ELSE 0 END) as new_uv,
+       SUM(CASE WHEN first_seen <  ? THEN 1 ELSE 0 END) as returning_uv
+     FROM (
+       SELECT visitor_id, MIN(viewed_at) as first_seen
+       FROM pageviews
+       WHERE visitor_id IN (SELECT DISTINCT visitor_id FROM pageviews WHERE date_kr >= ?)
+       GROUP BY visitor_id
+     )`
+  ).bind(fromUnix, fromUnix, fromDate).first();
+
+  // 9) 이탈률 — 1 페이지뷰만 보고 떠난 세션 비율
+  const bounce = await env.DB.prepare(
+    `SELECT
+       SUM(CASE WHEN cnt = 1 THEN 1 ELSE 0 END) as single_pv_sessions,
+       COUNT(*) as total_sessions
+     FROM (
+       SELECT session_id, COUNT(*) as cnt
+       FROM pageviews WHERE date_kr >= ?
+       GROUP BY session_id
+     )`
+  ).bind(fromDate).first();
+
+  // 10) 시간대별 (1d 선택 시만, KST 0~23시)
+  let hourly = [];
+  if (days === 1) {
+    const todayKR = dateKR(now);
+    const h = await env.DB.prepare(
+      `SELECT
+         CAST(strftime('%H', datetime(viewed_at + 32400, 'unixepoch')) AS INTEGER) as hour,
+         COUNT(*) as pv,
+         COUNT(DISTINCT visitor_id) as uv
+       FROM pageviews
+       WHERE date_kr = ?
+       GROUP BY hour
+       ORDER BY hour`
+    ).bind(todayKR).all();
+    const map = new Map((h.results || []).map(r => [r.hour, r]));
+    for (let i = 0; i < 24; i++) {
+      const row = map.get(i);
+      hourly.push({ hour: i, pv: row ? row.pv : 0, uv: row ? row.uv : 0 });
+    }
+  }
+
+  // 11) 가입자 현황
+  const userSummary = await env.DB.prepare(
+    `SELECT
+       COUNT(*) as total_users,
+       SUM(CASE WHEN created_at >= ? THEN 1 ELSE 0 END) as new_users,
+       SUM(CASE WHEN created_at >= ? AND created_at < ? THEN 1 ELSE 0 END) as prev_new_users,
+       SUM(CASE WHEN email_verified = 1 THEN 1 ELSE 0 END) as verified_users,
+       SUM(CASE WHEN oauth_provider = 'google' THEN 1 ELSE 0 END) as google_users
+     FROM users`
+  ).bind(fromUnix, prevFromUnix, fromUnix).first();
+
+  // 가입자 일별 추이 (kr date 기준)
+  const userDaily = await env.DB.prepare(
+    `SELECT
+       date(datetime(created_at + 32400, 'unixepoch')) as date_kr,
+       COUNT(*) as signups
+     FROM users
+     WHERE created_at >= ?
+     GROUP BY date_kr
+     ORDER BY date_kr DESC`
+  ).bind(fromUnix).all();
+
   return json({
     range_days: days,
     from_date: fromDate,
     totals: totals || { pv: 0, uv: 0, sessions: 0, logged_in_pv: 0 },
+    prev_totals: prevTotals || { pv: 0, uv: 0, sessions: 0, logged_in_pv: 0 },
     daily: daily.results || [],
+    hourly: hourly,
     top_paths: topPaths.results || [],
-    top_referrers: topReferrers.results || []
+    top_referrers: topReferrers.results || [],
+    devices: devices.results || [],
+    countries: countries.results || [],
+    categories: categories.results || [],
+    new_returning: newReturning || { new_uv: 0, returning_uv: 0 },
+    bounce: bounce || { single_pv_sessions: 0, total_sessions: 0 },
+    users: {
+      total: (userSummary && userSummary.total_users) || 0,
+      new_in_range: (userSummary && userSummary.new_users) || 0,
+      prev_new: (userSummary && userSummary.prev_new_users) || 0,
+      verified: (userSummary && userSummary.verified_users) || 0,
+      google: (userSummary && userSummary.google_users) || 0,
+      daily: userDaily.results || []
+    }
   }, 200, origin);
 }
 
