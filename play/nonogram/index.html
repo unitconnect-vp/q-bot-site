@@ -11,145 +11,214 @@
 </script>
 <!-- /Google Analytics 4 -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>네모네모로직 — Q-Lens</title>
-<meta name="description" content="픽처 크로스워드 퍼즐. 5×5부터 35×35까지 여섯 가지 사이즈, 화면 확대·축소, 자동 저장.">
+<meta name="description" content="픽처 크로스워드 퍼즐. 5×5부터 20×20까지, 모바일 최적화. 모든 퍼즐 논리만으로 풀이 가능.">
 <link rel="canonical" href="https://q-bot.kr/play/nonogram/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="네모네모로직 — Q-Lens">
-<meta property="og:description" content="픽처 크로스워드 퍼즐. 5×5부터 35×35까지 여섯 사이즈.">
+<meta property="og:description" content="픽처 크로스워드 퍼즐. 모바일 최적화·논리만으로 풀이 가능.">
 <meta property="og:url" content="https://q-bot.kr/play/nonogram/">
 <link rel="stylesheet" href="/assets/style.css">
 
 <style>
+/* ===== Layout ===== */
 .nono-wrap {
   margin: 0 auto;
-  padding: 24px 16px 48px;
-  max-width: 1200px;
+  padding: 16px 12px 32px;
+  max-width: 720px;
 }
 .nono-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
+  margin-bottom: 12px;
   gap: 8px;
 }
 .nono-head h1 {
-  font-size: 1.5rem;
+  font-size: 1.375rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 0;
 }
 .nono-stats {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   font-size: 0.875rem;
   color: var(--ink-muted);
   font-variant-numeric: tabular-nums;
 }
 .nono-stat strong {
-  color: #0a0a0a;
+  color: var(--ink-strong);
   font-weight: 700;
-  margin-left: 2px;
+  margin-left: 4px;
 }
 
+/* ===== Size tabs ===== */
 .size-tabs {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 4px;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
   background: #f3f4f6;
   padding: 4px;
   border-radius: 8px;
 }
 .size-tab {
-  flex: 1 1 0;
-  min-width: 56px;
-  padding: 10px 2px;
+  padding: 10px 4px;
   border: none;
   background: transparent;
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--ink-muted);
   border-radius: 6px;
   -webkit-tap-highlight-color: transparent;
-  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+  font-variant-numeric: tabular-nums;
 }
 .size-tab.active {
   background: #ffffff;
-  color: #0a0a0a;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+  color: var(--ink-strong);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
 }
 
+/* ===== Paint mode toggle ===== */
+.paint-modes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.paint-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 4px;
+  border: 1.5px solid #e5e8eb;
+  border-radius: 8px;
+  background: #ffffff;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink-muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color .1s, background .1s, color .1s;
+}
+.paint-mode.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.paint-mode__swatch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
+  border: 1px solid #d1d5db;
+}
+.paint-mode__swatch--fill { background: #0a0a0a; border-color: #0a0a0a; }
+.paint-mode__swatch--x    { background: #ffffff; color: #6b7280; }
+.paint-mode__swatch--erase { background: #ffffff; color: #9ca3af; }
+
+/* ===== Board ===== */
 .board-wrap {
   position: relative;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  max-height: calc(100vh - 360px);
+  max-height: calc(100dvh - 360px);
+  min-height: 240px;
+  border-radius: 8px;
+  background: #ffffff;
+  border: 1px solid #e5e8eb;
 }
 .nono-grid {
   --N: 10;
-  --CLUE: 4;
+  --CLUE-C: 4;
+  --CLUE-R: 4;
   --CELL: 28px;
+  --CLUE-BG: #fafafa;
+  --CLUE-BG-ACT: #e0e7ff;
   display: grid;
-  grid-template-columns: repeat(calc(var(--N) + var(--CLUE)), var(--CELL));
-  grid-template-rows: repeat(calc(var(--N) + var(--CLUE)), var(--CELL));
+  grid-template-columns: calc(var(--CELL) * var(--CLUE-R)) repeat(var(--N), var(--CELL));
+  grid-template-rows: calc(var(--CELL) * var(--CLUE-C)) repeat(var(--N), var(--CELL));
   width: max-content;
-  border: 2.5px solid #0a0a0a;
   background: #ffffff;
   user-select: none;
   -webkit-user-select: none;
   touch-action: none;
 }
+/* Corner: top-left of clue area. Sticks both top + left so it stays anchored during scroll. */
 .nono-corner {
-  grid-row: 1 / span var(--CLUE);
-  grid-column: 1 / span var(--CLUE);
-  border-right: 2.5px solid #0a0a0a;
-  border-bottom: 2.5px solid #0a0a0a;
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  background: var(--CLUE-BG);
+  border-right: 2px solid var(--ink-strong);
+  border-bottom: 2px solid var(--ink-strong);
 }
+/* Column clues: top of board, stick to top during vertical scroll inside board-wrap. */
 .col-clue {
-  grid-row: 1 / span var(--CLUE);
+  position: sticky;
+  top: 0;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
   padding: 4px 0;
-  font-size: clamp(8px, calc(var(--CELL) * 0.45), 13px);
+  font-size: clamp(10px, calc(var(--CELL) * 0.5), 14px);
   font-weight: 700;
   color: var(--ink-muted);
-  border-bottom: 2.5px solid #0a0a0a;
+  background: var(--CLUE-BG);
+  border-bottom: 2px solid var(--ink-strong);
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
 }
-.col-clue.thick-right { border-right: 2px solid #0a0a0a; }
-.col-clue.complete { color: #d1d5db; }
+.col-clue.thick-right { box-shadow: inset -1.5px 0 0 var(--ink-strong); }
+.col-clue.complete { color: #b3b8c2; }
+.col-clue.active { background: var(--CLUE-BG-ACT); color: var(--ink-strong); }
 .col-clue span { display: block; padding: 1px 0; }
+/* Row clues: left side, stick during horizontal scroll. */
 .row-clue {
-  grid-column: 1 / span var(--CLUE);
+  position: sticky;
+  left: 0;
+  z-index: 3;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   gap: 4px;
-  padding: 0 4px;
-  font-size: clamp(8px, calc(var(--CELL) * 0.45), 13px);
+  padding: 0 6px;
+  font-size: clamp(10px, calc(var(--CELL) * 0.5), 14px);
   font-weight: 700;
   color: var(--ink-muted);
-  border-right: 2.5px solid #0a0a0a;
+  background: var(--CLUE-BG);
+  border-right: 2px solid var(--ink-strong);
   font-variant-numeric: tabular-nums;
   overflow: hidden;
+  line-height: 1.15;
 }
-.row-clue.thick-bottom { border-bottom: 2px solid #0a0a0a; }
-.row-clue.complete { color: #d1d5db; }
+.row-clue.thick-bottom { box-shadow: inset 0 -1.5px 0 var(--ink-strong); }
+.row-clue.complete { color: #b3b8c2; }
+.row-clue.active { background: var(--CLUE-BG-ACT); color: var(--ink-strong); }
 
+/* Cells */
 .cell {
-  border: 1px solid #d1d5db;
+  border: 1px solid #e5e8eb;
   background: #ffffff;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   position: relative;
-  transition: background 0.05s;
+  transition: background .04s;
 }
 .cell.filled { background: #0a0a0a; }
 .cell.x::before, .cell.x::after {
@@ -164,13 +233,16 @@
 }
 .cell.x::before { transform: rotate(45deg); }
 .cell.x::after  { transform: rotate(-45deg); }
-.cell.thick-right { border-right: 2px solid #0a0a0a; }
-.cell.thick-bottom { border-bottom: 2px solid #0a0a0a; }
+.cell.thick-right  { box-shadow: inset -1.5px 0 0 var(--ink-strong); }
+.cell.thick-bottom { box-shadow: inset 0 -1.5px 0 var(--ink-strong); }
+.cell.thick-right.thick-bottom { box-shadow: inset -1.5px 0 0 var(--ink-strong), inset 0 -1.5px 0 var(--ink-strong); }
+.cell.error { background: #fee2e2; }
+.cell.error.filled { background: #dc2626; }
 
 .loading-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,25 +253,11 @@
 }
 .loading-overlay.hidden { display: none; }
 
-.input-hint {
-  font-size: 0.75rem;
-  color: var(--ink-muted);
-  text-align: center;
-  margin-bottom: 8px;
-  padding: 6px 8px;
-  background: #f9fafb;
-  border-radius: 6px;
-  line-height: 1.4;
-}
-
+/* ===== Actions ===== */
 .actions {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 4px;
-  margin-bottom: 4px;
-}
-.actions.actions-secondary {
-  grid-template-columns: repeat(2, 1fr);
 }
 .action-btn {
   display: flex;
@@ -208,21 +266,34 @@
   justify-content: center;
   gap: 4px;
   padding: 10px 4px;
-  border: 1px solid var(--rule-strong);
+  border: 1px solid #e5e8eb;
   border-radius: 6px;
   background: #ffffff;
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink-muted);
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
 }
 .action-btn:active { background: #f3f4f6; }
-.action-btn .icon { font-size: 1.25rem; line-height: 1; }
+.action-btn .icon { font-size: 1.125rem; line-height: 1; }
 .action-btn.disabled { opacity: 0.4; pointer-events: none; }
 
+.input-hint {
+  font-size: 0.75rem;
+  color: var(--ink-muted);
+  text-align: center;
+  margin: 8px 0 0;
+  padding: 6px 8px;
+  background: #f9fafb;
+  border-radius: 6px;
+  line-height: 1.45;
+}
+.input-hint b { color: var(--ink-strong); font-weight: 700; }
+
 .login-cta {
-  margin-top: 20px;
-  padding: 18px 16px;
+  margin-top: 18px;
+  padding: 16px;
   border: 1px solid var(--accent);
   border-radius: 8px;
   background: var(--accent-soft);
@@ -232,7 +303,7 @@
 .login-cta__text {
   font-size: 0.9375rem;
   color: var(--ink);
-  margin: 0 0 12px;
+  margin: 0 0 10px;
   font-weight: 600;
 }
 .login-cta__btns {
@@ -241,40 +312,35 @@
   justify-content: center;
   flex-wrap: wrap;
 }
-.login-cta__primary,
-.login-cta__ghost {
+.login-cta__primary, .login-cta__ghost {
   display: inline-block;
   padding: 10px 18px;
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 700;
   text-decoration: none;
-  transition: background 0.1s;
 }
-.login-cta__primary {
-  background: var(--accent);
-  color: #ffffff;
-  border: 1px solid var(--accent);
-}
+.login-cta__primary { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
 .login-cta__primary:hover { background: var(--accent-hover); }
-.login-cta__ghost {
-  background: #ffffff;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-}
+.login-cta__ghost { background: #fff; color: var(--accent); border: 1px solid var(--accent); }
 .login-cta__ghost:hover { background: var(--accent-soft); }
 
+/* ===== Fullscreen ===== */
 main.nono-wrap:fullscreen,
 main.nono-wrap:-webkit-full-screen {
   background: #ffffff;
-  max-width: 1200px;
+  max-width: 100%;
   width: 100%;
-  margin: 0 auto;
-  padding: 24px 16px 48px;
+  margin: 0;
+  padding: 16px;
   overflow-y: auto;
 }
+main.nono-wrap:fullscreen .board-wrap {
+  max-height: calc(100vh - 320px);
+  max-height: calc(100dvh - 320px);
+}
 
-/* 모달 */
+/* ===== Modal ===== */
 .modal-backdrop {
   position: fixed; inset: 0;
   background: rgba(0,0,0,0.5);
@@ -288,16 +354,16 @@ main.nono-wrap:-webkit-full-screen {
   border-radius: 12px;
   max-width: 360px;
   width: 100%;
-  padding: 32px 24px;
+  padding: 28px 22px;
   text-align: center;
 }
-.modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
-.modal p { color: var(--ink-muted); font-size: 0.9375rem; margin-bottom: 16px; }
+.modal h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 6px; }
+.modal p { color: var(--ink-muted); font-size: 0.9375rem; margin-bottom: 14px; }
 .modal-time {
-  font-size: 2.25rem;
+  font-size: 2.125rem;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: var(--accent);
   letter-spacing: -0.02em;
 }
@@ -310,23 +376,27 @@ main.nono-wrap:-webkit-full-screen {
   border: none;
   font-size: 1rem;
   font-weight: 700;
+  cursor: pointer;
 }
 .modal-btn:active { background: var(--accent-hover); }
 .share-row { display:flex; gap:8px; align-items:center; justify-content:center; margin-top:14px; flex-wrap:wrap; }
-.share-label { font-size:13px; color:#6b7280; margin-right:4px; }
-.share-btn { border:1px solid #e5e8eb; background:#fff; color:#1a1a1a; padding:6px 14px; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer; transition:all .15s; -webkit-tap-highlight-color:transparent; }
+.share-label { font-size:13px; color:#6b7280; }
+.share-btn { border:1px solid #e5e8eb; background:#fff; color:#1a1a1a; padding:6px 14px; border-radius:4px; font-size:13px; font-weight:600; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .share-btn:hover { border-color:var(--accent); color:var(--accent); }
 
 @media (max-width: 480px) {
-  .nono-wrap { padding: 12px 4px 24px; }
-  .nono-head { margin-bottom: 10px; }
-  .size-tabs { margin-bottom: 10px; padding: 3px; }
-  .size-tab { padding: 8px 2px; font-size: 0.75rem; min-width: 48px; }
-  .board-wrap { margin-bottom: 10px; }
-  .actions { gap: 3px; }
-  .action-btn { font-size: 0.6875rem; padding: 8px 2px; }
-  .action-btn .icon { font-size: 1.05rem; }
+  .nono-wrap { padding: 12px 8px 24px; }
+  .nono-head h1 { font-size: 1.25rem; }
+  .size-tab { padding: 9px 2px; font-size: 0.8125rem; }
+  .paint-mode { font-size: 0.8125rem; padding: 11px 2px; gap: 6px; }
+  .paint-mode__swatch { width: 18px; height: 18px; font-size: 13px; }
+  .action-btn { font-size: 0.6875rem; padding: 8px 2px; gap: 3px; }
+  .action-btn .icon { font-size: 1rem; }
   .input-hint { font-size: 0.6875rem; }
+  .board-wrap {
+    max-height: calc(100vh - 340px);
+    max-height: calc(100dvh - 340px);
+  }
 }
 </style>
 <script src="/assets/analytics.js" defer></script>
@@ -335,12 +405,12 @@ main.nono-wrap:-webkit-full-screen {
 
 <header class="site-header">
   <a class="site-logo" href="/">Q<span>-</span>Lens</a>
-      <nav class="site-nav">
-      <a href="/">홈</a>
-      <a href="/articles/">글</a>
-      <a href="/play/">게임</a>
-      <a href="/tools/">계산기</a>
-    </nav>
+  <nav class="site-nav">
+    <a href="/">홈</a>
+    <a href="/articles/">글</a>
+    <a href="/play/">게임</a>
+    <a href="/tools/">계산기</a>
+  </nav>
 </header>
 
 <main class="nono-wrap" id="nonoMain">
@@ -356,29 +426,41 @@ main.nono-wrap:-webkit-full-screen {
     <button class="size-tab active" data-size="10">10×10</button>
     <button class="size-tab" data-size="15">15×15</button>
     <button class="size-tab" data-size="20">20×20</button>
-    <button class="size-tab" data-size="30">30×30</button>
-    <button class="size-tab" data-size="35">35×35</button>
   </div>
 
-  <div class="actions actions-primary">
-    <button class="action-btn" id="btn-undo"><span class="icon">↶</span><span>되돌리기</span></button>
-    <button class="action-btn" id="btn-redo"><span class="icon">↷</span><span>다시</span></button>
-    <button class="action-btn" id="btn-zoom-out"><span class="icon">−</span><span>축소</span></button>
-    <button class="action-btn" id="btn-zoom-in"><span class="icon">+</span><span>확대</span></button>
-    <button class="action-btn" id="btn-fullscreen"><span class="icon">⛶</span><span>전체화면</span></button>
-    <button class="action-btn" id="btn-new"><span class="icon">＋</span><span>새 게임</span></button>
+  <div class="paint-modes" role="tablist" aria-label="입력 모드">
+    <button class="paint-mode active" data-mode="fill" type="button">
+      <span class="paint-mode__swatch paint-mode__swatch--fill"></span>
+      <span>채움</span>
+    </button>
+    <button class="paint-mode" data-mode="x" type="button">
+      <span class="paint-mode__swatch paint-mode__swatch--x">×</span>
+      <span>X 표시</span>
+    </button>
+    <button class="paint-mode" data-mode="erase" type="button">
+      <span class="paint-mode__swatch paint-mode__swatch--erase">○</span>
+      <span>지우개</span>
+    </button>
   </div>
-  <div class="actions actions-secondary">
-    <button class="action-btn" id="btn-hint"><span class="icon">💡</span><span>힌트</span></button>
-    <button class="action-btn" id="btn-reset"><span class="icon">⌫</span><span>전체 지우기</span></button>
-  </div>
-
-  <p class="input-hint">셀 클릭 한 번: 채움 → 두 번: X 표시 → 세 번: 해제 · 우클릭: X 빠르게</p>
 
   <div class="board-wrap">
     <div class="nono-grid" id="grid"></div>
     <div class="loading-overlay hidden" id="loading">새 판을 만드는 중…</div>
   </div>
+
+  <div class="actions">
+    <button class="action-btn" id="btn-undo" type="button"><span class="icon">↶</span><span>되돌리기</span></button>
+    <button class="action-btn" id="btn-redo" type="button"><span class="icon">↷</span><span>다시</span></button>
+    <button class="action-btn" id="btn-hint" type="button"><span class="icon">💡</span><span>힌트</span></button>
+    <button class="action-btn" id="btn-reset" type="button"><span class="icon">⌫</span><span>초기화</span></button>
+    <button class="action-btn" id="btn-new" type="button"><span class="icon">＋</span><span>새 게임</span></button>
+  </div>
+
+  <p class="input-hint">
+    원하는 <b>모드를 먼저 선택</b>하고 셀을 탭/드래그하세요 ·
+    같은 모드의 셀을 다시 탭하면 지워집니다 ·
+    PC: 우클릭=X
+  </p>
 
   <div class="login-cta hidden" id="loginCta">
     <p class="login-cta__text">로그인하면 클리어 시간이 마이페이지에 저장돼요</p>
@@ -437,7 +519,7 @@ main.nono-wrap:-webkit-full-screen {
     <h2>완성!</h2>
     <p id="winMsg">그림이 보이시나요?</p>
     <div class="modal-time" id="winTime">00:00</div>
-    <button class="modal-btn" id="winNew">새 게임 시작</button>
+    <button class="modal-btn" id="winNew" type="button">새 게임 시작</button>
     <div class="share-row" id="shareRow">
       <span class="share-label">공유</span>
       <button class="share-btn" id="shareXBtn" type="button">X</button>
@@ -448,7 +530,12 @@ main.nono-wrap:-webkit-full-screen {
 </div>
 
 <script>
-// ============ Q-Lens Nonogram v1 ============
+// ============ Q-Lens Nonogram v2 ============
+// 모바일 우선 재작성. 핵심 변경:
+// 1) 보드 자체 스크롤 컨테이너 + sticky row/col 클루 → 사이트 헤더와 간섭 없음
+// 2) 모드 토글 입력(채움/X/지우개) → 모바일 3-탭 사이클 폐기
+// 3) 모든 사이즈에서 unique-solution 검증 (논리만으로 풀 수 있는 퍼즐만 사용)
+// 4) 사이즈 5/10/15/20 (35×35 폐기 — 모바일에서 사용 불가)
 (function () {
   'use strict';
 
@@ -465,7 +552,7 @@ main.nono-wrap:-webkit-full-screen {
     return r.length === 0 ? [0] : r;
   }
 
-  // ---------- enumerate possible line arrangements ----------
+  // ---------- 가능한 라인 배치 생성 ----------
   function* enumerate(clues, len) {
     if (clues.length === 1 && clues[0] === 0) {
       yield new Array(len).fill(0);
@@ -492,7 +579,7 @@ main.nono-wrap:-webkit-full-screen {
     }
   }
 
-  // ---------- line solver ----------
+  // ---------- 라인 솔버 (확정칸 추출) ----------
   function lineSolve(clues, line) {
     const len = line.length;
     const possible = [];
@@ -520,11 +607,12 @@ main.nono-wrap:-webkit-full-screen {
   }
 
   // ---------- 전체 풀이 (constraint propagation) ----------
+  // 반환: full grid (정답) | null(모순) | undefined(미확정 — 논리만으로 안 풀림)
   function solve(rowClues, colClues, n) {
     const grid = Array.from({ length: n }, () => new Array(n).fill(0));
     let changed = true;
     let iter = 0;
-    while (changed && iter < 200) {
+    while (changed && iter < 400) {
       changed = false;
       iter++;
       for (let r = 0; r < n; r++) {
@@ -543,207 +631,57 @@ main.nono-wrap:-webkit-full-screen {
         }
       }
     }
+    for (const r of grid) for (const c of r) if (c === 0) return undefined;
     return grid;
-  }
-  function isFull(g) {
-    for (const r of g) for (const c of r) if (c === 0) return false;
-    return true;
   }
 
   // ---------- 픽처 라이브러리 ----------
+  // 모든 픽처는 unique-solution 검증을 통과해야 사용됨.
   const PICTURES = {
     5: [
-      {name:"하트",data:[".#.#.","#####","#####",".###.","..#.."]},
-      {name:"십자",data:["..#..","..#..","#####","..#..","..#.."]},
+      {name:"하트",  data:[".#.#.","#####","#####",".###.","..#.."]},
+      {name:"십자",  data:["..#..","..#..","#####","..#..","..#.."]},
       {name:"화살표",data:["..#..",".###.","#####","..#..","..#.."]},
       {name:"사각형",data:["#####","#...#","#...#","#...#","#####"]},
       {name:"알파벳T",data:["#####","..#..","..#..","..#..","..#.."]},
       {name:"알파벳H",data:["#...#","#...#","#####","#...#","#...#"]},
       {name:"알파벳L",data:["#....","#....","#....","#....","####."]},
-      {name:"숫자5",data:["#####","#....","#####","....#","#####"]},
-      {name:"알약",data:[".###.","#####","#####","#####",".###."]},
-      {name:"우산",data:[".###.","#####","..#..","..#..","..#.."]},
+      {name:"알약",  data:[".###.","#####","#####","#####",".###."]},
+      {name:"우산",  data:[".###.","#####","..#..","..#..","..#.."]},
     ],
     10: [
-      {name:"하트",data:["..##..##..",".########.","##########","##########","##########",".########.","..######..","...####...","....##....",".........."]},
-      {name:"집",data:["....##....","...####...","..######..",".########.","##########","##.####.##","##.####.##","##.####.##","##.####.##","##########"]},
-      {name:"나무",data:["....##....","...####...","..######..",".########.","##########",".########.","..######..","....##....","....##....","...####..."]},
-      {name:"우산",data:["....##....","...####...","..######..",".########.","##########","....##....","....##....","....##....","...##.....","..##......"]},
-      {name:"컵",data:["..........","########..","########..","#......#.#","#......#.#","#......#.#","#......#..","########..","##########","##########"]},
-      {name:"웃는얼굴",data:["..######..",".########.","##.####.##","##.####.##","##########","##########","##########","##.####.##",".##....##.","..######.."]},
-      {name:"정사각테두리",data:["##########","#........#","#........#","#........#","#........#","#........#","#........#","#........#","#........#","##########"]},
-      {name:"큰하트작게",data:["..........","..##..##..",".########.","##########",".########.","..######..","...####...","....##....","..........",".........."]},
-      {name:"계단",data:["........##","......####","....######","..########","..########","##########","##########","##########","##########","##########"]},
-      {name:"체스폰",data:["....##....","...####...","....##....","....##....","...####...","..######..","...####...","..######..",".########.","##########"]},
-      {name:"알파벳E",data:["########..","##........","##........","##........","######....","######....","##........","##........","##........","########.."]},
-      {name:"숫자8",data:["..######..",".##....##.",".##....##.",".##....##.","..######..","..######..",".##....##.",".##....##.",".##....##.","..######.."]},
+      {name:"하트",     data:["..##..##..",".########.","##########","##########","##########",".########.","..######..","...####...","....##....",".........."]},
+      {name:"나무",     data:["....##....","...####...","..######..",".########.","##########",".########.","..######..","....##....","....##....","...####..."]},
+      {name:"우산",     data:["....##....","...####...","..######..",".########.","##########","....##....","....##....","....##....","...##.....","..##......"]},
+      {name:"사각테두리",data:["##########","#........#","#........#","#........#","#........#","#........#","#........#","#........#","#........#","##########"]},
+      {name:"작은하트", data:["..........","..##..##..",".########.","##########",".########.","..######..","...####...","....##....","..........",".........."]},
+      {name:"계단",     data:["........##","......####","....######","..########","..########","##########","##########","##########","##########","##########"]},
+      {name:"알파벳E",  data:["########..","##........","##........","##........","######....","######....","##........","##........","##........","########.."]},
+      {name:"숫자8",    data:["..######..",".##....##.",".##....##.",".##....##.","..######..","..######..",".##....##.",".##....##.",".##....##.","..######.."]},
+      {name:"음표",     data:["..#####...","..#####...","..#....#..","..#....#..","..#....#..","..#.......","##.#......","###.......","##........","#........."]},
+      {name:"화살표",   data:["....##....","...####...","..######..",".########.","##########","....##....","....##....","....##....","....##....","....##...."]},
     ],
     15: [
-      {name:"큰하트",data:["...####...####.","..######.######",".##############",".##############",".##############",".##############",".##############","..############.","...##########..","....########...",".....######....","......#####....",".......##......","...............","..............."]},
-      {name:"큰별",data:[".......##......",".......##......","......####.....","......####.....","###############",".#############.","..###########..","...#########...","...#########...","..#########....","..####...####..",".###.......###.",".##.........##.","##...........##","##...........##"]},
-      {name:"큰동그라미",data:["....#######....","..###########..",".#############.","###############","###############","###############","###############","###############","###############","###############","###############","###############",".#############.","..###########..","....#######...."]},
-      {name:"큰집",data:[".......#.......","......###......",".....#####.....","....#######....","...#########...","..###########..",".#############.","###############","##.#########.##","##.#########.##","##.###...###.##","##.###...###.##","##.###...###.##","##.#########.##","###############"]},
-      {name:"큰사각",data:["###############","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","###############"]},
-      {name:"큰화살표",data:[".......#.......","......###......",".....#####.....","....#######....","...#########...","..###########..",".#############.","###############",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####....."]},
-      {name:"큰열쇠",data:["...###.........","..#####........","..#...#........","..#...#........","..#####........","...###.........","....#..........","....#..........","....#..........","....#..........","....#..........","....###........","....#..........","....###........","....#.........."]},
-      {name:"큰버섯",data:["....#######....","..###########..",".#############.","###############","###############","###############","###############",".#############.","..###########..",".....#####.....",".....#####.....","....#######....","....#######....","...#########...","...#########..."]},
+      {name:"하트",     data:["..####...####..",".######.######.","###############","###############","###############","###############","###############",".#############.","..###########..","...#########...",".....######....",".......####....",".........##....","...............","..............."]},
+      {name:"동그라미", data:["....#######....","..###########..",".#############.","###############","###############","###############","###############","###############","###############","###############","###############","###############",".#############.","..###########..","....#######...."]},
+      {name:"집",       data:[".......#.......","......###......",".....#####.....","....#######....","...#########...","..###########..",".#############.","###############","##.#########.##","##.#########.##","##.###...###.##","##.###...###.##","##.###...###.##","##.#########.##","###############"]},
+      {name:"사각",     data:["###############","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","#.............#","###############"]},
+      {name:"화살표",   data:[".......#.......","......###......",".....#####.....","....#######....","...#########...","..###########..",".#############.","###############",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####....."]},
+      {name:"마름모",   data:[".......#.......","......###......",".....#####.....","....#######....","...#########...","..###########..",".#############.","###############",".#############.","..###########..","...#########...","....#######....",".....#####.....","......###......",".......#......."]},
+      {name:"십자",     data:[".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####.....","###############","###############","###############","###############","###############",".....#####.....",".....#####.....",".....#####.....",".....#####.....",".....#####....."]},
+      {name:"음표",     data:["....######.....","....######.....","....#....#.....","....#....#.....","....#....#.....","....#....#.....","....#....#.....","....#....#.....","....#....#.....","....#....#.....","##..#....#.....","###.#....#.....","###.#..####....","##..#.#####....","....#.######..."]},
+      {name:"별",       data:[".......#.......",".......#.......","......###......","..###########..","###############",".#############.","..###########..","...#########...","..###########..",".####.....####.","####.......####","###.........###","##...........##","#.............#","#.............#"]},
     ],
     20: [
-      {name:"큰동그라미20",data:["......########......","....############....","...##############...","..################..",".##################.","####################","####################","####################","####################","####################","####################","####################","####################","####################","####################",".##################.","..################..","...##############...","....############....","......########......"]},
-      {name:"큰별20",data:[".........##.........",".........##.........","........####........","........####........","........####........","####################",".##################.","..################..","...##############...","....############....","....############....","...##########.......","...########.........","..######..######....",".######....######...",".#####......#####...","#####........#####..","###..........###....","##............##....","##............##...."]},
-      {name:"큰집20",data:["..........#.........",".........###........","........#####.......",".......#######......","......#########.....",".....###########....","....#############...","...###############..","..#################.","####################","##.##############.##","##.##############.##","##.##############.##","##.######....####.##","##.######....####.##","##.######....####.##","##.######....####.##","##.######....####.##","##.##############.##","####################"]},
-      {name:"큰사각20",data:["####################","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","####################"]},
-      {name:"큰십자20",data:["........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","####################","####################","####################","####################","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........"]},
-      {name:"큰화살표20",data:[".........##.........","........####........",".......######.......","......########......",".....##########.....","....############....","...##############...","..################..",".##################.","####################","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........"]},
-      {name:"큰우산20",data:["..........#.........",".........###........","........#####.......",".......#######......","......#########.....",".....###########....","....#############...","...###############..","..#################.","####################","..........#.........","..........#.........","..........#.........","..........#.........","..........#.........","..........#.........","..........#.........",".........##.........","........###.........","......###..........."]},
+      {name:"동그라미", data:["......########......","....############....","...##############...","..################..",".##################.","####################","####################","####################","####################","####################","####################","####################","####################","####################","####################",".##################.","..################..","...##############...","....############....","......########......"]},
+      {name:"하트",     data:["...####....####.....",".########.########..","####################","####################","####################","####################","####################",".##################.","..################..","...##############...","....############....",".....##########.....","......########......",".......######.......","........####........",".........##.........","....................","....................","....................","...................."]},
+      {name:"집",       data:["..........#.........",".........###........","........#####.......",".......#######......","......#########.....",".....###########....","....#############...","...###############..","..#################.","####################","##.##############.##","##.##############.##","##.##############.##","##.######....####.##","##.######....####.##","##.######....####.##","##.######....####.##","##.######....####.##","##.##############.##","####################"]},
+      {name:"사각",     data:["####################","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","#..................#","####################"]},
+      {name:"십자",     data:["........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","####################","####################","####################","####################","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........"]},
+      {name:"화살표",   data:[".........##.........","........####........",".......######.......","......########......",".....##########.....","....############....","...##############...","..################..",".##################.","####################","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........","........####........"]},
+      {name:"마름모",   data:[".........##.........","........####........",".......######.......","......########......",".....##########.....","....############....","...##############...","..################..",".##################.","####################",".##################.","..################..","...##############...","....############....",".....##########.....","......########......",".......######.......","........####........",".........##.........","...................."]},
     ],
   };
-  buildLargePictures();
-
-  // ---------- 큰 사이즈(30, 35) 절차적 도형 생성 ----------
-  function _gen(n, fn) {
-    const grid = [];
-    for (let r = 0; r < n; r++) {
-      let row = '';
-      for (let c = 0; c < n; c++) row += fn(r, c) ? '#' : '.';
-      grid.push(row);
-    }
-    return grid;
-  }
-
-  function genCircle(n) {
-    const cx = (n - 1) / 2, cy = (n - 1) / 2;
-    const r2 = Math.pow(n / 2 - 0.5, 2);
-    return _gen(n, (r, c) => {
-      const dx = c - cx, dy = r - cy;
-      return dx * dx + dy * dy <= r2;
-    });
-  }
-
-  function genFrame(n) {
-    const t = Math.max(2, Math.round(n / 12));
-    return _gen(n, (r, c) => r < t || r >= n - t || c < t || c >= n - t);
-  }
-
-  function genDiamond(n) {
-    const cx = (n - 1) / 2, cy = (n - 1) / 2;
-    const r = (n - 1) / 2;
-    return _gen(n, (rr, cc) => Math.abs(cc - cx) + Math.abs(rr - cy) <= r);
-  }
-
-  function genCross(n) {
-    const armW = Math.max(4, Math.round(n / 5));
-    const start = Math.floor((n - armW) / 2);
-    const end = start + armW;
-    return _gen(n, (r, c) => (r >= start && r < end) || (c >= start && c < end));
-  }
-
-  function genX(n) {
-    const t = Math.max(2, Math.round(n / 12));
-    return _gen(n, (r, c) => Math.abs(r - c) < t || Math.abs(r + c - (n - 1)) < t);
-  }
-
-  function genHeart(n) {
-    const cx = (n - 1) / 2, cy = (n - 1) / 2;
-    const sx = n / 2.6;
-    const sy = n / 2.4;
-    return _gen(n, (r, c) => {
-      const x = (c - cx) / sx;
-      const y = (cy - r) / sy + 0.2;
-      const v = Math.pow(x * x + y * y - 1, 3) - x * x * y * y * y;
-      return v <= 0;
-    });
-  }
-
-  function genStar(n) {
-    const cx = (n - 1) / 2;
-    const rOut = n * 0.553;
-    const cy = rOut;
-    const rIn = rOut * 0.42;
-    const points = [];
-    for (let i = 0; i < 10; i++) {
-      const angle = -Math.PI / 2 + (Math.PI / 5) * i;
-      const r = i % 2 === 0 ? rOut : rIn;
-      points.push([cx + r * Math.cos(angle), cy + r * Math.sin(angle)]);
-    }
-    function pip(x, y) {
-      let inside = false;
-      for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
-        const xi = points[i][0], yi = points[i][1];
-        const xj = points[j][0], yj = points[j][1];
-        if ((yi > y) !== (yj > y) && x < ((xj - xi) * (y - yi)) / (yj - yi) + xi) inside = !inside;
-      }
-      return inside;
-    }
-    return _gen(n, (r, c) => pip(c, r));
-  }
-
-  function genTriangle(n) {
-    const cx = n / 2;
-    return _gen(n, (r, c) => {
-      const halfW = (r + 1) * 0.5;
-      return Math.abs(c + 0.5 - cx) <= halfW;
-    });
-  }
-
-  function genArrow(n) {
-    const tipRows = Math.floor(n * 0.55);
-    const stemW = Math.max(4, Math.round(n / 4.5));
-    const stemStart = Math.floor((n - stemW) / 2);
-    const stemEnd = stemStart + stemW;
-    const cx = (n - 1) / 2;
-    return _gen(n, (r, c) => {
-      if (r < tipRows) {
-        const halfW = (r / (tipRows - 1)) * (n - 1) / 2;
-        return c >= cx - halfW && c <= cx + halfW;
-      }
-      return c >= stemStart && c < stemEnd;
-    });
-  }
-
-  function genSmiley(n) {
-    const cx = (n - 1) / 2, cy = (n - 1) / 2;
-    const rOut = n / 2 - 0.5;
-    const ringT = Math.max(1, Math.round(n / 18));
-    const rIn = rOut - ringT;
-    const eyeR = Math.max(1.5, n / 14);
-    const eyeY = cy - n / 5.5;
-    const eyeXL = cx - n / 5.5;
-    const eyeXR = cx + n / 5.5;
-    const mouthRO = n / 3.5;
-    const mouthRI = n / 3.5 - ringT - 0.5;
-    return _gen(n, (r, c) => {
-      const dx = c - cx, dy = r - cy;
-      const d2 = dx * dx + dy * dy;
-      if (d2 <= rOut * rOut && d2 >= rIn * rIn) return true;
-      const dxL = c - eyeXL, dxR = c - eyeXR, dyE = r - eyeY;
-      if (dxL * dxL + dyE * dyE <= eyeR * eyeR) return true;
-      if (dxR * dxR + dyE * dyE <= eyeR * eyeR) return true;
-      if (r > cy + n / 14) {
-        const dist = Math.sqrt(d2);
-        if (dist <= mouthRO && dist >= mouthRI) return true;
-      }
-      return false;
-    });
-  }
-
-  function buildLargePictures() {
-    const sizes = [30, 35];
-    for (const n of sizes) {
-      PICTURES[n] = [
-        { name: '큰원',       data: genCircle(n) },
-        { name: '큰사각테두리', data: genFrame(n) },
-        { name: '큰마름모',    data: genDiamond(n) },
-        { name: '큰십자',      data: genCross(n) },
-        { name: '큰X자',       data: genX(n) },
-        { name: '큰하트',      data: genHeart(n) },
-        { name: '큰별',        data: genStar(n) },
-        { name: '큰삼각형',    data: genTriangle(n) },
-        { name: '큰화살표',    data: genArrow(n) },
-        { name: '큰웃는얼굴',  data: genSmiley(n) },
-      ];
-    }
-  }
 
   function shuffle(a) {
     for (let i = a.length - 1; i > 0; i--) {
@@ -753,10 +691,11 @@ main.nono-wrap:-webkit-full-screen {
     return a;
   }
 
-  // ---------- 퍼즐 선택 (라이브러리에서) ----------
+  // ---------- 퍼즐 선택 + unique-solution 검증 ----------
   function generatePuzzle(size, lastName) {
     const list = PICTURES[size];
     if (!list || list.length === 0) return null;
+    // 직전 픽처는 뒤로 — 같은 픽처가 연속으로 나오는 빈도 낮춤
     const order = shuffle([...Array(list.length).keys()]);
     if (list.length > 1 && lastName) {
       order.sort((a, b) => {
@@ -773,13 +712,17 @@ main.nono-wrap:-webkit-full-screen {
       for (let c = 0; c < size; c++) {
         colClues.push(clueFromLine(pat.map(r => r[c])));
       }
-      if (size >= 30) {
-        return { pat, rowClues, colClues, name: pic.name };
-      }
       const solved = solve(rowClues, colClues, size);
-      if (solved && isFull(solved)) {
-        return { pat, rowClues, colClues, name: pic.name };
+      if (!solved) continue;
+      // 검증: solver 결과가 정답과 일치하는가 (= unique + logic-solvable)
+      let ok = true;
+      for (let r = 0; r < size && ok; r++) {
+        for (let c = 0; c < size; c++) {
+          const want = pat[r][c] ? 1 : -1;
+          if (solved[r][c] !== want) { ok = false; break; }
+        }
       }
+      if (ok) return { pat, rowClues, colClues, name: pic.name };
     }
     return null;
   }
@@ -794,39 +737,46 @@ main.nono-wrap:-webkit-full-screen {
     currentPicName: '',
     history: [],
     redo: [],
-    zoom: 1,
-    clueDim: 4,
+    mode: 'fill',           // 'fill' | 'x' | 'erase'
     startTime: 0,
     elapsedBeforePause: 0,
     timerId: null,
     finished: false,
     generating: false,
-    drag: null
+    drag: null,
+    activeRow: -1,
+    activeCol: -1,
   };
-  const STORAGE_KEY = 'qlens-nonogram-v2';
-  const STORAGE_KEY_LEGACY = 'qlens-nonogram-v1';
-  const ZOOM_KEY = 'qlens-nonogram-zoom';
-  const ZOOM_STEP = 0.25;
-  const CELL_MIN = 12;
-  const CELL_MAX = 60;
+  const STORAGE_KEY = 'qlens-nonogram-v3';
+  const LEGACY_KEYS = ['qlens-nonogram-v1','qlens-nonogram-v2','qlens-nonogram-zoom'];
 
-  // 현재 board-wrap 너비 기준으로 "땙 맞는" 셀 크기 계산
+  const CELL_MIN = 14;
+  const CELL_MAX = 56;
+
+  // ---------- 자동 fit (모바일 우선) ----------
   function computeFitCellPx() {
-    if (!state.size) return 28;
-    const total = state.size + (state.clueDim || 4);
+    const n = state.size;
+    if (!n) return 28;
+    const maxRowClues = state.rowClues.length ? Math.max(...state.rowClues.map(c => c.length)) : 4;
+    const maxColClues = state.colClues.length ? Math.max(...state.colClues.map(c => c.length)) : 4;
+    const clueR = Math.max(maxRowClues, 2);
+    const clueC = Math.max(maxColClues, 2);
+    const totalW = n + clueR;
+    const totalH = n + clueC;
     const bw = document.querySelector('.board-wrap');
-    const avail = bw ? bw.clientWidth - 4 : window.innerWidth - 40;
-    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.floor(avail / total)));
-  }
-
-  function computeCellPx() {
-    return Math.max(CELL_MIN, Math.min(CELL_MAX, Math.round(computeFitCellPx() * state.zoom)));
+    if (!bw) return 28;
+    const wAvail = bw.clientWidth - 6;
+    const hAvail = bw.clientHeight - 6;
+    const wFit = Math.floor(wAvail / totalW);
+    const hFit = Math.floor(hAvail / totalH);
+    const fit = Math.min(wFit, hFit);
+    return Math.max(CELL_MIN, Math.min(CELL_MAX, fit));
   }
 
   // ---------- 저장/로드 ----------
   function save() {
     if (state.finished || state.generating) {
-      if (state.finished) localStorage.removeItem(STORAGE_KEY);
+      if (state.finished) try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
       return;
     }
     const data = {
@@ -836,6 +786,7 @@ main.nono-wrap:-webkit-full-screen {
       colClues: state.colClues,
       user: state.user,
       currentPicName: state.currentPicName,
+      mode: state.mode,
       elapsed: getElapsed()
     };
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) {}
@@ -846,10 +797,11 @@ main.nono-wrap:-webkit-full-screen {
       if (!raw) return null;
       const d = JSON.parse(raw);
       if (!d.pat || !d.user) return null;
+      if (![5,10,15,20].includes(d.size)) return null;
       return d;
     } catch (e) { return null; }
   }
-  try { localStorage.removeItem(STORAGE_KEY_LEGACY); } catch (e) {}
+  for (const k of LEGACY_KEYS) { try { localStorage.removeItem(k); } catch (e) {} }
 
   // ---------- 새 게임 ----------
   function newGame(size) {
@@ -862,6 +814,8 @@ main.nono-wrap:-webkit-full-screen {
       if (!r) {
         state.generating = false;
         $('loading').classList.add('hidden');
+        // 라이브러리에 검증 통과 픽처가 없으면 다른 사이즈로 가지 않음 — 동일 사이즈 재시도
+        state.currentPicName = '';
         return newGame(state.size);
       }
       state.pat = r.pat;
@@ -875,12 +829,14 @@ main.nono-wrap:-webkit-full-screen {
       state.startTime = Date.now();
       state.finished = false;
       state.generating = false;
+      state.activeRow = -1;
+      state.activeCol = -1;
       $('loading').classList.add('hidden');
       buildGrid();
       startTimer();
       render();
       save();
-    }, 30);
+    }, 20);
   }
 
   function loadGame(d) {
@@ -890,14 +846,18 @@ main.nono-wrap:-webkit-full-screen {
     state.colClues = d.colClues;
     state.user = d.user;
     state.currentPicName = d.currentPicName || '';
+    state.mode = d.mode || 'fill';
     state.history = [];
     state.redo = [];
     state.elapsedBeforePause = d.elapsed || 0;
     state.startTime = Date.now();
     state.finished = false;
+    state.activeRow = -1;
+    state.activeCol = -1;
     buildGrid();
     startTimer();
     render();
+    syncModeButtons();
   }
 
   // ---------- 타이머 ----------
@@ -927,13 +887,12 @@ main.nono-wrap:-webkit-full-screen {
     const grid = $('grid');
     const n = state.size;
 
-    const maxRowClues = Math.max(...state.rowClues.map(c => c.length));
-    const maxColClues = Math.max(...state.colClues.map(c => c.length));
-    const clue = Math.max(maxRowClues, maxColClues, 2);
-    state.clueDim = clue;
+    const maxRowClues = Math.max(...state.rowClues.map(c => c.length), 2);
+    const maxColClues = Math.max(...state.colClues.map(c => c.length), 2);
     grid.style.setProperty('--N', n);
-    grid.style.setProperty('--CLUE', clue);
-    applyZoom();
+    grid.style.setProperty('--CLUE-R', maxRowClues);
+    grid.style.setProperty('--CLUE-C', maxColClues);
+    applySize();
     grid.innerHTML = '';
 
     const corner = document.createElement('div');
@@ -976,7 +935,35 @@ main.nono-wrap:-webkit-full-screen {
     }
   }
 
+  function applySize() {
+    const grid = $('grid');
+    if (!grid || !state.size) return;
+    grid.style.setProperty('--CELL', computeFitCellPx() + 'px');
+  }
+
+  // ---------- 모드 ----------
+  function setMode(m) {
+    if (!['fill','x','erase'].includes(m)) return;
+    state.mode = m;
+    syncModeButtons();
+    save();
+  }
+  function syncModeButtons() {
+    document.querySelectorAll('.paint-mode').forEach(b => {
+      b.classList.toggle('active', b.dataset.mode === state.mode);
+    });
+  }
+
   // ---------- 입력 ----------
+  // 현재 모드와 셀 상태로부터 목표값 결정
+  // 같은 모드 셀을 다시 누르면 지워진다 (toggle-off).
+  function resolveTarget(curVal, mode) {
+    if (mode === 'fill')  return curVal === 1  ? 0 : 1;
+    if (mode === 'x')     return curVal === -1 ? 0 : -1;
+    /* erase */            return 0;
+  }
+  // 드래그 시: 첫 셀의 목표값을 기준으로 같은 모드의 칸에는 그 값을 그대로 적용
+  // (다시 지워지지 않도록 toggle-off 동작은 첫 셀에서만 평가)
   function applyCell(r, c, target, opts) {
     if (state.finished || state.generating) return false;
     if (state.user[r][c] === target) return false;
@@ -986,14 +973,6 @@ main.nono-wrap:-webkit-full-screen {
     return true;
   }
 
-  function decideTarget(r, c) {
-    const cur = state.user[r][c];
-    if (cur === 0) return 1;
-    if (cur === 1) return -1;
-    return 0;
-  }
-
-  // ---------- 드래그 ----------
   function getCellFromPoint(x, y) {
     const el = document.elementFromPoint(x, y);
     if (!el || !el.classList.contains('cell')) return null;
@@ -1002,57 +981,64 @@ main.nono-wrap:-webkit-full-screen {
 
   function dragStart(e) {
     if (state.finished || state.generating) return;
-    if (e.button !== undefined && e.button !== 0) return;
-    const t = e.touches ? e.touches[0] : e;
-    const pos = getCellFromPoint(t.clientX, t.clientY);
+    if (e.button !== undefined && e.button !== 0 && e.pointerType !== 'touch') return;
+    const pos = getCellFromPoint(e.clientX, e.clientY);
     if (!pos) return;
     const [r, c] = pos;
-    const target = decideTarget(r, c);
-    const bw = document.querySelector('.board-wrap');
+    const cur = state.user[r][c];
+    const target = resolveTarget(cur, state.mode);
     state.drag = {
       startR: r, startC: c,
-      startX: t.clientX,
-      startY: t.clientY,
-      initialScrollY: window.scrollY,
-      initialBoardScrollX: bw ? bw.scrollLeft : 0,
+      startX: e.clientX, startY: e.clientY,
+      initialBoardScrollX: 0, initialBoardScrollY: 0,
       target,
+      mode: state.mode,
       lastR: r, lastC: c,
       axis: null,
-      committed: false
+      committed: false,
+      pointerType: e.pointerType,
     };
+    const bw = document.querySelector('.board-wrap');
+    if (bw) {
+      state.drag.initialBoardScrollX = bw.scrollLeft;
+      state.drag.initialBoardScrollY = bw.scrollTop;
+    }
+    setActiveCell(r, c);
   }
 
   function dragMove(e) {
     if (!state.drag) return;
-    const t = e.touches ? e.touches[0] : e;
-
     if (!state.drag.committed) {
-      const dx = t.clientX - state.drag.startX;
-      const dy = t.clientY - state.drag.startY;
+      const dx = e.clientX - state.drag.startX;
+      const dy = e.clientY - state.drag.startY;
       const absDx = Math.abs(dx);
       const absDy = Math.abs(dy);
       if (Math.max(absDx, absDy) < 6) return;
-
-      if (absDy > absDx * 1.5) {
-        // 세로 스크롤 의도 → 페이지 직접 스크롤, 드로우 안 함
-        window.scrollTo(0, state.drag.initialScrollY - dy);
-        return;
+      // 보드 내부 스크롤이 가능하고 + 두 축 모두 의도되면 스크롤로 처리
+      const bw = document.querySelector('.board-wrap');
+      const canScrollX = bw && bw.scrollWidth  > bw.clientWidth  + 1;
+      const canScrollY = bw && bw.scrollHeight > bw.clientHeight + 1;
+      // 터치이고 두 축 모두 움직이지 않을 때 → 스크롤
+      if (state.drag.pointerType === 'touch' && (canScrollX || canScrollY)) {
+        const startInRowClue = false;
+        // 셀이 아닌 영역에서 시작하면 스크롤만, 셀에서 시작했어도 처음 6px 안에서 명확히 축이 한쪽이면 그 방향 스크롤
+        // 단순화: 한 셀 폭 미만 이동이면 스크롤로 위임
+        const cellPx = parseFloat(getComputedStyle($('grid')).getPropertyValue('--CELL')) || 24;
+        if (Math.max(absDx, absDy) < cellPx * 0.5) {
+          if (canScrollX) bw.scrollLeft = state.drag.initialBoardScrollX - dx;
+          if (canScrollY) bw.scrollTop  = state.drag.initialBoardScrollY - dy;
+          return;
+        }
       }
-      // 가로 방향이고 보드가 넘칠 때 → board-wrap 가로 스크롤
-      const bw2 = document.querySelector('.board-wrap');
-      if (bw2 && absDx > absDy && bw2.scrollWidth > bw2.clientWidth + 2) {
-        bw2.scrollLeft = Math.max(0, state.drag.initialBoardScrollX - dx);
-        return;
-      }
-      // 가로 or 대각선 → 셀 드로우 확정
+      // 셀 드로우 확정 — 첫 셀 적용 (toggle-off 평가는 이 시점에 끝)
       state.drag.committed = true;
       if (applyCell(state.drag.startR, state.drag.startC, state.drag.target)) {
         render();
       }
     }
 
-    e.preventDefault();
-    const pos = getCellFromPoint(t.clientX, t.clientY);
+    if (e.cancelable) e.preventDefault();
+    const pos = getCellFromPoint(e.clientX, e.clientY);
     if (!pos) return;
     const [r, c] = pos;
     if (r === state.drag.lastR && c === state.drag.lastC) return;
@@ -1070,28 +1056,47 @@ main.nono-wrap:-webkit-full-screen {
     state.drag.lastR = useR;
     state.drag.lastC = useC;
 
+    // 드래그 중에는 toggle-off를 평가하지 않고, 첫 셀의 target을 그대로 적용 (이미 같은 값이면 변경 없음)
     if (applyCell(useR, useC, state.drag.target)) {
       render();
     }
+    setActiveCell(useR, useC);
   }
 
   function dragEnd() {
     if (!state.drag) return;
+    // 짧은 탭 — committed 안 됐으면 첫 셀에 toggle-off 적용
     if (!state.drag.committed) {
       if (applyCell(state.drag.startR, state.drag.startC, state.drag.target)) {
         render();
       }
-      state.drag = null;
-      checkWin();
-      save();
-      return;
     }
     state.drag = null;
     checkWin();
     save();
   }
 
-  // 우클릭 (데스크탑) — X 토글
+  function setActiveCell(r, c) {
+    state.activeRow = r;
+    state.activeCol = c;
+    updateActiveClues();
+  }
+  function updateActiveClues() {
+    const grid = $('grid');
+    if (!grid) return;
+    grid.querySelectorAll('.row-clue.active, .col-clue.active')
+      .forEach(el => el.classList.remove('active'));
+    if (state.activeRow >= 0) {
+      const r = grid.querySelector(`.row-clue[data-row="${state.activeRow}"]`);
+      if (r) r.classList.add('active');
+    }
+    if (state.activeCol >= 0) {
+      const c = grid.querySelector(`.col-clue[data-col="${state.activeCol}"]`);
+      if (c) c.classList.add('active');
+    }
+  }
+
+  // 우클릭 (PC) — X 토글 (현재 모드 무시)
   function rightClick(e) {
     if (state.finished || state.generating) return;
     const el = e.target.closest('.cell');
@@ -1119,7 +1124,6 @@ main.nono-wrap:-webkit-full-screen {
     render();
     save();
   }
-
   function redoAction() {
     if (state.finished || state.generating) return;
     if (state.redo.length === 0) return;
@@ -1129,7 +1133,6 @@ main.nono-wrap:-webkit-full-screen {
     render();
     save();
   }
-
   function reset() {
     if (state.finished || state.generating) return;
     if (!confirm('보드를 모두 지울까요?')) return;
@@ -1139,7 +1142,6 @@ main.nono-wrap:-webkit-full-screen {
     render();
     save();
   }
-
   function hint() {
     if (state.finished || state.generating) return;
     const candidates = [];
@@ -1188,39 +1190,6 @@ main.nono-wrap:-webkit-full-screen {
     save();
   }
 
-  // ---------- 줌 / 전체화면 ----------
-  function applyZoom() {
-    const grid = $('grid');
-    if (!grid || !state.size) return;
-    grid.style.setProperty('--CELL', computeCellPx() + 'px');
-  }
-  function setZoom(z) {
-    state.zoom = Math.max(0.1, Math.min(10, +z.toFixed(2)));
-    applyZoom();
-    render();
-    try { localStorage.setItem(ZOOM_KEY, String(state.zoom)); } catch (e) {}
-  }
-  function zoomIn()  { setZoom(state.zoom + ZOOM_STEP); }
-  function zoomOut() { setZoom(state.zoom - ZOOM_STEP); }
-
-  function toggleFullscreen() {
-    const main = $('nonoMain');
-    if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-      const req = main.requestFullscreen || main.webkitRequestFullscreen;
-      if (req) req.call(main).catch(() => {});
-    } else {
-      const exit = document.exitFullscreen || document.webkitExitFullscreen;
-      if (exit) exit.call(document).catch(() => {});
-    }
-  }
-
-  function refreshLoginCta() {
-    const cta = $('loginCta');
-    if (!cta) return;
-    const isIn = (typeof QLensAuth !== 'undefined') && QLensAuth.isLoggedIn && QLensAuth.isLoggedIn();
-    cta.classList.toggle('hidden', !!isIn);
-  }
-
   // ---------- 렌더 ----------
   function render() {
     const grid = $('grid');
@@ -1249,15 +1218,18 @@ main.nono-wrap:-webkit-full-screen {
       const colClue = grid.querySelector(`.col-clue[data-col="${c}"]`);
       if (colClue) colClue.classList.toggle('complete', same);
     }
+    updateActiveClues();
     const undoBtn = $('btn-undo');
     if (undoBtn) undoBtn.classList.toggle('disabled', state.history.length === 0);
     const redoBtn = $('btn-redo');
     if (redoBtn) redoBtn.classList.toggle('disabled', state.redo.length === 0);
-    const cellNow = computeCellPx();
-    const zoomInBtn = $('btn-zoom-in');
-    if (zoomInBtn) zoomInBtn.classList.toggle('disabled', cellNow >= CELL_MAX);
-    const zoomOutBtn = $('btn-zoom-out');
-    if (zoomOutBtn) zoomOutBtn.classList.toggle('disabled', cellNow <= CELL_MIN);
+  }
+
+  function refreshLoginCta() {
+    const cta = $('loginCta');
+    if (!cta) return;
+    const isIn = (typeof QLensAuth !== 'undefined') && QLensAuth.isLoggedIn && QLensAuth.isLoggedIn();
+    cta.classList.toggle('hidden', !!isIn);
   }
 
   // ---------- 바인딩 ----------
@@ -1277,23 +1249,21 @@ main.nono-wrap:-webkit-full-screen {
       newGame(newSize);
     });
   });
+
+  document.querySelectorAll('.paint-mode').forEach(b => {
+    b.addEventListener('click', () => setMode(b.dataset.mode));
+  });
+
   $('btn-undo').addEventListener('click', undo);
   $('btn-redo').addEventListener('click', redoAction);
   $('btn-reset').addEventListener('click', reset);
   $('btn-hint').addEventListener('click', hint);
-  $('btn-zoom-in').addEventListener('click', zoomIn);
-  $('btn-zoom-out').addEventListener('click', zoomOut);
-  $('btn-fullscreen').addEventListener('click', toggleFullscreen);
   $('btn-new').addEventListener('click', () => {
     const inProgress = !state.finished && state.user.some(row => row.some(v => v !== 0));
     if (inProgress && !confirm('새 게임을 시작하시겠습니까? 진행 중인 판은 사라집니다.')) return;
     newGame();
   });
 
-  if (!document.fullscreenEnabled && !document.webkitFullscreenEnabled) {
-    const fsBtn = $('btn-fullscreen');
-    if (fsBtn) fsBtn.style.display = 'none';
-  }
   $('winNew').addEventListener('click', () => {
     $('winModal').classList.add('hidden');
     newGame();
@@ -1320,13 +1290,17 @@ main.nono-wrap:-webkit-full-screen {
 
   const grid = $('grid');
   grid.addEventListener('pointerdown', dragStart);
-  grid.addEventListener('pointermove', dragMove);
+  document.addEventListener('pointermove', dragMove);
   document.addEventListener('pointerup', dragEnd);
   document.addEventListener('pointercancel', dragEnd);
   grid.addEventListener('contextmenu', rightClick);
 
-  // 창 크기 변경 시 셀 크기 재계산 (화면 기준 fit 방식)
-  window.addEventListener('resize', () => { applyZoom(); render(); });
+  // 창 크기 변경 시 셀 크기 재계산
+  let resizeRaf = 0;
+  window.addEventListener('resize', () => {
+    if (resizeRaf) cancelAnimationFrame(resizeRaf);
+    resizeRaf = requestAnimationFrame(() => { applySize(); render(); });
+  });
 
   document.addEventListener('keydown', e => {
     if (state.generating) return;
@@ -1342,8 +1316,9 @@ main.nono-wrap:-webkit-full-screen {
     else if (e.key === 'z' && (e.ctrlKey || e.metaKey) && e.shiftKey) { redoAction(); e.preventDefault(); }
     else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) { undo(); e.preventDefault(); }
     else if (e.key === 'y' && (e.ctrlKey || e.metaKey)) { redoAction(); e.preventDefault(); }
-    else if (e.key === '+' || e.key === '=') { zoomIn(); e.preventDefault(); }
-    else if (e.key === '-' || e.key === '_') { zoomOut(); e.preventDefault(); }
+    else if (e.key === '1') { setMode('fill');  e.preventDefault(); }
+    else if (e.key === '2') { setMode('x');     e.preventDefault(); }
+    else if (e.key === '3') { setMode('erase'); e.preventDefault(); }
   });
 
   document.addEventListener('visibilitychange', () => {
@@ -1352,12 +1327,6 @@ main.nono-wrap:-webkit-full-screen {
   });
 
   // ---------- 초기화 ----------
-  try {
-    const z = parseFloat(localStorage.getItem(ZOOM_KEY));
-    if (!isNaN(z)) state.zoom = Math.max(0.1, Math.min(10, z));
-  } catch (e) {}
-  applyZoom();
-
   const saved = load();
   const hasProgress = saved && saved.user && saved.user.some(row => row.some(v => v !== 0));
   if (hasProgress) {
@@ -1368,6 +1337,7 @@ main.nono-wrap:-webkit-full-screen {
   } else {
     newGame(10);
   }
+  syncModeButtons();
 
   refreshLoginCta();
   setTimeout(refreshLoginCta, 100);
